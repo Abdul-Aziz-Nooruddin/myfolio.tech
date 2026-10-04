@@ -139,11 +139,50 @@ const Jack3DCreatorTemplate = {
     const firstName = nameParts[0] || safeName;
 
     const safeTitle = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack Software Engineer');
-    const safeTagline = TemplateHelper.escapeHtml(data.tagline || data.bio || 'Building High-Performance Software & Modern Web Applications');
+    const safeLocation = TemplateHelper.escapeHtml(data.location || rawCandidateData.location || 'Remote / Worldwide');
+
+    // Extract a crisp, punchy hero tagline (strictly bounded, never dumping multi-paragraph bio into hero)
+    const explicitTagline = (rawCandidateData.tagline || data.identity?.tagline || '').trim();
+    let rawTagline = explicitTagline;
+    if (rawTagline && rawTagline.length > 110) {
+      const firstSentence = rawTagline.split(/(?<=[.!?])\s+/)[0] || '';
+      if (firstSentence.length >= 20 && firstSentence.length <= 100) {
+        rawTagline = firstSentence;
+      } else {
+        const cut = rawTagline.slice(0, 95);
+        const lastSpace = cut.lastIndexOf(' ');
+        rawTagline = (lastSpace > 40 ? cut.slice(0, lastSpace) : cut) + '...';
+      }
+    } else if (!rawTagline) {
+      if (safeLocation && safeLocation !== 'Remote / Worldwide') {
+        rawTagline = `${safeTitle} based in ${safeLocation}`;
+      } else if (Array.isArray(data.skills) && data.skills.length >= 2) {
+        rawTagline = `${safeTitle} • ${data.skills.slice(0, 3).join(' • ')}`;
+      } else {
+        rawTagline = data.tagline || `${safeTitle} specializing in high-performance digital systems`;
+      }
+    }
+    const safeTagline = TemplateHelper.escapeHtml(rawTagline);
+
     const safeBio = TemplateHelper.escapeHtml(
       data.bio || 'Computer Science & Software Engineering professional building resilient architectures, scalable applications, and modern digital experiences.'
     );
-    const safeLocation = TemplateHelper.escapeHtml(data.location || 'Remote / Worldwide');
+
+    // Extract signature craft manifesto for the About section scroll reveal (never repeating entire 250-word bio)
+    let rawManifest = (data.headline || data.quote || data.philosophy || '').trim();
+    if (!rawManifest || rawManifest.length > 140) {
+      if (data.bio && typeof data.bio === 'string') {
+        const firstSentence = data.bio.trim().split(/(?<=[.!?])\s+/)[0] || '';
+        if (firstSentence.length >= 30 && firstSentence.length <= 140) {
+          rawManifest = firstSentence;
+        }
+      }
+      if (!rawManifest) {
+        rawManifest = `Engineering high-performance software architectures, interactive 3D computing, and resilient digital platforms.`;
+      }
+    }
+    const safeManifestQuote = TemplateHelper.escapeHtml(rawManifest);
+
     const safeEmail = TemplateHelper.escapeHtml(data.email || data.contact?.email || '');
     const safeGithub = TemplateHelper.sanitizeUrl(data.github || data.socialLinks?.github || (data.githubData?.username ? 'https://github.com/' + data.githubData.username : ''), '');
     const safeLinkedin = TemplateHelper.sanitizeUrl(data.linkedin || data.socialLinks?.linkedin || '', '');
@@ -326,7 +365,7 @@ ${COMPILED_CSS}
   <main class="w-full relative" style="overflow-x: clip;">
 
     <!-- 1. HERO SECTION -->
-    <section id="hero" class="portfolio-section relative h-screen w-full flex flex-col justify-between overflow-x-clip bg-[#0C0C0C]">
+    <section id="hero" class="portfolio-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#0C0C0C]">
       <!-- Navbar -->
       <header class="w-full px-6 md:px-10 pt-6 md:pt-8 z-30">
         <nav class="flex items-center justify-between w-full flex-wrap gap-3">
@@ -363,7 +402,7 @@ ${COMPILED_CSS}
 
       <!-- Bottom Bar -->
       <div class="w-full px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 flex justify-between items-end z-20">
-        <p class="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug text-[clamp(0.75rem,1.4vw,1.5rem)] max-w-[180px] sm:max-w-[240px] md:max-w-[300px]">
+        <p class="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug text-xs sm:text-sm md:text-base max-w-[200px] sm:max-w-[260px] md:max-w-[320px] line-clamp-3 overflow-hidden">
           ${safeTagline.toLowerCase()}
         </p>
         <a href="${safeEmail ? 'mailto:' + safeEmail : '#contact'}" class="contact-btn inline-flex items-center justify-center rounded-full text-white font-medium uppercase tracking-widest px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base transition-transform duration-200 active:scale-95 hover:scale-[1.03]">
@@ -373,7 +412,7 @@ ${COMPILED_CSS}
     </section>
 
     <!-- 2. MARQUEE SECTION (Scroll-driven Dual Row with reasonable sleek dimensions) -->
-    <section id="marquee-section" class="bg-[#0C0C0C] pt-20 sm:pt-28 md:pt-32 pb-10 overflow-hidden w-full select-none">
+    <section id="marquee-section" class="relative z-10 bg-[#0C0C0C] pt-20 sm:pt-28 md:pt-32 pb-10 overflow-hidden w-full select-none">
       <div class="relative flex flex-col gap-4 sm:gap-6">
         <!-- Row 1: Leftward Scrolling Track -->
         <div id="marquee-row1" class="flex gap-4 sm:gap-5 will-change-transform w-max transition-transform duration-200 ease-out">
@@ -453,7 +492,7 @@ ${COMPILED_CSS}
         <!-- Character Scroll Reveal Container -->
         <div class="mt-12 sm:mt-16 max-w-4xl mx-auto text-center">
           <p class="font-black uppercase tracking-tight leading-tight text-[clamp(1.5rem,4vw,3.2rem)] text-[#D7E2EA]">
-            ${safeBio}
+            ${safeManifestQuote}
           </p>
         </div>
       </div>
