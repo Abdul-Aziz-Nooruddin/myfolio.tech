@@ -359,6 +359,45 @@ ${COMPILED_CSS}
     .animate-float-delayed {
       animation: floatSlowDelayed 6.5s ease-in-out infinite;
     }
+
+    /* Desktop Hero Typography */
+    .hero-lead-text {
+      font-size: clamp(${minRem}rem, ${safeHeroVw}vw, ${maxPx}px);
+    }
+    .hero-candidate-name {
+      font-size: clamp(${minRem}rem, ${safeHeroVw}vw, ${maxPx}px);
+    }
+
+    /* Mobile Hero Layout: Stacked, Bold, 100% Clear & High-Contrast */
+    @media (max-width: 640px) {
+      .hero-masthead-container {
+        margin-top: 14px !important;
+        margin-bottom: 0 !important;
+        gap: 6px !important;
+        position: relative !important;
+        z-index: 25 !important;
+      }
+      .hero-lead-text {
+        font-size: 1.15rem !important;
+        letter-spacing: 0.12em !important;
+        color: #75C5DE !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      }
+      .hero-candidate-name {
+        font-size: clamp(2rem, 9.5vw, 3rem) !important;
+        line-height: 1.05 !important;
+        letter-spacing: -0.02em !important;
+        color: #FFFFFF !important;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 25px rgba(117, 197, 222, 0.3);
+      }
+      #magnetic-portrait-wrapper {
+        top: auto !important;
+        bottom: 80px !important;
+        transform: translateX(-50%) !important;
+        width: 220px !important;
+        max-height: 52vh !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-[#0C0C0C] text-[#D7E2EA] font-['Kanit',sans-serif]">
@@ -378,12 +417,12 @@ ${COMPILED_CSS}
         </nav>
       </header>
 
-      <!-- Massive Hero Heading: Split into left (Hi, i'm) and right (first & middle name) -->
-      <h1 class="w-full max-w-[96vw] mx-auto px-4 sm:px-8 md:px-12 flex items-center justify-between z-0 pointer-events-none select-none mt-4 sm:mt-6 md:mt-2">
-        <span class="hero-heading font-black uppercase tracking-tight leading-none text-left whitespace-nowrap" style="font-size: clamp(${minRem}rem, ${safeHeroVw}vw, ${maxPx}px);">
+      <!-- Massive Hero Heading: Responsive Stacked on Mobile, Split Masthead on Desktop -->
+      <h1 class="hero-masthead-container w-full max-w-[96vw] mx-auto px-4 sm:px-8 md:px-12 flex flex-col sm:flex-row items-center sm:justify-between z-20 pointer-events-none select-none mt-2 sm:mt-6 md:mt-2 relative">
+        <span class="hero-lead-text font-black uppercase tracking-tight leading-none text-center sm:text-left whitespace-nowrap text-[#75C5DE] sm:text-[#D7E2EA]">
           Hi, i&apos;m
         </span>
-        <span class="hero-heading font-black uppercase tracking-tight leading-none text-right whitespace-nowrap" style="font-size: clamp(${minRem}rem, ${safeHeroVw}vw, ${maxPx}px);">
+        <span class="hero-candidate-name font-black uppercase tracking-tight leading-none text-center sm:text-right whitespace-nowrap text-white">
           ${displayHeroName.toLowerCase()}
         </span>
       </h1>

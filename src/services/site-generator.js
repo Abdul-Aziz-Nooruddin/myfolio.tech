@@ -17,7 +17,7 @@ class SiteGenerator {
     const requestedTemplate = designBrief?.templateId || data.templateId || data.template || (TemplateRegistry.templates[designBrief?.theme] ? designBrief.theme : null) || (TemplateRegistry.templates[designBrief?.creative_mode] ? designBrief.creative_mode : null);
 
     let templateId = requestedTemplate;
-    if (!templateId || !TemplateRegistry.templates[templateId] || (process.env.NODE_ENV !== 'test' && !['jack-3d-creator', '3d-creator', 'nadia-brand', 'nadia-personal-brand'].includes(templateId))) {
+    if (!templateId || !TemplateRegistry.templates[templateId] || (process.env.NODE_ENV !== 'test' && !TemplateRegistry._templates[templateId])) {
       const userId = (conversation && conversation.user && conversation.user.id) ? conversation.user.id : (conversation && conversation.id) ? conversation.id : 'anonymous';
       const autoTemplate = TemplateRegistry.selectTemplate(null, data, userId);
       templateId = autoTemplate.id || 'jack-3d-creator';

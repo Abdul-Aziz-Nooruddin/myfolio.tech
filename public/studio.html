@@ -1538,7 +1538,7 @@
       }
     }
 
-    /* Thinking Orb Generation Modal */
+    /* Precision Generation Progress Modal (Dark Luxury / Linear Style) */
     .thinking-orb-modal-overlay {
       position: fixed;
       inset: 0;
@@ -1549,72 +1549,114 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: mfModalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 1rem;
+      animation: mfModalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes mfModalFadeIn {
-      from { opacity: 0; transform: scale(0.97); }
+      from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
     }
     .thinking-orb-modal-card {
-      background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.16), rgba(13, 16, 23, 0.97) 75%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px rgba(56, 189, 248, 0.2);
-      border-radius: 26px;
-      padding: 38px 34px;
-      width: 92%;
-      max-width: 440px;
-      text-align: center;
+      background: #0E1013;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px 26px;
+      width: 100%;
+      max-width: 410px;
+      text-align: left;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      position: relative;
     }
-    .orb-canvas-wrapper {
-      width: 76px;
-      height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 22px;
+    .modal-spinner-ring {
+      width: 32px;
+      height: 32px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-top-color: #38BDF8;
+      border-right-color: #10B981;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+      animation: modalSpin 0.9s linear infinite;
+    }
+    @keyframes modalSpin {
+      to { transform: rotate(360deg); }
     }
     .orb-stage-title {
-      font-family: var(--mf-font-display, 'Syne', sans-serif);
-      font-size: 19px;
+      font-family: var(--mf-font-sans, -apple-system, sans-serif);
+      font-size: 17px;
       font-weight: 700;
-      color: #fff;
+      color: #FFFFFF;
       letter-spacing: -0.01em;
-      margin-bottom: 8px;
+      margin: 0 0 6px 0;
     }
     .orb-stage-desc {
       font-size: 13px;
-      color: rgba(215, 226, 234, 0.72);
+      color: #94A3B8;
       line-height: 1.5;
-      margin-bottom: 24px;
+      margin: 0 0 18px 0;
       min-height: 38px;
     }
     .orb-progress-track {
       width: 100%;
-      height: 5px;
+      height: 4px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 99px;
       overflow: hidden;
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
     .orb-progress-bar {
-      width: 5%;
+      width: 8%;
       height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
-      transition: width 0.25s ease;
+      background: linear-gradient(90deg, #10B981, #38BDF8);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       border-radius: 99px;
     }
     .orb-stage-percent {
       font-family: var(--mf-font-mono, monospace);
-      font-size: 12px;
-      color: #38bdf8;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
+      color: #F4F1E8;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #64748B;
+      transition: all 0.2s ease;
+    }
+    .step-item.active {
+      color: #E2E8F0;
+      font-weight: 500;
+    }
+    .step-item.completed {
+      color: #CBD5E1;
+    }
+    .step-badge {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-family: var(--mf-font-mono, monospace);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #64748B;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .step-item.active .step-badge {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #38BDF8;
+    }
+    .step-item.completed .step-badge {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #10B981;
     }
   </style>
   <link rel="stylesheet" href="/button-system.css">
@@ -2234,18 +2276,44 @@
       </div>
     </div>
 
-    <!-- Thinking Orb Generation Modal Overlay -->
+    <!-- Precision Generation Modal Overlay (Clean / Minimalist / Anti-AI Slop) -->
     <div id="thinkingOrbGenModal" class="thinking-orb-modal-overlay" style="display:none;">
       <div class="thinking-orb-modal-card">
-        <div class="orb-canvas-wrapper">
-          <canvas id="studioThinkingOrbCanvas" width="64" height="64" style="width:64px; height:64px;"></canvas>
+        <canvas id="studioThinkingOrbCanvas" width="1" height="1" style="display:none;"></canvas>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:4px 12px; border-radius:9999px;">
+            <span style="width:6px; height:6px; border-radius:50%; background:#10B981; box-shadow:0 0 8px rgba(16,185,129,0.8);"></span>
+            <span style="font-family:var(--mf-font-mono, monospace); font-size:11px; font-weight:600; color:#E2E8F0; letter-spacing:0.06em; text-transform:uppercase;">BUILDING PORTFOLIO</span>
+          </div>
+          <div id="orbStagePercent" class="orb-stage-percent">8%</div>
         </div>
-        <div id="orbStageTitle" class="orb-stage-title">Synthesizing Digital Universe</div>
-        <div id="orbStageDesc" class="orb-stage-desc">Scanning repositories, analyzing technical fingerprint &amp; building custom 3D environment...</div>
+
+        <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+          <div class="modal-spinner-ring" style="flex-shrink:0; margin-top:2px;"></div>
+          <div>
+            <h3 id="orbStageTitle" class="orb-stage-title">Ingesting Profile Data</h3>
+            <p id="orbStageDesc" class="orb-stage-desc">Collecting repository details, technical skills, and career milestones...</p>
+          </div>
+        </div>
+
         <div class="orb-progress-track">
           <div id="orbProgressBar" class="orb-progress-bar"></div>
         </div>
-        <div id="orbStagePercent" class="orb-stage-percent">12%</div>
+
+        <div class="generation-checklist" style="display:flex; flex-direction:column; gap:8px; border-top:1px solid rgba(255,255,255,0.06); padding-top:14px;">
+          <div id="genStep1" class="step-item active">
+            <span class="step-badge" id="genBadge1">✓</span>
+            <span>Profile and repository data ingestion</span>
+          </div>
+          <div id="genStep2" class="step-item">
+            <span class="step-badge" id="genBadge2">2</span>
+            <span>Case study architecture &amp; technical skills</span>
+          </div>
+          <div id="genStep3" class="step-item">
+            <span class="step-badge" id="genBadge3">3</span>
+            <span>3D spatial environment &amp; responsive layout</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -3237,8 +3305,19 @@
           genOrbInstance.setState('searching');
         }
       }
-      if (stageTitle) stageTitle.textContent = "Scanning Repositories & Ingesting Code";
-      if (stageDesc) stageDesc.textContent = "Collecting repositories, commit history, and technical topics...";
+      const s1 = document.getElementById('genStep1');
+      const s2 = document.getElementById('genStep2');
+      const s3 = document.getElementById('genStep3');
+      const b1 = document.getElementById('genBadge1');
+      const b2 = document.getElementById('genBadge2');
+      const b3 = document.getElementById('genBadge3');
+
+      if (s1) { s1.className = 'step-item active'; if (b1) b1.textContent = '1'; }
+      if (s2) { s2.className = 'step-item'; if (b2) b2.textContent = '2'; }
+      if (s3) { s3.className = 'step-item'; if (b3) b3.textContent = '3'; }
+
+      if (stageTitle) stageTitle.textContent = "Ingesting Profile Data";
+      if (stageDesc) stageDesc.textContent = "Processing repositories, resume details, and career accomplishments...";
       if (orbBar) orbBar.style.width = '8%';
       if (orbPct) orbPct.textContent = '8%';
 
@@ -3263,18 +3342,17 @@
           if (orbBar) orbBar.style.width = `${Math.round(currentProgress)}%`;
           if (orbPct) orbPct.textContent = `${Math.round(currentProgress)}%`;
 
-          if (currentProgress >= 25 && currentProgress < 50 && genOrbInstance) {
-            genOrbInstance.setState('connecting');
-            if (stageTitle) stageTitle.textContent = "Analyzing Technical Architecture";
-            if (stageDesc) stageDesc.textContent = "Mapping Web3 smart contracts, languages, frameworks, and skills...";
-          } else if (currentProgress >= 50 && currentProgress < 75 && genOrbInstance) {
-            genOrbInstance.setState('weaving');
-            if (stageTitle) stageTitle.textContent = "Synthesizing Authentic Case Studies";
-            if (stageDesc) stageDesc.textContent = "AI crafting narrative career milestones and project architectures...";
-          } else if (currentProgress >= 75 && genOrbInstance) {
-            genOrbInstance.setState('solving');
-            if (stageTitle) stageTitle.textContent = "Compiling 3D WebGL Spatial Universe";
-            if (stageDesc) stageDesc.textContent = "Assembling dynamic lighting, custom shaders, and typography hierarchy...";
+          if (currentProgress >= 35 && currentProgress < 70) {
+            if (s1) { s1.className = 'step-item completed'; if (b1) b1.textContent = '✓'; }
+            if (s2) { s2.className = 'step-item active'; }
+            if (stageTitle) stageTitle.textContent = "Structuring Case Studies & Skills";
+            if (stageDesc) stageDesc.textContent = "Synthesizing technical achievements, project architecture, and core stack...";
+          } else if (currentProgress >= 70) {
+            if (s1) { s1.className = 'step-item completed'; if (b1) b1.textContent = '✓'; }
+            if (s2) { s2.className = 'step-item completed'; if (b2) b2.textContent = '✓'; }
+            if (s3) { s3.className = 'step-item active'; }
+            if (stageTitle) stageTitle.textContent = "Rendering 3D Spatial Environment";
+            if (stageDesc) stageDesc.textContent = "Applying spatial shaders, responsive viewport layout, and dynamic typography...";
           }
         }
       }, 190);
@@ -3420,14 +3498,22 @@
         if (fluidBtnIcon) fluidBtnIcon.textContent = '';
         if (fluidBtnText) fluidBtnText.textContent = 'Publish Live';
 
-        if (genOrbInstance) genOrbInstance.setState('breathing');
         const modal = document.getElementById('thinkingOrbGenModal');
         const stageTitle = document.getElementById('orbStageTitle');
         const stageDesc = document.getElementById('orbStageDesc');
         const orbBar = document.getElementById('orbProgressBar');
         const orbPct = document.getElementById('orbStagePercent');
-        if (stageTitle) stageTitle.textContent = "Draft Preview Ready!";
-        if (stageDesc) stageDesc.textContent = "Your bespoke 3D portfolio has been generated.";
+        const s1 = document.getElementById('genStep1');
+        const s2 = document.getElementById('genStep2');
+        const s3 = document.getElementById('genStep3');
+        const b1 = document.getElementById('genBadge1');
+        const b2 = document.getElementById('genBadge2');
+        const b3 = document.getElementById('genBadge3');
+        if (s1) { s1.className = 'step-item completed'; if (b1) b1.textContent = '✓'; }
+        if (s2) { s2.className = 'step-item completed'; if (b2) b2.textContent = '✓'; }
+        if (s3) { s3.className = 'step-item completed'; if (b3) b3.textContent = '✓'; }
+        if (stageTitle) stageTitle.textContent = "Portfolio Ready!";
+        if (stageDesc) stageDesc.textContent = "Your bespoke portfolio has been generated.";
         if (orbBar) orbBar.style.width = '100%';
         if (orbPct) orbPct.textContent = '100%';
 

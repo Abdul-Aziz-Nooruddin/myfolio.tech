@@ -159,10 +159,11 @@ class TemplateRegistry {
     html { font-size: 14px !important; }
 
     /* Hero headline — cap at a safe mobile size */
-    h1,
-    [class*="hero-headline"], [class*="hero-h1"], [class*="hero-title"],
-    [class*="masthead"], [class*="main-title"], [class*="display-title"],
-    [class*="hero-name"], [class*="page-title"], [class*="folio-name"],
+    h1:not(.hero-masthead-container),
+    [class*="hero-headline"]:not(.hero-candidate-name):not(.hero-lead-text),
+    [class*="hero-h1"], [class*="hero-title"],
+    [class*="masthead"]:not(.hero-masthead-container), [class*="main-title"], [class*="display-title"],
+    [class*="hero-name"]:not(.hero-candidate-name), [class*="page-title"], [class*="folio-name"],
     [class*="profile-name"] {
       font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
       line-height: 1.15 !important;
