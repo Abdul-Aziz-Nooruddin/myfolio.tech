@@ -187,7 +187,7 @@
     .lab-content {
       position: relative;
       z-index: 10;
-      max-width: 1100px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
     }
@@ -223,7 +223,7 @@
     .hero-subtitle {
       font-size: 15px;
       color: var(--text-secondary);
-      max-width: 600px;
+      max-width: 720px;
       margin: 0.8rem auto 0;
       line-height: 1.6;
     }
@@ -236,10 +236,10 @@
       padding: 1.25rem 1.5rem;
       margin-bottom: 2.5rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .distinction-banner { grid-template-columns: 1fr; }
     }
     .distinction-col {
@@ -282,19 +282,19 @@
     /* Pricing Cards Grid */
     .pricing-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
       align-items: stretch;
     }
-    @media (max-width: 820px) {
-      .pricing-grid { grid-template-columns: 1fr; }
+    @media (max-width: 1060px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; }
     }
 
     .pricing-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 2.2rem;
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -307,6 +307,10 @@
       transform: translateY(-4px);
       border-color: rgba(255, 255, 255, 0.16);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
+    }
+    .pricing-card.free-tier {
+      background: linear-gradient(180deg, #101211 0%, #0A0C0B 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
     }
     .pricing-card.featured {
       background: linear-gradient(180deg, #151817 0%, #0E100F 100%);
@@ -328,6 +332,11 @@
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: 6px;
+    }
+    .tier-badge.free {
+      background: rgba(148, 163, 184, 0.1);
+      color: #94A3B8;
+      border: 1px solid rgba(148, 163, 184, 0.2);
     }
     .tier-badge.starter {
       background: rgba(255, 255, 255, 0.06);
@@ -355,6 +364,11 @@
       background: rgba(16, 185, 129, 0.14);
       border-color: rgba(16, 185, 129, 0.35);
       color: #34D399;
+    }
+    .discount-pill.neutral {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #94A3B8;
     }
 
     .card-title {
@@ -431,6 +445,9 @@
       gap: 5px;
       margin-top: 2px;
     }
+    .price-assurance-tag.neutral {
+      color: var(--text-muted);
+    }
 
     /* Dedicated Domain Showcase Box */
     .domain-showcase-box {
@@ -492,9 +509,23 @@
       line-height: 1.2;
       flex-shrink: 0;
     }
+    .feature-cross {
+      color: #64748B;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .feature-item.muted-feature {
+      color: #64748B;
+    }
     .feature-item strong {
       color: #FFF;
       font-weight: 600;
+    }
+    .feature-item.muted-feature strong {
+      color: #94A3B8;
+      font-weight: 500;
     }
 
     /* CTA Buttons */
@@ -513,6 +544,16 @@
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       border: none;
       text-decoration: none;
+    }
+    .cta-button.free {
+      background: rgba(255, 255, 255, 0.04);
+      color: #94A3B8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .cta-button.free:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.2);
     }
     .cta-button.starter {
       background: rgba(255, 255, 255, 0.08);
@@ -547,7 +588,7 @@
     }
     .modal-simulation-card {
       width: 100%;
-      max-width: 680px;
+      max-width: 860px;
       background: #111312;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
@@ -576,13 +617,43 @@
       color: #FFF;
     }
 
+    .modal-current-plan-banner {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 1rem 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .modal-current-plan-text {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-current-pill {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
     .modal-dual-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.25rem;
-      margin-top: 1.5rem;
     }
-    @media (max-width: 620px) {
+    @media (max-width: 680px) {
       .modal-dual-cards { grid-template-columns: 1fr; }
     }
     .modal-plan-box {
@@ -674,17 +745,28 @@
   <main class="lab-content" id="pageViewContent">
     
     <div class="hero-header">
-      <div class="hero-badge">✦ MyFolio Transparent Pricing</div>
+      <div class="hero-badge">✦ Transparent 3-Tier Publishing Plans</div>
       <h1 class="hero-title">Publish Your 3D Portfolio</h1>
       <p class="hero-subtitle">
-        Break free from the 24-hour preview timer. Choose the model that fits your workflow: pay once forever with a Netlify domain, or unlock your branded custom subdomain with monthly syncing.
+        Start free with 3 builds per week. When you're ready to break free from the 24-hour preview timer, choose between lifetime ownership on Netlify or your own branded subdomain.
       </p>
     </div>
 
-    <!-- Key Distinction Highlight Box -->
+    <!-- Key Distinction Highlight Box (3 Tiers) -->
     <div class="distinction-banner">
       <div class="distinction-col">
-        <span class="distinction-label">Plan 1 • One-Time Payment</span>
+        <span class="distinction-label">Tier 1 • Free Starter</span>
+        <div class="distinction-headline">
+          <span>⏳ 24-Hour Preview Pass</span>
+        </div>
+        <div class="distinction-url" style="color: #94A3B8;">https://myfolio.tech/p/draft-94b2</div>
+        <p class="distinction-desc">
+          Free evaluation pass for testing your 3D WebGL scenes and Web Studio styling. Active for 24 hours with preview watermark.
+        </p>
+      </div>
+
+      <div class="distinction-col">
+        <span class="distinction-label">Tier 2 • One-Time Payment</span>
         <div class="distinction-headline">
           <span>🌐 Netlify Edge Domain</span>
         </div>
@@ -695,21 +777,90 @@
       </div>
 
       <div class="distinction-col">
-        <span class="distinction-label">Plan 2 • Monthly Subscription</span>
+        <span class="distinction-label">Tier 3 • Monthly Subscription</span>
         <div class="distinction-headline">
-          <span>🌐 Branded Custom Subdomain</span>
+          <span>🚀 Branded Custom Subdomain</span>
         </div>
-        <div class="distinction-url">https://&lt;your_name&gt;.myfolio.tech</div>
+        <div class="distinction-url" style="color: #34D399;">https://&lt;your_name&gt;.myfolio.tech</div>
         <p class="distinction-desc">
-          Personalized identity on MyFolio's edge domain, custom domain linking (<code style="color:#FFF;">yourname.dev</code>), live GitHub auto-sync, and unlimited Studio updates.
+          Personalized identity on MyFolio's edge domain, custom domain linking (<code style="color:#FFF;">yourname.dev</code>), live GitHub auto-sync, and Switch 3D Worlds Anytime.
         </p>
       </div>
     </div>
 
-    <!-- The Dual Pricing Cards -->
+    <!-- The 3 Pricing Cards -->
     <div class="pricing-grid">
 
-      <!-- Card 1: Lifetime Starter -->
+      <!-- Card 1: Free Starter -->
+      <div class="pricing-card free-tier">
+        <div>
+          <div class="card-top-tag-row">
+            <span class="tier-badge free">FREE STARTER</span>
+            <span class="discount-pill neutral">₹0 ALWAYS</span>
+          </div>
+
+          <h2 class="card-title">Free Starter</h2>
+          <p class="card-caption">
+            Explore the 3D WebGL engine and test custom prompt transformations. No credit card required.
+          </p>
+
+          <div class="price-anchor-block">
+            <div class="original-price-line">
+              <span style="color:#94A3B8;">Evaluation Access</span>
+            </div>
+            <div class="hero-price-line">
+              <span class="big-currency">₹</span>
+              <span class="big-number">0</span>
+              <span class="billing-period">/ forever</span>
+            </div>
+            <div class="price-assurance-tag neutral">
+              <span>✓ 3 free builds/week • 24h pass</span>
+            </div>
+          </div>
+
+          <!-- Domain Showcase Box -->
+          <div class="domain-showcase-box">
+            <span class="domain-icon">⏳</span>
+            <div class="domain-details">
+              <span class="domain-type-title">Temporary Link:</span>
+              <span class="domain-format-url" style="color: #94A3B8;">https://myfolio.tech/p/&lt;build_id&gt;</span>
+            </div>
+          </div>
+
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>3 AI Portfolio Builds / Week:</strong> Test out different candidate identities, roles, and themes.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>24-Hour Preview Link:</strong> Share a live preview link with recruiters or peers for evaluation.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Full Web Studio Controls:</strong> Test live 3D rotations, typography pairings, and layout settings.</span>
+            </li>
+            <li class="feature-item muted-feature">
+              <span class="feature-cross">✕</span>
+              <span><strong>Watermark Included:</strong> Shows preview badge and 24-hour expiration countdown timer.</span>
+            </li>
+            <li class="feature-item muted-feature">
+              <span class="feature-cross">✕</span>
+              <span><strong>No Standalone Source Code (.ZIP):</strong> Downloadable HTML/CSS/Shader bundle locked.</span>
+            </li>
+            <li class="feature-item muted-feature">
+              <span class="feature-cross">✕</span>
+              <span><strong>No Custom Subdomain:</strong> Preview link expires automatically after 24 hours.</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="cta-button free" onclick="simulateCheckout('free', 0)">
+          <span>Explore Free In Studio</span> &rarr;
+        </button>
+      </div>
+
+      <!-- Card 2: Lifetime Starter -->
       <div class="pricing-card">
         <div>
           <div class="card-top-tag-row">
@@ -776,7 +927,7 @@
         </button>
       </div>
 
-      <!-- Card 2: Pro Creator -->
+      <!-- Card 3: Pro Creator -->
       <div class="pricing-card featured">
         <div>
           <div class="card-top-tag-row">
@@ -858,9 +1009,20 @@
 
       <div style="width:42px; height:42px; border-radius:50%; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); color:#10B981; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px;">🚀</div>
       <h3 style="font-size:1.25rem; font-weight:700; color:#F4F1E8;">Publish Permanent Live Website</h3>
-      <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; max-width:520px; line-height:1.5;">
-        Your 3D portfolio is in temporary 24-hour preview mode. Choose your publishing plan to make it permanent:
+      <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; max-width:620px; line-height:1.5;">
+        Upgrade your draft from the temporary 24-hour evaluation pass. Choose your permanent publishing destination so your site never goes down:
       </p>
+
+      <!-- Status banner acknowledging Free Starter draft -->
+      <div class="modal-current-plan-banner">
+        <div class="modal-current-plan-text">
+          <span class="modal-current-pill">Active Draft</span>
+          <span>You are currently on <strong>Free Starter</strong> (24h preview expires soon • 2 builds remaining this week)</span>
+        </div>
+        <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-amber);">
+          ⏳ Watermark active
+        </div>
+      </div>
 
       <div class="modal-dual-cards">
         <!-- Modal Card 1 -->

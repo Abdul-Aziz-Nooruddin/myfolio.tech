@@ -8,25 +8,25 @@
 
 ## 1. Executive Summary & Core Plan Distinction
 
-MyFolio operates on a dual publishing model designed to serve both one-time portfolio creators and active developers who want an evolving personal brand:
+MyFolio operates on a freemium architecture: every visitor can start with **Free Starter** for evaluation without a credit card. When ready to publish permanently and remove the 24-hour preview timer, users choose between two publishing models:
 
 ```text
-┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                 THE CORE DISTINCTION                                        │
-├──────────────────────────────────────────────┬──────────────────────────────────────────────┤
-│               ONE-TIME PAYMENT               │             MONTHLY SUBSCRIPTION             │
-│            (Lifetime Starter — ₹149)         │             (Pro Creator — ₹149/mo)          │
-├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
-│ 🌐 DOMAIN: Netlify Domain                    │ 🌐 DOMAIN: Branded MyFolio Subdomain        │
-│    e.g. https://<sitename>.netlify.app       │    e.g. https://<users_choice_name>.myfolio.tech│
-│                                              │    + Custom Domain (e.g. alex.dev)           │
-├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
-│ 💳 BILLING: Pay Once Forever (₹149)          │ 💳 BILLING: Monthly Recurring (₹149/month)   │
-│    Zero recurring subscription fees          │    Cancel anytime via dashboard              │
-├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
-│ 🚀 UPDATES: Static Deployment                │ 🚀 UPDATES: Continuous Live GitHub Sync      │
-│    1 free initial rebuild + ZIP export       │    Switch 3D worlds anytime + auto-sync      │
-└──────────────────────────────────────────────┴──────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                           THE THREE TIERS                                                   │
+├───────────────────────────────┬──────────────────────────────────────────────┬──────────────────────────────┤
+│          FREE STARTER         │               ONE-TIME PAYMENT               │     MONTHLY SUBSCRIPTION     │
+│        (Evaluation — ₹0)      │            (Lifetime Starter — ₹149)         │    (Pro Creator — ₹149/mo)   │
+├───────────────────────────────┼──────────────────────────────────────────────┼──────────────────────────────┤
+│ 🌐 DOMAIN: Temporary Preview  │ 🌐 DOMAIN: Netlify Domain                    │ 🌐 DOMAIN: Branded Subdomain │
+│    myfolio.tech/p/<site-id>   │    e.g. https://<sitename>.netlify.app       │    https://<name>.myfolio.tech│
+│    (24-Hour Expiration)       │    Permanent Edge CDN Link                   │    + Custom Domain (alex.dev)│
+├───────────────────────────────┼──────────────────────────────────────────────┼──────────────────────────────┤
+│ 💳 BILLING: Free Forever (₹0) │ 💳 BILLING: Pay Once Forever (₹149)          │ 💳 BILLING: Monthly (₹149/mo)│
+│    No card needed             │    Zero recurring subscription fees          │    Cancel anytime 1-click    │
+├───────────────────────────────┼──────────────────────────────────────────────┼──────────────────────────────┤
+│ 🚀 UPDATES: 3 Builds/week     │ 🚀 UPDATES: Static Deployment                │ 🚀 UPDATES: Continuous Live  │
+│    24h pass + watermark       │    1 free initial rebuild + ZIP export       │    GitHub sync + switch 3D   │
+└───────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────┘
 ```
 
 ---
