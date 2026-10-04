@@ -3375,6 +3375,7 @@
           return;
         }
       }
+      window.__legalTermsConfirmed = false;
 
       const targetBtn = plan === 'pro' ? document.getElementById('upmConfirmBtn') : document.getElementById('btnLaunchStarter');
       const originalText = targetBtn ? targetBtn.textContent : '';
@@ -3466,7 +3467,8 @@
         return;
       }
       window.__legalTermsConfirmed = true;
-      closePreCheckoutLegalModal();
+      const modal = document.getElementById('preCheckoutLegalModal');
+      if (modal) modal.style.display = 'none';
       const plan = window.__pendingStudioPaymentPlan || 'starter';
       startStudioPayment(plan);
     }

@@ -2018,6 +2018,7 @@
           return;
         }
       }
+      window.__dashLegalTermsConfirmed = false;
 
       try {
         const planName = plan === 'starter' ? 'Lifetime Starter (₹149 one-time)' : 'Pro Subdomain (₹149/month)';
@@ -2112,7 +2113,8 @@
         return;
       }
       window.__dashLegalTermsConfirmed = true;
-      closeDashLegalModal();
+      const modal = document.getElementById('dashPreCheckoutLegalModal');
+      if (modal) modal.style.display = 'none';
       const plan = window.__pendingDashPlan || 'starter';
       startPublishCheckout(plan);
     }
