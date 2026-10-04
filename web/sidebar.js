@@ -562,6 +562,10 @@ function initUniversalSidebar(activePage) {
             <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V11l3-2 3 2v10"></path></svg>
             <span>Kage Temple</span>
           </a>
+          <a href="/rbp" target="_blank" class="sidebar-nav-item">
+            <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span>RBP Kinetic</span>
+          </a>
         </nav>
       </div>
 

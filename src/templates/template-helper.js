@@ -56,6 +56,50 @@ class TemplateHelper {
     return fallback;
   }
 
+  /**
+   * Fast, reliable heuristic gender inference based on pronouns, honorifics, and name dictionary
+   */
+  static inferGender(name = '', bio = '') {
+    const text = `${name} ${bio}`.toLowerCase();
+
+    // 1. Explicit Pronoun matching
+    const femalePronouns = (text.match(/\b(she|her|hers)\b/g) || []).length;
+    const malePronouns = (text.match(/\b(he|him|his)\b/g) || []).length;
+    if (femalePronouns > malePronouns && femalePronouns > 0) return 'female';
+    if (malePronouns > femalePronouns && malePronouns > 0) return 'male';
+
+    // 2. Honorifics
+    if (/\b(ms\.|mrs\.|miss)\b/i.test(text)) return 'female';
+    if (/\b(mr\.)\b/i.test(text)) return 'male';
+
+    // 3. Women in STEM / tech affiliations
+    if (/\b(society of women engineers|swe|girls who code|women in tech|women who code|grace hopper)\b/i.test(text)) return 'female';
+
+    // 4. First name lookup
+    const firstName = String(name).trim().split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g, '');
+    if (!firstName) return 'unspecified';
+
+    const femaleNames = new Set([
+      'maya', 'elena', 'sarah', 'sara', 'emily', 'emma', 'olivia', 'sophia', 'isabella', 'mia', 'charlotte', 'amelia',
+      'priya', 'ananya', 'aarti', 'neha', 'pooja', 'sneha', 'shreya', 'tanvi', 'riya', 'kavya', 'divya', 'deepa',
+      'aisha', 'fatima', 'zainab', 'mariam', 'maryam', 'khadija', 'amira', 'layla', 'nour', 'huda', 'salma',
+      'nadia', 'rachel', 'jessica', 'hannah', 'chloe', 'zoe', 'grace', 'lily', 'natalie', 'victoria', 'eva',
+      'claire', 'anna', 'laura', 'julia', 'maria', 'sophie', 'alicia', 'elizabeth', 'taylor', 'morgan', 'alexa'
+    ]);
+
+    const maleNames = new Set([
+      'josh', 'joshua', 'david', 'alex', 'alexander', 'john', 'michael', 'james', 'robert', 'william', 'daniel',
+      'abdul', 'aziz', 'mohammed', 'muhammad', 'ahmed', 'ali', 'omar', 'hamza', 'hassan', 'hussein', 'tariq',
+      'rahul', 'rohit', 'amit', 'arjun', 'vikram', 'aditya', 'karan', 'siddharth', 'suresh', 'ramesh', 'raj',
+      'ethan', 'lucas', 'mason', 'oliver', 'noah', 'liam', 'logan', 'benjamin', 'samuel', 'jack', 'henry'
+    ]);
+
+    if (femaleNames.has(firstName)) return 'female';
+    if (maleNames.has(firstName)) return 'male';
+
+    return 'unspecified';
+  }
+
   static normalize(candidateData = {}) {
     // 1. Identity & Name
     const rawName = candidateData.name ||
@@ -343,11 +387,23 @@ class TemplateHelper {
       }
     ];
 
+    const gender = candidateData.gender ||
+      candidateData.identity?.gender ||
+      candidateData.extracted_data?.gender_inference?.gender ||
+      candidateData.gender_inference?.gender ||
+      this.inferGender(name, bio);
+
+    const avatarSet = candidateData.avatarSet ||
+      candidateData.avatar_set ||
+      (gender === 'female' ? 'female' : 'male');
+
     return {
       name,
       role,
       tagline,
       bio,
+      gender,
+      avatarSet,
       initials,
       avatar,
       photoUrl: avatar,

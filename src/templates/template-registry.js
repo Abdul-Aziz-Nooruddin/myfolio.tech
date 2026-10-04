@@ -8,6 +8,7 @@
 const { Jack3DCreatorTemplate } = require('./jack-3d-creator');
 const { NadiaBrandTemplate } = require('./nadia-brand');
 const { KageTempleTemplate } = require('./kage-temple');
+const { RBPKineticMonochromeTemplate } = require('./rbp-kinetic-monochrome');
 
 class TemplateRegistry {
   static _templates = {
@@ -17,7 +18,11 @@ class TemplateRegistry {
     'nadia-personal-brand': NadiaBrandTemplate,
     'kage-temple': KageTempleTemplate,
     'kage': KageTempleTemplate,
-    'kage-landing-page': KageTempleTemplate
+    'kage-landing-page': KageTempleTemplate,
+    'rbp-kinetic-monochrome': RBPKineticMonochromeTemplate,
+    'rbp-portfolio': RBPKineticMonochromeTemplate,
+    'kinetic-monochrome': RBPKineticMonochromeTemplate,
+    'calm-monochrome': RBPKineticMonochromeTemplate
   };
 
   static templates = new Proxy(TemplateRegistry._templates, {
@@ -62,7 +67,8 @@ class TemplateRegistry {
   static studioTemplateIds = [
     'jack-3d-creator',
     'nadia-brand',
-    'kage-temple'
+    'kage-temple',
+    'rbp-kinetic-monochrome'
   ];
 
   /**
@@ -120,6 +126,9 @@ class TemplateRegistry {
     }
     if (role.includes('temple') || role.includes('zen') || role.includes('kyoto') || role.includes('game') || role.includes('spatial') || role.includes('graphics') || role.includes('3d')) {
       return this._templates['kage-temple'];
+    }
+    if (role.includes('design engineer') || role.includes('product design') || role.includes('kinetic') || role.includes('monochrome') || role.includes('calm') || role.includes('minimal')) {
+      return this._templates['rbp-kinetic-monochrome'];
     }
     return this._templates['jack-3d-creator'];
   }

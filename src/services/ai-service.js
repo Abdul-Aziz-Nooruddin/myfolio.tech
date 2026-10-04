@@ -1088,6 +1088,17 @@ Return ONLY this JSON structure:
       });
     }
 
+    // 10. Infer Gender
+    const textLower = cleanText.toLowerCase();
+    const femalePronouns = (textLower.match(/\b(she|her|hers)\b/g) || []).length;
+    const malePronouns = (textLower.match(/\b(he|him|his)\b/g) || []).length;
+    let inferredGender = 'unspecified';
+    if (femalePronouns > malePronouns && femalePronouns > 0) inferredGender = 'female';
+    else if (malePronouns > femalePronouns && malePronouns > 0) inferredGender = 'male';
+    else if (/\b(ms\.|mrs\.|miss)\b/i.test(textLower)) inferredGender = 'female';
+    else if (/\b(mr\.)\b/i.test(textLower)) inferredGender = 'male';
+    else if (/\b(society of women engineers|swe|girls who code|women in tech|women who code|grace hopper)\b/i.test(textLower)) inferredGender = 'female';
+
     return {
       branch: 'A',
       extracted_data: {
@@ -1096,6 +1107,11 @@ Return ONLY this JSON structure:
         tagline: bio.slice(0, 140),
         bio,
         summary: bio,
+        gender: inferredGender,
+        gender_inference: {
+          gender: inferredGender,
+          confidence: inferredGender !== 'unspecified' ? 0.9 : 0.5
+        },
         email: emailMatch ? emailMatch[0] : '',
         phone: phoneMatch ? phoneMatch[0] : '',
         github: githubMatch ? `https://github.com/${githubMatch[1]}` : '',

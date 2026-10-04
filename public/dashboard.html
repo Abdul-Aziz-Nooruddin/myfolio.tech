@@ -1588,11 +1588,12 @@
         }
       }
 
-      // Real Analytics (Zero Fake Numbers)
+      // Real Analytics (Zero Fake Numbers - Strictly tied to active portfolio)
       const analytics = data.analytics || {};
-      const totalViews = Number(analytics.totalViews || 0);
-      const uniqueVisitors = Number(analytics.uniqueVisitors || 0);
-      const contactSubmissions = Number(analytics.contactSubmissions || 0);
+      const hasPortfolios = Boolean(portfolios && portfolios.length > 0);
+      const totalViews = hasPortfolios ? Number(analytics.totalViews || 0) : 0;
+      const uniqueVisitors = hasPortfolios ? Number(analytics.uniqueVisitors || 0) : 0;
+      const contactSubmissions = hasPortfolios ? Number(analytics.contactSubmissions || 0) : 0;
 
       document.getElementById('kpiTotalViews').textContent = totalViews.toLocaleString();
       document.getElementById('kpiUniqueVisitors').textContent = uniqueVisitors.toLocaleString();
@@ -1600,7 +1601,7 @@
 
       const emptyBanner = document.getElementById('emptyAnalyticsBanner');
       if (emptyBanner) {
-        emptyBanner.style.display = totalViews === 0 ? 'flex' : 'none';
+        emptyBanner.style.display = (!hasPortfolios || totalViews === 0) ? 'flex' : 'none';
       }
 
       // Track portfolio list and selected portfolio
@@ -1816,6 +1817,9 @@
       'nadia-brand': '/assets/templates/nadia-brand-hero.webp',
       'kage-temple': '/assets/templates/kage-temple-hero.webp',
       'kage': '/assets/templates/kage-temple-hero.webp',
+      'rbp-kinetic-monochrome': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
+      'rbp-portfolio': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
+      'rbp': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
       'default': '/images/hero-base.webp'
     };
 
@@ -1828,7 +1832,10 @@
         'jack-3d-creator': 'Jack 3D Space',
         'nadia-brand': 'Nadia Editorial',
         'kage-temple': 'Kage Kyoto Temple',
-        'kage': 'Kage Kyoto Temple'
+        'kage': 'Kage Kyoto Temple',
+        'rbp-kinetic-monochrome': 'RBP Kinetic Monochrome',
+        'rbp-portfolio': 'RBP Kinetic Monochrome',
+        'rbp': 'RBP Kinetic Monochrome'
       };
       return map[key] || 'Jack 3D Space';
     }

@@ -28,7 +28,7 @@
       ]
     },
     {
-      "source": "/(jack-3d-creator|nadia-brand|kage-temple|about|contact|privacy|terms)",
+      "source": "/(jack-3d-creator|nadia-brand|kage-temple|rbp|rbp-portfolio|rbp-kinetic-monochrome|about|contact|privacy|terms)",
       "headers": [
         {
           "key": "Cache-Control",

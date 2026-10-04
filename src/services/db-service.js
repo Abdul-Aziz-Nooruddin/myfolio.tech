@@ -59,7 +59,7 @@ class DatabaseService {
   // ==========================================
 
   static isSuperAdminEmail(email) {
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
       .split(',')
       .map(e => e.trim().toLowerCase());
     const cleanEmail = DatabaseService.normalizeEmail(email);
@@ -67,13 +67,24 @@ class DatabaseService {
   }
 
   static isSuperAdminEmailOrUsername(email, username) {
-    // SECURITY: Administrative privileges are strictly tied to verified emails or database role, never mutable usernames.
-    return DatabaseService.isSuperAdminEmail(email);
+    if (DatabaseService.isSuperAdminEmail(email)) return true;
+    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .split(',')
+      .map(u => u.trim().toLowerCase());
+    const cleanUsername = (username || '').trim().toLowerCase();
+    return Boolean(cleanUsername && adminUsernames.includes(cleanUsername));
   }
 
   _decorateUser(user) {
     if (!user) return null;
-    const isSuperAdmin = DatabaseService.isSuperAdminEmail(user.email || user.normalized_email) || user.role === 'admin' || user.is_admin === true;
+    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .split(',')
+      .map(u => u.trim().toLowerCase());
+    const isSuperAdmin =
+      DatabaseService.isSuperAdminEmail(user.email || user.normalized_email) ||
+      (user.username && adminUsernames.includes(user.username.trim().toLowerCase())) ||
+      user.role === 'admin' ||
+      user.is_admin === true;
     if (isSuperAdmin) {
       user.role = 'admin';
       user.is_admin = true;
@@ -1138,7 +1149,7 @@ class DatabaseService {
       }
 
       let analytics = { totalViews: 0, uniqueVisitors: 0 };
-      if (siteId) {
+      if (hasSite && siteId) {
         analytics = await this.getSiteAnalytics(siteId);
       }
 

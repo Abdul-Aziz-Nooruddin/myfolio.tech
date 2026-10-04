@@ -51,6 +51,17 @@ async function captureTemplateHeroes() {
         bio: 'Kyoto mountain sanctuary with live Shinto Sanmon, vermilion blood moon, and zen koi.'
       },
       urlQuery: '?shot=0'
+    },
+    { 
+      id: 'rbp-kinetic-monochrome', 
+      filename: 'rbp-kinetic-monochrome-hero.webp', 
+      fallbackJpg: 'rbp-kinetic-monochrome-hero.jpg',
+      profile: {
+        name: 'Josh',
+        role: 'Design Engineer & Creative Technologist',
+        bio: 'Designing and engineering focused software surfaces where ideas and code coexist cleanly.'
+      },
+      urlQuery: ''
     }
   ];
 

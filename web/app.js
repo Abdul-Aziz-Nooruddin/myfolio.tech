@@ -326,6 +326,13 @@ function openStudioWithTemplate(templateId) {
       bio: 'Helping large organisations make decisions faster without making them worse.',
       skills: ['Strategic Advisory', 'Keynote Speaking', 'Executive Coaching', 'Organizational Design', 'Author'],
       theme: 'nadia-brand'
+    },
+    'rbp-kinetic-monochrome': {
+      name: 'Josh Miller',
+      role: 'Design Engineer & Full-Stack Developer',
+      bio: 'Designing and engineering focused software surfaces where ideas and code coexist cleanly.',
+      skills: ['TypeScript', 'WebGL', 'React', 'Next.js', 'Tailwind CSS', 'Figma'],
+      theme: 'rbp-kinetic-monochrome'
     }
   };
 

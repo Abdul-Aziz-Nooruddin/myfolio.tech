@@ -490,6 +490,18 @@ app.use(async (req, res, next) => {
   if (host.endsWith('.myfolio.tech') && host !== 'www.myfolio.tech') {
     const subdomain = host.replace(/\.myfolio\.tech$/, '').trim();
     if (subdomain && subdomain !== 'api' && subdomain !== 'app' && subdomain !== 'mail') {
+      if (subdomain === 'rbp' || subdomain === 'rbp-portfolio' || subdomain === 'rbp-kinetic') {
+        const { TemplateRegistry } = require('./templates/template-registry');
+        const rendered = TemplateRegistry.render('rbp-kinetic-monochrome', {
+          name: 'Josh Miller',
+          role: 'Design Engineer & AI Enthusiast',
+          bio: 'Independent engineer focused on interfaces that feel calm, considered, and quietly fast.',
+          email: 'josh@example.com'
+        });
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        return res.send(rendered.html);
+      }
+
       // 1. Check customDomainService mapping or direct handle
       let siteId = customDomainService ? customDomainService.resolveHostname(host) : null;
       if (!siteId) {
@@ -1046,11 +1058,19 @@ async function verifySiteOwnership(req, siteId) {
     return { allowed: false, status: 401, error: 'Unauthorized: Authentication required' };
   }
 
-  const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com')
+  const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
     .split(',')
     .map(e => e.trim().toLowerCase());
+  const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+    .split(',')
+    .map(u => u.trim().toLowerCase());
   const userEmail = (req.user.email || req.user.normalized_email || '').toLowerCase();
-  const isAdmin = req.user.role === 'admin' || req.user.is_admin === true || (userEmail && adminEmails.includes(userEmail));
+  const username = (req.user.username || '').toLowerCase();
+  const isAdmin =
+    req.user.role === 'admin' ||
+    req.user.is_admin === true ||
+    (userEmail && adminEmails.includes(userEmail)) ||
+    (username && adminUsernames.includes(username));
   if (isAdmin) {
     return { allowed: true, isAdmin: true };
   }
@@ -2792,6 +2812,26 @@ app.get(['/kage', '/kage-temple', '/kyoto-temple', '/kage-landing-page'], (req, 
   res.redirect('/landing-pages/kage.html');
 });
 
+app.get(['/rbp', '/rbp-portfolio', '/rbp-kinetic', '/rbp-kinetic-monochrome'], (req, res) => {
+  const rbpCandidates = [
+    path.join(process.cwd(), 'web', 'rbp-preview.html'),
+    path.join(process.cwd(), 'public', 'rbp-preview.html'),
+    path.join(__dirname, '..', 'web', 'rbp-preview.html'),
+    path.join(__dirname, '..', 'public', 'rbp-preview.html')
+  ];
+  for (const p of rbpCandidates) {
+    if (fs.existsSync(p)) return res.sendFile(p);
+  }
+  const { TemplateRegistry } = require('./templates/template-registry');
+  const rendered = TemplateRegistry.render('rbp-kinetic-monochrome', {
+    name: 'Josh Miller',
+    role: 'Design Engineer & AI Enthusiast',
+    bio: 'Independent engineer focused on interfaces that feel calm, considered, and quietly fast.',
+    email: 'josh@example.com'
+  });
+  res.type('html').send(rendered.html);
+});
+
 app.get(['/profile', '/settings', '/account'], AuthMiddleware.requirePageAuth, (req, res) => {
   res.sendFile(getPagePath('profile.html'));
 });
@@ -3740,11 +3780,19 @@ app.post('/api/vip/set-active-site', AuthMiddleware.requireAdmin, async (req, re
     const { siteId, isVip } = req.body;
     if (!siteId) return res.status(400).json({ error: 'siteId is required' });
 
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
       .split(',')
       .map(e => e.trim().toLowerCase());
+    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .split(',')
+      .map(u => u.trim().toLowerCase());
     const userEmail = (req.user?.email || req.user?.normalized_email || '').toLowerCase().trim();
-    const isAuthorized = req.user?.role === 'admin' || req.user?.is_admin === true || (userEmail && adminEmails.includes(userEmail));
+    const username = (req.user?.username || '').toLowerCase().trim();
+    const isAuthorized =
+      req.user?.role === 'admin' ||
+      req.user?.is_admin === true ||
+      (userEmail && adminEmails.includes(userEmail)) ||
+      (username && adminUsernames.includes(username));
     if (!isAuthorized) {
       return res.status(403).json({ error: 'Unauthorized. VIP Founder privileges required.' });
     }

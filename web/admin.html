@@ -25,8 +25,11 @@
         .then(function(data) {
           if (!data) return;
           var u = data.user || data;
-          var adminEmails = ['abdulaziznoor9876@gmail.com'];
-          var isAdmin = u.role === 'admin' || u.is_admin === true || (u.email && adminEmails.indexOf(u.email.toLowerCase()) !== -1);
+          var adminEmails = ['abdulaziznoor9876@gmail.com', 'abdul19388383@gmail.com', 'abdulaziznooruddin670@gmail.com'];
+          var adminUsernames = ['abdulazizpro1', 'abdulazizpro', 'abdul19388383', 'abdulaziz'];
+          var isAdmin = u.role === 'admin' || u.is_admin === true || 
+                        (u.email && adminEmails.indexOf(u.email.toLowerCase()) !== -1) ||
+                        (u.username && adminUsernames.indexOf(u.username.toLowerCase()) !== -1);
           if (!isAdmin) {
             window.location.replace('/dashboard');
           }

@@ -333,6 +333,13 @@ Antigravity models must draw from this standardized catalog when generating, mat
 - **Key Features**: ThreeUI Quantum Matrix WebGL procedural lightning shader, real-time coordinate tracking, zero-GC memory architecture manifesto, verified systems registry.
 - **Recommended For**: Distributed Systems Architects, Protocol Engineers, Cryptographers, Web3 Core Developers.
 
+### 30. RBP Kinetic Monochrome (`rbp-kinetic-monochrome`)
+- **Aesthetic DNA**: Inspired by DavidHDev/rbp-portfolio. Signature calm monochrome design system with aspect-correct WebGL flow shader backdrop, interactive WebGL displacement ripple/warp morphing portrait with magnetic cursor follow, Matter.js interactive physics skills chips, expandable experience accordion, and shader-backed contact card.
+- **Color Palette**: Void Black `#0A0A0A`, Stark White `#FAFAFA`, Substrate Gray `#171717`, Border Stone `#262626`.
+- **Typography**: Display `Inter` & `Outfit`, Body `Inter` & `Plus Jakarta Sans`, Serif Accent `Fraunces`, Mono `JetBrains Mono`.
+- **Key Features**: WebGL Flow Shader background, interactive WebGL displacement morphing portrait with dual male (`josh.webp`/`josh_wave.webp`) and female (`maya.webp`/`maya_wave.webp`) AI character sets, interactive avatar switcher pill `[ 👦 Josh | 👧 Maya | 📷 Photo ]`, Matter-like colliding physics tech chips with gravity reset, Dribbble-style project showcase cards, and click-to-copy email contact terminal.
+- **Recommended For**: Design Engineers, Product Designers, Frontend & Full-Stack Developers, Creative Technologists, Indie Founders.
+
 ---
 
 ## Website Creation Guidelines
