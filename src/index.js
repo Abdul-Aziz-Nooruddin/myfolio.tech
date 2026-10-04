@@ -347,12 +347,22 @@ app.get([
 
 // Serve assets directly from web/assets and public/assets before domain rewrites
 app.use('/assets', express.static(path.join(process.cwd(), 'web', 'assets'), {
-  maxAge: '30d',
-  immutable: true
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
 }));
 app.use('/assets', express.static(path.join(process.cwd(), 'public', 'assets'), {
-  maxAge: '30d',
-  immutable: true
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
 }));
 
 // Serve web assets directly for /web/* paths

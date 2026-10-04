@@ -712,10 +712,10 @@
     <!-- Presets -->
     <div class="preset-buttons">
       <button class="preset-btn active" onclick="applyPreset('user_request')">
-        Your Request (₹749 & ₹1,499)
+        Price Drop Offer (₹749 & ₹499)
       </button>
       <button class="preset-btn" onclick="applyPreset('credible_anchor')">
-        Balanced (₹749 & ₹499)
+        Alternative (₹749 & ₹999)
       </button>
       <button class="preset-btn" onclick="applyPreset('no_anchor')">
         No Anchor (Plain ₹149)
@@ -730,7 +730,7 @@
       </div>
       <div class="input-item">
         <label for="inputMonthlyAnchor">Monthly ~~Anchor~~: ₹</label>
-        <input type="number" id="inputMonthlyAnchor" value="1499" oninput="updateFromInputs()">
+        <input type="number" id="inputMonthlyAnchor" value="499" oninput="updateFromInputs()">
       </div>
     </div>
 
@@ -745,7 +745,7 @@
   <main class="lab-content" id="pageViewContent">
     
     <div class="hero-header">
-      <div class="hero-badge">✦ Transparent 3-Tier Publishing Plans</div>
+      <div class="hero-badge">Transparent 3-Tier Publishing Plans</div>
       <h1 class="hero-title">Publish Your 3D Portfolio</h1>
       <p class="hero-subtitle">
         Start free with 3 builds per week. When you're ready to break free from the 24-hour preview timer, choose between lifetime ownership on Netlify or your own branded subdomain.
@@ -757,7 +757,7 @@
       <div class="distinction-col">
         <span class="distinction-label">Tier 1 • Free Starter</span>
         <div class="distinction-headline">
-          <span>⏳ 24-Hour Preview Pass</span>
+          <span>24-Hour Preview Pass</span>
         </div>
         <div class="distinction-url" style="color: #94A3B8;">https://myfolio.tech/p/draft-94b2</div>
         <p class="distinction-desc">
@@ -768,7 +768,7 @@
       <div class="distinction-col">
         <span class="distinction-label">Tier 2 • One-Time Payment</span>
         <div class="distinction-headline">
-          <span>🌐 Netlify Edge Domain</span>
+          <span>Netlify Edge Domain</span>
         </div>
         <div class="distinction-url">https://&lt;sitename&gt;.netlify.app</div>
         <p class="distinction-desc">
@@ -779,7 +779,7 @@
       <div class="distinction-col">
         <span class="distinction-label">Tier 3 • Monthly Subscription</span>
         <div class="distinction-headline">
-          <span>🚀 Branded Custom Subdomain</span>
+          <span>Branded Custom Subdomain</span>
         </div>
         <div class="distinction-url" style="color: #34D399;">https://&lt;your_name&gt;.myfolio.tech</div>
         <p class="distinction-desc">
@@ -820,7 +820,7 @@
 
           <!-- Domain Showcase Box -->
           <div class="domain-showcase-box">
-            <span class="domain-icon">⏳</span>
+            <span class="domain-icon"></span>
             <div class="domain-details">
               <span class="domain-type-title">Temporary Link:</span>
               <span class="domain-format-url" style="color: #94A3B8;">https://myfolio.tech/p/&lt;build_id&gt;</span>
@@ -877,7 +877,7 @@
             <div class="original-price-line" id="lineOneTimeAnchor">
               <span>Original:</span>
               <span class="strikethrough-val" id="textOneTimeAnchor">₹749</span>
-              <span style="color:var(--accent-rose); font-size:11px;">Limited Offer</span>
+              <span style="color:var(--accent-rose); font-size:11px; font-weight:700;">Limited Deal • Dropped from ₹749</span>
             </div>
             <div class="hero-price-line">
               <span class="big-currency">₹</span>
@@ -891,7 +891,7 @@
 
           <!-- Domain Showcase Box -->
           <div class="domain-showcase-box">
-            <span class="domain-icon">🌐</span>
+            <span class="domain-icon"></span>
             <div class="domain-details">
               <span class="domain-type-title">Assigned Domain:</span>
               <span class="domain-format-url">https://&lt;sitename&gt;.netlify.app</span>
@@ -932,7 +932,7 @@
         <div>
           <div class="card-top-tag-row">
             <span class="tier-badge pro">PRO CREATOR</span>
-            <span class="discount-pill emerald" id="badgeMonthlyDiscount">90% OFF</span>
+            <span class="discount-pill emerald" id="badgeMonthlyDiscount">70% OFF</span>
           </div>
 
           <h2 class="card-title">Pro Creator</h2>
@@ -943,8 +943,8 @@
           <div class="price-anchor-block">
             <div class="original-price-line" id="lineMonthlyAnchor">
               <span>Original:</span>
-              <span class="strikethrough-val" id="textMonthlyAnchor">₹1,499</span>
-              <span style="color:var(--accent-emerald); font-size:11px;">Most Popular</span>
+              <span class="strikethrough-val" id="textMonthlyAnchor">₹499</span>
+              <span style="color:var(--accent-emerald); font-size:11px; font-weight:700;">Limited Deal • Dropped from ₹499/mo</span>
             </div>
             <div class="hero-price-line">
               <span class="big-currency">₹</span>
@@ -958,7 +958,7 @@
 
           <!-- Domain Showcase Box -->
           <div class="domain-showcase-box" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03);">
-            <span class="domain-icon">🚀</span>
+            <span class="domain-icon"></span>
             <div class="domain-details">
               <span class="domain-type-title" style="color: var(--accent-emerald);">Personalized Subdomain:</span>
               <span class="domain-format-url" style="color: #34D399;">https://&lt;your_name&gt;.myfolio.tech</span>
@@ -1007,7 +1007,7 @@
     <div class="modal-simulation-card" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="setViewMode('page')" title="Close preview">✕</button>
 
-      <div style="width:42px; height:42px; border-radius:50%; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); color:#10B981; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px;">🚀</div>
+      <div style="width:42px; height:42px; border-radius:50%; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); color:#10B981; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px;"></div>
       <h3 style="font-size:1.25rem; font-weight:700; color:#F4F1E8;">Publish Permanent Live Website</h3>
       <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; max-width:620px; line-height:1.5;">
         Upgrade your draft from the temporary 24-hour evaluation pass. Choose your permanent publishing destination so your site never goes down:
@@ -1020,7 +1020,7 @@
           <span>You are currently on <strong>Free Starter</strong> (24h preview expires soon • 2 builds remaining this week)</span>
         </div>
         <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-amber);">
-          ⏳ Watermark active
+          Watermark active
         </div>
       </div>
 
@@ -1043,7 +1043,7 @@
             </div>
 
             <div style="background:rgba(0,0,0,0.4); padding:6px 8px; border-radius:6px; font-size:11px; font-family:var(--font-mono); color:var(--accent-cyan); margin-bottom:10px; border:1px solid rgba(255,255,255,0.06);">
-              🌐 &lt;sitename&gt;.netlify.app
+              &lt;sitename&gt;.netlify.app
             </div>
 
             <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-size:12px; color:#CBD5E1; margin-bottom:14px;">
@@ -1077,7 +1077,7 @@
             </div>
 
             <div style="background:rgba(16,185,129,0.1); padding:6px 8px; border-radius:6px; font-size:11px; font-family:var(--font-mono); color:#34D399; margin-bottom:10px; border:1px solid rgba(16,185,129,0.25);">
-              🚀 &lt;your_name&gt;.myfolio.tech
+              &lt;your_name&gt;.myfolio.tech
             </div>
 
             <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-size:12px; color:#CBD5E1; margin-bottom:14px;">
@@ -1098,7 +1098,7 @@
 
   <!-- Toast Notification -->
   <div class="toast-pill" id="labToast">
-    <span>⚡</span>
+    <span></span>
     <span id="labToastText">Checkout simulated</span>
   </div>
 
@@ -1106,7 +1106,7 @@
     let state = {
       oneTimeAnchor: 749,
       oneTimePrice: 149,
-      monthlyAnchor: 1499,
+      monthlyAnchor: 499,
       monthlyPrice: 149,
       viewMode: 'page' // 'page' | 'modal'
     };
@@ -1118,7 +1118,7 @@
 
       if (presetKey === 'user_request') {
         state.oneTimeAnchor = 749;
-        state.monthlyAnchor = 1499;
+        state.monthlyAnchor = 999;
       } else if (presetKey === 'credible_anchor') {
         state.oneTimeAnchor = 749;
         state.monthlyAnchor = 499;
