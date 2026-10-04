@@ -25,7 +25,7 @@ MyFolio operates on a dual publishing model designed to serve both one-time port
 │    Zero recurring subscription fees          │    Cancel anytime via dashboard              │
 ├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
 │ 🚀 UPDATES: Static Deployment                │ 🚀 UPDATES: Continuous Live GitHub Sync      │
-│    1 free initial rebuild + ZIP export       │    Unlimited Web Studio edits & auto-sync    │
+│    1 free initial rebuild + ZIP export       │    Switch 3D worlds anytime + auto-sync      │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
@@ -78,7 +78,7 @@ MyFolio operates on a dual publishing model designed to serve both one-time port
   2. **Personalized Subdomain**: Choose your own clean handle (`<users_choice_name>.myfolio.tech`) managed by MyFolio's edge DNS.
   3. **Custom Domain DNS Link**: Full SSL certificate provisioning for your custom domain.
   4. **Continuous Live GitHub Auto-Sync**: The system periodically syncs your public repositories, starred projects, and latest commit activity directly to your portfolio.
-  5. **Unlimited Web Studio Edits & Rebuilds**: Edit any section, change typography, switch 3D worlds, or modify content as many times as you like.
+  5. **Switch 3D Worlds Anytime**: Switch between any of our curated 3D worlds and visual universes whenever you want.
   6. **Real Visitor Analytics**: Track real visitor impressions, unique views, top referrers, and geographic distribution directly from your dashboard.
   7. **Cancel Anytime**: Manage and cancel your monthly renewal directly from your profile settings.
 
@@ -96,7 +96,7 @@ MyFolio operates on a dual publishing model designed to serve both one-time port
 | **Watermark Removal** | No | **100% Watermark-Free** | **100% Watermark-Free** |
 | **Standalone Code (.ZIP)** | Locked | **Unlocked (Full Code)** | **Unlocked (Full Code)** |
 | **Live GitHub Auto-Sync** | No | No | **Yes (Continuous)** |
-| **Studio Re-edits** | Initial 3 builds | 1 Rebuild Included | **Unlimited Edits** |
+| **Studio Updates** | Initial 3 builds | 1 Rebuild Included | **Switch 3D Worlds Anytime** |
 | **Dashboard Analytics** | Basic views | Basic views | **Full Visitor Intelligence** |
 
 ---
@@ -121,7 +121,7 @@ MyFolio operates on a dual publishing model designed to serve both one-time port
 │  ✓ 100% Watermark-Free Live Link         │  ✓ 100% Watermark-Free Live Link            │
 │  ✓ Standalone Source Code (.ZIP)         │  ✓ Custom Domain Linking (yourname.dev)     │
 │  ✓ 1 Free Style Rebuild                  │  ✓ Continuous Live GitHub Auto-Sync         │
-│  ✓ Deployed to Netlify Edge CDN          │  ✓ Unlimited Studio Edits & Rebuilds        │
+│  ✓ Deployed to Netlify Edge CDN          │  ✓ Switch 3D Worlds Anytime                 │
 │                                          │                                             │
 │  [ Choose One-Time (₹149) ]              │  [ Choose Pro Subdomain (₹149/mo) ]         │
 └──────────────────────────────────────────┴─────────────────────────────────────────────┘
