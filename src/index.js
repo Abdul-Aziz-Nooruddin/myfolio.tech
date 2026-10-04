@@ -3165,6 +3165,8 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
               if (fs.existsSync(profilePath)) {
                 try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
               }
+              const isSitePaid = Boolean(meta.isPaid || s.is_paid || s.status === 'paid' || isFounder || user.subscription_status === 'active' || user.role === 'pro');
+              const sitePlan = meta.plan || (isFounder ? 'pro' : (s.plan || (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isSitePaid ? 'starter' : 'preview'))));
               portfolios.push({
                 siteId: sid,
                 handle: meta.handle || s.custom_domain?.split('.')[0] || user.username || 'developer',
@@ -3174,7 +3176,9 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
                 developerName: meta.developerName || prof.name || user.name || 'Developer',
                 developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
                 projectsCount: meta.projectsCount || prof.projects?.length || 6,
-                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now())
+                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now()),
+                isPaid: isSitePaid,
+                plan: sitePlan
               });
             }
           }
@@ -3207,6 +3211,8 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
               if (fs.existsSync(profilePath)) {
                 try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
               }
+              const isClientPaid = Boolean(meta.isPaid || s.is_paid || s.status === 'paid' || isFounder || user.subscription_status === 'active' || user.role === 'pro');
+              const clientPlan = meta.plan || (isFounder ? 'pro' : (s.plan || (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isClientPaid ? 'starter' : 'preview'))));
               portfolios.push({
                 siteId: sid,
                 handle: meta.handle || s.custom_domain?.split('.')[0] || user.username || 'developer',
@@ -3216,7 +3222,9 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
                 developerName: meta.developerName || prof.name || user.name || 'Developer',
                 developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
                 projectsCount: meta.projectsCount || prof.projects?.length || 6,
-                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now())
+                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now()),
+                isPaid: isClientPaid,
+                plan: clientPlan
               });
             }
           }
@@ -3289,6 +3297,8 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
               mtime = fs.statSync(indexPath).mtimeMs;
             } catch (e) {}
 
+            const isLocalPaid = Boolean(meta.isPaid || isFounder || user.subscription_status === 'active' || user.role === 'pro');
+            const localPlan = meta.plan || (isFounder ? 'pro' : (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isLocalPaid ? 'starter' : 'preview')));
             const portfolioItem = {
               siteId: sid,
               handle: meta.handle || (isFounder ? 'abdulaziz' : (user.username || 'developer')),
@@ -3298,7 +3308,9 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
               developerName: meta.developerName || prof.name || user.name || 'Developer',
               developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
               projectsCount: meta.projectsCount || prof.projects?.length || 6,
-              timestamp: meta.timestamp || mtime
+              timestamp: meta.timestamp || mtime,
+              isPaid: isLocalPaid,
+              plan: localPlan
             };
 
             // Save back updated meta.json so future loads are instant

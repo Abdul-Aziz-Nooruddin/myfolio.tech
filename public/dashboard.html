@@ -548,12 +548,48 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .portfolio-card:hover {
       border-color: rgba(255, 255, 255, 0.16);
       transform: translateY(-2px);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+    .portfolio-card.active-selected-card {
+      border-color: var(--dash-accent-sky) !important;
+      box-shadow: 0 0 0 2px var(--dash-accent-sky), 0 14px 35px rgba(117, 197, 222, 0.2) !important;
+    }
+
+    .cap-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .cap-chip-label {
+      font-size: 10px;
+      color: var(--dash-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .cap-chip-val {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--dash-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .cap-chip-val.status-active {
+      color: #34D399;
+    }
+    .cap-chip-val.status-locked {
+      color: #F59E0B;
     }
 
     .card-thumb-wrap {
@@ -1139,6 +1175,24 @@
               </div>
             </div>
 
+            <!-- Selected Portfolio Plan & Feature Capabilities -->
+            <div class="portfolio-plan-caps-box" id="selectedPlanCapsBox" style="background: rgba(255,255,255,0.02); border: 1px solid var(--dash-border); border-radius: 14px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--dash-text-muted);">Current Plan Features:</span>
+                  <span id="selectedPortfolioPlanBadge" class="mf-badge mf-badge-warning">24H PREVIEW PASS</span>
+                </div>
+                <div id="selectedPlanStatusNote" style="font-size:12px; color:var(--dash-text-secondary); font-family:'JetBrains Mono',monospace;">
+                  Evaluation Window Active
+                </div>
+              </div>
+
+              <!-- Feature Matrix Badges -->
+              <div id="selectedPlanFeaturesGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+
             <!-- Actions Dock -->
             <div class="portfolio-actions-dock">
               <button type="button" class="mf-btn mf-btn-primary mf-btn-sm" id="btnPublishPermanent" onclick="openProModal()" style="display:none; background:linear-gradient(135deg, #10B981, #059669); border-color:#059669; color:#fff; font-weight:600;">
@@ -1453,6 +1507,8 @@
     let currentUser = null;
     let cachedDashData = null;
     let isUserPaid = false;
+    let currentPortfoliosList = [];
+    let selectedSiteId = null;
 
     async function initDashboard() {
       try {
@@ -1504,8 +1560,6 @@
       const quotaDisplay = document.getElementById('quotaDisplay');
       const exportProPill = document.getElementById('exportProPill');
 
-      const btnPublishPermanent = document.getElementById('btnPublishPermanent');
-
       if (isPro) {
         if (tierLabel) tierLabel.textContent = isVip ? 'VIP Founder' : 'Permanent Live Website';
         if (tierPill) {
@@ -1516,8 +1570,7 @@
           quotaDisplay.textContent = 'Live on Edge CDN';
           quotaDisplay.style.color = '#10B981';
         }
-        if (exportProPill) exportProPill.style.display = 'none'; // Permanent sites have unlocked export
-        if (btnPublishPermanent) btnPublishPermanent.style.display = 'none';
+        if (exportProPill) exportProPill.style.display = 'none';
       } else {
         const remaining = data?.plan?.buildsRemaining ?? 3;
         if (tierLabel) tierLabel.textContent = '24-Hour Preview Pass';
@@ -1532,9 +1585,6 @@
         if (exportProPill) {
           exportProPill.style.display = 'inline-block';
           exportProPill.textContent = 'PUBLISH';
-        }
-        if (btnPublishPermanent) {
-          btnPublishPermanent.style.display = hasAnyPortfolio ? 'inline-flex' : 'none';
         }
       }
 
@@ -1553,10 +1603,25 @@
         emptyBanner.style.display = totalViews === 0 ? 'flex' : 'none';
       }
 
-      // Check Active Portfolio
-      const hasLivePortfolio = hasAnyPortfolio && (isPro || portfolios.some(p => p.subdomain && !p.subdomain.startsWith('/')));
-      const firstLive = hasLivePortfolio ? portfolios.find(p => p.subdomain && !p.subdomain.startsWith('/')) || portfolios[0] : null;
-      const firstDraft = hasAnyPortfolio ? portfolios[0] : null;
+      // Track portfolio list and selected portfolio
+      currentPortfoliosList = portfolios;
+      if (!selectedSiteId && portfolios.length > 0) {
+        selectedSiteId = localStorage.getItem('myfolio_selected_portfolio_id') ||
+                         localStorage.getItem('myfolio_active_vip_site') ||
+                         portfolios[0]?.siteId || null;
+      }
+      if (portfolios.length > 0 && !portfolios.some(p => p.siteId === selectedSiteId)) {
+        selectedSiteId = portfolios[0]?.siteId || null;
+      }
+
+      renderSelectedPortfolioCockpit(selectedSiteId);
+    }
+
+    function renderSelectedPortfolioCockpit(targetId) {
+      const user = cachedDashData?.user || currentUser || {};
+      const userEmail = (user.email || '').toLowerCase().trim();
+      const isVip = userEmail === 'abdulaziznoor9876@gmail.com';
+      const isProUser = Boolean(isVip || user?.role === 'pro' || user?.role === 'admin' || user?.subscription_status === 'active' || cachedDashData?.plan?.isPro);
 
       const heroHead = document.getElementById('heroHeadline');
       const heroSub = document.getElementById('heroSubhead');
@@ -1566,81 +1631,176 @@
       const cockpitUniverse = document.getElementById('cockpitUniverseLabel');
       const cockpitThumb = document.getElementById('cockpitHeroImg');
       const activeTimestamp = document.getElementById('activeTimestampLabel');
+      const liveBadge = document.getElementById('liveStatusBadge');
+      const liveBadgeText = document.getElementById('liveStatusText');
+      const addressPill = document.getElementById('cockpitAddressPill');
+      const previewExtLink = document.getElementById('cockpitPreviewExternalLink');
+      const btnPublishPermanent = document.getElementById('btnPublishPermanent');
 
-      if (hasLivePortfolio && isPro) {
-        const activeSite = firstLive;
-        currentSiteId = activeSite?.siteId || activeSite?.handle;
-        const siteHandle = activeSite?.handle || activeSite?.siteId || user.username || (userEmail ? userEmail.split('@')[0] : 'portfolio');
-        currentSiteUrl = activeSite?.subdomain?.startsWith('http') ? activeSite.subdomain : `https://${activeSite.subdomain || siteHandle + '.myfolio.tech'}`;
+      const planBadge = document.getElementById('selectedPortfolioPlanBadge');
+      const planStatusNote = document.getElementById('selectedPlanStatusNote');
+      const featuresGrid = document.getElementById('selectedPlanFeaturesGrid');
 
-        if (heroHead) heroHead.textContent = 'Live Portfolio';
-        if (heroSub) heroSub.textContent = `Serving permanent production traffic at ${siteHandle}.myfolio.tech. Your site is live 24/7 and never goes down.`;
-        if (urlTextEl) { urlTextEl.textContent = currentSiteUrl; urlTextEl.href = currentSiteUrl; }
-        if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Visit Live</span> &nearr;'; }
-        if (deleteBtn) deleteBtn.style.display = 'inline-flex';
-        if (btnPublishPermanent) btnPublishPermanent.style.display = 'none';
+      const target = currentPortfoliosList.find(p => p.siteId === targetId) || currentPortfoliosList[0];
 
-        const uniKey = activeSite?.universeKey || 'jack-3d-creator';
-        if (cockpitUniverse) cockpitUniverse.textContent = getUniverseName(uniKey);
-        if (cockpitThumb) cockpitThumb.src = getUniverseThumb(uniKey);
-        if (activeTimestamp) activeTimestamp.textContent = activeSite.timestamp ? `Updated ${formatTimeAgo(activeSite.timestamp)}` : 'Recently updated';
-        const addressPill = document.getElementById('cockpitAddressPill');
-        if (addressPill) addressPill.textContent = `${siteHandle}.myfolio.tech`;
-        const previewExtLink = document.getElementById('cockpitPreviewExternalLink');
-        if (previewExtLink) {
-          previewExtLink.href = currentSiteUrl;
-          previewExtLink.innerHTML = '<span>Live Site</span> &nearr;';
-        }
-
-      } else if (hasAnyPortfolio) {
-        const draft = firstDraft;
-        currentSiteId = draft?.siteId || draft?.handle;
-        currentSiteUrl = `${window.location.origin}/p/${currentSiteId}`;
-
-        if (heroHead) heroHead.textContent = '24-Hour Preview Mode';
-        if (heroSub) heroSub.textContent = 'Your 3D portfolio was generated in seconds and is active on a temporary 24-hour preview link. Publish to make it permanent so it never goes down.';
-        if (urlTextEl) { urlTextEl.textContent = currentSiteUrl + ' (24h Preview)'; urlTextEl.href = currentSiteUrl; }
-        if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Open Preview (24h)</span> &nearr;'; }
-        if (deleteBtn) deleteBtn.style.display = 'inline-flex';
-        if (btnPublishPermanent) btnPublishPermanent.style.display = 'inline-flex';
-
-        const liveBadgeText = document.getElementById('liveStatusText');
-        if (liveBadgeText) liveBadgeText.textContent = '24H PREVIEW PASS';
-
-        const uniKey = draft?.universeKey || 'jack-3d-creator';
-        if (cockpitUniverse) cockpitUniverse.textContent = getUniverseName(uniKey);
-        if (cockpitThumb) cockpitThumb.src = getUniverseThumb(uniKey);
-        if (activeTimestamp) activeTimestamp.textContent = draft.timestamp ? `Created ${formatTimeAgo(draft.timestamp)}` : 'Draft version';
-        const addressPill = document.getElementById('cockpitAddressPill');
-        if (addressPill) addressPill.textContent = currentSiteId ? `p/${currentSiteId.slice(0, 10)}...` : 'preview.myfolio.tech';
-        const previewExtLink = document.getElementById('cockpitPreviewExternalLink');
-        if (previewExtLink) {
-          previewExtLink.href = currentSiteUrl;
-          previewExtLink.innerHTML = '<span>Open Preview</span> &nearr;';
-        }
-
-      } else {
+      if (!target) {
         currentSiteId = null;
+        currentSiteUrl = '/studio';
         if (heroHead) heroHead.textContent = 'Build Your Portfolio';
         if (heroSub) heroSub.textContent = 'Launch the Web Studio to generate your personalized 3D WebGL developer portfolio from GitHub or resume.';
         if (urlTextEl) { urlTextEl.textContent = 'Launch Studio to create your URL'; urlTextEl.href = '/studio'; }
-        if (openBtn) openBtn.href = '/studio';
+        if (openBtn) { openBtn.href = '/studio'; openBtn.innerHTML = '<span>Open Studio</span> &rarr;'; }
         if (deleteBtn) deleteBtn.style.display = 'none';
-
-        const liveBadge = document.getElementById('liveStatusBadge');
         if (liveBadge) liveBadge.style.display = 'none';
-
-        const addressPill = document.getElementById('cockpitAddressPill');
+        if (btnPublishPermanent) btnPublishPermanent.style.display = 'none';
         if (addressPill) addressPill.textContent = 'studio.myfolio.tech';
-        const previewExtLink = document.getElementById('cockpitPreviewExternalLink');
-        if (previewExtLink) {
-          previewExtLink.href = '/studio';
-          previewExtLink.innerHTML = '<span>Open Studio</span> &rarr;';
-        }
         if (cockpitUniverse) cockpitUniverse.textContent = '3D Creator Template';
         if (cockpitThumb) cockpitThumb.src = '/assets/templates/jack-3d-creator-hero.webp';
         if (activeTimestamp) activeTimestamp.textContent = 'Ready to launch';
+        if (planBadge) { planBadge.textContent = 'NO BUILD YET'; planBadge.className = 'mf-badge mf-badge-secondary'; }
+        if (planStatusNote) planStatusNote.textContent = 'Awaiting generation in Studio';
+        if (featuresGrid) {
+          featuresGrid.innerHTML = `
+            <div class="cap-chip"><div class="cap-chip-label">Watermark</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Not Generated</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Hosting</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Source Code</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Studio Sync</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
+          `;
+        }
+        return;
       }
+
+      currentSiteId = target.siteId;
+      selectedSiteId = target.siteId;
+      const siteHandle = target.handle || target.siteId || user.username || (userEmail ? userEmail.split('@')[0] : 'portfolio');
+      const isSitePaid = Boolean(target.isPaid || isProUser || target.plan === 'pro' || target.plan === 'starter');
+      const sitePlan = target.plan === 'pro' || isProUser ? 'pro' : (isSitePaid ? 'starter' : 'preview');
+
+      // Determine site URL
+      if (sitePlan === 'pro') {
+        currentSiteUrl = target.subdomain?.startsWith('http') ? target.subdomain : `https://${target.subdomain || siteHandle + '.myfolio.tech'}`;
+      } else if (sitePlan === 'starter') {
+        currentSiteUrl = target.subdomain?.startsWith('http') ? target.subdomain : (target.subdomain ? `https://${target.subdomain}` : `${window.location.origin}/p/${target.siteId}`);
+      } else {
+        currentSiteUrl = `${window.location.origin}/p/${target.siteId}`;
+      }
+
+      if (liveBadge) liveBadge.style.display = 'inline-flex';
+      if (deleteBtn) deleteBtn.style.display = 'inline-flex';
+      if (urlTextEl) { urlTextEl.textContent = currentSiteUrl; urlTextEl.href = currentSiteUrl; }
+
+      const uniKey = target.universeKey || 'jack-3d-creator';
+      if (cockpitUniverse) cockpitUniverse.textContent = getUniverseName(uniKey);
+      if (cockpitThumb) cockpitThumb.src = getUniverseThumb(uniKey);
+      if (activeTimestamp) activeTimestamp.textContent = target.timestamp ? `Updated ${formatTimeAgo(target.timestamp)}` : 'Recently generated';
+      if (addressPill) addressPill.textContent = currentSiteUrl.replace(/^https?:\/\//, '');
+      if (previewExtLink) {
+        previewExtLink.href = currentSiteUrl;
+        previewExtLink.innerHTML = sitePlan === 'preview' ? '<span>Open Preview</span> &nearr;' : '<span>Live Site</span> &nearr;';
+      }
+
+      // Configure strictly according to this selected portfolio's plan
+      if (sitePlan === 'pro') {
+        if (heroHead) heroHead.textContent = 'Pro Creator Portfolio';
+        if (heroSub) heroSub.textContent = `Serving production traffic on your active subdomain at ${siteHandle}.myfolio.tech. Real-time Studio auto-sync enabled.`;
+        if (liveBadgeText) liveBadgeText.textContent = 'PRO LIVE';
+        if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Visit Live Domain</span> &nearr;'; }
+        if (btnPublishPermanent) btnPublishPermanent.style.display = 'none';
+
+        if (planBadge) {
+          planBadge.textContent = 'PRO CREATOR (ACTIVE)';
+          planBadge.className = 'mf-badge mf-badge-vip';
+        }
+        if (planStatusNote) planStatusNote.textContent = 'Active Subdomain & Realtime Sync';
+
+        if (featuresGrid) {
+          featuresGrid.innerHTML = `
+            <div class="cap-chip"><div class="cap-chip-label">Watermark</div><div class="cap-chip-val status-active">✓ 100% Removed</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Domain</div><div class="cap-chip-val status-active">🌐 Subdomain Live</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Source Code</div><div class="cap-chip-val status-active">📦 ZIP Ready</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Studio Sync</div><div class="cap-chip-val status-active">🔄 Realtime Sync</div></div>
+          `;
+        }
+      } else if (sitePlan === 'starter') {
+        if (heroHead) heroHead.textContent = 'Lifetime Starter Portfolio';
+        if (heroSub) heroSub.textContent = 'Permanently active on Edge CDN with clean watermark-free visuals. Full standalone source code ZIP is ready to download.';
+        if (liveBadgeText) liveBadgeText.textContent = 'LIFETIME ACTIVE';
+        if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Visit Live Site</span> &nearr;'; }
+        if (btnPublishPermanent) {
+          btnPublishPermanent.style.display = 'inline-flex';
+          btnPublishPermanent.innerHTML = '<span>Upgrade to Pro Subdomain (₹149/mo)</span> &rarr;';
+          btnPublishPermanent.onclick = () => window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}&plan=pro`;
+        }
+
+        if (planBadge) {
+          planBadge.textContent = 'LIFETIME STARTER (₹149)';
+          planBadge.className = 'mf-badge mf-badge-success';
+        }
+        if (planStatusNote) planStatusNote.textContent = 'Permanent Edge CDN • Never Expires';
+
+        if (featuresGrid) {
+          featuresGrid.innerHTML = `
+            <div class="cap-chip"><div class="cap-chip-label">Watermark</div><div class="cap-chip-val status-active">✓ 100% Removed</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Domain</div><div class="cap-chip-val status-active">⚡ Edge CDN Active</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Source Code</div><div class="cap-chip-val status-active">📦 ZIP Ready</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Studio Sync</div><div class="cap-chip-val" style="color:var(--dash-text-secondary);">Static Deployed</div></div>
+          `;
+        }
+      } else {
+        // 24H Preview
+        if (heroHead) heroHead.textContent = '24-Hour Preview Mode';
+        if (heroSub) heroSub.textContent = 'Your 3D portfolio is active on a temporary evaluation link. Choose your plan to remove the watermark and keep your site online permanently.';
+        if (liveBadgeText) liveBadgeText.textContent = '24H PREVIEW PASS';
+        if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Open Preview (24h)</span> &nearr;'; }
+        if (btnPublishPermanent) {
+          btnPublishPermanent.style.display = 'inline-flex';
+          btnPublishPermanent.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:5px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Buy Build & Remove Watermark (From ₹149) ➔</span>';
+          btnPublishPermanent.onclick = () => window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}`;
+        }
+
+        if (planBadge) {
+          planBadge.textContent = '24H PREVIEW PASS';
+          planBadge.className = 'mf-badge mf-badge-warning';
+        }
+        if (planStatusNote) planStatusNote.textContent = 'Temporary Evaluation Window';
+
+        if (featuresGrid) {
+          featuresGrid.innerHTML = `
+            <div class="cap-chip"><div class="cap-chip-label">Watermark</div><div class="cap-chip-val status-locked">🔒 Preview Overlay</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Hosting</div><div class="cap-chip-val status-locked">⏱️ /p/ Temp Link</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Source Code</div><div class="cap-chip-val status-locked">🔒 Locked</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Studio Sync</div><div class="cap-chip-val status-locked">✕ 1 Build Only</div></div>
+          `;
+        }
+      }
+    }
+
+    function selectPortfolio(siteId) {
+      selectedSiteId = siteId;
+      localStorage.setItem('myfolio_selected_portfolio_id', siteId);
+      renderSelectedPortfolioCockpit(siteId);
+      highlightSelectedCard(siteId);
+      showToast('Viewing selected portfolio features');
+    }
+
+    function highlightSelectedCard(selectedId) {
+      document.querySelectorAll('.portfolio-card').forEach(card => {
+        const cid = card.getAttribute('data-site-id');
+        const selectBtn = card.querySelector('.btn-select-portfolio');
+        if (cid === selectedId) {
+          card.classList.add('active-selected-card');
+          if (selectBtn) {
+            selectBtn.className = 'mf-btn mf-btn-primary mf-btn-sm btn-select-portfolio';
+            selectBtn.textContent = '● Currently Selected';
+          }
+        } else {
+          card.classList.remove('active-selected-card');
+          if (selectBtn) {
+            selectBtn.className = 'mf-btn mf-btn-secondary mf-btn-sm btn-select-portfolio';
+            selectBtn.textContent = 'Select Portfolio';
+          }
+        }
+      });
     }
 
     function handlePreviewFrameClick() {
@@ -1808,10 +1968,6 @@
         return;
       }
 
-      const activeVipSite = localStorage.getItem('myfolio_active_vip_site') || '';
-      const hasActiveMatch = portfolios.some(p => (p.siteId || '') === activeVipSite);
-      const activeTargetId = hasActiveMatch ? activeVipSite : (portfolios[0]?.siteId || '');
-
       grid.innerHTML = portfolios.map((p, idx) => {
         const sid = p.siteId || `site-${idx}`;
         const name = p.developerName || p.name || 'Developer';
@@ -1820,16 +1976,21 @@
         const timeStr = p.timestamp ? formatTimeAgo(p.timestamp) : 'Recent';
         const thumbSrc = getUniverseThumb(universe);
         const href = `/p/${sid}`;
-        const isActive = sid === activeTargetId;
+        const isSelected = sid === selectedSiteId;
         const universeTitle = getUniverseName(universe);
 
+        // Plan identification for this portfolio card
+        const isSitePaid = Boolean(p.isPaid || isPro || p.plan === 'pro' || p.plan === 'starter');
+        const planType = p.plan === 'pro' || isPro ? 'PRO' : (isSitePaid ? 'LIFETIME' : 'PREVIEW');
+        const planBadgeClass = planType === 'PRO' ? 'mf-badge-vip' : (planType === 'LIFETIME' ? 'mf-badge-success' : 'mf-badge-warning');
+
         return `
-          <div class="portfolio-card">
+          <div class="portfolio-card ${isSelected ? 'active-selected-card' : ''}" data-site-id="${sid}" onclick="selectPortfolio('${sid}')">
             <div class="card-thumb-wrap">
               <img src="${thumbSrc}" alt="${universeTitle}" class="card-thumb-img" onerror="this.src='/images/hero-base.webp'">
               <div style="position:absolute; top:8px; left:8px; right:8px; display:flex; justify-content:space-between; align-items:center;">
-                <span class="mf-badge mf-badge-accent">${universeTitle}</span>
-                ${isActive ? '<span class="mf-badge mf-badge-success">ACTIVE</span>' : ''}
+                <span class="mf-badge ${planBadgeClass}">${planType}</span>
+                ${isSelected ? '<span class="mf-badge mf-badge-accent">● SELECTED</span>' : ''}
               </div>
             </div>
 
@@ -1838,25 +1999,26 @@
               <div class="card-role">${role}</div>
               <div class="card-meta-row">
                 <span>${timeStr}</span>
-                ${isActive ? '<span style="color:#10B981;">Live Domain</span>' : ''}
+                <span style="color:${planType === 'PREVIEW' ? '#F59E0B' : '#10B981'}; font-weight:600; font-size:11px;">
+                  ${planType === 'PRO' ? 'Subdomain Live' : (planType === 'LIFETIME' ? 'Lifetime Unlocked' : '24h Preview')}
+                </span>
               </div>
 
-              <!-- Theme Swapper Action -->
+              <!-- Selection Button -->
               <div style="margin-top:6px;">
-                ${isActive 
-                  ? `<div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#10B981; padding:4px 0;">● Active on Subdomain</div>`
-                  : `<button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" style="width:100%; font-size:11.5px; border-color:rgba(117,197,222,0.3); color:var(--dash-accent-sky);" onclick="promoteToLive('${sid}', '${universe}', '${name}', '${role}')">✦ Make Active Domain</button>`
-                }
+                <button type="button" class="mf-btn ${isSelected ? 'mf-btn-primary' : 'mf-btn-secondary'} mf-btn-sm btn-select-portfolio" style="width:100%; font-size:11.5px;" onclick="selectPortfolio('${sid}'); event.stopPropagation();">
+                  ${isSelected ? '● Currently Selected' : 'Select Portfolio'}
+                </button>
               </div>
 
               <div class="card-actions-dock">
-                <button type="button" class="mf-btn mf-btn-primary mf-btn-sm" style="flex:1;" onclick="openLiveDrawer('${href}')" title="Preview responsive frame">
+                <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" style="flex:1;" onclick="openLiveDrawer('${href}'); event.stopPropagation();" title="Preview responsive frame">
                   Preview
                 </button>
-                <a href="${href}" target="_blank" class="mf-btn mf-btn-secondary mf-btn-sm" title="Open live preview in new tab">
+                <a href="${href}" target="_blank" class="mf-btn mf-btn-secondary mf-btn-sm" onclick="event.stopPropagation();" title="Open live preview in new tab">
                   &nearr;
                 </a>
-                <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm mf-btn-icon-only" onclick="handleExportZipClick('${sid}')" title="Export source code">
+                <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm mf-btn-icon-only" onclick="handleExportZipClick('${sid}'); event.stopPropagation();" title="Export source code">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 </button>
                 <button type="button" class="mf-btn mf-btn-danger mf-btn-sm mf-btn-icon-only" onclick="deleteSyncedPortfolio('${sid}', event)" title="Delete version">
