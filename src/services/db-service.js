@@ -1077,7 +1077,7 @@ class DatabaseService {
         hasSite = true;
       }
 
-      // Fallback: check sites table
+      // Fallback: check sites & client_sites tables
       if (!hasSite && user?.id && isUuid(user.id)) {
         try {
           const { data: siteRecord } = await this.client
@@ -1086,15 +1086,30 @@ class DatabaseService {
             .eq('user_id', user.id)
             .order('created_at', { ascending: false })
             .limit(1)
-            .single();
+            .maybeSingle();
           if (siteRecord) {
             const sid = siteRecord.provider_site_id || siteRecord.id;
-            if (fs.existsSync(path.join(sitesBaseDir, sid, 'index.html'))) {
+            siteId = sid;
+            hasSite = true;
+          }
+        } catch (e) {}
+
+        if (!hasSite) {
+          try {
+            const { data: clientRecord } = await this.client
+              .from('client_sites')
+              .select('*')
+              .eq('user_id', user.id)
+              .order('created_at', { ascending: false })
+              .limit(1)
+              .maybeSingle();
+            if (clientRecord) {
+              const sid = clientRecord.provider_site_id || clientRecord.id;
               siteId = sid;
               hasSite = true;
             }
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
       }
 
       // Fallback: check candidate directory names, ensuring strict ownership verification

@@ -3182,6 +3182,48 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
       } catch (e) {
         console.warn('[API] /api/user/portfolios dbSites error:', e.message);
       }
+
+      // 1b. Fetch from client_sites table
+      try {
+        let clientQuery = dbService.client.from('client_sites').select('*');
+        if (isFounder) {
+          clientQuery = clientQuery.or(`user_id.eq.${userId},user_id.eq.abdulaziz_founder`);
+        } else {
+          clientQuery = clientQuery.eq('user_id', userId);
+        }
+        const { data: dbClientSites } = await clientQuery.order('created_at', { ascending: false });
+        if (dbClientSites && Array.isArray(dbClientSites)) {
+          for (const s of dbClientSites) {
+            const sid = s.provider_site_id || s.id;
+            if (sid && !seenSiteIds.has(sid)) {
+              seenSiteIds.add(sid);
+              const metaPath = path.join(sitesBaseDir, sid, 'meta.json');
+              const profilePath = path.join(sitesBaseDir, sid, 'profile.json');
+              let meta = {};
+              let prof = {};
+              if (fs.existsSync(metaPath)) {
+                try { meta = JSON.parse(fs.readFileSync(metaPath, 'utf8')); } catch (e) {}
+              }
+              if (fs.existsSync(profilePath)) {
+                try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
+              }
+              portfolios.push({
+                siteId: sid,
+                handle: meta.handle || s.custom_domain?.split('.')[0] || user.username || 'developer',
+                subdomain: s.custom_domain || meta.subdomain || null,
+                previewUrl: `/p/${sid}`,
+                universeKey: meta.universeKey || 'jack-3d-creator',
+                developerName: meta.developerName || prof.name || user.name || 'Developer',
+                developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
+                projectsCount: meta.projectsCount || prof.projects?.length || 6,
+                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now())
+              });
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('[API] /api/user/portfolios dbClientSites error:', e.message);
+      }
     }
 
     // 2. Scan public/sites/ directory for sites belonging to this user
@@ -3290,7 +3332,7 @@ app.post('/api/user/portfolios/sync', AuthMiddleware.requireAuth, async (req, re
     const userId = user.id;
     const userEmail = (user.email || '').toLowerCase().trim();
     const isFounder = userEmail === 'abdulaziznoor9876@gmail.com';
-    const items = Array.isArray(req.body?.items) ? req.body.items : (req.body?.item ? [req.body.item] : []);
+    const items = Array.isArray(req.body?.portfolios) ? req.body.portfolios : (Array.isArray(req.body?.items) ? req.body.items : (req.body?.item ? [req.body.item] : []));
 
     const sitesBaseDir = path.join(process.cwd(), 'public', 'sites');
 
@@ -3326,6 +3368,16 @@ app.post('/api/user/portfolios/sync', AuthMiddleware.requireAuth, async (req, re
       if (dbService?.client) {
         try {
           await dbService.client.from('sites').upsert({
+            provider_site_id: sid,
+            custom_domain: item.subdomain || null,
+            user_id: isFounder ? 'abdulaziz_founder' : userId,
+            status: 'active',
+            updated_at: new Date().toISOString()
+          });
+        } catch (e) {}
+
+        try {
+          await dbService.client.from('client_sites').upsert({
             provider_site_id: sid,
             custom_domain: item.subdomain || null,
             user_id: isFounder ? 'abdulaziz_founder' : userId,

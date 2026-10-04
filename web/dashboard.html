@@ -1625,6 +1625,43 @@
           if (lp && lp.siteId && !unifiedMap.has(lp.siteId)) unifiedMap.set(lp.siteId, lp);
         });
 
+        // Fallback A: Check cachedDashData siteId
+        if (cachedDashData?.siteId && !unifiedMap.has(cachedDashData.siteId)) {
+          unifiedMap.set(cachedDashData.siteId, {
+            siteId: cachedDashData.siteId,
+            handle: currentUser?.username || 'developer',
+            previewUrl: `/p/${cachedDashData.siteId}`,
+            universeKey: 'jack-3d-creator',
+            developerName: currentUser?.name || 'Abdul Aziz Nooruddin',
+            developerRole: 'Software Engineer',
+            timestamp: Date.now()
+          });
+        }
+
+        // Fallback B: Check last generated site in localStorage
+        try {
+          const lastGen = JSON.parse(localStorage.getItem('myfolio_last_generated_site') || 'null');
+          if (lastGen && lastGen.siteId && !unifiedMap.has(lastGen.siteId)) {
+            unifiedMap.set(lastGen.siteId, lastGen);
+          }
+        } catch (e) {}
+
+        // Fallback C: Check active site ID in localStorage
+        try {
+          const actId = localStorage.getItem('myfolio_active_site_id');
+          if (actId && !unifiedMap.has(actId)) {
+            unifiedMap.set(actId, {
+              siteId: actId,
+              handle: currentUser?.username || 'developer',
+              previewUrl: `/p/${actId}`,
+              universeKey: 'jack-3d-creator',
+              developerName: currentUser?.name || 'Abdul Aziz Nooruddin',
+              developerRole: 'Software Engineer',
+              timestamp: Date.now()
+            });
+          }
+        } catch (e) {}
+
         let merged = Array.from(unifiedMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
         // Enforce 3-slot cap for Free tier users

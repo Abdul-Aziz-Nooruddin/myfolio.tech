@@ -3129,6 +3129,50 @@
         isPortfolioPublished = false;
         recordBuildUsage();
 
+        // ── Instant Dashboard & Cross-Page Synchronization ──
+        try {
+          const cName = document.getElementById('manualFullName')?.value?.trim() || data.profileData?.name || 'Abdul Aziz Nooruddin';
+          const cRole = document.getElementById('manualRoleTitle')?.value?.trim() || data.profileData?.role || data.profileData?.title || 'Software Engineer';
+          const pItem = {
+            siteId: data.siteId,
+            handle: data.handle || cName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'developer',
+            subdomain: data.subdomain || null,
+            previewUrl: data.previewUrl || `/p/${data.siteId}`,
+            universeKey: selectedUniverseKey || 'jack-3d-creator',
+            developerName: cName,
+            developerRole: cRole,
+            projectsCount: (data.profileData?.projects || []).length || 6,
+            timestamp: Date.now()
+          };
+
+          let allProjects = JSON.parse(localStorage.getItem('myfolio_generated_projects_v1') || '[]');
+          allProjects = allProjects.filter(p => p && p.siteId !== data.siteId);
+          allProjects.unshift(pItem);
+          localStorage.setItem('myfolio_generated_projects_v1', JSON.stringify(allProjects));
+          localStorage.setItem('myfolio_active_site_id', data.siteId);
+          localStorage.setItem('myfolio_last_generated_site', JSON.stringify(pItem));
+
+          // Save user-specific localStorage key if email known
+          const pEmail = (data.profileData?.email || data.profileData?.contact?.email || '').toLowerCase().trim();
+          if (pEmail) {
+            const uKey = `myfolio_history_${pEmail.replace(/[^a-z0-9]/g, '_')}`;
+            let uProjects = JSON.parse(localStorage.getItem(uKey) || '[]');
+            uProjects = uProjects.filter(p => p && p.siteId !== data.siteId);
+            uProjects.unshift(pItem);
+            localStorage.setItem(uKey, JSON.stringify(uProjects));
+          }
+
+          // Background sync to server so phone/tablet can discover it
+          fetch('/api/user/portfolios/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ portfolios: [pItem] })
+          }).catch(() => {});
+        } catch (syncErr) {
+          console.warn('[STUDIO] Instant dashboard sync note:', syncErr);
+        }
+
         // Reset progress bar & transition to "Publish Live" state
         clearInterval(progressInterval);
         if (fluidLevel) fluidLevel.style.height = '100%';
