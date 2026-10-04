@@ -39,7 +39,7 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
       display: flex;
       position: relative;
     }
-    /* 🌊 High-Speed Moving 3D Fluid Silk Background Container */
+    /* High-Speed Moving 3D Fluid Silk Background Container */
     .fluid-silk-bg-container {
       position: fixed;
       top: -6%;
@@ -158,7 +158,7 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
     }
     .pay-btn-pro:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45); }
 
-    /* 🌙 DARK THEME SUBSCRIBE OVERRIDES */
+    /* DARK THEME SUBSCRIBE OVERRIDES */
     [data-theme="dark"] body {
       background: #07090E;
       color: #F8FAFC;
@@ -223,7 +223,8 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
             <div>
               <span class="badge badge-starter">LIFETIME STARTER</span>
               <h3 class="plan-name">Lifetime Starter</h3>
-              <div class="plan-price">₹149 <span>/ one-time</span></div>
+              <div class="plan-price"><span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹749</span>₹149 <span>/ one-time</span></div>
+              <div style="font-size:0.75rem; font-weight:700; color:#c2410c; margin-top:-14px; margin-bottom:16px;">Limited Deal • Price dropped from ₹749</div>
               <ul class="plan-features">
                 <li>Permanent 24/7 Live Hosting (Never goes down after 24h)</li>
                 <li>Deployed &amp; Hosted on Netlify Edge CDN</li>
@@ -241,11 +242,13 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
             <div>
               <span class="badge badge-pro">MOST POPULAR</span>
               <h3 class="plan-name">Pro Creator</h3>
-              <div class="plan-price">₹149 <span>/ month</span></div>
+              <div class="plan-price"><span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹499</span>₹149 <span>/ month</span></div>
+              <div style="font-size:0.75rem; font-weight:700; color:#2563eb; margin-top:-14px; margin-bottom:16px;">Limited Deal • Price dropped from ₹499/mo</div>
               <ul class="plan-features">
                 <li>Permanent 24/7 Live Hosting (Never goes down)</li>
                 <li>Branded Subdomain: <code>&lt;username&gt;.myfolio.tech</code></li>
                 <li>Custom Domain Linking (<code>yourname.dev</code>)</li>
+                <li>Switch 3D Worlds Anytime</li>
                 <li>Continuous Live GitHub Auto-Sync</li>
                 <li>100% Watermark-Free Clean Website</li>
                 <li>Static Standalone ZIP Code Export</li>
@@ -266,7 +269,7 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
         </div>
 
         <div style="color: #94a3b8; font-size: 0.85rem; text-align: center;">
-          🔒 100% Secure Checkout via Razorpay, UPI &amp; Cards • Instant Automated Activation
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 100% Secure Checkout via Razorpay, UPI &amp; Cards • Instant Automated Activation
         </div>
       </div>
     </div>
