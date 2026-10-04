@@ -2806,6 +2806,11 @@ app.get(['/thank-you', '/success'], (req, res) => {
   res.sendFile(getPagePath('thank-you.html'));
 });
 
+// Interactive Pricing Lab & Display Preview
+app.get(['/pricing-preview', '/pricing-lab', '/pricing-test'], (req, res) => {
+  res.sendFile(getPagePath('pricing-preview.html'));
+});
+
 // New SEO Pages: About & Contact
 app.get(['/about', '/about-us', '/our-story'], (req, res) => {
   res.sendFile(getPagePath('about.html'));

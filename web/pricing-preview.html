@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Display & Conversion Lab | MyFolio</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-void: #070808;
+      --bg-surface: #0E100F;
+      --bg-card: #131514;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(255, 255, 255, 0.2);
+      --text-primary: #F4F1E8;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --accent-emerald: #10B981;
+      --accent-cyan: #38BDF8;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+    }
+
+    /* Ambient background gradient glow */
+    .ambient-glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(56, 189, 248, 0.06) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    /* Top Lab Controller Bar */
+    .lab-controller {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(14, 16, 15, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .lab-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lab-brand-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-emerald);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lab-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+      letter-spacing: -0.01em;
+    }
+
+    .preset-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+    .preset-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      padding: 6px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .preset-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .preset-btn.active {
+      color: #FFF;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .custom-inputs-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+    .input-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-item input {
+      width: 70px;
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: #FFF;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 4px 8px;
+      text-align: right;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .input-item input:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .view-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mode-tab {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .mode-tab.active {
+      background: #FFF;
+      color: #000;
+      font-weight: 700;
+      border-color: #FFF;
+    }
+
+    /* Container */
+    .lab-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* Section Header */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #FFF;
+    }
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0.8rem auto 0;
+      line-height: 1.6;
+    }
+
+    /* Key Distinction Highlight Box */
+    .distinction-banner {
+      background: rgba(14, 16, 15, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .distinction-banner { grid-template-columns: 1fr; }
+    }
+    .distinction-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .distinction-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .distinction-headline {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .distinction-url {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-cyan);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px 8px;
+      border-radius: 6px;
+      width: fit-content;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .distinction-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Pricing Cards Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+    @media (max-width: 820px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
+    }
+    .pricing-card.featured {
+      background: linear-gradient(180deg, #151817 0%, #0E100F 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(16, 185, 129, 0.08);
+    }
+
+    .card-top-tag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .tier-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .tier-badge.starter {
+      background: rgba(255, 255, 255, 0.06);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .tier-badge.pro {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .discount-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #FB7185;
+      letter-spacing: 0.02em;
+    }
+    .discount-pill.emerald {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #34D399;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFF;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .card-caption {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      min-height: 38px;
+    }
+
+    /* Price Anchor Presentation Block */
+    .price-anchor-block {
+      margin: 1.5rem 0 1.25rem;
+      padding: 1.2rem;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .original-price-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .strikethrough-val {
+      text-decoration: line-through;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    .hero-price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .big-currency {
+      font-size: 28px;
+      font-weight: 800;
+      color: #FFF;
+    }
+    .big-number {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      color: #FFF;
+      letter-spacing: -0.04em;
+    }
+    .billing-period {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .price-assurance-tag {
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      color: var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    /* Dedicated Domain Showcase Box */
+    .domain-showcase-box {
+      margin-bottom: 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .domain-icon {
+      font-size: 20px;
+    }
+    .domain-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+    .domain-type-title {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .domain-format-url {
+      font-size: 12.5px;
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Features List */
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #CBD5E1;
+      line-height: 1.45;
+    }
+    .feature-check {
+      color: var(--accent-emerald);
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .feature-item strong {
+      color: #FFF;
+      font-weight: 600;
+    }
+
+    /* CTA Buttons */
+    .cta-button {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+      text-decoration: none;
+    }
+    .cta-button.starter {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .cta-button.starter:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .cta-button.pro {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFF;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    }
+    .cta-button.pro:hover {
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Modal Simulation View (When "Modal Popup View" is active) */
+    .modal-simulation-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-simulation-card {
+      width: 100%;
+      max-width: 680px;
+      background: #111312;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #94A3B8;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFF;
+    }
+
+    .modal-dual-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 620px) {
+      .modal-dual-cards { grid-template-columns: 1fr; }
+    }
+    .modal-plan-box {
+      background: #161817;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .modal-plan-box.featured {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: linear-gradient(180deg, #181C1A 0%, #131514 100%);
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      opacity: 0;
+      background: #1E293B;
+      color: #F8FAFC;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 99999;
+      pointer-events: none;
+    }
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+
+  <!-- Top Lab Controller Bar -->
+  <header class="lab-controller">
+    <div class="lab-brand">
+      <span class="lab-brand-tag">Pricing Lab</span>
+      <span class="lab-title">Display & Conversion Simulator</span>
+    </div>
+
+    <!-- Presets -->
+    <div class="preset-buttons">
+      <button class="preset-btn active" onclick="applyPreset('user_request')">
+        Your Request (₹749 & ₹1,499)
+      </button>
+      <button class="preset-btn" onclick="applyPreset('credible_anchor')">
+        Balanced (₹749 & ₹499)
+      </button>
+      <button class="preset-btn" onclick="applyPreset('no_anchor')">
+        No Anchor (Plain ₹149)
+      </button>
+    </div>
+
+    <!-- Live Custom Inputs -->
+    <div class="custom-inputs-group">
+      <div class="input-item">
+        <label for="inputOneTimeAnchor">Lifetime ~~Anchor~~: ₹</label>
+        <input type="number" id="inputOneTimeAnchor" value="749" oninput="updateFromInputs()">
+      </div>
+      <div class="input-item">
+        <label for="inputMonthlyAnchor">Monthly ~~Anchor~~: ₹</label>
+        <input type="number" id="inputMonthlyAnchor" value="1499" oninput="updateFromInputs()">
+      </div>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="view-mode-toggle">
+      <button class="mode-tab active" onclick="setViewMode('page')">Page View</button>
+      <button class="mode-tab" onclick="setViewMode('modal')">Modal Popup View</button>
+    </div>
+  </header>
+
+  <!-- Main Standalone Page View -->
+  <main class="lab-content" id="pageViewContent">
+    
+    <div class="hero-header">
+      <div class="hero-badge">✦ MyFolio Transparent Pricing</div>
+      <h1 class="hero-title">Publish Your 3D Portfolio</h1>
+      <p class="hero-subtitle">
+        Break free from the 24-hour preview timer. Choose the model that fits your workflow: pay once forever with a Netlify domain, or unlock your branded custom subdomain with monthly syncing.
+      </p>
+    </div>
+
+    <!-- Key Distinction Highlight Box -->
+    <div class="distinction-banner">
+      <div class="distinction-col">
+        <span class="distinction-label">Plan 1 • One-Time Payment</span>
+        <div class="distinction-headline">
+          <span>🌐 Netlify Edge Domain</span>
+        </div>
+        <div class="distinction-url">https://&lt;sitename&gt;.netlify.app</div>
+        <p class="distinction-desc">
+          Permanent global edge hosting deployed to Netlify. 100% watermark-free with full downloadable source code (.ZIP). Pay once, zero subscriptions.
+        </p>
+      </div>
+
+      <div class="distinction-col">
+        <span class="distinction-label">Plan 2 • Monthly Subscription</span>
+        <div class="distinction-headline">
+          <span>🌐 Branded Custom Subdomain</span>
+        </div>
+        <div class="distinction-url">https://&lt;your_name&gt;.myfolio.tech</div>
+        <p class="distinction-desc">
+          Personalized identity on MyFolio's edge domain, custom domain linking (<code style="color:#FFF;">yourname.dev</code>), live GitHub auto-sync, and unlimited Studio updates.
+        </p>
+      </div>
+    </div>
+
+    <!-- The Dual Pricing Cards -->
+    <div class="pricing-grid">
+
+      <!-- Card 1: Lifetime Starter -->
+      <div class="pricing-card">
+        <div>
+          <div class="card-top-tag-row">
+            <span class="tier-badge starter">LIFETIME STARTER</span>
+            <span class="discount-pill" id="badgeOneTimeDiscount">80% OFF</span>
+          </div>
+
+          <h2 class="card-title">Lifetime Starter</h2>
+          <p class="card-caption">
+            Pay once and own your live portfolio forever. Ideal for job hunting, resumes, and sharing clean links without monthly fees.
+          </p>
+
+          <div class="price-anchor-block">
+            <div class="original-price-line" id="lineOneTimeAnchor">
+              <span>Original:</span>
+              <span class="strikethrough-val" id="textOneTimeAnchor">₹749</span>
+              <span style="color:var(--accent-rose); font-size:11px;">Limited Offer</span>
+            </div>
+            <div class="hero-price-line">
+              <span class="big-currency">₹</span>
+              <span class="big-number">149</span>
+              <span class="billing-period">/ one-time</span>
+            </div>
+            <div class="price-assurance-tag">
+              <span>✓ Pay once • Zero recurring charges</span>
+            </div>
+          </div>
+
+          <!-- Domain Showcase Box -->
+          <div class="domain-showcase-box">
+            <span class="domain-icon">🌐</span>
+            <div class="domain-details">
+              <span class="domain-type-title">Assigned Domain:</span>
+              <span class="domain-format-url">https://&lt;sitename&gt;.netlify.app</span>
+            </div>
+          </div>
+
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Permanent 24/7 Hosting:</strong> Your site stays online permanently and never goes down.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>100% Watermark-Free:</strong> All preview badges, upgrade banners, and countdown timers are removed.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Standalone Source Code (.ZIP):</strong> Download your full HTML, CSS, Three.js shaders, and assets to host anywhere.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>1 Free Style Rebuild:</strong> Regenerate your theme or update skills once at any time.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Global Netlify Edge CDN:</strong> High-speed worldwide distribution with sub-100ms load times.</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="cta-button starter" onclick="simulateCheckout('starter', 149)">
+          <span>Unlock Lifetime Link (₹149)</span> &rarr;
+        </button>
+      </div>
+
+      <!-- Card 2: Pro Creator -->
+      <div class="pricing-card featured">
+        <div>
+          <div class="card-top-tag-row">
+            <span class="tier-badge pro">PRO CREATOR</span>
+            <span class="discount-pill emerald" id="badgeMonthlyDiscount">90% OFF</span>
+          </div>
+
+          <h2 class="card-title">Pro Creator</h2>
+          <p class="card-caption">
+            Personalized vanity domain, automatic GitHub synchronization, and continuous rebuilds for active software builders.
+          </p>
+
+          <div class="price-anchor-block">
+            <div class="original-price-line" id="lineMonthlyAnchor">
+              <span>Original:</span>
+              <span class="strikethrough-val" id="textMonthlyAnchor">₹1,499</span>
+              <span style="color:var(--accent-emerald); font-size:11px;">Most Popular</span>
+            </div>
+            <div class="hero-price-line">
+              <span class="big-currency">₹</span>
+              <span class="big-number">149</span>
+              <span class="billing-period">/ month</span>
+            </div>
+            <div class="price-assurance-tag">
+              <span>✓ Billed monthly • Cancel anytime with 1-click</span>
+            </div>
+          </div>
+
+          <!-- Domain Showcase Box -->
+          <div class="domain-showcase-box" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03);">
+            <span class="domain-icon">🚀</span>
+            <div class="domain-details">
+              <span class="domain-type-title" style="color: var(--accent-emerald);">Personalized Subdomain:</span>
+              <span class="domain-format-url" style="color: #34D399;">https://&lt;your_name&gt;.myfolio.tech</span>
+            </div>
+          </div>
+
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Branded MyFolio Subdomain:</strong> Claim your name (<code style="color:#FFF;">alex.myfolio.tech</code>) for instant recruiter credibility.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Custom Domain Support:</strong> Connect your personal root domain (<code style="color:#FFF;">yourname.dev</code>).</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Continuous Live GitHub Auto-Sync:</strong> Repos, stars, and commit milestones update automatically.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Unlimited Web Studio Edits:</strong> Tweak sections, change typography, or switch 3D worlds anytime.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Permanent 24/7 Hosting &amp; Watermark Removal:</strong> All Lifetime Starter features included.</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-check">✓</span>
+              <span><strong>Standalone Source Code (.ZIP):</strong> Full offline production package included.</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="cta-button pro" onclick="simulateCheckout('pro', 149)">
+          <span>Unlock Pro Subdomain (₹149/mo)</span> &rarr;
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Modal Popup View Simulation -->
+  <div class="modal-simulation-backdrop" id="modalSimulationView" onclick="closeModalSimulation(event)">
+    <div class="modal-simulation-card" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="setViewMode('page')" title="Close preview">✕</button>
+
+      <div style="width:42px; height:42px; border-radius:50%; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); color:#10B981; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px;">🚀</div>
+      <h3 style="font-size:1.25rem; font-weight:700; color:#F4F1E8;">Publish Permanent Live Website</h3>
+      <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; max-width:520px; line-height:1.5;">
+        Your 3D portfolio is in temporary 24-hour preview mode. Choose your publishing plan to make it permanent:
+      </p>
+
+      <div class="modal-dual-cards">
+        <!-- Modal Card 1 -->
+        <div class="modal-plan-box">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span class="tier-badge starter" style="font-size:10px;">LIFETIME STARTER</span>
+              <span class="discount-pill" id="modalBadgeOneTime" style="font-size:10px;">80% OFF</span>
+            </div>
+            
+            <div style="margin: 8px 0;">
+              <div style="font-size:11px; color:#64748B; font-family:var(--font-mono); text-decoration:line-through;" id="modalTextOneTimeAnchor">
+                ₹749
+              </div>
+              <div style="font-size:26px; font-weight:800; color:#FFF; font-family:var(--font-display);">
+                ₹149 <span style="font-size:12px; font-weight:500; color:#94A3B8; font-family:var(--font-mono);">/ one-time</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.4); padding:6px 8px; border-radius:6px; font-size:11px; font-family:var(--font-mono); color:var(--accent-cyan); margin-bottom:10px; border:1px solid rgba(255,255,255,0.06);">
+              🌐 &lt;sitename&gt;.netlify.app
+            </div>
+
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-size:12px; color:#CBD5E1; margin-bottom:14px;">
+              <li>✓ Permanent 24/7 Edge Hosting</li>
+              <li>✓ 100% Watermark Removed</li>
+              <li>✓ Standalone Source Code (.ZIP)</li>
+              <li>✓ Pay Once • Zero Recurring Fees</li>
+            </ul>
+          </div>
+
+          <button class="cta-button starter" style="padding:10px; font-size:12px;" onclick="simulateCheckout('starter', 149)">
+            Choose One-Time (₹149)
+          </button>
+        </div>
+
+        <!-- Modal Card 2 -->
+        <div class="modal-plan-box featured">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span class="tier-badge pro" style="font-size:10px;">PRO SUBDOMAIN</span>
+              <span class="discount-pill emerald" id="modalBadgeMonthly" style="font-size:10px;">90% OFF</span>
+            </div>
+
+            <div style="margin: 8px 0;">
+              <div style="font-size:11px; color:#64748B; font-family:var(--font-mono); text-decoration:line-through;" id="modalTextMonthlyAnchor">
+                ₹1,499
+              </div>
+              <div style="font-size:26px; font-weight:800; color:#FFF; font-family:var(--font-display);">
+                ₹149 <span style="font-size:12px; font-weight:500; color:#94A3B8; font-family:var(--font-mono);">/ month</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(16,185,129,0.1); padding:6px 8px; border-radius:6px; font-size:11px; font-family:var(--font-mono); color:#34D399; margin-bottom:10px; border:1px solid rgba(16,185,129,0.25);">
+              🚀 &lt;your_name&gt;.myfolio.tech
+            </div>
+
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-size:12px; color:#CBD5E1; margin-bottom:14px;">
+              <li>✓ Branded Vanity Subdomain</li>
+              <li>✓ Custom Domain Connection</li>
+              <li>✓ Live GitHub Auto-Sync</li>
+              <li>✓ Unlimited Studio Rebuilds</li>
+            </ul>
+          </div>
+
+          <button class="cta-button pro" style="padding:10px; font-size:12px;" onclick="simulateCheckout('pro', 149)">
+            Choose Pro (₹149/mo)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="labToast">
+    <span>⚡</span>
+    <span id="labToastText">Checkout simulated</span>
+  </div>
+
+  <script>
+    let state = {
+      oneTimeAnchor: 749,
+      oneTimePrice: 149,
+      monthlyAnchor: 1499,
+      monthlyPrice: 149,
+      viewMode: 'page' // 'page' | 'modal'
+    };
+
+    function applyPreset(presetKey) {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.preset-btn')).find(b => b.getAttribute('onclick').includes(presetKey));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (presetKey === 'user_request') {
+        state.oneTimeAnchor = 749;
+        state.monthlyAnchor = 1499;
+      } else if (presetKey === 'credible_anchor') {
+        state.oneTimeAnchor = 749;
+        state.monthlyAnchor = 499;
+      } else if (presetKey === 'no_anchor') {
+        state.oneTimeAnchor = null;
+        state.monthlyAnchor = null;
+      }
+
+      document.getElementById('inputOneTimeAnchor').value = state.oneTimeAnchor || '';
+      document.getElementById('inputMonthlyAnchor').value = state.monthlyAnchor || '';
+
+      renderDisplay();
+    }
+
+    function updateFromInputs() {
+      const val1 = parseInt(document.getElementById('inputOneTimeAnchor').value, 10);
+      const val2 = parseInt(document.getElementById('inputMonthlyAnchor').value, 10);
+      state.oneTimeAnchor = isNaN(val1) ? null : val1;
+      state.monthlyAnchor = isNaN(val2) ? null : val2;
+
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      renderDisplay();
+    }
+
+    function renderDisplay() {
+      // 1. One-Time Anchor
+      const line1 = document.getElementById('lineOneTimeAnchor');
+      const text1 = document.getElementById('textOneTimeAnchor');
+      const badge1 = document.getElementById('badgeOneTimeDiscount');
+      const modalText1 = document.getElementById('modalTextOneTimeAnchor');
+      const modalBadge1 = document.getElementById('modalBadgeOneTime');
+
+      if (state.oneTimeAnchor && state.oneTimeAnchor > state.oneTimePrice) {
+        const discount1 = Math.round(((state.oneTimeAnchor - state.oneTimePrice) / state.oneTimeAnchor) * 100);
+        if (line1) line1.style.display = 'flex';
+        if (text1) text1.textContent = `₹${state.oneTimeAnchor.toLocaleString('en-IN')}`;
+        if (badge1) { badge1.textContent = `${discount1}% OFF`; badge1.style.display = 'inline-block'; }
+        if (modalText1) { modalText1.style.display = 'block'; modalText1.textContent = `₹${state.oneTimeAnchor.toLocaleString('en-IN')}`; }
+        if (modalBadge1) { modalBadge1.style.display = 'inline-block'; modalBadge1.textContent = `${discount1}% OFF`; }
+      } else {
+        if (line1) line1.style.display = 'none';
+        if (badge1) badge1.style.display = 'none';
+        if (modalText1) modalText1.style.display = 'none';
+        if (modalBadge1) modalBadge1.style.display = 'none';
+      }
+
+      // 2. Monthly Anchor
+      const line2 = document.getElementById('lineMonthlyAnchor');
+      const text2 = document.getElementById('textMonthlyAnchor');
+      const badge2 = document.getElementById('badgeMonthlyDiscount');
+      const modalText2 = document.getElementById('modalTextMonthlyAnchor');
+      const modalBadge2 = document.getElementById('modalBadgeMonthly');
+
+      if (state.monthlyAnchor && state.monthlyAnchor > state.monthlyPrice) {
+        const discount2 = Math.round(((state.monthlyAnchor - state.monthlyPrice) / state.monthlyAnchor) * 100);
+        if (line2) line2.style.display = 'flex';
+        if (text2) text2.textContent = `₹${state.monthlyAnchor.toLocaleString('en-IN')}`;
+        if (badge2) { badge2.textContent = `${discount2}% OFF`; badge2.style.display = 'inline-block'; }
+        if (modalText2) { modalText2.style.display = 'block'; modalText2.textContent = `₹${state.monthlyAnchor.toLocaleString('en-IN')}`; }
+        if (modalBadge2) { modalBadge2.style.display = 'inline-block'; modalBadge2.textContent = `${discount2}% OFF`; }
+      } else {
+        if (line2) line2.style.display = 'none';
+        if (badge2) badge2.style.display = 'none';
+        if (modalText2) modalText2.style.display = 'none';
+        if (modalBadge2) modalBadge2.style.display = 'none';
+      }
+    }
+
+    function setViewMode(mode) {
+      state.viewMode = mode;
+      document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+      const activeTab = Array.from(document.querySelectorAll('.mode-tab')).find(t => t.getAttribute('onclick').includes(mode));
+      if (activeTab) activeTab.classList.add('active');
+
+      const modalView = document.getElementById('modalSimulationView');
+      if (mode === 'modal') {
+        modalView.style.display = 'flex';
+      } else {
+        modalView.style.display = 'none';
+      }
+    }
+
+    function closeModalSimulation(e) {
+      setViewMode('page');
+    }
+
+    function simulateCheckout(plan, amount) {
+      const toast = document.getElementById('labToast');
+      const toastText = document.getElementById('labToastText');
+      const domainDesc = plan === 'starter' ? 'Netlify Domain (<sitename>.netlify.app)' : 'Branded Subdomain (<your_name>.myfolio.tech)';
+      toastText.textContent = `Selected: ${plan.toUpperCase()} for ₹${amount} (${domainDesc})`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Initialize
+    renderDisplay();
+  </script>
+</body>
+</html>
