@@ -992,6 +992,82 @@
       .portfolio-side-viewport { border-left: none; border-top: 1px solid var(--dash-border); padding: 1.25rem; }
       .real-kpi-grid { grid-template-columns: 1fr; }
     }
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+      .dash-container {
+        padding: 1rem 0.75rem !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box;
+      }
+      .dash-topbar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding-bottom: 0.5rem;
+      }
+      .topbar-actions {
+        width: 100% !important;
+      }
+      .topbar-actions .mf-btn {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+      .subdomain-display-box {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        padding: 12px 14px !important;
+      }
+      .subdomain-button-group {
+        width: 100% !important;
+        display: flex;
+        gap: 8px;
+      }
+      .subdomain-button-group .mf-btn {
+        flex: 1;
+        justify-content: center;
+      }
+      .portfolio-actions-dock {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+      .portfolio-actions-dock .mf-btn,
+      .portfolio-actions-dock button,
+      .portfolio-actions-dock a {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        min-height: 42px;
+      }
+      .preview-drawer {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        border-left: none !important;
+      }
+      .drawer-header {
+        padding: 10px 14px !important;
+      }
+      .drawer-header .device-switcher-dock {
+        display: none !important;
+      }
+      .modal-card {
+        width: 95% !important;
+        max-width: 480px !important;
+        margin: 12px auto !important;
+        padding: 22px 16px !important;
+      }
+      .analytics-section-card,
+      .library-section-card {
+        padding: 1.25rem 1rem !important;
+      }
+    }
   </style>
 </head>
 <body>

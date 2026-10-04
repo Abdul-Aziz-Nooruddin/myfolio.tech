@@ -203,6 +203,30 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
       padding: 2px 6px;
       border-radius: 4px;
     }
+
+    @media (max-width: 768px) {
+      .checkout-wrap {
+        padding: 30px 16px !important;
+      }
+      .checkout-container {
+        padding: 0 !important;
+      }
+      .pricing-grid-side-by-side {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+      .plan-box-card {
+        padding: 28px 20px !important;
+        border-radius: 18px !important;
+      }
+      .main-title {
+        font-size: 1.8rem !important;
+      }
+      .subtitle {
+        font-size: 0.95rem !important;
+        margin-bottom: 28px !important;
+      }
+    }
   </style>
 </head>
 <body>

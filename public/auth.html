@@ -194,13 +194,30 @@
     .form-extra a { color: #13708e; font-weight: 500; }
     .form-extra a:hover { text-decoration: underline; }
 
-    /* Submit Button */
+    /* Submit Button - Mobile Touch Optimized */
     .btn-submit {
       width: 100%; padding: 14px 24px; border-radius: 100px; background: var(--ink);
-      color: #ffffff; font-size: 15px; font-weight: 500; display: flex;
-      align-items: center; justify-content: center; gap: 8px; transition: background 0.2s;
+      color: #ffffff; font-size: 15px; font-weight: 600; display: flex;
+      align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;
+      border: none; cursor: pointer; user-select: none;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
     }
     .btn-submit:hover { background: #333333; }
+    .btn-submit:active { transform: scale(0.98); background: #1a1a1a; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .mf-input.input-error {
+      border-color: #ef4444 !important;
+      background: #fff5f5 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
+
+    @media (max-width: 640px) {
+      .auth-form-pane { padding: 24px 16px; }
+      .view-title { font-size: 24px; }
+      .btn-submit { padding: 16px 24px; font-size: 16px; }
+      .mf-input { font-size: 16px; padding: 13px 14px; }
+    }
 
     /* Alert Message Box */
     .alert-box {
@@ -387,16 +404,20 @@
                 <input class="mf-input" type="password" id="signupConfirmPassword" name="confirmPassword" autocomplete="new-password" placeholder="Repeat password" required>
                 <button type="button" class="btn-pwd-toggle" onclick="togglePasswordVisibility('signupConfirmPassword', this)">Show</button>
               </div>
+              <div id="confirmPasswordMatchText" style="display:none; font-size:11.5px; margin-top:4px; font-weight:600;"></div>
             </div>
 
-            <div style="font-size:13px; margin: 12px 0 20px;">
+            <div style="font-size:13px; margin: 12px 0 16px;">
               <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
-                <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-top:3px;">
+                <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-top:3px; accent-color:#13708e;">
                 <span>I agree to the <a href="/terms" target="_blank" style="color:#13708e; text-decoration:underline;">Terms</a> and <a href="/privacy" target="_blank" style="color:#13708e; text-decoration:underline;">Privacy Policy</a>.</span>
               </label>
             </div>
 
-            <button type="submit" id="btnSignupSubmit" class="btn-submit">
+            <!-- Mobile-Visible Inline Alert Box (Right above submit button) -->
+            <div id="signupInlineAlert" class="alert-box alert-error" style="display:none; margin-bottom:14px; font-size:12.5px;"></div>
+
+            <button type="submit" id="btnSignupSubmit" class="btn-submit" onclick="handleSignupSubmit(event)">
               <span>Create account</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>

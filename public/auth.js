@@ -43,16 +43,30 @@ function togglePasswordVisibility(inputId, btn) {
 // Alerts
 function showAlert(message, type = 'error') {
   const alert = document.getElementById('authAlert');
-  if (!alert) return;
-  alert.className = `alert-box alert-${type}`;
-  alert.textContent = message;
-  alert.style.display = 'block';
-  alert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (alert) {
+    alert.className = `alert-box alert-${type}`;
+    alert.textContent = message;
+    alert.style.display = 'block';
+  }
+  const inlineAlert = document.getElementById('signupInlineAlert');
+  if (inlineAlert) {
+    inlineAlert.className = `alert-box alert-${type}`;
+    inlineAlert.textContent = message;
+    inlineAlert.style.display = 'block';
+  }
+  if (navigator.vibrate) {
+    try { navigator.vibrate(type === 'error' ? [40, 40, 40] : 30); } catch (e) {}
+  }
+  if (alert) {
+    alert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 function hideAlert() {
   const alert = document.getElementById('authAlert');
   if (alert) alert.style.display = 'none';
+  const inlineAlert = document.getElementById('signupInlineAlert');
+  if (inlineAlert) inlineAlert.style.display = 'none';
 }
 
 // Password Strength Evaluation
@@ -176,104 +190,183 @@ if (loginForm) {
   });
 }
 
+// Live Password Match Checker
+function checkConfirmPasswordMatch() {
+  const pwd = document.getElementById('signupPassword')?.value || '';
+  const cpwd = document.getElementById('signupConfirmPassword')?.value || '';
+  const matchText = document.getElementById('confirmPasswordMatchText');
+  const cpwdInput = document.getElementById('signupConfirmPassword');
+  if (!matchText || !cpwdInput) return;
+
+  if (!cpwd) {
+    matchText.style.display = 'none';
+    cpwdInput.classList.remove('input-error');
+    return;
+  }
+
+  matchText.style.display = 'block';
+  if (pwd === cpwd) {
+    matchText.style.color = '#10B981';
+    matchText.textContent = '✓ Passwords match';
+    cpwdInput.classList.remove('input-error');
+  } else {
+    matchText.style.color = '#EF4444';
+    matchText.textContent = '✕ Passwords do not match';
+    if (cpwd.length >= pwd.length || cpwd.length >= 8) {
+      cpwdInput.classList.add('input-error');
+    }
+  }
+}
+
+const confirmPwdInput = document.getElementById('signupConfirmPassword');
+if (confirmPwdInput) {
+  confirmPwdInput.addEventListener('input', checkConfirmPasswordMatch);
+}
+if (signupPwd) {
+  signupPwd.addEventListener('input', checkConfirmPasswordMatch);
+}
+
 // 2. Handle Signup
-const signupForm = document.getElementById('signupForm');
-if (signupForm) {
-  signupForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    hideAlert();
+let isSignupProcessing = false;
 
-    const name = document.getElementById('signupName')?.value?.trim() || '';
-    const email = document.getElementById('signupEmail')?.value?.trim() || '';
-    const username = document.getElementById('signupUsername')?.value?.trim() || (email ? email.split('@')[0] : '');
-    const password = document.getElementById('signupPassword')?.value || '';
-    const confirmPassword = document.getElementById('signupConfirmPassword')?.value || '';
-    const termsAccepted = document.getElementById('termsAccepted')?.checked;
-    const btn = document.getElementById('btnSignupSubmit');
+async function executeSignup() {
+  if (isSignupProcessing) return;
+  hideAlert();
 
-    if (!termsAccepted) {
-      return showAlert('You must accept the Terms of Service to create an account.');
-    }
+  const nameInput = document.getElementById('signupName');
+  const emailInput = document.getElementById('signupEmail');
+  const pwdInput = document.getElementById('signupPassword');
+  const cpwdInput = document.getElementById('signupConfirmPassword');
+  const termsInput = document.getElementById('termsAccepted');
+  const btn = document.getElementById('btnSignupSubmit');
 
-    if (!name || name.length < 2) {
-      return showAlert('Please enter your full name.');
-    }
+  // Reset previous error outlines
+  [nameInput, emailInput, pwdInput, cpwdInput].forEach(inp => inp?.classList.remove('input-error'));
 
-    if (!email || !email.includes('@')) {
-      return showAlert('Please enter a valid email address.');
-    }
+  const name = nameInput?.value?.trim() || '';
+  const email = emailInput?.value?.trim() || '';
+  const username = document.getElementById('signupUsername')?.value?.trim() || (email ? email.split('@')[0] : '');
+  const password = pwdInput?.value || '';
+  const confirmPassword = cpwdInput?.value || '';
+  const termsAccepted = termsInput?.checked;
 
-    if (password.length < 8) {
-      return showAlert('Password must be at least 8 characters long.');
-    }
+  if (!name || name.length < 2) {
+    nameInput?.classList.add('input-error');
+    nameInput?.focus();
+    return showAlert('Please enter your full name (at least 2 characters).');
+  }
 
-    if (password !== confirmPassword) {
-      return showAlert('Passwords do not match.');
-    }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    emailInput?.classList.add('input-error');
+    emailInput?.focus();
+    return showAlert('Please enter a valid email address.');
+  }
 
+  if (password.length < 8) {
+    pwdInput?.classList.add('input-error');
+    pwdInput?.focus();
+    return showAlert('Password must be at least 8 characters long.');
+  }
+
+  if (password !== confirmPassword) {
+    cpwdInput?.classList.add('input-error');
+    cpwdInput?.focus();
+    checkConfirmPasswordMatch();
+    return showAlert('Passwords do not match. Please check your confirm password.');
+  }
+
+  if (!termsAccepted) {
+    termsInput?.focus();
+    return showAlert('Please check the box to agree to the Terms and Privacy Policy.');
+  }
+
+  isSignupProcessing = true;
+  if (btn) {
     btn.disabled = true;
-    btn.innerHTML = '<span>Sending code...</span>';
+    btn.innerHTML = '<span>Creating account...</span>';
+  }
 
-    try {
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ name, email, username, password, confirmPassword, termsAccepted })
-      });
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ name, email, username, password, confirmPassword, termsAccepted })
+    });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || data.error || 'Signup failed');
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || data.error || 'Signup failed');
+    }
+
+    if (data.requireOtp) {
+      const otpEmailEl = document.getElementById('otpEmail');
+      if (otpEmailEl) otpEmailEl.value = email;
+      const instruction = document.getElementById('otpInstructionText');
+      if (instruction) {
+        instruction.innerHTML = `We sent a 6-character code (letters and numbers) to <strong>${email}</strong>. Enter it below to create your account.`;
       }
-
-      if (data.requireOtp) {
-        const otpEmailEl = document.getElementById('otpEmail');
-        if (otpEmailEl) otpEmailEl.value = email;
-        const instruction = document.getElementById('otpInstructionText');
-        if (instruction) {
-          instruction.innerHTML = `We sent a 6-character code (letters and numbers) to <strong>${email}</strong>. Enter it below to create your account.`;
-        }
-        if (typeof window.switchAuthTab === 'function') {
-          window.switchAuthTab('otp');
-        } else {
-          switchView('otp');
-        }
-        showAlert('Verification code sent to your email! Please check your inbox.', 'success');
+      if (typeof window.switchAuthTab === 'function') {
+        window.switchAuthTab('otp');
+      } else {
+        switchView('otp');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showAlert('Verification code sent to your email! Please check your inbox.', 'success');
+      if (btn) {
         btn.disabled = false;
         btn.innerHTML = '<span>Create account</span> &rarr;';
-        const otpInput = document.getElementById('otpInput');
-        if (otpInput) {
-          otpInput.value = '';
-          otpInput.focus();
+      }
+      const otpInput = document.getElementById('otpInput');
+      if (otpInput) {
+        otpInput.value = '';
+        setTimeout(() => otpInput.focus(), 150);
+      }
+      return;
+    }
+
+    if (data.user) {
+      try {
+        localStorage.setItem('myfolio_user', JSON.stringify(data.user));
+        const uEmail = (data.user.email || '').toLowerCase().trim();
+        if (uEmail === 'abdulaziznoor9876@gmail.com') {
+          localStorage.setItem('myfolio_vip_admin', 'true');
+        } else {
+          localStorage.removeItem('myfolio_vip_admin');
+          localStorage.removeItem('myfolio_active_vip_site');
+          localStorage.removeItem('myfolio_weekly_allowance_v1');
         }
-        return;
-      }
+      } catch (e) {}
+    }
 
-      if (data.user) {
-        try {
-          localStorage.setItem('myfolio_user', JSON.stringify(data.user));
-          const uEmail = (data.user.email || '').toLowerCase().trim();
-          if (uEmail === 'abdulaziznoor9876@gmail.com') {
-            localStorage.setItem('myfolio_vip_admin', 'true');
-          } else {
-            localStorage.removeItem('myfolio_vip_admin');
-            localStorage.removeItem('myfolio_active_vip_site');
-            localStorage.removeItem('myfolio_weekly_allowance_v1');
-          }
-        } catch (e) {}
-      }
-
-      showAlert('Account created successfully! Redirecting...', 'success');
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 800);
-    } catch (err) {
-      showAlert(err.message);
+    showAlert('Account created successfully! Redirecting...', 'success');
+    setTimeout(() => {
+      window.location.href = '/dashboard';
+    }, 800);
+  } catch (err) {
+    console.error('[AUTH SIGNUP ERROR]', err);
+    showAlert(err.message || 'An unexpected error occurred. Please try again.');
+    if (btn) {
       btn.disabled = false;
       btn.innerHTML = '<span>Create account</span> &rarr;';
     }
-  });
+  } finally {
+    isSignupProcessing = false;
+  }
+}
+
+function handleSignupSubmit(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  executeSignup();
+}
+window.handleSignupSubmit = handleSignupSubmit;
+
+const signupForm = document.getElementById('signupForm');
+if (signupForm) {
+  signupForm.addEventListener('submit', handleSignupSubmit);
 }
 
 // 2b. Handle OTP Verification Form
@@ -366,11 +459,11 @@ if (btnResendOtp) {
         throw new Error(data.error || 'Failed to resend code');
       }
 
-      showAlert('A fresh 6-character verification code has been sent to your email.', 'success');
+      showAlert('A fresh 6-character verification code has been sent to your email. Please check your inbox.', 'success');
       const otpInput = document.getElementById('otpInput');
       if (otpInput) {
         otpInput.value = '';
-        otpInput.focus();
+        setTimeout(() => otpInput.focus(), 150);
       }
     } catch (err) {
       showAlert(err.message, 'error');
