@@ -186,6 +186,7 @@
       padding: 1.25rem;
       background: transparent;
       overflow: hidden;
+      position: relative;
     }
 
     .spatial-viewport-screen {
@@ -198,15 +199,33 @@
       box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 30px rgba(117, 197, 222, 0.06);
       overflow: hidden;
       position: relative;
-      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.35s ease, border-color 0.35s ease;
     }
 
     .spatial-viewport-screen.tablet-mode {
       max-width: 768px;
+      border-radius: 20px;
     }
 
     .spatial-viewport-screen.mobile-mode {
       max-width: 390px;
+      border-radius: 36px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 0 6px rgba(255, 255, 255, 0.04);
+    }
+
+    .spatial-viewport-scaler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top left;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: #0C0C0C;
     }
 
     .spatial-viewport-iframe {
@@ -214,6 +233,7 @@
       height: 100%;
       border: none;
       background: transparent;
+      display: block;
     }
 
     /* Column 3: Right AI Creative Director (310px) */
@@ -1905,9 +1925,11 @@
         </div>
       </div>
 
-      <div class="viewport-canvas-frame">
+      <div class="viewport-canvas-frame" id="canvasFrame">
         <div class="spatial-viewport-screen" id="viewportScreen">
-          <iframe id="studioLiveIframe" class="spatial-viewport-iframe" src="/jack-3d?embed=1" title="Live 3D Portfolio Canvas"></iframe>
+          <div class="spatial-viewport-scaler" id="viewportScaler">
+            <iframe id="studioLiveIframe" class="spatial-viewport-iframe" src="/jack-3d?embed=1" title="Live 3D Portfolio Canvas"></iframe>
+          </div>
         </div>
       </div>
     </main>
@@ -2222,28 +2244,122 @@
       updateAllowanceUI();
     }
 
+    let currentDeviceMode = 'desktop';
+
+    function applyViewportScaling() {
+      const screen = document.getElementById('viewportScreen');
+      const scaler = document.getElementById('viewportScaler');
+      const iframe = document.getElementById('studioLiveIframe');
+      if (!screen || !scaler || !iframe) return;
+
+      const screenWidth = screen.clientWidth;
+      const screenHeight = screen.clientHeight;
+      if (!screenWidth || !screenHeight) return;
+
+      if (currentDeviceMode === 'desktop') {
+        // True Desktop viewport (1440px wide). Exactly matches opening in a full desktop browser tab.
+        const TARGET_DESKTOP_WIDTH = 1440;
+        const scale = screenWidth / TARGET_DESKTOP_WIDTH;
+        const targetHeight = Math.round(screenHeight / scale);
+
+        scaler.style.width = `${TARGET_DESKTOP_WIDTH}px`;
+        scaler.style.height = `${targetHeight}px`;
+        scaler.style.transform = `scale(${scale})`;
+        scaler.style.transformOrigin = 'top left';
+        scaler.style.position = 'absolute';
+        scaler.style.top = '0';
+        scaler.style.left = '0';
+
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+      } else if (currentDeviceMode === 'tablet') {
+        // Authentic Tablet viewport (768px wide). Matches iPad.
+        const TARGET_TABLET_WIDTH = 768;
+        const scale = screenWidth < TARGET_TABLET_WIDTH ? (screenWidth / TARGET_TABLET_WIDTH) : 1;
+        const targetHeight = Math.round(screenHeight / scale);
+
+        scaler.style.width = `${TARGET_TABLET_WIDTH}px`;
+        scaler.style.height = `${targetHeight}px`;
+        scaler.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+        scaler.style.transformOrigin = 'top left';
+        scaler.style.position = 'absolute';
+        scaler.style.top = '0';
+        scaler.style.left = '0';
+
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+      } else if (currentDeviceMode === 'mobile') {
+        // Authentic Mobile viewport (390px wide). Matches iPhone.
+        const TARGET_MOBILE_WIDTH = 390;
+        const scale = screenWidth < TARGET_MOBILE_WIDTH ? (screenWidth / TARGET_MOBILE_WIDTH) : 1;
+        const targetHeight = Math.round(screenHeight / scale);
+
+        scaler.style.width = `${TARGET_MOBILE_WIDTH}px`;
+        scaler.style.height = `${targetHeight}px`;
+        scaler.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+        scaler.style.transformOrigin = 'top left';
+        scaler.style.position = 'absolute';
+        scaler.style.top = '0';
+        scaler.style.left = '0';
+
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+      }
+    }
+
     function setDeviceView(mode, btn) {
+      currentDeviceMode = mode || 'desktop';
       const screen = document.getElementById('viewportScreen');
       document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        const targetBtn = document.querySelector(`.device-btn[onclick*="'${mode}'"]`);
+        if (targetBtn) targetBtn.classList.add('active');
+      }
 
       screen.classList.remove('tablet-mode', 'mobile-mode');
       if (mode === 'tablet') screen.classList.add('tablet-mode');
       if (mode === 'mobile') screen.classList.add('mobile-mode');
+
+      requestAnimationFrame(() => {
+        applyViewportScaling();
+        setTimeout(applyViewportScaling, 360);
+      });
     }
 
     function reloadStudioCanvas() {
       const iframe = document.getElementById('studioLiveIframe');
-      if (iframe) iframe.src = iframe.src;
+      if (iframe) {
+        iframe.src = iframe.src;
+        setTimeout(applyViewportScaling, 200);
+      }
     }
 
     function toggleCanvasFullscreen() {
       const screen = document.getElementById('viewportScreen');
       if (!document.fullscreenElement) {
-        screen.requestFullscreen().catch(() => {});
+        screen.requestFullscreen().then(() => {
+          setTimeout(applyViewportScaling, 120);
+        }).catch(() => {});
       } else {
-        document.exitFullscreen();
+        document.exitFullscreen().then(() => {
+          setTimeout(applyViewportScaling, 120);
+        }).catch(() => {});
       }
+    }
+
+    window.addEventListener('resize', applyViewportScaling);
+    document.addEventListener('fullscreenchange', () => {
+      setTimeout(applyViewportScaling, 100);
+    });
+
+    if (window.ResizeObserver) {
+      const canvasObserver = new ResizeObserver(() => applyViewportScaling());
+      const canvasFrame = document.querySelector('.viewport-canvas-frame');
+      const viewportScreen = document.getElementById('viewportScreen');
+      if (canvasFrame) canvasObserver.observe(canvasFrame);
+      if (viewportScreen) canvasObserver.observe(viewportScreen);
     }
 
     function selectStudioUniverse(key, el) {
@@ -3459,7 +3575,11 @@
       const iframe = document.getElementById('studioLiveIframe');
       if (iframe) {
         iframe.src = '/jack-3d?embed=1';
+        iframe.addEventListener('load', () => {
+          applyViewportScaling();
+        });
       }
+      applyViewportScaling();
 
       // Initialize weekly allowance meter
       updateAllowanceUI();
