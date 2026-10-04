@@ -27,7 +27,7 @@ class SiteGenerator {
     const templateOutput = TemplateRegistry.render(templateId, data);
     const isPaid = Boolean((conversation?.isPaid === true) || (conversation?.status === 'paid'));
     let finalHtml = this.injectSiteTelemetry(templateOutput.html, conversation?.id || '');
-    finalHtml = this.injectPreviewWatermark(finalHtml, isPaid);
+    finalHtml = this.injectPreviewWatermark(finalHtml, isPaid, conversation?.id || '');
 
     // 4. Quality & Fidelity Gate: UI alignment, CSS integrity & Zero Fabrication verification
     finalHtml = this.validateAndSanitizeFidelity(finalHtml, rawData, data);
@@ -69,8 +69,10 @@ class SiteGenerator {
     };
   }
 
-  injectPreviewWatermark(html, isPaid = false) {
+  injectPreviewWatermark(html, isPaid = false, siteId = '') {
     if (isPaid) return html;
+
+    const pricingUrl = siteId ? `/pricing?siteId=${encodeURIComponent(siteId)}` : '/pricing';
 
     const watermarkHtml = `
     <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
@@ -99,7 +101,7 @@ class SiteGenerator {
         <span style="display:inline-block; width:8px; height:8px; background:#75c5de; border-radius:50%; box-shadow: 0 0 8px #75c5de;"></span>
         <span>🔒 <strong>Preview Only</strong> (24h Evaluation Window) • Powered by MyFolio</span>
       </div>
-      <a href="/#pricing" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}" style="background: linear-gradient(135deg, #75c5de, #13708e); color: #08171c; font-weight: 800; font-size: 0.85rem; padding: 8px 18px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(117,197,222,0.35); transition: transform 0.2s ease;">
+      <a href="${pricingUrl}" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}" style="background: linear-gradient(135deg, #75c5de, #13708e); color: #08171c; font-weight: 800; font-size: 0.85rem; padding: 8px 18px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(117,197,222,0.35); transition: transform 0.2s ease;">
         <span>Buy Build & Remove Watermark (From ₹149) ➔</span>
       </a>
     </div>
