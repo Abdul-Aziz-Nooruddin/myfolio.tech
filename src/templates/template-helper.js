@@ -293,16 +293,52 @@ class TemplateHelper {
     if (projects.length === 0) {
       projects = [
         {
-          name: `${name} Core Infrastructure`,
-          title: `${name} Core Infrastructure`,
-          desc: 'Scalable distributed software engine built with modular architecture and microservices.',
-          description: 'Scalable distributed software engine built with modular architecture and microservices.',
-          tech: skills.slice(0, 3).join(' • '),
-          tags: skills.slice(0, 3),
+          name: 'Autonomous Code Canvas',
+          title: 'Autonomous Code Canvas',
+          desc: 'A focused creative coding surface with real-time shader pipelines and hardware-accelerated preview states.',
+          description: 'A focused creative coding surface with real-time shader pipelines and hardware-accelerated preview states.',
+          tech: 'TypeScript • WebGL • Three.js • React',
+          tags: ['TypeScript', 'WebGL', 'Three.js', 'React'],
           github: github,
           live: website || github,
-          category: 'Systems / Cloud',
-          impact: 'Sub-millisecond latency throughput with zero data loss.'
+          category: 'Creative Engineering',
+          impact: 'Sub-millisecond frame rendering with hardware acceleration.'
+        },
+        {
+          name: 'Distributed Privacy Vault',
+          title: 'Distributed Privacy Vault',
+          desc: 'Zero-knowledge verification and credential privacy engine with tamper-proof audit trails.',
+          description: 'Zero-knowledge verification and credential privacy engine with tamper-proof audit trails.',
+          tech: 'Rust • Zero-Knowledge • TypeScript • Next.js',
+          tags: ['Rust', 'Zero-Knowledge', 'TypeScript', 'Next.js'],
+          github: github,
+          live: website || github,
+          category: 'Security / Web3',
+          impact: 'Cryptographic proof generation with zero sensitive data leaks.'
+        },
+        {
+          name: 'Microservices Cloud Mesh',
+          title: 'Microservices Cloud Mesh',
+          desc: 'High-throughput distributed edge gateway routing 50k+ req/sec with Prometheus telemetry.',
+          description: 'High-throughput distributed edge gateway routing 50k+ req/sec with Prometheus telemetry.',
+          tech: 'Go • Docker • Kubernetes • gRPC',
+          tags: ['Go', 'Docker', 'Kubernetes', 'gRPC'],
+          github: github,
+          live: website || github,
+          category: 'Cloud / Systems',
+          impact: 'Handled 50,000+ rps with p99 latency under 12ms.'
+        },
+        {
+          name: 'Algorand Smart Contract Escrow',
+          title: 'Algorand Smart Contract Escrow',
+          desc: 'Decentralized automated escrow protocol with atomic state transitions and formal verification.',
+          description: 'Decentralized automated escrow protocol with atomic state transitions and formal verification.',
+          tech: 'Python • PyTeal • Algorand • Smart Contracts',
+          tags: ['Python', 'PyTeal', 'Algorand', 'Smart Contracts'],
+          github: github,
+          live: website || github,
+          category: 'Blockchain',
+          impact: '100% formal contract verification with atomic settlement.'
         }
       ];
     }

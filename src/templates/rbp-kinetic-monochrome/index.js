@@ -120,22 +120,29 @@ const RBPKineticMonochromeTemplate = {
       {
         name: 'Autonomous Code Canvas',
         desc: 'A focused creative coding surface with real-time shader pipelines and hardware-accelerated preview states.',
-        tech: 'TypeScript • WebGL • React',
+        tech: 'TypeScript • WebGL • Three.js • React',
         live: 'https://example.com/demo1',
         github: github || 'https://github.com'
       },
       {
         name: 'Distributed Privacy Vault',
         desc: 'Zero-knowledge verification and credential privacy engine with tamper-proof audit trails.',
-        tech: 'Solidity • Next.js • Cryptography',
+        tech: 'Rust • Zero-Knowledge • TypeScript • Next.js',
         live: 'https://example.com/demo2',
         github: github || 'https://github.com'
       },
       {
-        name: 'Minimalist Metrics Digest',
-        desc: 'Calm analytics dashboard turning complex infrastructure telemetry into simple Sunday narratives.',
-        tech: 'Python • FastAPI • Tailwind',
+        name: 'Microservices Cloud Mesh',
+        desc: 'High-throughput distributed edge gateway routing 50k+ req/sec with Prometheus telemetry.',
+        tech: 'Go • Docker • Kubernetes • gRPC',
         live: 'https://example.com/demo3',
+        github: github || 'https://github.com'
+      },
+      {
+        name: 'Algorand Smart Contract Escrow',
+        desc: 'Decentralized automated escrow protocol with atomic state transitions and formal verification.',
+        tech: 'Python • PyTeal • Algorand • Smart Contracts',
+        live: 'https://example.com/demo4',
         github: github || 'https://github.com'
       }
     ];
@@ -198,13 +205,15 @@ const RBPKineticMonochromeTemplate = {
       period: TemplateHelper.escapeHtml(edu.period || edu.year || '')
     }));
 
-    // Photos for polaroid strip
-    const polaroidImages = [
-      '/assets/designs/rbp-portfolio/josh.webp',
-      '/assets/designs/rbp-portfolio/maya.webp',
-      '/assets/designs/rbp-portfolio/josh_wave.webp',
-      '/assets/designs/rbp-portfolio/maya_wave.webp'
-    ];
+    // Photos for polaroid strip: authentic professional engineering studio snapshots (or candidate custom photos)
+    const polaroidImages = Array.isArray(data.photos) && data.photos.length >= 4
+      ? data.photos.slice(0, 4)
+      : [
+          '/assets/designs/rbp-portfolio/snapshot_workspace.webp',
+          '/assets/designs/rbp-portfolio/snapshot_architecture.webp',
+          '/assets/designs/rbp-portfolio/snapshot_code.webp',
+          '/assets/designs/rbp-portfolio/snapshot_hardware.webp'
+        ];
 
     const html = `<!DOCTYPE html>
 <html lang="en" class="dark">
@@ -1230,11 +1239,14 @@ const RBPKineticMonochromeTemplate = {
       <div class="about-grid">
         <!-- Interactive Polaroid Strip -->
         <div class="polaroid-strip" id="polaroid-strip">
-          ${polaroidImages.map((img, i) => `
+          ${polaroidImages.map((img, i) => {
+            const captions = ['Workspace & Code Editor', 'Architecture & System Design', 'Terminal & Compilation', 'Hardware Lab & Maker Studio'];
+            return `
             <div class="polaroid-card" style="transform: rotate(${(i % 2 === 0 ? -1 : 1) * (2 + i * 1.5)}deg);">
-              <img src="${img}" alt="Studio Snapshot" loading="lazy">
+              <img src="${img}" alt="${captions[i % captions.length]}" loading="lazy">
             </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
 
         <!-- Interactive Physics Tech Stack Chips -->
