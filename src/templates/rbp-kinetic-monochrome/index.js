@@ -501,7 +501,19 @@ const RBPKineticMonochromeTemplate = {
     .portrait-frame:hover {
       box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
     }
+    .portrait-fallback-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 28px;
+      z-index: 1;
+      pointer-events: none;
+    }
     #portrait-morph-canvas {
+      position: relative;
+      z-index: 2;
       width: 100%;
       height: 100%;
       display: block;
@@ -1145,6 +1157,7 @@ const RBPKineticMonochromeTemplate = {
 
         <div class="portrait-card-wrapper">
           <div class="portrait-frame" id="portrait-frame">
+            <img id="portrait-fallback-img" src="${TemplateHelper.escapeHtml(data.avatar || defaultSrcA)}" alt="${safeName}" class="portrait-fallback-img" />
             <canvas id="portrait-morph-canvas"></canvas>
           </div>
 
@@ -1480,7 +1493,7 @@ const RBPKineticMonochromeTemplate = {
         const frame = document.getElementById('portrait-frame');
         const canvas = document.getElementById('portrait-morph-canvas');
         if (!frame || !canvas) return;
-        const gl = canvas.getContext('webgl');
+        const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
         if (!gl) return;
 
         const vsSource = "attribute vec2 position; varying vec2 vUv; void main() { vUv = position * 0.5 + 0.5; gl_Position = vec4(position, 0.0, 1.0); }";
@@ -1550,14 +1563,26 @@ const RBPKineticMonochromeTemplate = {
         const uOrigin = gl.getUniformLocation(prog, "uOrigin");
         const uDirection = gl.getUniformLocation(prog, "uDirection");
 
-        let texA = gl.createTexture();
-        let texB = gl.createTexture();
+        function createAndInitTexture() {
+          const tex = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, tex);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 0]));
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          return tex;
+        }
+
+        let texA = createAndInitTexture();
+        let texB = createAndInitTexture();
 
         function loadTexture(glTex, url) {
+          if (!glTex || !url) return;
           const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = () => {
-            gl.bindTexture(gl.TEXTURE_2D, glTexCoord);
+            gl.bindTexture(gl.TEXTURE_2D, glTex);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -1575,6 +1600,8 @@ const RBPKineticMonochromeTemplate = {
 
         function setPersona(key) {
           const p = personas[key] || personas.male;
+          const fallback = document.getElementById('portrait-fallback-img');
+          if (fallback) fallback.src = p.a;
           loadTexture(texA, p.a);
           loadTexture(texB, p.b);
         }
