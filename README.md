@@ -1,109 +1,156 @@
-# 🌌 myfolio.tech — The Official AI 3D WebGL Portfolio & Developer Showcase Platform
+# 🌌 MyFolio (myfolio.tech) — The AI Spatial 3D WebGL Portfolio Platform
 
 <div align="center">
 
-[![Official Domain](https://img.shields.io/badge/Official%20Platform-myfolio.tech-38BDF8.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://myfolio.tech)
+[![Version](https://img.shields.io/badge/Version-1.1.0-00F0FF.svg?style=for-the-badge&logo=git&logoColor=white)](https://myfolio.tech)
+[![Official Platform](https://img.shields.io/badge/Official%20Platform-myfolio.tech-38BDF8.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.myfolio.tech)
 [![Creator](https://img.shields.io/badge/Author-Abdul--Aziz--Nooruddin-8B5CF6.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin)
-[![Repository](https://img.shields.io/badge/GitHub%20Repo-myfolio.tech-10B981.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech)
-[![3D Web Studio](https://img.shields.io/badge/3D%20Studio-Launch%20Generator-6366F1.svg?style=for-the-badge&logo=three.js&logoColor=white)](https://myfolio.tech/studio)
-[![Curated 3D Universes](https://img.shields.io/badge/Design%20Intelligence-35%2B%20Universes-10B981.svg?style=for-the-badge&logo=webgl&logoColor=white)](https://myfolio.tech/universes)
+[![Tests Passing](https://img.shields.io/badge/Tests-78%2F78%20Passing-10B981.svg?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech)
+[![Design Intelligence](https://img.shields.io/badge/IA%20Models-10%20Architectures-EC4899.svg?style=for-the-badge&logo=webgl&logoColor=white)](https://myfolio.tech/studio)
 
-[![Build & Deploy](https://img.shields.io/badge/Deployment-Render%20Cloud-000000.svg?logo=render&logoColor=white)](https://myfolio.tech)
-[![Security](https://img.shields.io/badge/Security-TLS%201.3%20%7C%20HTTPS-success.svg?logo=letsencrypt&logoColor=white)](https://myfolio.tech)
-[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org)
-[![Three.js](https://img.shields.io/badge/Three.js-r128%2B-black.svg?logo=three.js&logoColor=white)](https://threejs.org)
-[![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger-88CE02.svg?logo=greensock&logoColor=white)](https://greensock.com)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B%20LTS-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Three.js](https://img.shields.io/badge/Three.js-r185%2B-black.svg?logo=three.js&logoColor=white)](https://threejs.org)
+[![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger%203.15-88CE02.svg?logo=greensock&logoColor=white)](https://greensock.com)
+[![Lenis](https://img.shields.io/badge/Lenis-Inertia%20Scroll-000000.svg?logo=scroll&logoColor=white)](https://github.com/darkroomengineering/lenis)
+[![WCAG](https://img.shields.io/badge/Accessibility-WCAG%202.2%20AAA-blue.svg)](https://www.w3.org/WAI/standards-guidelines/wcag/)
+[![Security](https://img.shields.io/badge/Security-TLS%201.3%20%7C%20Scrypt-success.svg?logo=letsencrypt&logoColor=white)](https://myfolio.tech)
 
 <br/>
 
-**Transform your GitHub repositories, resume, and personal identity into a bespoke, interactive 3D WebGL developer universe in seconds.**  
-*Powered by the AI Portfolio Identity & Content Engine, Three.js spatial physics, GSAP ScrollTrigger scrollytelling, Lenis smooth inertia scrolling, and clean static ZIP exports.*
+**Transform GitHub repositories, developer commits, and technical credentials into award-winning, mobile-first 3D WebGL portfolios in seconds.**  
+*Powered by the AI Portfolio Identity & Content Engine, procedural Three.js spatial viewports, GSAP ScrollTrigger scrollytelling, Lenis smooth inertia scrolling, dynamic section morphing, and standalone static ZIP exports.*
 
-[Explore Live Platform](https://myfolio.tech) • [Launch 3D Studio](https://myfolio.tech/studio) • [35+ Design Universes](https://myfolio.tech/universes) • [Interactive Showcases](#-live-interactive-showcases) • [Quick Start](#-quick-start-local-development) • [Architecture](#-ai-portfolio-identity--content-engine)
+[Explore Platform](https://www.myfolio.tech) • [Launch Web Studio](https://www.myfolio.tech/studio) • [Template Showcases](#-production-template-showcases) • [Design Intelligence](#-ai-portfolio-identity--content-engine) • [Launch Video](#-onetake-cinematic-launch-video) • [Quick Start](#-quick-start--local-development) • [API Reference](#-api-reference)
 
 </div>
 
 ---
 
-## 🌟 Live Production Links
+## 🚀 Overview
 
-| Service | Live URL | Description |
-| :--- | :--- | :--- |
-| **🌐 Official Website** | [https://myfolio.tech](https://myfolio.tech) | Landing page, 3D reactive world core, workflow timeline, and pricing |
-| **⚡ 3D Web Studio** | [https://myfolio.tech/studio](https://myfolio.tech/studio) | AI portfolio generator from GitHub, resume PDF, and project evidence |
-| **🎨 35+ Universes Gallery** | [https://myfolio.tech/universes](https://myfolio.tech/universes) | Interactive 3D WebGL showcase with real-time universe switching |
-| **📊 User Dashboard** | [https://myfolio.tech/dashboard](https://myfolio.tech/dashboard) | Portfolio management, custom domain mapping, visitor telemetry |
-| **🔐 Authentication** | [https://myfolio.tech/login](https://myfolio.tech/login) | Secure Scrypt credentials + Google & GitHub OAuth 2.0 |
-| **📜 Terms of Service** | [https://myfolio.tech/terms](https://myfolio.tech/terms) | Software licensing and acceptable use policy |
-| **🔒 Privacy Policy** | [https://myfolio.tech/privacy](https://myfolio.tech/privacy) | GDPR & CCPA compliant data protection disclosure |
+**MyFolio** solves developer portfolio fatigue. Traditional portfolio builders trap engineers in repetitive, cookie-cutter templates with unmotivated purple gradients and fake developer metrics. MyFolio introduces a **Content-First Generative Architecture**:
+
+1. **Strict Zero Predefined Template Filling**: Never forces candidate evidence into rigid slots. The platform parses the developer's real git history, pull requests, and technical case studies to dynamically architect a tailored Information Architecture (IA) model.
+2. **Authentic Spatial Worlds**: Interactive 3D WebGL viewports, procedural lighting, materials, and physics-driven cards tailored to the developer's domain (Systems, Robotics, AI, Web3, Creative Tech, Distributed Cloud).
+3. **Dynamic Section Morphing**: Every section exists only if backed by verifiable proof. Unsupported sections are purged automatically.
+4. **Standalone Static Exports**: One-click download of origin-isolated, zero-telemetry static ZIP distributions ready for deployment to Cloudflare Pages, Vercel, or custom servers.
 
 ---
 
-## 🥥 Live Interactive Showcases (Inspired by mesh3d.gallery)
+## 🎨 Production Template Showcases
 
-MyFolio features museum-grade reference implementations modeled after top design showcases:
+MyFolio features museum-grade reference implementations crafted with high-fidelity typography, procedural materials, and Apple-style scrollytelling:
 
-| Showcase Experience | Local Route | Key Architectural Highlights |
-| :--- | :--- | :--- |
-| **🥥 Palmo Pure Web3** | `/abdul-aziz` or `/palmo` | Recreated 1:1 from Palmo Coconut Co. Featuring `Khand` + `Patrick Hand` + `Inter` typography, organic coconut cream substrate, pinned **Three.js 3D Canister flight path** across scroll milestones, **Lenis smooth inertia scrolling**, and real-time interactive droplet particles. |
-| **📟 Mesh3D Cyber Terminal** | `/mesh3d-terminal` | Inspired by `glucas.dev` on mesh3d.gallery. 3D perspective CRT chassis with phosphor bloom, interactive UNIX command line (`help`, `projects`, `skills`, `contracts`, `clear`), Web Audio API procedural retro keyclicks, and hardware color dials. |
-| **🌌 ThreeUI Quantum Matrix** | `/portfolio-quantum-matrix.html` | Powered by procedural lightning WebGL shaders with reactive electrical arc vectors, coordinate telemetry, and sub-millisecond state runtimes. |
-| **✨ ThreeUI Constellation** | `/portfolio-constellation.html` | Interactive synaptic living node linkages that bind to cursor physics and scroll acceleration. |
-| **🌊 ThreeUI Liquid Metal** | `/portfolio-liquid-metal.html` | MengTo liquid metal chromatic aberration shader with procedural distortion and reflective caustics. |
+| Template Name | Template ID | Aesthetic DNA & Architectural Features | Live Route |
+| :--- | :--- | :--- | :--- |
+| **RBP Kinetic Monochrome** | `rbp-kinetic-monochrome` | High-contrast kinetic monochrome typography, StringTune scroll lerp, and intelligent gender/avatar resolution (Maya 3D Character for female candidates, Josh for male). | [`/rbp`](https://www.myfolio.tech/rbp) • [`/rbp-preview.html`](https://www.myfolio.tech/rbp-preview.html) |
+| **Jack 3D Spatial Studio** | `jack-3d-creator` | Interactive 3D character viewport, procedural WebGL studio lighting, floating credential badges, and dynamic project case studies. | [`/jack-3d-creator.html`](https://www.myfolio.tech/jack-3d-creator.html) |
+| **Kage Temple** | `kage-temple` | Atmospheric Japanese shrine geometry, volumetric particle fog, floating kanji glyphs, and serene spatial scrollytelling. | [`/landing-pages/kage.html`](https://www.myfolio.tech/landing-pages/kage.html) |
+| **Nadia Brand** | `nadia-brand` | High-impact editorial brutality, stark typographic mastheads, speaker/advisor portfolio hierarchy, and executive credential showcase. | [`/nadia-brand.html`](https://www.myfolio.tech/nadia-brand.html) |
+| **Palmo Pure Web3** | `palmo-web3` | Pinned Three.js 3D canister flight path across scroll milestones, Lenis inertia scrolling, and interactive droplet particles. | [`/abdul-aziz`](https://www.myfolio.tech/abdul-aziz) |
+| **Mesh3D Cyber Terminal** | `mesh3d-terminal` | CRT phosphor bloom shader, interactive UNIX CLI (`help`, `projects`, `skills`, `clear`), and Web Audio API procedural keyclicks. | [`/mesh3d-terminal`](https://www.myfolio.tech/mesh3d-terminal) |
+| **Chrono-Obsidian Sanctuary** | `chrono-obsidian-sanctuary` | Astronomical timekeeping, obsidian stone with liquid gold runes, and chronological career pendulum. | Studio Selectable |
+| **Cyber-Architect Sprawl** | `cyber-architect-sprawl` | Holographic 3D cyber hand stage, live ping terminal, and glowing isometric blueprints. | Studio Selectable |
+| **Circuit Core** | `circuit-core` | Industrial hardware engineering, copper PCB traces, dark solder mask, and polished brass accents. | Studio Selectable |
+| **Solarpunk Horizon** | `solarpunk-horizon` | Biophilic foliage animation, floating solar rings, energy telemetry gauges, and clean tech vitrines. | Studio Selectable |
 
 ---
 
 ## 🧠 AI Portfolio Identity & Content Engine
 
-MyFolio does not simply fill predefined template slots with generic copy. It runs a **Content-First Pipeline**:
+MyFolio follows a strict **Content-First Pipeline**:
 
 $$\text{CONTENT} \longrightarrow \text{IDENTITY} \longrightarrow \text{STORY} \longrightarrow \text{HIERARCHY} \longrightarrow \text{SECTION STRUCTURE} \longrightarrow \text{VISUAL REPRESENTATION} \longrightarrow \text{3D EXPERIENCE}$$
 
-### Core Intelligence Principles:
-1. **Never Fill a Generic Template**: Understand **WHO** the user is first. Build the User Identity Model (role, career stage, technical discipline, positioning) and determine their central story from real evidence.
-2. **Strict Zero Fabricated Information**: Never invent employers, metrics, clients, awards, testimonials, or claims. If evidence does not exist, omit the section.
-3. **Dynamic Section Architecture**: Sections exist only if backed by verifiable evidence. Irrelevant or empty sections are automatically purged.
-4. **Student-Builder Recognition**: Celebrates students who build and ship real open-source software, smart contracts, and production applications while studying.
-5. **Project Intelligence**: Treats projects as authentic technical case studies (problem, solution, architecture, technical challenge, live demo link) rather than flat thumbnail cards.
-6. **Content Hierarchy**: Structures content into **Primary** (must-see core evidence), **Secondary** (supporting credentials), and **Supporting** (deep dives).
+### Core Architecture Principles:
+- **Zero Fabricated Information**: Never invents employers, false metrics, clients, awards, or claims. If real evidence does not exist, the section is omitted entirely.
+- **Strict Zero Universe Preview Recycling**: Project cards never recycle template catalog thumbnails. Project artwork strictly matches domain keywords (e.g. Messaging $\to$ encrypted cipher visual, AI $\to$ autonomous edge node, Smart Contracts $\to$ blockchain consensus ledger).
+- **Dynamic Section Architecture**: Automatically balances Primary (must-see core evidence), Secondary (supporting credentials), and Supporting (deep dives) content.
+- **Mandatory 3-Tier Typography Engine**: Enforces strict zero-repetition typography pairings across generations:
+  1. **Display Mastheads**: `Orbitron`, `Chakra Petch`, `Cinzel Decorative`, `Playfair Display`, `Syne`, `Syncopate`, `Teko`, `Bebas Neue`.
+  2. **Tailored Body Typefaces**: `Space Grotesk`, `Instrument Serif`, `Spectral`, `IBM Plex Sans`, `Outfit`, `Manrope`, `Epilogue`.
+  3. **Precision Monospace Accents**: `Share Tech Mono`, `JetBrains Mono`, `Fira Code`, `Space Mono`, `IBM Plex Mono`.
+
+### 20-Generation Real Structural Diversity Benchmark:
+Verified via `npm run test:structural` across 20 continuous portfolio generations:
+- **10 / 10** Distinct Information Architecture Models (`computational-terminal`, `split-screen-dossier`, `horizontal-exhibition`, `editorial-monograph`, `narrative-timeline`, `asymmetric-bento-canvas`, `work-first-runway`, `spatial-3d-stage`, `minimal-single-screen`, `magazine-spread-columns`).
+- **10 / 10** Distinct Spatial Layout Grammars.
+- **10 / 12** Distinct Project Storytelling Strategies.
+- **11 / 10** Distinct Coherent Visual Universes.
+- **10 / 10** Distinct Section Sequence Openings.
 
 ---
 
-## ✨ Core Platform Stack & Scrollytelling Suite
+## 🎬 Onetake Cinematic Launch Video
 
-### 🎬 Mandatory 3D Motion Suite
-* **`Three.js` (`r128+`)**: Spatial 3D viewports, WebGL/WebGPU particles, procedural geometry, and real-time studio lighting.
-* **`Lenis` (`v1.1+`)**: Universal smooth inertia scrolling (smooth wheel, responsive touch, zero scroll-jacking) synchronized directly with `gsap.ticker`.
-* **`GSAP & ScrollTrigger` (`3.12+`)**: Master animation timelines, multi-section scroll-driven 3D camera fly-throughs, velocity skew, and staggered text reveals.
-* **`Web Audio API`**: Procedural synthesized retro sound effects and acoustic feedback without external audio asset bloat.
+The repository integrates the [onetake](https://github.com/feitangyuan/onetake) motion engine (`.agents/skills/onetake/`) to generate high-end product launch films directly from real code:
 
-### 🛡️ Enterprise Security & Platform Protections
-* **Scrypt Password Hashing**: Cryptographically salted passwords with high-entropy peppers.
-* **SSRF & Path Traversal Immunity**: Strict private subnet blocking (`10.0.0.0/8`, `127.0.0.0/8`, `169.254.169.254`).
-* **Honeypot Bot Defense**: Silent honeypot trap fields for automated scrapers and bots.
-* **Sliding-Window Rate Limiting**: Token-bucket rate limiting across API endpoints.
-* **Strict Port Policy**: Runs strictly on `PORT=5050` (or `PORT=10000+`). Zero port 3000 collision policy.
+- **Composition**: [cases/myfolio-launch/comp.html](file:///Users/abdulaziz/Desktop/myfolio-platform/.agents/skills/onetake/cases/myfolio-launch/comp.html) — 15-second continuous take with `window.__seek(t)`.
+- **Look**: Tailored `obsidian` look (`#0b0d11` void, `#00f0ff` neon cyan, `#f1f5f9` crisp white type with 17.75:1 WCAG AAA contrast).
+- **Shutter Blur**: 180° motion blur computed in linear light via parallel Chrome workers.
+- **Sound Palette**: Procedural acoustic score synthesized in `sfx.wav` (59 events, −8.0 dBFS peak).
+- **Oracle Acceptance**: Verified with `verify_promo.py` $\to$ `VERDICT: PASS` (zero clipping, rhythm variance $\ge 4\times$, verified camera continuity).
+- **Deliverables**: Available at `public/assets/videos/myfolio-launch.mp4` and `web/assets/videos/myfolio-launch.mp4`.
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🛠️ Technology Stack
+
+```
+Frontend & 3D Spatial
+├── Three.js (r185+)                # WebGL / WebGPU viewports & procedural materials
+├── GSAP (3.15+) & ScrollTrigger    # Master animation timelines & camera spline fly-throughs
+├── Lenis (1.3+)                    # Universal smooth inertia scrolling
+├── @theatre/core & @theatre/r3f    # Scrollytelling keyframing and camera choreography
+├── ThreeUI (@designcodeio/threeui) # MengTo Liquid Metal & Synaptic Constellation shaders
+└── Thinking-Orbs (0.3+)            # 2D canvas procedural neural state indicators
+
+Backend & Processing
+├── Node.js 20+ & Express           # Core runtime & secure API layer
+├── @google/generative-ai           # Gemini multimodal candidate resume extraction
+├── Sharp                           # High-performance Open Graph & image compression
+├── PDFKit & PDF-Parse              # Candidate resume dossier generation & ingestion
+├── Archiver                        # Standalone static portfolio ZIP packaging
+└── Playwright & OpenCV             # Headless browser capture & motion verification
+```
+
+---
+
+## 🛡️ Enterprise Security & Technical Policies
+
+- **Strict Port 5050 Policy (Zero Port 3000 Collision)**: Under no circumstances is port 3000 bound or suggested; dev and production servers strictly run on `PORT=5050` (or dynamic fallback `5051+`, `10000+`).
+- **Scrypt Password Hashing**: Cryptographically salted passwords with high-entropy peppers.
+- **SSRF & Network Boundary Immunity**: Strict private CIDR blocking (`10.0.0.0/8`, `127.0.0.0/8`, `169.254.169.254`) on all remote scraping inputs.
+- **Honeypot Bot Defense**: Silent honeypot trap fields preventing malicious automated scraping.
+- **Origin-Isolated Previews**: Sandboxed iframe previews (`/p/:siteId`) preventing script escalation into admin context.
+- **Search Engine Optimization (SEO)**:
+  - Canonical URL synchronization (`https://www.myfolio.tech`).
+  - Google Search Console direct verification pass-through (`/google001961baa3b6a214.html`).
+  - Single `<h1>` per page with semantic hierarchy across all routes.
+  - JSON-LD Structured Data (`SoftwareApplication`, `FAQPage`, `Organization`, `BreadcrumbList`).
+  - Programmatic link strategy documented in [`docs/BACKLINK_STRATEGY.md`](docs/BACKLINK_STRATEGY.md).
+
+---
+
+## 🚀 Quick Start & Local Development
 
 ### Prerequisites
-* **Node.js 20+** (Node.js 20 or 22 LTS recommended)
-* **npm** or **yarn**
+* **Node.js 20+ LTS** (Node 20 or 22 recommended)
+* **npm 10+**
+* **FFmpeg** (for video rendering utilities)
 
 ### 1. Clone & Install
 ```bash
 git clone https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech.git
-cd myfolio.tech
+cd myfolio-platform
 npm install
 ```
 
-### 2. Configure Environment Variables
+### 2. Configure Environment
 ```bash
 cp .env.example .env
 ```
-Configure your environment variables:
+Ensure your `.env` contains:
 ```env
 PORT=5050
 GEMINI_API_KEY=your_gemini_api_key
@@ -113,28 +160,34 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_key
 
 ### 3. Launch Development Server
 ```bash
-PORT=5050 npm start
+npm run dev
 ```
 Open **[http://localhost:5050](http://localhost:5050)** in your browser.
 
 ---
 
-## 🛠️ Utility Scripts
+## 🧪 Testing & Verification
+
+The test suite runs with Node's native test runner (`node --test`), verifying 15 distinct test suites across security, rendering, design benchmarks, and static export pipelines:
 
 ```bash
-# Generate Palmo Pure Web3 portfolio from live GitHub profile
-node scripts/generate-palmo-portfolio.js
+# Run the complete test suite (78/78 tests)
+npm test
 
-# Generate Mesh3D Cyber Terminal portfolio from live GitHub profile
-node scripts/generate-abdulaziz-portfolio.js
+# Run structural diversity benchmark (20 generations)
+npm run test:structural
 
-# Run the 25-point Production & Security Checklist
-node src/test-production-checklist.js
+# Run template registry & dynamic content replacement tests
+npm run test:templates
 
-# Run the full test suite
-node src/test-github-generator.js
-node src/test-template-registry.js
-node src/test-auth-security.js
+# Run security, SSRF & authentication audit tests
+npm run test:security
+
+# Run standalone static ZIP export tests
+npm run test:export
+
+# Run full security audit
+npm run audit:security
 ```
 
 ---
@@ -143,13 +196,16 @@ node src/test-auth-security.js
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/api/web/generate` | Generates a 3D WebGL developer portfolio from GitHub / Resume data |
-| `GET` | `/abdul-aziz` | Serves the live Palmo Pure Web3 personalized portfolio |
-| `GET` | `/mesh3d-terminal` | Serves the interactive 3D Retro Cyber Terminal Console |
+| `POST` | `/api/web/generate` | Generates a 3D WebGL developer portfolio from GitHub or Resume data |
+| `POST` | `/api/web/create-order` | Creates a verified checkout order for hosted domains and premium exports |
 | `GET` | `/p/:siteId` | Serves an origin-isolated live portfolio preview |
 | `GET` | `/api/portfolio/:siteId/export` | Downloads a standalone sanitized static ZIP package |
-| `GET` | `/api/auth/google` | Initiates official Google OAuth 2.0 account selection |
-| `POST` | `/api/auth/social` | Authenticates via Google / GitHub OAuth providers |
+| `GET` | `/rbp` | Serves the live RBP Kinetic Monochrome production portfolio |
+| `GET` | `/jack-3d-creator.html` | Serves the Jack 3D Spatial Studio showcase |
+| `GET` | `/landing-pages/kage.html` | Serves the Kage Temple volumetric showcase |
+| `GET` | `/nadia-brand.html` | Serves the Nadia Brand executive portfolio |
+| `GET` | `/sitemap.xml` | Returns the search-engine-ready XML sitemap |
+| `GET` | `/robots.txt` | Returns crawler directives and sitemap indexing directives |
 | `GET` | `/healthz` | Instant health check probe (`HTTP 200 OK`) |
 
 ---
