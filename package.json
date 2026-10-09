@@ -1,6 +1,6 @@
 {
   "name": "myfolio.tech",
-  "version": "1.1.0",
+  "version": "1.6.0",
   "packageManager": "npm@10.8.2",
   "description": "AI Portfolio Studio that generates award-winning, mobile-first 3D portfolio websites with Web Studio customizer",
   "main": "src/index.js",

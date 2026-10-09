@@ -15,16 +15,16 @@
       <div class="cookie-banner-content">
         <div class="cookie-text-col">
           <div class="cookie-title">
-            <span style="font-size:1.1rem;"></span>
-            <span>Privacy &amp; Cookie Preferences</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Privacy and cookie preferences</span>
           </div>
           <p class="cookie-desc">
-            We use essential cookies to maintain secure sessions and privacy-respecting telemetry to improve your 3D portfolio generation experience. See our <a href="/privacy.html" target="_blank">Privacy Policy</a>.
+            We use essential session tokens and privacy-first analytics to power 3D rendering and improve portfolio performance. Learn more in our <a href="/privacy.html" target="_blank">Privacy policy</a>.
           </p>
         </div>
         <div class="cookie-btn-group">
-          <button id="btnAcceptAllCookies" class="cookie-btn cookie-btn-primary">Accept All</button>
-          <button id="btnDeclineCookies" class="cookie-btn cookie-btn-secondary">Essential Only</button>
+          <button id="btnAcceptAllCookies" class="cookie-btn cookie-btn-primary">Accept all</button>
+          <button id="btnDeclineCookies" class="cookie-btn cookie-btn-secondary">Essential only</button>
         </div>
       </div>
     `;
@@ -38,17 +38,17 @@
         left: 50%;
         transform: translateX(-50%) translateY(120%);
         z-index: 999999;
-        max-width: 720px;
+        max-width: 700px;
         width: calc(100% - 32px);
-        background: rgba(13, 19, 28, 0.92);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 20px;
-        padding: 20px 24px;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-        color: #F8FAFC;
+        background: rgba(10, 14, 20, 0.94);
+        border: 1px solid rgba(156, 151, 184, 0.22);
+        border-radius: 16px;
+        padding: 18px 22px;
+        box-shadow: 0 20px 50px rgba(5, 8, 10, 0.8), 0 0 30px rgba(36, 27, 61, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: #EDEAFB;
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
       #myfolioCookieBanner.visible {
@@ -69,20 +69,22 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        font-family: 'Space Grotesk', system-ui, sans-serif;
         font-weight: 700;
-        font-size: 0.98rem;
+        font-size: 0.96rem;
         margin-bottom: 6px;
-        color: #FFFFFF;
+        color: #EDEAFB;
       }
       .cookie-desc {
         font-size: 0.84rem;
-        color: #94A3B8;
+        color: #9C97B8;
         line-height: 1.5;
         margin: 0;
       }
       .cookie-desc a {
-        color: #38BDF8;
+        color: #E8A33D;
         text-decoration: underline;
+        text-underline-offset: 3px;
       }
       .cookie-btn-group {
         display: flex;
@@ -90,31 +92,33 @@
         align-items: center;
       }
       .cookie-btn {
-        padding: 10px 18px;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        font-weight: 700;
+        padding: 9px 16px;
+        border-radius: 9999px;
+        font-family: 'Space Grotesk', system-ui, sans-serif;
+        font-size: 0.84rem;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
         border: none;
         white-space: nowrap;
       }
       .cookie-btn-primary {
-        background: linear-gradient(135deg, #38BDF8, #0284C7);
+        background: #E8A33D;
         color: #05080A;
-        box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+        box-shadow: 0 4px 14px rgba(232, 163, 61, 0.25);
       }
       .cookie-btn-primary:hover {
+        background: #F0B254;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+        box-shadow: 0 6px 20px rgba(232, 163, 61, 0.35);
       }
       .cookie-btn-secondary {
-        background: rgba(255, 255, 255, 0.08);
-        color: #F8FAFC;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(74, 63, 122, 0.35);
+        color: #EDEAFB;
+        border: 1px solid rgba(156, 151, 184, 0.25);
       }
       .cookie-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.16);
+        background: rgba(74, 63, 122, 0.55);
       }
       @media (max-width: 600px) {
         .cookie-btn-group {
