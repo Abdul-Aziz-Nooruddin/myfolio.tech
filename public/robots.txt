@@ -6,19 +6,25 @@ User-agent: *
 # Indexable Public Pages (Clean Canonical URLs)
 Allow: /$
 Allow: /studio
+Allow: /rbp
 Allow: /jack-3d
 Allow: /nadia
 Allow: /kage
 Allow: /about
 Allow: /contact
+Allow: /faq
 Allow: /terms
 Allow: /privacy
 Allow: /refund
-Allow: /faq
 Allow: /assets/
 Allow: /landing-pages/
+Allow: /images/
 Allow: /sitemap.xml
 Allow: /llms.txt
+Allow: /ads.txt
+Allow: /manifest.json
+Allow: /favicon*
+Allow: /google001961baa3b6a214.html
 
 # Block API endpoints from search crawlers
 Disallow: /api/
@@ -46,27 +52,35 @@ Disallow: /thank-you.html
 Disallow: /p/
 Disallow: /sites/
 
-# Block internal assets, data schemas & traps
-Disallow: /*.json$
+# Block internal source code, dependencies & internal schemas
 Disallow: /src/
 Disallow: /node_modules/
 
+# ==========================================================
 # Explicit Rules for Googlebot (RFC 9309 Strict Compliance)
+# ==========================================================
 User-agent: Googlebot
 Allow: /$
 Allow: /studio
+Allow: /rbp
 Allow: /jack-3d
 Allow: /nadia
 Allow: /kage
 Allow: /about
 Allow: /contact
+Allow: /faq
 Allow: /terms
 Allow: /privacy
 Allow: /refund
-Allow: /faq
 Allow: /assets/
 Allow: /landing-pages/
+Allow: /images/
 Allow: /sitemap.xml
+Allow: /llms.txt
+Allow: /ads.txt
+Allow: /manifest.json
+Allow: /favicon*
+Allow: /google001961baa3b6a214.html
 Disallow: /api/
 Disallow: /auth
 Disallow: /auth.html
@@ -82,49 +96,93 @@ Disallow: /admin.html
 Disallow: /thank-you
 Disallow: /p/
 Disallow: /sites/
-Disallow: /*.json$
+Disallow: /src/
+Disallow: /node_modules/
 
+# ==========================================================
 # Explicit Rules for Bingbot
+# ==========================================================
 User-agent: Bingbot
 Allow: /$
 Allow: /studio
+Allow: /rbp
 Allow: /jack-3d
 Allow: /nadia
 Allow: /kage
 Allow: /about
 Allow: /contact
+Allow: /faq
 Allow: /terms
 Allow: /privacy
 Allow: /refund
-Allow: /faq
 Allow: /assets/
 Allow: /landing-pages/
+Allow: /images/
 Allow: /sitemap.xml
+Allow: /llms.txt
+Allow: /ads.txt
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
+# ==========================================================
 # AI & Generative Search Engines (GEO - ChatGPT Search, Perplexity, Claude)
+# ==========================================================
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
+# ==========================================================
 # Social Media Crawlers (Allow Assets for Rich Link Previews)
+# ==========================================================
 User-agent: Twitterbot
+Allow: /
 Allow: /assets/
+Allow: /images/
 
 User-agent: LinkedInBot
+Allow: /
 Allow: /assets/
+Allow: /images/
 
 User-agent: facebookexternalhit
+Allow: /
 Allow: /assets/
+Allow: /images/
 
-# Block aggressive scrapers
+# ==========================================================
+# Scraper Throttling & Protection
+# ==========================================================
 User-agent: AhrefsBot
 Disallow: /
 
@@ -137,5 +195,5 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
-# Canonical Sitemap Location
-Sitemap: https://myfolio.tech/sitemap.xml
+# Canonical Sitemaps
+Sitemap: https://www.myfolio.tech/sitemap.xml

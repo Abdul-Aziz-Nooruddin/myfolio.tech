@@ -21,7 +21,23 @@
   <meta name="description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time. Connect your GitHub profile, upload your resume, and preview your living world.">
   <meta name="keywords" content="3D portfolio builder, AI portfolio customizer, developer portfolio studio, GitHub portfolio editor, WebGL website builder, MyFolio Studio">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://myfolio.tech/studio">
+  <link rel="canonical" href="https://www.myfolio.tech/studio">
+
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.myfolio.tech/studio">
+  <meta property="og:title" content="MyFolio Studio — AI 3D Portfolio Builder &amp; Customizer">
+  <meta property="og:description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time. Connect your GitHub profile, upload your resume, and preview your living world.">
+  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MyFolio Creator Studio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MyFolio Studio — AI 3D Portfolio Builder &amp; Customizer">
+  <meta name="twitter:description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time with live GitHub sync.">
+  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+
   <link rel="stylesheet" href="/web/app-tokens.css">
   <link rel="stylesheet" href="/app-tokens.css">
 
@@ -1666,6 +1682,7 @@
 
   <!-- Studio Top Bar -->
   <header class="studio-topbar">
+    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">MyFolio Creator Studio — AI 3D WebGL Portfolio Builder</h1>
     <div class="topbar-left">
       <a href="/dashboard" class="topbar-brand" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#FFF;">
         <video class="brand-logo-video" autoplay loop muted playsinline webkit-playsinline poster="/assets/logo-3d.png" width="24" height="24" aria-hidden="true" style="border-radius:50%; object-fit:cover; display:block; flex-shrink:0;">
@@ -1841,7 +1858,7 @@
 
             <!-- Photo preview if exists -->
             <div id="photoPreviewContainer" style="display:none; align-items:center; gap:8px; margin-top:8px;">
-              <img id="photoPreviewImg" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+              <img id="photoPreviewImg" alt="Profile Photo Preview" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
               <span id="photoPreviewName" style="font-size:11px;color:var(--mf-text-muted);">Photo attached</span>
             </div>
 

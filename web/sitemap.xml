@@ -2,114 +2,136 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- MyFolio.tech — XML Sitemap | Last updated: 2026-09-29 -->
+  <!-- ============================================================== -->
+  <!-- MyFolio.tech — XML Sitemap | Verified & Search Console Hardened -->
+  <!-- ============================================================== -->
 
-  <!-- Homepage — Primary landing & conversion world -->
+  <!-- Homepage — 3D AI Portfolio Studio & Developer Maker -->
   <url>
-    <loc>https://myfolio.tech/</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://myfolio.tech/assets/3d/cyber_architect_sprawl_3d.jpg</image:loc>
-      <image:title>MyFolio AI 3D Portfolio Generator for Developers</image:title>
+      <image:loc>https://www.myfolio.tech/images/hero-base.webp</image:loc>
+      <image:title>MyFolio 3D AI Portfolio Studio for Developers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/logo-3d.png</image:loc>
+      <image:title>MyFolio Official 3D Emblem</image:title>
     </image:image>
   </url>
 
-  <!-- Creator Studio — Interactive AI Portfolio Builder -->
+  <!-- Live Template Demo: RBP Kinetic Monochrome (Design Engineer) -->
   <url>
-    <loc>https://myfolio.tech/studio</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/rbp</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.90</priority>
     <image:image>
-      <image:loc>https://myfolio.tech/assets/marquee/mesh_quantum_core_3d.png</image:loc>
-      <image:title>MyFolio Web Studio Builder Interface</image:title>
+      <image:loc>https://www.myfolio.tech/assets/templates/rbp-kinetic-monochrome-hero.webp</image:loc>
+      <image:title>RBP Kinetic Monochrome Portfolio Template</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/designs/rbp-portfolio/snapshot_workspace.webp</image:loc>
+      <image:title>Engineering Studio Minimalist Workspace</image:title>
     </image:image>
   </url>
 
   <!-- Live Template Demo: Jack 3D Creator & Engineer -->
   <url>
-    <loc>https://myfolio.tech/jack-3d</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/jack-3d</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.90</priority>
     <image:image>
-      <image:loc>https://myfolio.tech/assets/marquee/mesh_quantum_core_3d.png</image:loc>
-      <image:title>Jack 3D Creator &amp; Engineer Template</image:title>
+      <image:loc>https://www.myfolio.tech/assets/templates/jack-3d-creator-hero.webp</image:loc>
+      <image:title>Jack 3D Creator &amp; Creative Developer Portfolio Template</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/images/template-jack.webp</image:loc>
+      <image:title>Jack 3D Obsidian Workstation</image:title>
     </image:image>
   </url>
 
   <!-- Live Template Demo: Nadia Personal Brand (Speaker & Advisor) -->
   <url>
-    <loc>https://myfolio.tech/nadia</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://www.myfolio.tech/nadia</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://myfolio.tech/assets/nadia_bio.jpg</image:loc>
-      <image:title>Nadia Personal Brand Executive Template</image:title>
+      <image:loc>https://www.myfolio.tech/assets/templates/nadia-brand-hero.webp</image:loc>
+      <image:title>Nadia Personal Brand Executive Speaker Template</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/images/template-nadia.webp</image:loc>
+      <image:title>Nadia Okonjo Keynote Portfolio</image:title>
     </image:image>
   </url>
 
   <!-- Live Template Demo: Kage Kyoto Temple (ThreeUI Shinto Mountain Sanctuary) -->
   <url>
-    <loc>https://myfolio.tech/kage</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://www.myfolio.tech/kage</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://myfolio.tech/landing-pages/secret-pathways-assets/temple_entrance.webp</image:loc>
+      <image:loc>https://www.myfolio.tech/assets/templates/kage-temple-hero.webp</image:loc>
       <image:title>Kage Kyoto Temple 3D Spatial Portfolio Template</image:title>
     </image:image>
   </url>
 
-  <!-- About Page — E-E-A-T Trust & Engineering Ethos -->
+  <!-- About Page — Mission, Engineering Ethos & Human-In-The-Loop -->
   <url>
-    <loc>https://myfolio.tech/about</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/about</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/logo-3d.png</image:loc>
+      <image:title>About MyFolio Platform</image:title>
+    </image:image>
   </url>
 
-  <!-- Contact Page — Direct Support & Inquiries -->
+  <!-- Contact Page — Direct Support, Partnerships & Feedback -->
   <url>
-    <loc>https://myfolio.tech/contact</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/contact</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
 
+  <!-- FAQ & Takedown Rules -->
+  <url>
+    <loc>https://www.myfolio.tech/faq</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
   <!-- Terms of Service -->
   <url>
-    <loc>https://myfolio.tech/terms</loc>
-    <lastmod>2026-09-29</lastmod>
+    <loc>https://www.myfolio.tech/terms</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.30</priority>
+    <priority>0.40</priority>
   </url>
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://myfolio.tech/privacy</loc>
-    <lastmod>2026-10-03</lastmod>
+    <loc>https://www.myfolio.tech/privacy</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.30</priority>
+    <priority>0.40</priority>
   </url>
 
   <!-- Refund & Cancellation Policy -->
   <url>
-    <loc>https://myfolio.tech/refund</loc>
-    <lastmod>2026-10-03</lastmod>
+    <loc>https://www.myfolio.tech/refund</loc>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.30</priority>
-  </url>
-
-  <!-- FAQ & Takedown Rules -->
-  <url>
-    <loc>https://myfolio.tech/faq</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
+    <priority>0.40</priority>
   </url>
 
 </urlset>

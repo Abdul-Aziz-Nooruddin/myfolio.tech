@@ -8,11 +8,62 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About MyFolio — Our Story, Mission & Philosophy</title>
+  <title>About MyFolio — Our Story, Mission &amp; Philosophy</title>
   <meta name="description" content="Why MyFolio exists: Turning code and career experience into living 3D portfolios that recruiters and clients never forget. Built by Abdul Aziz Nooruddin.">
-  <link rel="canonical" href="https://myfolio.tech/about">
+  <meta name="keywords" content="About MyFolio, developer portfolio studio, 3D WebGL portfolios, Abdul Aziz Nooruddin, portfolio mission">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://www.myfolio.tech/about">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.myfolio.tech/about">
+  <meta property="og:title" content="About MyFolio — Our Story, Mission &amp; Philosophy">
+  <meta property="og:description" content="Why MyFolio exists: Turning code and career experience into living 3D portfolios that recruiters and clients never forget. Built by Abdul Aziz Nooruddin.">
+  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="About MyFolio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About MyFolio — Our Story, Mission &amp; Philosophy">
+  <meta name="twitter:description" content="Turning code and career experience into living 3D portfolios that recruiters and clients never forget.">
+  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": "https://www.myfolio.tech/about#webpage",
+        "url": "https://www.myfolio.tech/about",
+        "name": "About MyFolio",
+        "description": "Why MyFolio exists: Turning code and career experience into living 3D portfolios that recruiters and clients never forget.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://www.myfolio.tech/#website",
+          "name": "MyFolio",
+          "url": "https://www.myfolio.tech"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://www.myfolio.tech/#organization",
+        "name": "MyFolio",
+        "url": "https://www.myfolio.tech",
+        "logo": "https://www.myfolio.tech/assets/logo-3d.png",
+        "founder": {
+          "@type": "Person",
+          "name": "Abdul Aziz Nooruddin",
+          "url": "https://github.com/Abdul-Aziz-Nooruddin"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -128,9 +179,9 @@
     @media (min-width: 860px) {
       .section-grid { grid-template-columns: 320px 1fr; gap: 80px; }
     }
-    .section-sidebar h3 {
+    .section-sidebar h3, .section-sidebar .sidebar-heading {
       font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
-      position: sticky; top: 120px;
+      position: sticky; top: 120px; font-weight: 600; margin: 0;
     }
     .section-body { font-size: 17px; line-height: 1.7; color: #2c2d2a; }
     .section-body h2 {
@@ -153,8 +204,8 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
-    .pillar-num { font-size: 12px; font-family: monospace; color: #13708e; margin-bottom: 16px; }
-    .pillar-card h4 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .pillar-num { font-size: 12px; font-family: monospace; color: #13708e; margin-bottom: 16px; display: block; }
+    .pillar-card h3, .pillar-card h4 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--ink); }
     .pillar-card p { font-size: 14px; line-height: 1.6; color: var(--muted); }
 
     /* Founder Note Card */
@@ -295,7 +346,7 @@
     <section class="content-section">
       <div class="section-grid">
         <div class="section-sidebar">
-          <h3>The Origin</h3>
+          <p class="sidebar-heading">The Origin</p>
         </div>
         <div class="section-body">
           <h2>You are not a bullet point. Why should your work look like one?</h2>
@@ -310,7 +361,7 @@
     <section class="content-section">
       <div class="section-grid">
         <div class="section-sidebar">
-          <h3>Architecture</h3>
+          <p class="sidebar-heading">Architecture</p>
         </div>
         <div class="section-body">
           <h2>Three pillars that govern every portfolio we generate.</h2>
@@ -320,21 +371,21 @@
             <div class="pillar-card">
               <div>
                 <span class="pillar-num">PILLAR 01</span>
-                <h4>Real Work Evidence</h4>
+                <h3>Real Work Evidence</h3>
                 <p>We ingest live GitHub metadata, actual commit frequency, and verified project challenges. No fabricated claims, no hollow marketing buzzwords.</p>
               </div>
             </div>
             <div class="pillar-card">
               <div>
                 <span class="pillar-num">PILLAR 02</span>
-                <h4>Spatial 3D Storytelling</h4>
+                <h3>Spatial 3D Storytelling</h3>
                 <p>Web-native 60–120 FPS WebGL viewports. Three-dimensional character models and interactive nodes that turn passive readers into engaged explorers.</p>
               </div>
             </div>
             <div class="pillar-card">
               <div>
                 <span class="pillar-num">PILLAR 03</span>
-                <h4>Zero-Friction Publishing</h4>
+                <h3>Zero-Friction Publishing</h3>
                 <p>Instant custom domain binding, automatic SSL certificate provisioning, and offline ZIP package exports you can own and host anywhere forever.</p>
               </div>
             </div>
@@ -345,8 +396,8 @@
             <div class="founder-author">
               <div class="founder-avatar">AN</div>
               <div class="founder-details">
-                <h5>Abdul Aziz Nooruddin</h5>
-                <p>Founder & Architect, MyFolio</p>
+                <strong class="founder-name" style="font-size:16px; font-weight:600; color:var(--ink); display:block;">Abdul Aziz Nooruddin</strong>
+                <p>Founder &amp; Architect, MyFolio</p>
               </div>
             </div>
           </div>
@@ -358,7 +409,7 @@
     <section class="content-section">
       <div class="section-grid">
         <div class="section-sidebar">
-          <h3>Integrity</h3>
+          <p class="sidebar-heading">Integrity</p>
         </div>
         <div class="section-body">
           <h2>Human-in-the-loop: You are the final editor of your career.</h2>
@@ -415,8 +466,10 @@
         <nav>
           <a href="/#use-cases">Who it’s for</a>
           <a href="/#how-it-works">How it works</a>
-          <a href="/jack-3d">Jack live demo</a>
+          <a href="/rbp">Kinetic Monochrome demo</a>
+          <a href="/jack-3d">Jack 3D live demo</a>
           <a href="/nadia">Nadia live demo</a>
+          <a href="/kage">Kage Kyoto Temple 3D</a>
         </nav>
       </div>
       <div>

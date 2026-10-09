@@ -146,9 +146,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Clean URL Normalizer: 301 Permanent Redirect for any .html requests (e.g. /studio.html -> /studio)
+// Clean URL Normalizer: 301 Permanent Redirect for any .html requests and trailing slashes (e.g. /studio.html -> /studio, /studio/ -> /studio)
 app.use((req, res, next) => {
   if (req.method === 'GET' && req.path.endsWith('.html')) {
+    // Exclude Google Search Console HTML verification file from redirect
+    if (req.path.startsWith('/google') && req.path.endsWith('.html')) {
+      return next();
+    }
     const cleanPath = req.path.replace(/\.html$/, '');
     const aliasMap = {
       '/auth': '/login',
@@ -158,6 +162,12 @@ app.use((req, res, next) => {
     const target = aliasMap[cleanPath] || (cleanPath === '' ? '/' : cleanPath);
     const query = req.url.includes('?') ? '?' + req.url.split('?')[1] : '';
     return res.redirect(301, `${target}${query}`);
+  }
+  // Trailing slash normalizer for single-segment page routes only (e.g. /studio/ -> /studio).
+  // Static directories (/sites/<id>/, /assets/...) are excluded to avoid redirect loops with express.static.
+  if (req.method === 'GET' && /^\/[a-z0-9-]+\/$/i.test(req.path) &&
+      !/^\/(sites|p|assets|web|images|landing-pages|design-preview|secret-pathways-assets|data|api)\/$/i.test(req.path)) {
+    return res.redirect(301, req.path.slice(0, -1) + req.url.slice(req.path.length));
   }
   next();
 });
@@ -2766,6 +2776,20 @@ app.get('/ads.txt', (req, res) => {
     return res.sendFile(adsTxtPath);
   }
   res.send('google.com, pub-9804084236379215, DIRECT, f08c47fec0942fa0\n');
+});
+
+// Canonical XML Sitemap for Search Engines & AI Crawlers
+app.get(['/sitemap.xml', '/sitemap'], (req, res) => {
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('sitemap.xml'));
+});
+
+// Canonical robots.txt for Search Engines & AI Crawlers
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('robots.txt'));
 });
 
 app.get(['/login', '/signin', '/signup', '/register', '/auth', '/forgot-password', '/reset-password', '/verify-email'], (req, res) => {

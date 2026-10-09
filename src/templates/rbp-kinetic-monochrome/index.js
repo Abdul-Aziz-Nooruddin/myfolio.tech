@@ -222,6 +222,44 @@ const RBPKineticMonochromeTemplate = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${safeName} — Portfolio</title>
   <meta name="description" content="${safeBio.slice(0, 160)}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  ${data.canonicalUrl ? `<link rel="canonical" href="${TemplateHelper.escapeHtml(data.canonicalUrl)}">
+  <meta property="og:url" content="${TemplateHelper.escapeHtml(data.canonicalUrl)}">` : ''}
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="${safeName} — Portfolio">
+  <meta property="og:description" content="${safeBio.slice(0, 160)}">
+  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-rbp.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${safeName} Portfolio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${safeName} — Portfolio">
+  <meta name="twitter:description" content="${safeBio.slice(0, 160)}">
+  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-rbp.jpg">
+
+  <!-- Favicon Suite -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Schema.org JSON-LD ProfilePage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "${safeName}",
+      "jobTitle": "${safeRole}",
+      "description": "${safeBio.slice(0, 200)}",
+      "email": "${safeEmail}"${data.canonicalUrl ? `,
+      "url": "${TemplateHelper.escapeHtml(data.canonicalUrl)}"` : ''}
+    }
+  }
+  </script>
 
   <!-- Google Fonts: Inter & Fraunces & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

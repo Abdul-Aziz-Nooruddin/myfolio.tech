@@ -8,11 +8,62 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact MyFolio — Support, Partnerships & Founder Inquiries</title>
+  <title>Contact MyFolio — Support, Partnerships &amp; Founder Inquiries</title>
   <meta name="description" content="Get in touch with the MyFolio team. Technical support, custom domain help, or reaching founder Abdul Aziz Nooruddin directly.">
-  <link rel="canonical" href="https://myfolio.tech/contact">
+  <meta name="keywords" content="Contact MyFolio, developer portfolio support, customer support, custom domains, Abdul Aziz Nooruddin">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://www.myfolio.tech/contact">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.myfolio.tech/contact">
+  <meta property="og:title" content="Contact MyFolio — Support, Partnerships &amp; Founder Inquiries">
+  <meta property="og:description" content="Get in touch with the MyFolio team for technical support, custom domain setup, or founder collaborations.">
+  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Contact MyFolio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact MyFolio — Support &amp; Partnerships">
+  <meta name="twitter:description" content="Technical support, custom domain setup, and partnership inquiries with MyFolio.">
+  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": "https://www.myfolio.tech/contact#webpage",
+        "url": "https://www.myfolio.tech/contact",
+        "name": "Contact MyFolio",
+        "description": "Get in touch with the MyFolio team for support, custom domains, or founder inquiries.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://www.myfolio.tech/#website",
+          "name": "MyFolio",
+          "url": "https://www.myfolio.tech"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://www.myfolio.tech/#organization",
+        "name": "MyFolio",
+        "url": "https://www.myfolio.tech",
+        "email": "support@myfolio.tech",
+        "founder": {
+          "@type": "Person",
+          "name": "Abdul Aziz Nooruddin",
+          "email": "aziz@myfolio.tech"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -140,8 +191,8 @@
       background: #EDECE8; border-radius: 16px; padding: 32px;
       display: flex; flex-direction: column; gap: 12px;
     }
-    .faq-callout h4 { font-size: 18px; font-weight: 600; }
-    .faq-callout p { font-size: 14px; color: #40413d; }
+    .faq-callout h3, .faq-callout h4 { font-size: 18px; font-weight: 600; margin: 0; color: var(--ink); }
+    .faq-callout p { font-size: 14px; color: #40413d; margin: 0; }
     .faq-callout a { font-size: 14px; font-weight: 600; color: #13708e; display: inline-flex; align-items: center; gap: 6px; }
 
     /* Right Form Card */
@@ -150,7 +201,7 @@
       padding: 44px; display: flex; flex-direction: column; gap: 24px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
-    .form-header h3 { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .form-header h2, .form-header h3 { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; color: var(--ink); }
     .form-header p { font-size: 14px; color: var(--muted); }
 
     .form-row { display: grid; grid-template-columns: 1fr; gap: 20px; }
@@ -294,29 +345,30 @@
     <section class="contact-layout">
       <!-- LEFT CHANNELS -->
       <div class="channel-cards">
+        <h2 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Contact Channels &amp; Direct Support</h2>
         <div class="channel-box">
-          <span class="channel-kicker">Technical Support & Product Help</span>
+          <span class="channel-kicker">Technical Support &amp; Product Help</span>
           <a class="channel-email" href="mailto:support@myfolio.tech">support@myfolio.tech ↗</a>
           <p>Assistance with Web Studio customization, custom DNS routing, SSL certificates, GitHub synchronization, and account inquiries. Typical response time: under 24 hours.</p>
         </div>
 
         <div class="channel-box">
-          <span class="channel-kicker">Founder, Partnerships & Press</span>
+          <span class="channel-kicker">Founder, Partnerships &amp; Press</span>
           <a class="channel-email" href="mailto:aziz@myfolio.tech">aziz@myfolio.tech ↗</a>
           <p>Direct contact with founder Abdul Aziz Nooruddin for engineering collaborations, university or bootcamp cohorts, platform integrations, and press coverage.</p>
         </div>
 
         <div class="faq-callout">
-          <h4>Looking for quick answers?</h4>
+          <h3>Looking for quick answers?</h3>
           <p>Before emailing, you might find an instant resolution in our comprehensive list of frequently answered questions.</p>
-          <a href="/#faq">Visit the FAQ accordion ↗</a>
+          <a href="/faq">Visit the FAQ &amp; Guides ↗</a>
         </div>
       </div>
 
       <!-- RIGHT FORM -->
       <div class="form-card">
         <div class="form-header">
-          <h3>Start a conversation.</h3>
+          <h2>Start a conversation.</h2>
           <p>Fill out the details below. This form prepares a formatted email draft directly in your preferred mail client so you can review and send it yourself.</p>
         </div>
 
@@ -405,8 +457,10 @@
         <nav>
           <a href="/#use-cases">Who it’s for</a>
           <a href="/#how-it-works">How it works</a>
-          <a href="/jack-3d">Jack live demo</a>
+          <a href="/rbp">Kinetic Monochrome demo</a>
+          <a href="/jack-3d">Jack 3D live demo</a>
           <a href="/nadia">Nadia live demo</a>
+          <a href="/kage">Kage Kyoto Temple 3D</a>
         </nav>
       </div>
       <div>
