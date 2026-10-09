@@ -502,11 +502,7 @@ function initUniversalSidebar(activePage) {
   <!-- Mobile Top Bar (< 960px) -->
   <div class="mobile-top-bar" style="background:#0A0A0A !important; border-bottom:1px solid #242424 !important;">
     <a href="/" class="brand-link" style="display:flex; align-items:center; gap:0.65rem; text-decoration:none;">
-      <video class="brand-logo-video" autoplay loop muted playsinline webkit-playsinline poster="/assets/logo-3d.png" width="28" height="28" aria-hidden="true" style="border-radius:50%; object-fit:cover; display:block; flex-shrink:0;">
-        <source src="/assets/logo-animated.webm" type="video/webm">
-        <source src="/assets/logo-animated.mp4" type="video/mp4">
-        <img src="/assets/logo-3d.png" alt="MyFolio logo" width="28" height="28" style="border-radius:50%;" />
-      </video>
+      <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
       <span class="brand-name">myfolio<span class="brand-dot">.</span></span>
     </a>
     <button id="sidebarToggleBtn" style="background:#181818; border:1px solid #282828; border-radius:8px; color:#F4F1E8; padding:7px; cursor:pointer;" onclick="toggleAppSidebar()" aria-label="Toggle Navigation">
@@ -520,11 +516,7 @@ function initUniversalSidebar(activePage) {
   <aside id="mainAppSidebar" class="app-sidebar">
     <div class="sidebar-brand-header">
       <a href="/" class="brand-link" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
-        <video class="brand-logo-video" autoplay loop muted playsinline webkit-playsinline poster="/assets/logo-3d.png" width="32" height="32" aria-hidden="true" style="border-radius:50%; object-fit:cover; display:block; flex-shrink:0;">
-          <source src="/assets/logo-animated.webm" type="video/webm">
-          <source src="/assets/logo-animated.mp4" type="video/mp4">
-          <img src="/assets/logo-3d.png" alt="MyFolio logo" width="32" height="32" style="border-radius:50%;" />
-        </video>
+        <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
         <div class="brand-text-col">
           <span class="brand-name">myfolio<span class="brand-dot">.</span></span>
           <span class="brand-subtitle">PLATFORM</span>

@@ -1010,12 +1010,16 @@ class DatabaseService {
 
         let status = 'no_site_yet';
         if (siteId) {
-          if (isVipFounder || u.plan === 'pro' || u.plan === 'starter' || u.is_vip) {
+          const createdAt = latestClientSite?.created_at || conv.created_at || u.created_at;
+          const ageMs = createdAt ? (Date.now() - new Date(createdAt).getTime()) : 0;
+          const isPast24Hours = ageMs > (24 * 60 * 60 * 1000);
+
+          if (isVipFounder || u.plan === 'pro' || u.plan === 'starter' || u.is_vip || latestClientSite?.status === 'live' || latestClientSite?.status === 'paid' || conv.status === 'live' || conv.lifecycle_state === 'live') {
             status = 'live';
-          } else if (latestClientSite) {
-            status = latestClientSite.status || 'preview';
-          } else if (conv.id) {
-            status = conv.lifecycle_state || conv.status || 'preview';
+          } else if (latestClientSite?.status === 'preview_lapsed' || conv.lifecycle_state === 'preview_lapsed' || conv.status === 'preview_lapsed' || isPast24Hours) {
+            status = 'expired';
+          } else {
+            status = 'preview';
           }
         }
 
