@@ -1132,21 +1132,15 @@ class DatabaseService {
         hasSite = true;
       }
 
-      // Fallback: check sites & client_sites tables
-      if (!hasSite && user?.id && isUuid(user.id)) {
+      // Fallback: check client_sites table
+      let totalBuildsCount = 0;
+      if (user?.id && isUuid(user.id)) {
         try {
-          const { data: siteRecord } = await this.client
-            .from('sites')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
-          if (siteRecord) {
-            const sid = siteRecord.provider_site_id || siteRecord.id;
-            siteId = sid;
-            hasSite = true;
-          }
+          const { count } = await this.client
+            .from('client_sites')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id);
+          if (typeof count === 'number') totalBuildsCount = count;
         } catch (e) {}
 
         if (!hasSite) {
@@ -1215,11 +1209,12 @@ class DatabaseService {
         siteId: hasSite ? siteId : null,
         analytics: analytics || { totalViews: 0, uniqueVisitors: 0 },
         regensUsed: buildsUsed,
+        totalBuilds: totalBuildsCount,
         plan: {
           name: planName,
           isPro,
           details: planDetails,
-          buildsUsed,
+          buildsUsed: totalBuildsCount > 0 ? totalBuildsCount : buildsUsed,
           buildsLimit,
           buildsRemaining,
           buildsLabel

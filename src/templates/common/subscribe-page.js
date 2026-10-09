@@ -20,6 +20,7 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script src="/sidebar.js"></script>
+  <script src="/assets/payment-maintenance.js"></script>
   <style>
     :root {
       --bg: #060814;
@@ -308,6 +309,11 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
     });
 
     async function startPayment(plan, amount) {
+      if (typeof showPaymentMaintenanceModal === 'function') {
+        showPaymentMaintenanceModal({ plan, siteId: '${safeSiteId}' });
+        return;
+      }
+
       const chk = document.getElementById('subscribeLegalCheck');
       if (chk && !chk.checked) {
         alert('Please review and check the acknowledgment box confirming the non-refundable terms and policies before checkout.');

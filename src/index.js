@@ -2283,6 +2283,27 @@ app.post('/api/web/create-order', checkoutLimiter, async (req, res) => {
     };
     const amountInPaise = PRICING_MAP[String(plan).toLowerCase()] || 14900;
 
+    // Payment Gateway Infrastructure Upgrade: scheduled multi-currency banking rails integration
+    const isPaymentMaintenance = process.env.PAYMENT_GATEWAY_MAINTENANCE !== 'false';
+    if (isPaymentMaintenance) {
+      return res.json({
+        success: true,
+        isMaintenance: true,
+        orderId: `maint_${Date.now()}`,
+        paymentUrl: '#payment-gateway-maintenance',
+        amount: amountInPaise,
+        currency: 'INR',
+        plan,
+        siteId,
+        maintenance: {
+          title: 'Global Payment Infrastructure Upgrade',
+          message: 'Payment processing is currently undergoing scheduled maintenance for global banking rails and RBI/FCA multi-currency compliance (supporting Apple Pay, Google Pay, UPI AutoPay, and international zero-fee cards across 140+ countries). Direct online card checkout is temporarily paused during banking verification and will resume on October 25, 2026. In the meantime, full 3D portfolio creation, WebGL templates, and live preview links remain 100% unlocked and free for evaluation!',
+          liveDate: 'October 25, 2026',
+          contactEmail: 'abdulaziznoor9876@gmail.com'
+        }
+      });
+    }
+
     if (!razorpayService) {
       return res.json({
         success: true,
@@ -3216,92 +3237,67 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
     const seenSiteIds = new Set();
     const sitesBaseDir = path.join(process.cwd(), 'public', 'sites');
 
-    // 1. Fetch from sites & client_sites database tables
+    // 1. Fetch from client_sites database table
     if (dbService?.client) {
       try {
-        let query = dbService.client.from('sites').select('*');
-        if (isFounder) {
-          query = query.or(`user_id.eq.${userId},user_id.eq.abdulaziz_founder`);
-        } else {
-          query = query.eq('user_id', userId);
-        }
-        const { data: dbSites } = await query.order('created_at', { ascending: false });
-        if (dbSites && Array.isArray(dbSites)) {
-          for (const s of dbSites) {
-            const sid = s.provider_site_id || s.id;
-            if (sid && !seenSiteIds.has(sid)) {
-              seenSiteIds.add(sid);
-              const metaPath = path.join(sitesBaseDir, sid, 'meta.json');
-              const profilePath = path.join(sitesBaseDir, sid, 'profile.json');
-              let meta = {};
-              let prof = {};
-              if (fs.existsSync(metaPath)) {
-                try { meta = JSON.parse(fs.readFileSync(metaPath, 'utf8')); } catch (e) {}
-              }
-              if (fs.existsSync(profilePath)) {
-                try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
-              }
-              const isSitePaid = Boolean(meta.isPaid || s.is_paid || s.status === 'paid' || isFounder || user.subscription_status === 'active' || user.role === 'pro');
-              const sitePlan = meta.plan || (isFounder ? 'pro' : (s.plan || (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isSitePaid ? 'starter' : 'preview'))));
-              portfolios.push({
-                siteId: sid,
-                handle: meta.handle || s.custom_domain?.split('.')[0] || user.username || 'developer',
-                subdomain: s.custom_domain || meta.subdomain || null,
-                previewUrl: `/p/${sid}`,
-                universeKey: meta.universeKey || 'cosmic-astronaut',
-                developerName: meta.developerName || prof.name || user.name || 'Developer',
-                developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
-                projectsCount: meta.projectsCount || prof.projects?.length || 6,
-                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now()),
-                isPaid: isSitePaid,
-                plan: sitePlan
-              });
+        const isUuid = (str) => typeof str === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+        let targetUserId = isUuid(userId) ? userId : null;
+        if (!targetUserId && isFounder) {
+          try {
+            const { data: founderRecord } = await dbService.client.from('users').select('id').eq('email', 'abdulaziznoor9876@gmail.com').maybeSingle();
+            if (founderRecord?.id && isUuid(founderRecord.id)) {
+              targetUserId = founderRecord.id;
             }
-          }
+          } catch (e) {}
         }
-      } catch (e) {
-        console.warn('[API] /api/user/portfolios dbSites error:', e.message);
-      }
 
-      // 1b. Fetch from client_sites table
-      try {
-        let clientQuery = dbService.client.from('client_sites').select('*');
-        if (isFounder) {
-          clientQuery = clientQuery.or(`user_id.eq.${userId},user_id.eq.abdulaziz_founder`);
-        } else {
-          clientQuery = clientQuery.eq('user_id', userId);
-        }
-        const { data: dbClientSites } = await clientQuery.order('created_at', { ascending: false });
-        if (dbClientSites && Array.isArray(dbClientSites)) {
-          for (const s of dbClientSites) {
-            const sid = s.provider_site_id || s.id;
-            if (sid && !seenSiteIds.has(sid)) {
-              seenSiteIds.add(sid);
-              const metaPath = path.join(sitesBaseDir, sid, 'meta.json');
-              const profilePath = path.join(sitesBaseDir, sid, 'profile.json');
-              let meta = {};
-              let prof = {};
-              if (fs.existsSync(metaPath)) {
-                try { meta = JSON.parse(fs.readFileSync(metaPath, 'utf8')); } catch (e) {}
+        if (targetUserId) {
+          const { data: dbClientSites, error: csErr } = await dbService.client
+            .from('client_sites')
+            .select('*')
+            .eq('user_id', targetUserId)
+            .order('created_at', { ascending: false });
+
+          if (csErr) {
+            console.warn('[API] /api/user/portfolios client_sites error:', csErr.message);
+          }
+
+          if (dbClientSites && Array.isArray(dbClientSites)) {
+            for (const s of dbClientSites) {
+              const sid = s.provider_site_id || s.id;
+              if (sid && !seenSiteIds.has(sid)) {
+                seenSiteIds.add(sid);
+                const metaPath = path.join(sitesBaseDir, sid, 'meta.json');
+                const profilePath = path.join(sitesBaseDir, sid, 'profile.json');
+                let meta = {};
+                let prof = {};
+                if (fs.existsSync(metaPath)) {
+                  try { meta = JSON.parse(fs.readFileSync(metaPath, 'utf8')); } catch (e) {}
+                }
+                if (fs.existsSync(profilePath)) {
+                  try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
+                }
+                const isClientPaid = Boolean(meta.isPaid || s.is_paid || s.status === 'paid' || isFounder || user.subscription_status === 'active' || user.role === 'pro');
+                const clientPlan = meta.plan || (isFounder ? 'pro' : (s.plan || (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isClientPaid ? 'starter' : 'preview'))));
+                
+                const derivedHandle = meta.handle || s.custom_domain?.split('.')[0] || sid.split('-')[0] || user.username || 'developer';
+                const derivedName = meta.developerName || prof.name || (derivedHandle ? derivedHandle.charAt(0).toUpperCase() + derivedHandle.slice(1) : user.name) || 'Developer';
+                const derivedRole = meta.developerRole || prof.role || prof.title || 'Software Engineer';
+                
+                portfolios.push({
+                  siteId: sid,
+                  handle: derivedHandle,
+                  subdomain: s.custom_domain || meta.subdomain || null,
+                  previewUrl: `/p/${sid}`,
+                  universeKey: meta.universeKey || 'jack-3d-creator',
+                  developerName: derivedName,
+                  developerRole: derivedRole,
+                  projectsCount: meta.projectsCount || prof.projects?.length || 6,
+                  timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now()),
+                  isPaid: isClientPaid,
+                  plan: clientPlan
+                });
               }
-              if (fs.existsSync(profilePath)) {
-                try { prof = JSON.parse(fs.readFileSync(profilePath, 'utf8')); } catch (e) {}
-              }
-              const isClientPaid = Boolean(meta.isPaid || s.is_paid || s.status === 'paid' || isFounder || user.subscription_status === 'active' || user.role === 'pro');
-              const clientPlan = meta.plan || (isFounder ? 'pro' : (s.plan || (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isClientPaid ? 'starter' : 'preview'))));
-              portfolios.push({
-                siteId: sid,
-                handle: meta.handle || s.custom_domain?.split('.')[0] || user.username || 'developer',
-                subdomain: s.custom_domain || meta.subdomain || null,
-                previewUrl: `/p/${sid}`,
-                universeKey: meta.universeKey || 'jack-3d-creator',
-                developerName: meta.developerName || prof.name || user.name || 'Developer',
-                developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
-                projectsCount: meta.projectsCount || prof.projects?.length || 6,
-                timestamp: meta.timestamp || (s.created_at ? new Date(s.created_at).getTime() : Date.now()),
-                isPaid: isClientPaid,
-                plan: clientPlan
-              });
             }
           }
         }

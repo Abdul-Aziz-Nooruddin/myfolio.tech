@@ -27,6 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/assets/payment-maintenance.js"></script>
   
   <link rel="stylesheet" href="/web/app-tokens.css">
   <link rel="stylesheet" href="/app-tokens.css">
@@ -1730,7 +1731,13 @@
         if (btnPublishPermanent) {
           btnPublishPermanent.style.display = 'inline-flex';
           btnPublishPermanent.innerHTML = '<span>Upgrade to Pro Subdomain (₹149/mo)</span> &rarr;';
-          btnPublishPermanent.onclick = () => window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}&plan=pro`;
+          btnPublishPermanent.onclick = () => {
+            if (typeof window.showPaymentMaintenanceModal === 'function') {
+              window.showPaymentMaintenanceModal({ plan: 'pro', siteId: target.siteId });
+            } else {
+              window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}&plan=pro`;
+            }
+          };
         }
 
         if (planBadge) {
@@ -1756,7 +1763,13 @@
         if (btnPublishPermanent) {
           btnPublishPermanent.style.display = 'inline-flex';
           btnPublishPermanent.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:5px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Buy Build & Remove Watermark (From ₹149) ➔</span>';
-          btnPublishPermanent.onclick = () => window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}`;
+          btnPublishPermanent.onclick = () => {
+            if (typeof window.showPaymentMaintenanceModal === 'function') {
+              window.showPaymentMaintenanceModal({ plan: 'starter', siteId: target.siteId });
+            } else {
+              window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}`;
+            }
+          };
         }
 
         if (planBadge) {
@@ -1939,12 +1952,12 @@
           }
         } else {
           if (slotsBadge) {
-            slotsBadge.textContent = 'Unlimited Slots (Pro)';
+            slotsBadge.textContent = count > 0 ? `${count} Active Versions • Unlimited Slots` : 'Unlimited Slots (Pro)';
             slotsBadge.className = 'mf-badge mf-badge-vip';
           }
           if (slotsBanner) slotsBanner.style.display = 'none';
           if (quotaDisplay) {
-            quotaDisplay.textContent = 'Unlimited Builds';
+            quotaDisplay.textContent = count > 0 ? `${count} Builds • Unlimited Active` : 'Unlimited Builds';
             quotaDisplay.style.color = '#FCD34D';
           }
         }
@@ -2240,6 +2253,13 @@
 
     async function startPublishCheckout(plan = 'starter') {
       const siteIdToPublish = currentSiteId || (window.cachedDashData && window.cachedDashData.siteId);
+      
+      // Payment Gateway Infrastructure Upgrade: Display graceful maintenance notice
+      if (typeof window.showPaymentMaintenanceModal === 'function') {
+        window.showPaymentMaintenanceModal({ plan, siteId: siteIdToPublish });
+        return;
+      }
+
       if (!siteIdToPublish) {
         window.location.href = '/studio';
         return;
@@ -2275,6 +2295,14 @@
           body: JSON.stringify({ siteId: siteIdToPublish, plan })
         });
         const orderData = await orderRes.json();
+        if (orderData.isMaintenance) {
+          if (typeof window.showPaymentMaintenanceModal === 'function') {
+            window.showPaymentMaintenanceModal({ plan, siteId: siteIdToPublish });
+          } else {
+            alert(orderData.maintenance?.message || 'Payment rails undergoing scheduled maintenance. All features remain free for evaluation!');
+          }
+          return;
+        }
         if (orderData.isCustomCheckout && window.Razorpay) {
           const options = {
             key: orderData.keyId,
