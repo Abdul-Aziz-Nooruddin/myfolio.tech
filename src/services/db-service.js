@@ -978,14 +978,54 @@ class DatabaseService {
 
   async getAllAdminUsers(limit = 100) {
     try {
-      const { data: users, error } = await this.client
+      let users = [];
+      const { data, error } = await this.client
         .from('users')
-        .select('*, conversations(*)')
+        .select('*, conversations(*), client_sites(*)')
         .order('created_at', { ascending: false })
         .limit(limit);
 
-      if (error) return [];
-      return users || [];
+      if (error) {
+        const { data: fallbackUsers } = await this.client
+          .from('users')
+          .select('*, conversations(*)')
+          .order('created_at', { ascending: false })
+          .limit(limit);
+        users = fallbackUsers || [];
+      } else {
+        users = data || [];
+      }
+
+      return users.map(u => {
+        const conv = (u.conversations && u.conversations[0]) || {};
+        const clientSites = Array.isArray(u.client_sites) ? u.client_sites : [];
+        const sortedClientSites = clientSites.slice().sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        const latestClientSite = sortedClientSites[0] || null;
+
+        const email = (u.email || u.normalized_email || '').toLowerCase().trim();
+        const isVipFounder = email === 'abdulaziznoor9876@gmail.com';
+
+        let siteId = (latestClientSite && (latestClientSite.provider_site_id || latestClientSite.id)) || conv.id || null;
+        if (!siteId && isVipFounder) siteId = 'abdulaziz';
+
+        let status = 'no_site_yet';
+        if (siteId) {
+          if (isVipFounder || u.plan === 'pro' || u.plan === 'starter' || u.is_vip) {
+            status = 'live';
+          } else if (latestClientSite) {
+            status = latestClientSite.status || 'preview';
+          } else if (conv.id) {
+            status = conv.lifecycle_state || conv.status || 'preview';
+          }
+        }
+
+        return {
+          ...u,
+          siteId,
+          siteUrl: siteId ? `/p/${siteId}` : null,
+          computedStatus: status
+        };
+      });
     } catch (e) {
       return [];
     }

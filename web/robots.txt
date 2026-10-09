@@ -2,6 +2,15 @@
 # MyFolio.tech — robots.txt (Google Search Console & GEO Hardened)
 # ==========================================================
 
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+Allow: /landing-pages/
+Allow: /images/
+
+User-agent: Google-InspectionTool
+Allow: /
+
 User-agent: *
 # Indexable Public Pages (Clean Canonical URLs)
 Allow: /$

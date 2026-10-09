@@ -224,10 +224,20 @@ const globalTrafficLimiter = SecurityMiddleware.tokenBucket({
   actionName: 'global_traffic'
 });
 
-// Apply global baseline shield across dynamic application routes (exempting static cache-busting assets)
+// Apply global baseline shield across dynamic application routes (exempting search engine bots and static assets)
 app.use((req, res, next) => {
-  // Let static assets and favicons through without rate limit deduction
-  if (req.path.startsWith('/assets') || req.path.startsWith('/web/') || req.path.endsWith('.ico') || req.path.endsWith('.webp') || req.path.endsWith('.png') || req.path.endsWith('.css') || req.path.endsWith('.js')) {
+  // 1. Let static assets, icons, and fonts through without rate limit deduction
+  if (req.path.startsWith('/assets') || req.path.startsWith('/web/') || req.path.endsWith('.ico') || req.path.endsWith('.webp') || req.path.endsWith('.png') || req.path.endsWith('.jpg') || req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.endsWith('.woff2')) {
+    return next();
+  }
+  // 2. Unblock Search Engine Crawlers & Meta Indexing files (Googlebot, Bingbot, sitemap, robots)
+  const isSearchFile = ['/sitemap.xml', '/sitemap', '/robots.txt', '/llms.txt', '/ads.txt', '/manifest.json'].includes(req.path) || req.path.startsWith('/google001961baa3b6a214');
+  if (isSearchFile) {
+    return next();
+  }
+  const ua = (req.get('user-agent') || '').toLowerCase();
+  const isSearchCrawler = /googlebot|google-inspectiontool|mediapartners-google|adsbot-google|bingbot|applebot|duckduckbot|yandexbot|baiduspider/i.test(ua);
+  if (isSearchCrawler && ['GET', 'HEAD'].includes(req.method)) {
     return next();
   }
   return globalTrafficLimiter(req, res, next);
@@ -2896,6 +2906,7 @@ app.get(['/contact', '/contact-us', '/support'], (req, res) => {
 
 // Admin Panel
 app.get(['/admin', '/admin.html'], AuthMiddleware.requirePageAdmin, (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.sendFile(getPagePath('admin.html'));
 });
 
@@ -3117,6 +3128,7 @@ app.get('/api/admin/overview', AuthMiddleware.requireAdmin, async (req, res) => 
 
 app.get('/api/admin/users', AuthMiddleware.requireAdmin, async (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const users = await dbService.getAllAdminUsers(100);
     res.json({ success: true, users });
   } catch (err) {

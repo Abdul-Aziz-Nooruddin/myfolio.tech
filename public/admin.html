@@ -299,6 +299,7 @@
     .status-lapsed { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
     .status-preview { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
     .status-deleted { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-nosite { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
 
     /* Action Buttons */
     .action-btn-group {
@@ -431,7 +432,8 @@
           <button class="filter-pill active" onclick="setFilter('all', this)">All</button>
           <button class="filter-pill" onclick="setFilter('live', this)">Live</button>
           <button class="filter-pill" onclick="setFilter('preview_lapsed', this)">Lapsed</button>
-          <button class="filter-pill" onclick="setFilter('preview_unpaid', this)">Previews</button>
+          <button class="filter-pill" onclick="setFilter('preview', this)">Previews</button>
+          <button class="filter-pill" onclick="setFilter('no_site', this)">No Site</button>
           <button class="filter-pill" onclick="setFilter('deleted', this)">Deleted</button>
         </div>
       </div>
@@ -599,12 +601,20 @@
         const email = (u.email || u.normalized_email || '').toLowerCase();
         const phone = (u.phone_number || '').toLowerCase();
         const id = (u.id || '').toLowerCase();
-        const matchesSearch = email.includes(search) || phone.includes(search) || id.includes(search);
+        const name = (u.name || '').toLowerCase();
+        const matchesSearch = email.includes(search) || phone.includes(search) || id.includes(search) || name.includes(search);
 
         const conv = (u.conversations && u.conversations[0]) || {};
-        const state = conv.lifecycle_state || conv.status || 'preview_unpaid';
+        const clientSite = (u.client_sites && u.client_sites[0]) || null;
+        const siteId = u.siteId || (clientSite && (clientSite.provider_site_id || clientSite.id)) || conv.id;
+        const state = u.computedStatus || (siteId ? (conv.lifecycle_state || conv.status || 'preview') : 'no_site_yet');
 
         if (currentFilter === 'all') return matchesSearch;
+        if (currentFilter === 'live') return matchesSearch && (state === 'live' || state === 'paid');
+        if (currentFilter === 'preview' || currentFilter === 'preview_unpaid') return matchesSearch && (state === 'preview' || state === 'preview_unpaid');
+        if (currentFilter === 'preview_lapsed' || currentFilter === 'lapsed') return matchesSearch && (state === 'preview_lapsed' || state === 'grace_period' || state === 'expired');
+        if (currentFilter === 'no_site' || currentFilter === 'no_site_yet') return matchesSearch && state === 'no_site_yet';
+        if (currentFilter === 'deleted') return matchesSearch && state === 'deleted';
         return matchesSearch && state === currentFilter;
       });
 
@@ -615,14 +625,29 @@
 
       tbody.innerHTML = filtered.map(u => {
         const conv = (u.conversations && u.conversations[0]) || {};
-        const state = conv.lifecycle_state || conv.status || 'preview_unpaid';
-        const siteId = conv.id;
+        const clientSite = (u.client_sites && u.client_sites[0]) || null;
+        const siteId = u.siteId || (clientSite && (clientSite.provider_site_id || clientSite.id)) || conv.id;
         const siteUrl = siteId ? `/p/${siteId}` : '#';
+        const state = u.computedStatus || (siteId ? (conv.lifecycle_state || conv.status || 'preview') : 'no_site_yet');
 
         let badgeClass = 'status-preview';
-        if (state === 'live' || state === 'paid') badgeClass = 'status-live';
-        else if (state === 'preview_lapsed' || state === 'grace_period') badgeClass = 'status-lapsed';
-        else if (state === 'deleted') badgeClass = 'status-deleted';
+        let badgeLabel = state;
+        if (state === 'live' || state === 'paid') {
+          badgeClass = 'status-live';
+          badgeLabel = 'LIVE';
+        } else if (state === 'preview' || state === 'preview_unpaid') {
+          badgeClass = 'status-preview';
+          badgeLabel = 'PREVIEW';
+        } else if (state === 'preview_lapsed' || state === 'grace_period' || state === 'expired') {
+          badgeClass = 'status-lapsed';
+          badgeLabel = 'EXPIRED';
+        } else if (state === 'deleted') {
+          badgeClass = 'status-deleted';
+          badgeLabel = 'DELETED';
+        } else if (state === 'no_site_yet') {
+          badgeClass = 'status-nosite';
+          badgeLabel = 'NO SITE YET';
+        }
 
         return `
           <tr>
@@ -630,9 +655,9 @@
               <div style="font-weight: 600;">${u.name || (conv.extracted_data && conv.extracted_data.name) || 'User'}</div>
               <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">${u.email || u.normalized_email || u.phone_number || u.id}</div>
             </td>
-            <td><span class="status-badge ${badgeClass}">${state}</span></td>
+            <td><span class="status-badge ${badgeClass}">${badgeLabel}</span></td>
             <td>
-              ${siteId ? `<a href="${siteUrl}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">View Portfolio ↗</a>` : '<span style="color: var(--text-muted)">None</span>'}
+              ${siteId ? `<a href="${siteUrl}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">View Portfolio ↗</a>` : '<span style="color: var(--text-muted); font-size: 0.78rem; font-style: italic;">No site created</span>'}
             </td>
             <td style="color: var(--text-muted); font-size: 0.8rem;">
               ${new Date(u.created_at || Date.now()).toLocaleDateString()}

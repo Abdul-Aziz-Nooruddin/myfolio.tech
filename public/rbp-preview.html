@@ -6,7 +6,7 @@
   <title>Josh Miller — Portfolio</title>
   <meta name="description" content="Independent engineer focused on interfaces that feel calm, considered, and quietly fast.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  
+  <link rel="canonical" href="https://www.myfolio.tech/rbp">
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="profile">
@@ -22,7 +22,7 @@
   <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-rbp.jpg">
 
   <!-- Favicon Suite -->
-  <!-- Schema.org JSON-LD ProfilePage -->
+  <!-- Schema.org JSON-LD ProfilePage & Breadcrumbs -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,6 +34,26 @@
       "description": "Independent engineer focused on interfaces that feel calm, considered, and quietly fast.",
       "email": "josh@example.com"
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.myfolio.tech/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "RBP Portfolio Demo",
+        "item": "https://www.myfolio.tech/rbp"
+      }
+    ]
   }
   </script>
 
