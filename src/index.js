@@ -2876,11 +2876,15 @@ app.get(['/universes', '/themes', '/gallery', '/design-demo', '/templates'], Aut
 });
 
 app.get(['/jack-3d', '/portfolio-3d', '/jack-3d-creator', '/jack', '/abdul-aziz', '/portfolio-jack'], (req, res) => {
-  res.sendFile(getPagePath('jack-3d-creator.html'));
+  let content = fs.readFileSync(getPagePath('jack-3d-creator.html'), 'utf8');
+  content = siteGenerator.injectPreviewWatermark(content, false, 'jack-3d');
+  res.type('html').send(content);
 });
 
 app.get(['/nadia', '/nadia-brand', '/nadia-speaker', '/speaker-brand'], (req, res) => {
-  res.sendFile(getPagePath('nadia-brand.html'));
+  let content = fs.readFileSync(getPagePath('nadia-brand.html'), 'utf8');
+  content = siteGenerator.injectPreviewWatermark(content, false, 'nadia-brand');
+  res.type('html').send(content);
 });
 
 app.get(['/kage', '/kage-temple', '/kyoto-temple', '/kage-landing-page'], (req, res) => {
@@ -2891,7 +2895,11 @@ app.get(['/kage', '/kage-temple', '/kyoto-temple', '/kage-landing-page'], (req, 
     path.join(__dirname, '..', 'public', 'landing-pages', 'kage.html')
   ];
   for (const p of kageCandidates) {
-    if (fs.existsSync(p)) return res.sendFile(p);
+    if (fs.existsSync(p)) {
+      let content = fs.readFileSync(p, 'utf8');
+      content = siteGenerator.injectPreviewWatermark(content, false, 'kage-temple');
+      return res.type('html').send(content);
+    }
   }
   res.redirect('/landing-pages/kage.html');
 });
@@ -2904,7 +2912,11 @@ app.get(['/rbp', '/rbp-portfolio', '/rbp-kinetic', '/rbp-kinetic-monochrome'], (
     path.join(__dirname, '..', 'public', 'rbp-preview.html')
   ];
   for (const p of rbpCandidates) {
-    if (fs.existsSync(p)) return res.sendFile(p);
+    if (fs.existsSync(p)) {
+      let content = fs.readFileSync(p, 'utf8');
+      content = siteGenerator.injectPreviewWatermark(content, false, 'rbp-kinetic-monochrome');
+      return res.type('html').send(content);
+    }
   }
   const { TemplateRegistry } = require('./templates/template-registry');
   const rendered = TemplateRegistry.render('rbp-kinetic-monochrome', {
@@ -2913,7 +2925,8 @@ app.get(['/rbp', '/rbp-portfolio', '/rbp-kinetic', '/rbp-kinetic-monochrome'], (
     bio: 'Independent engineer focused on interfaces that feel calm, considered, and quietly fast.',
     email: 'josh@example.com'
   });
-  res.type('html').send(rendered.html);
+  let content = siteGenerator.injectPreviewWatermark(rendered.html, false, 'rbp-kinetic-monochrome');
+  res.type('html').send(content);
 });
 
 app.get(['/profile', '/settings', '/account'], AuthMiddleware.requirePageAuth, (req, res) => {
@@ -4339,8 +4352,8 @@ app.get('/p/:siteId', async (req, res) => {
   const isPaid = await checkSitePaidStatus(siteId);
 
   if (!isPaid) {
-    // If the HTML has old watermark structure without preview-big-diagonal or with old diagonal strips, clean it to upgrade
-    if (html.includes('watermark-diagonal-strip') || (html.includes('preview-watermark-overlay') && !html.includes('preview-big-diagonal'))) {
+    // If the HTML has old watermark structure, clean it to upgrade
+    if (html.includes('watermark-diagonal-strip') || (html.includes('preview-watermark-overlay') && !html.includes('preview-watermark-svg'))) {
       html = html.replace(/<!--[\s\S]*?WATERMARK OVERLAY[\s\S]*?-->[\s\S]*?<\/script>/gi, '');
       html = html.replace(/<div id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
       html = html.replace(/<script id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
@@ -4348,151 +4361,7 @@ app.get('/p/:siteId', async (req, res) => {
     }
 
     if (!html.includes('id="preview-watermark-overlay"')) {
-      const watermarkHtml = `
-    <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
-    <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; user-select: none;">
-      <!-- TOP FLOATING PILL BADGE -->
-      <div style="width: 100%; display: flex; justify-content: center; padding-top: 12px;">
-        <div id="preview-watermark-pill" style="pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 9999px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.22); background: rgba(12, 12, 12, 0.82); color: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-          <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:6px;">
-            <span id="preview-watermark-dot" style="display:inline-block; width:7px; height:7px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor; transition: background-color 0.25s ease;"></span>
-            <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
-          </span>
-          <span style="opacity: 0.4;">•</span>
-          <span style="font-weight: 700; letter-spacing: 0.1em;">PREVIEW ONLY</span>
-        </div>
-      </div>
-
-      <!-- ONE BIG BOLD DIAGONAL PREVIEW ONLY WATERMARK -->
-      <div id="preview-big-diagonal" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-28deg); white-space: nowrap; pointer-events: none; user-select: none; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: clamp(3.5rem, 11vw, 10rem); font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255, 255, 255, 0.08); transition: color 0.25s ease; text-align: center; width: 100%;">
-        PREVIEW ONLY
-      </div>
-    </div>
-
-    <!-- FLOATING BOTTOM CONVERSION & UNLOCK BAR -->
-    <div id="preview-floating-bar" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999998; background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 16px 40px rgba(0,0,0,0.6); border-radius: 9999px; padding: 10px 24px; display: flex; align-items: center; gap: 14px; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; max-width: 94vw; flex-wrap: wrap; justify-content: center;">
-      <div style="font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-        <span style="display:inline-block; width:8px; height:8px; background:#75c5de; border-radius:50%; box-shadow: 0 0 8px #75c5de;"></span>
-        <span>🔒 <strong>Preview Only</strong> (24h Evaluation Window) • Powered by MyFolio</span>
-      </div>
-      <a href="/pricing?siteId=${encodeURIComponent(siteId)}" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}" style="background: linear-gradient(135deg, #75c5de, #13708e); color: #08171c; font-weight: 800; font-size: 0.85rem; padding: 8px 18px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(117,197,222,0.35); transition: transform 0.2s ease;">
-        <span>Buy Build & Remove Watermark (From ₹149) ➔</span>
-      </a>
-    </div>
-
-    <!-- DYNAMIC BACKGROUND LUMINANCE & CONTRAST SYNC CONTROLLER -->
-    <script id="preview-watermark-script">
-      (function() {
-        function getLuminance(r, g, b) {
-          return 0.299 * r + 0.587 * g + 0.114 * b;
-        }
-
-        function parseRgb(colorStr) {
-          if (!colorStr) return null;
-          var match = colorStr.match(/rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)/i);
-          if (match) {
-            return { r: parseInt(match[1], 10), g: parseInt(match[2], 10), b: parseInt(match[3], 10) };
-          }
-          if (colorStr.indexOf('#') === 0) {
-            var hex = colorStr.slice(1);
-            if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-            if (hex.length >= 6) {
-              return {
-                r: parseInt(hex.substring(0, 2), 16),
-                g: parseInt(hex.substring(2, 4), 16),
-                b: parseInt(hex.substring(4, 6), 16)
-              };
-            }
-          }
-          return null;
-        }
-
-        function getEffectiveBgAtPoint(x, y) {
-          var overlay = document.getElementById('preview-watermark-overlay');
-          var prevDisplay = '';
-          if (overlay) {
-            prevDisplay = overlay.style.display;
-            overlay.style.display = 'none';
-          }
-          var targetEl = document.elementFromPoint(x, y);
-          if (overlay) {
-            overlay.style.display = prevDisplay;
-          }
-
-          var curr = targetEl;
-          while (curr && curr !== document.documentElement) {
-            var style = window.getComputedStyle(curr);
-            var bg = style.backgroundColor;
-            var parsed = parseRgb(bg);
-            if (parsed && !bg.includes('rgba(0, 0, 0, 0)') && bg !== 'transparent') {
-              return parsed;
-            }
-            curr = curr.parentElement;
-          }
-
-          var bodyBg = parseRgb(window.getComputedStyle(document.body).backgroundColor);
-          return bodyBg || { r: 12, g: 12, b: 12 };
-        }
-
-        function syncWatermarkTheme() {
-          var pill = document.getElementById('preview-watermark-pill');
-          var bigDiagonal = document.getElementById('preview-big-diagonal');
-          if (!pill) return;
-
-          var rect = pill.getBoundingClientRect();
-          var sampleX = rect.left + rect.width / 2;
-          var sampleY = rect.top + rect.height / 2;
-
-          var bgRgb = getEffectiveBgAtPoint(sampleX, sampleY);
-          var lum = getLuminance(bgRgb.r, bgRgb.g, bgRgb.b);
-          var isLight = lum > 130; // true when background is white or light
-
-          if (isLight) {
-            // When background is white -> text is black
-            pill.style.color = '#000000';
-            pill.style.background = 'rgba(255, 255, 255, 0.88)';
-            pill.style.borderColor = 'rgba(0, 0, 0, 0.18)';
-            pill.style.boxShadow = '0 4px 18px rgba(0, 0, 0, 0.12)';
-            if (bigDiagonal) bigDiagonal.style.color = 'rgba(0, 0, 0, 0.06)';
-          } else {
-            // When background is black -> text is white
-            pill.style.color = '#ffffff';
-            pill.style.background = 'rgba(12, 12, 12, 0.82)';
-            pill.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-            pill.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)';
-            if (bigDiagonal) bigDiagonal.style.color = 'rgba(255, 255, 255, 0.08)';
-          }
-        }
-
-        var ticking = false;
-        function onScrollOrResize() {
-          if (!ticking) {
-            window.requestAnimationFrame(function() {
-              syncWatermarkTheme();
-              ticking = false;
-            });
-            ticking = true;
-          }
-        }
-
-        window.addEventListener('scroll', onScrollOrResize, { passive: true });
-        window.addEventListener('resize', onScrollOrResize, { passive: true });
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', syncWatermarkTheme);
-        } else {
-          syncWatermarkTheme();
-        }
-        setTimeout(syncWatermarkTheme, 300);
-        setTimeout(syncWatermarkTheme, 1000);
-      })();
-    </script>
-    `;
-
-      if (html.includes('</body>')) {
-        html = html.replace('</body>', `${watermarkHtml}</body>`);
-      } else {
-        html += watermarkHtml;
-      }
+      html = siteGenerator.injectPreviewWatermark(html, false, siteId);
     }
   }
 
