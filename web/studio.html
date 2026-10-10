@@ -2206,8 +2206,48 @@
 
       <div class="viewport-canvas-frame" id="canvasFrame">
         <div class="spatial-viewport-screen" id="viewportScreen">
+          <!-- Shimmering Skeletal Canvas Viewport Loading State -->
+          <div id="canvasSkeletonLoader" class="canvas-skeleton-overlay" style="display:flex;">
+            <div class="skeleton-portfolio-wireframe" style="width: 100%; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column;">
+              <div class="skeleton-wire-nav">
+                <div class="mf-skeleton" style="width: 130px; height: 18px; border-radius: 4px;"></div>
+                <div style="display: flex; gap: 14px; align-items: center;">
+                  <div class="mf-skeleton" style="width: 50px; height: 14px; border-radius: 4px;"></div>
+                  <div class="mf-skeleton" style="width: 50px; height: 14px; border-radius: 4px;"></div>
+                  <div class="mf-skeleton" style="width: 80px; height: 28px; border-radius: 999px;"></div>
+                </div>
+              </div>
+              <div class="skeleton-wire-hero">
+                <div class="mf-skeleton mf-skeleton-circle" style="width: 110px; height: 110px; margin: 0 auto 18px;"></div>
+                <div class="mf-skeleton" style="width: 320px; height: 36px; border-radius: 8px; margin: 0 auto 12px;"></div>
+                <div class="mf-skeleton" style="width: 440px; height: 16px; border-radius: 4px; margin: 0 auto 8px;"></div>
+                <div class="mf-skeleton" style="width: 340px; height: 14px; border-radius: 4px; margin: 0 auto 22px;"></div>
+                <div style="display:flex; justify-content:center; gap:12px;">
+                  <div class="mf-skeleton" style="width: 120px; height: 38px; border-radius: 8px;"></div>
+                  <div class="mf-skeleton" style="width: 120px; height: 38px; border-radius: 8px;"></div>
+                </div>
+              </div>
+              <div class="skeleton-wire-cards">
+                <div class="mf-skeleton-card">
+                  <div class="mf-skeleton" style="width: 100%; height: 130px; border-radius: 8px;"></div>
+                  <div class="mf-skeleton" style="width: 65%; height: 16px; border-radius: 4px;"></div>
+                  <div class="mf-skeleton" style="width: 90%; height: 12px; border-radius: 4px;"></div>
+                </div>
+                <div class="mf-skeleton-card">
+                  <div class="mf-skeleton" style="width: 100%; height: 130px; border-radius: 8px;"></div>
+                  <div class="mf-skeleton" style="width: 65%; height: 16px; border-radius: 4px;"></div>
+                  <div class="mf-skeleton" style="width: 90%; height: 12px; border-radius: 4px;"></div>
+                </div>
+                <div class="mf-skeleton-card">
+                  <div class="mf-skeleton" style="width: 100%; height: 130px; border-radius: 8px;"></div>
+                  <div class="mf-skeleton" style="width: 65%; height: 16px; border-radius: 4px;"></div>
+                  <div class="mf-skeleton" style="width: 90%; height: 12px; border-radius: 4px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="spatial-viewport-scaler" id="viewportScaler">
-            <iframe id="studioLiveIframe" class="spatial-viewport-iframe" src="/jack-3d?embed=1" title="Live 3D Portfolio Canvas"></iframe>
+            <iframe id="studioLiveIframe" class="spatial-viewport-iframe" src="/jack-3d?embed=1" title="Live 3D Portfolio Canvas" onload="hideCanvasSkeleton()"></iframe>
           </div>
         </div>
       </div>
@@ -2637,9 +2677,30 @@
       });
     }
 
+    function showCanvasSkeleton() {
+      const loader = document.getElementById('canvasSkeletonLoader');
+      if (loader) {
+        loader.style.display = 'flex';
+        loader.classList.remove('hidden');
+      }
+    }
+
+    function hideCanvasSkeleton() {
+      const loader = document.getElementById('canvasSkeletonLoader');
+      if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => {
+          if (loader.classList.contains('hidden')) {
+            loader.style.display = 'none';
+          }
+        }, 400);
+      }
+    }
+
     function reloadStudioCanvas() {
       const iframe = document.getElementById('studioLiveIframe');
       if (iframe) {
+        showCanvasSkeleton();
         iframe.src = iframe.src;
         setTimeout(applyViewportScaling, 200);
       }
@@ -2722,7 +2783,10 @@
         displayName = 'RBP Kinetic Monochrome';
       }
 
-      if (iframe) iframe.src = `${designUrl}?embed=1`;
+      if (iframe) {
+        showCanvasSkeleton();
+        iframe.src = `${designUrl}?embed=1`;
+      }
       if (urlDisplay) urlDisplay.textContent = `https://www.myfolio.tech${designUrl}`;
       if (previewBtn) previewBtn.href = designUrl;
 
@@ -3602,6 +3666,7 @@
         // Point live canvas iframe directly to draft preview URL
         const iframe = document.getElementById('studioLiveIframe');
         if (iframe) {
+          showCanvasSkeleton();
           iframe.removeAttribute('srcdoc');
           const previewSrc = data.previewUrl ? `${data.previewUrl}?embed=1&preview=1&t=${Date.now()}` : (data.siteId ? `/p/${data.siteId}?embed=1&preview=1&t=${Date.now()}` : `/jack-3d?embed=1&preview=1&t=${Date.now()}`);
           iframe.src = previewSrc;
