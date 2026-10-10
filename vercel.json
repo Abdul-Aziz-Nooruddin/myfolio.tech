@@ -46,11 +46,7 @@
       ]
     }
   ],
-  "functions": {
-    "src/index.js": {
-      "maxDuration": 60
-    }
-  },
+
   "builds": [
     {
       "src": "src/index.js",
