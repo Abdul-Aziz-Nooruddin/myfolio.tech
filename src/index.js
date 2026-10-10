@@ -1381,15 +1381,22 @@ app.post('/api/portfolio/:siteId/export', AuthMiddleware.requireAuth, async (req
 app.get('/api/demo/samples', (req, res) => {
   const { TemplateRegistry } = require('./templates/template-registry');
   const templates = TemplateRegistry.getStudioTemplates();
-  const samples = templates.map(t => ({
-    id: t.id,
-    name: t.name,
-    role: t.category,
-    badge: t.category,
-    description: t.description,
-    techStack: t.recommendedFor,
-    previewUrl: `/p/${t.id}`
-  }));
+  const samples = templates.map(t => {
+    let previewUrl = `/p/${t.id}`;
+    if (t.id === 'jack-3d-creator') previewUrl = '/jack-3d';
+    else if (t.id === 'nadia-brand') previewUrl = '/nadia';
+    else if (t.id === 'kage-temple') previewUrl = '/kage';
+    else if (t.id === 'rbp-kinetic-monochrome') previewUrl = '/rbp';
+    return {
+      id: t.id,
+      name: t.name,
+      role: t.category,
+      badge: t.category,
+      description: t.description,
+      techStack: t.recommendedFor,
+      previewUrl
+    };
+  });
   res.json({ success: true, count: samples.length, samples });
 });
 
@@ -1668,6 +1675,8 @@ app.post(
         )
       ) && isGeneratingForSelf;
 
+      const shouldPublishLive = Boolean(req.body && req.body.publish === true);
+
       // Determine the user's custom URL identifier (username)
       let userHandle = (
         (isVipFounder ? 'abdulaziz' : '') ||
@@ -1826,7 +1835,6 @@ app.post(
       const chosenTemplate = (input.preferences?.theme && input.preferences.theme !== 'auto') ? input.preferences.theme : null;
       const selectedTemplate = TemplateRegistry.selectTemplate(chosenTemplate, normalized);
 
-      const shouldPublishLive = req.body.publish === true;
       const isSitePaid = Boolean(isVipFounder && shouldPublishLive);
       const siteGen = new SiteGenerator();
       const siteResult = await siteGen.generateSite({
@@ -4210,7 +4218,8 @@ app.get('/p/:siteId', async (req, res) => {
         res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; frame-ancestors *;");
         res.setHeader('X-Content-Type-Options', 'nosniff');
         const rendered = template.render(demoData);
-        const htmlOutput = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
+        let htmlOutput = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
+        htmlOutput = siteGenerator.injectPreviewWatermark(htmlOutput, false, template.id || siteId);
         hostingProvider.deploy(siteId, htmlOutput, demoData, true).catch(() => {});
         return res.status(200).send(htmlOutput);
       } catch (renderErr) {

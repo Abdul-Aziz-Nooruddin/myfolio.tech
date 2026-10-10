@@ -327,6 +327,13 @@ function openStudioWithTemplate(templateId) {
       skills: ['Strategic Advisory', 'Keynote Speaking', 'Executive Coaching', 'Organizational Design', 'Author'],
       theme: 'nadia-brand'
     },
+    'kage-temple': {
+      name: 'Kenji Sato',
+      role: '3D Spatial Engineer & Graphics Architect',
+      bio: 'Crafting atmospheric Kyoto temple sanctuaries and GPU-accelerated spatial environments in Three.js.',
+      skills: ['Three.js', 'WebGL', 'GLSL', 'TypeScript', 'Spatial Audio', 'Blender'],
+      theme: 'kage-temple'
+    },
     'rbp-kinetic-monochrome': {
       name: 'Josh Miller',
       role: 'Design Engineer & Full-Stack Developer',
