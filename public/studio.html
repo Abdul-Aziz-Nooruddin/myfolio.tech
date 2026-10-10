@@ -6,6 +6,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <script>
+    if (window.location.hostname === 'myfolio.tech') {
+      window.location.replace('https://www.myfolio.tech' + window.location.pathname + window.location.search + window.location.hash);
+    }
+  </script>
   <!-- GA4 Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZJFT5YTN2"></script>
   <script>
@@ -3487,11 +3492,15 @@
 
         payload.publish = false; // Always generate preview draft first
 
+        const apiEndpoint = (window.location.hostname === 'myfolio.tech' || window.location.hostname === 'www.myfolio.tech')
+          ? 'https://www.myfolio.tech/api/generate/unified'
+          : '/api/generate/unified';
+
         const abortCtrl = new AbortController();
         const timeoutTimer = setTimeout(() => abortCtrl.abort(), 60000);
         let res;
         try {
-          res = await fetch('/api/generate/unified', {
+          res = await fetch(apiEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
