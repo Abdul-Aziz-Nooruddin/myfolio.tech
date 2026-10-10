@@ -1796,6 +1796,7 @@ app.post(
       const chosenTemplate = (input.preferences?.theme && input.preferences.theme !== 'auto') ? input.preferences.theme : null;
       const selectedTemplate = TemplateRegistry.selectTemplate(chosenTemplate, normalized);
 
+      const shouldPublishLive = req.body.publish === true;
       const isSitePaid = Boolean(isVipFounder && shouldPublishLive);
       const siteGen = new SiteGenerator();
       const siteResult = await siteGen.generateSite({
@@ -1829,8 +1830,6 @@ app.post(
           ]);
         } catch (e) {}
       }
-
-      const shouldPublishLive = req.body.publish === true;
 
       // Persist complete portfolio metadata for cross-device synchronization
       const metaPayload = {
