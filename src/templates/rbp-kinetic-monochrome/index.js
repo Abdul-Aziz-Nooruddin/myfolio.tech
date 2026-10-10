@@ -102,8 +102,8 @@ const RBPKineticMonochromeTemplate = {
     const isFemale = (data.gender === 'female') || (data.avatarSet === 'female') || (inferredGender === 'female');
     const hasPhoto = Boolean(data.avatar && data.avatar.trim() && !data.avatar.includes('placeholder'));
     
-    let defaultSrcA = '/assets/designs/rbp-portfolio/josh.webp';
-    let defaultSrcB = '/assets/designs/rbp-portfolio/josh_wave.webp';
+    let defaultSrcA = '/assets/designs/rbp-portfolio/josh.webp?v=3';
+    let defaultSrcB = '/assets/designs/rbp-portfolio/josh_wave.webp?v=3';
     let defaultPersona = 'male';
 
     if (hasPhoto && options.preferRealPhoto) {
@@ -111,8 +111,8 @@ const RBPKineticMonochromeTemplate = {
       defaultSrcB = data.avatar;
       defaultPersona = 'photo';
     } else if (isFemale) {
-      defaultSrcA = '/assets/designs/rbp-portfolio/maya.webp';
-      defaultSrcB = '/assets/designs/rbp-portfolio/maya_wave.webp';
+      defaultSrcA = '/assets/designs/rbp-portfolio/maya.webp?v=3';
+      defaultSrcB = '/assets/designs/rbp-portfolio/maya_wave.webp?v=3';
       defaultPersona = 'female';
     }
 
@@ -403,6 +403,7 @@ const RBPKineticMonochromeTemplate = {
     .pill-nav a:hover, .pill-nav a.active {
       color: var(--foreground);
       background: var(--border-subtle);
+      font-weight: 600;
     }
     .theme-toggle-btn {
       background: none;
@@ -1630,9 +1631,9 @@ const RBPKineticMonochromeTemplate = {
         }
 
         const personas = {
-          male: { a: '/assets/designs/rbp-portfolio/josh.webp', b: '/assets/designs/rbp-portfolio/josh_wave.webp' },
-          female: { a: '/assets/designs/rbp-portfolio/maya.webp', b: '/assets/designs/rbp-portfolio/maya_wave.webp' },
-          photo: { a: '${TemplateHelper.escapeHtml(data.avatar || defaultSrcA)}', b: '${TemplateHelper.escapeHtml(data.avatar || defaultSrcA)}' }
+          male: { a: '/assets/designs/rbp-portfolio/josh.webp?v=3', b: '/assets/designs/rbp-portfolio/josh_wave.webp?v=3' },
+          female: { a: '/assets/designs/rbp-portfolio/maya.webp?v=3', b: '/assets/designs/rbp-portfolio/maya_wave.webp?v=3' },
+          photo: { a: '${TemplateHelper.escapeHtml(data.avatar || defaultSrcA)}', b: '${TemplateHelper.escapeHtml(data.avatar || defaultSrcB)}' }
         };
 
         function setPersona(key) {
@@ -1899,6 +1900,80 @@ const RBPKineticMonochromeTemplate = {
       }
 
       initPhysicsChips();
+
+      // 6. Pill Navigation Active Scroll Spy & Smooth Clicking
+      function initPillNavSpy() {
+        const navLinks = Array.from(document.querySelectorAll('.pill-nav a[href^="#"]'));
+        if (!navLinks.length) return;
+
+        const sections = navLinks.map(link => {
+          const id = link.getAttribute('href').slice(1);
+          const el = document.getElementById(id);
+          return { id, link, el };
+        }).filter(item => item.el !== null);
+
+        if (!sections.length) return;
+
+        function setActive(targetLink) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          if (targetLink) targetLink.classList.add('active');
+        }
+
+        // Smooth click handler
+        navLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const id = link.getAttribute('href').slice(1);
+            const targetEl = document.getElementById(id);
+            if (targetEl) {
+              e.preventDefault();
+              const offsetTop = targetEl.getBoundingClientRect().top + window.pageYOffset - 50;
+              window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+              setActive(link);
+            }
+          });
+        });
+
+        // Dynamic scroll spy
+        let isTicking = false;
+        function onScroll() {
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          const windowHeight = window.innerHeight;
+          const docHeight = document.documentElement.scrollHeight;
+
+          // If scrolled near bottom of page, highlight Contact
+          if (scrollY + windowHeight >= docHeight - 80) {
+            setActive(sections[sections.length - 1].link);
+            return;
+          }
+
+          const triggerPoint = scrollY + windowHeight * 0.35;
+          let current = sections[0];
+
+          for (let i = 0; i < sections.length; i++) {
+            if (triggerPoint >= sections[i].el.offsetTop) {
+              current = sections[i];
+            }
+          }
+
+          if (current) {
+            setActive(current.link);
+          }
+        }
+
+        window.addEventListener('scroll', () => {
+          if (!isTicking) {
+            requestAnimationFrame(() => {
+              onScroll();
+              isTicking = false;
+            });
+            isTicking = true;
+          }
+        }, { passive: true });
+
+        onScroll();
+      }
+
+      initPillNavSpy();
 
       // 6. Kinetic Structure Shift: StringTune & Smooth RAF Scroll Lerp Engine
       try {
