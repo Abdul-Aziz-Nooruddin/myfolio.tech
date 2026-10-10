@@ -84,14 +84,25 @@ class TemplateHelper {
       'priya', 'ananya', 'aarti', 'neha', 'pooja', 'sneha', 'shreya', 'tanvi', 'riya', 'kavya', 'divya', 'deepa',
       'aisha', 'fatima', 'zainab', 'mariam', 'maryam', 'khadija', 'amira', 'layla', 'nour', 'huda', 'salma',
       'nadia', 'rachel', 'jessica', 'hannah', 'chloe', 'zoe', 'grace', 'lily', 'natalie', 'victoria', 'eva',
-      'claire', 'anna', 'laura', 'julia', 'maria', 'sophie', 'alicia', 'elizabeth', 'taylor', 'morgan', 'alexa'
+      'claire', 'anna', 'laura', 'julia', 'maria', 'sophie', 'alicia', 'elizabeth', 'taylor', 'morgan', 'alexa',
+      'monica', 'natasha', 'anya', 'swati', 'megha', 'sonia', 'shruti', 'kriti', 'isha', 'reem', 'yasmin', 'farida',
+      'asma', 'leila', 'clara', 'lucy', 'ruby', 'alice', 'zoey', 'ellie', 'nora', 'hazel', 'stella', 'amber', 'diana',
+      'vanessa', 'alina', 'daria', 'olga', 'yuki', 'sakura', 'mei', 'ling', 'jin', 'soo', 'anita', 'sunita', 'geeta',
+      'radha', 'simran', 'deepika', 'alia', 'kiara', 'tara', 'sonam'
     ]);
 
     const maleNames = new Set([
       'josh', 'joshua', 'david', 'alex', 'alexander', 'john', 'michael', 'james', 'robert', 'william', 'daniel',
       'abdul', 'aziz', 'mohammed', 'muhammad', 'ahmed', 'ali', 'omar', 'hamza', 'hassan', 'hussein', 'tariq',
       'rahul', 'rohit', 'amit', 'arjun', 'vikram', 'aditya', 'karan', 'siddharth', 'suresh', 'ramesh', 'raj',
-      'ethan', 'lucas', 'mason', 'oliver', 'noah', 'liam', 'logan', 'benjamin', 'samuel', 'jack', 'henry'
+      'ethan', 'lucas', 'mason', 'oliver', 'noah', 'liam', 'logan', 'benjamin', 'samuel', 'jack', 'henry',
+      'zuhair', 'syed', 'mustafa', 'ibrahim', 'yousef', 'yusuf', 'khaled', 'khalid', 'anas', 'bilal', 'usman',
+      'osman', 'farhan', 'rohan', 'varun', 'nikhil', 'gaurav', 'vivek', 'manish', 'prateek', 'anand', 'sanjay',
+      'ajay', 'vijay', 'sunil', 'anil', 'deepak', 'ashish', 'alok', 'dev', 'shivam', 'kartik', 'harsh', 'ayush',
+      'matthew', 'ryan', 'nathan', 'tyler', 'dylan', 'brandon', 'justin', 'kevin', 'eric', 'brian', 'jason',
+      'aaron', 'adam', 'chris', 'christopher', 'paul', 'mark', 'george', 'steven', 'stephen', 'andrew', 'thomas',
+      'charles', 'joseph', 'anthony', 'richard', 'carlos', 'miguel', 'juan', 'alejandro', 'pedro', 'luis', 'dmitry',
+      'ivan', 'sergey', 'alexei', 'kenji', 'hiroshi', 'wei', 'chen', 'jun'
     ]);
 
     if (femaleNames.has(firstName)) return 'female';

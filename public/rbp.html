@@ -1085,17 +1085,6 @@
             <img id="portrait-fallback-img" src="/assets/designs/rbp-portfolio/josh.webp" alt="Josh Miller" class="portrait-fallback-img" />
             <canvas id="portrait-morph-canvas"></canvas>
           </div>
-
-          <!-- Avatar Persona Switcher Pill -->
-          <div class="avatar-switcher-pill" id="avatar-switcher">
-            <button class="avatar-btn active" data-persona="male" title="Switch to Male Avatar">
-              <span>👦</span> Josh
-            </button>
-            <button class="avatar-btn " data-persona="female" title="Switch to Female Avatar">
-              <span>👧</span> Maya
-            </button>
-            
-          </div>
         </div>
       </div>
     </section>
@@ -1594,17 +1583,6 @@
         }
 
         setPersona('male');
-
-        // Persona switch buttons
-        const switcherBtns = document.querySelectorAll('.avatar-btn');
-        switcherBtns.forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            switcherBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const target = btn.getAttribute('data-persona');
-            setPersona(target);
-          });
-        });
 
         function resize() {
           const rect = frame.getBoundingClientRect();

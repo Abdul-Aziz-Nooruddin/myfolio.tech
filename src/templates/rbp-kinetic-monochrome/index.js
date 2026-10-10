@@ -97,22 +97,23 @@ const RBPKineticMonochromeTemplate = {
     const twitter = data.twitter || '';
     const website = data.website || '';
 
-    // Determine initial avatar set based on gender inference or explicit preference
-    const isFemale = (data.gender === 'female') || (data.avatarSet === 'female');
+    // Automatically identify candidate gender from data, bio, pronouns, and name
+    const inferredGender = TemplateHelper.inferGender(data.name || '', (data.bio || '') + ' ' + (data.about || ''));
+    const isFemale = (data.gender === 'female') || (data.avatarSet === 'female') || (inferredGender === 'female');
     const hasPhoto = Boolean(data.avatar && data.avatar.trim() && !data.avatar.includes('placeholder'));
     
     let defaultSrcA = '/assets/designs/rbp-portfolio/josh.webp';
     let defaultSrcB = '/assets/designs/rbp-portfolio/josh_wave.webp';
     let defaultPersona = 'male';
 
-    if (isFemale) {
-      defaultSrcA = '/assets/designs/rbp-portfolio/maya.webp';
-      defaultSrcB = '/assets/designs/rbp-portfolio/maya_wave.webp';
-      defaultPersona = 'female';
-    } else if (hasPhoto && options.preferRealPhoto) {
+    if (hasPhoto && options.preferRealPhoto) {
       defaultSrcA = data.avatar;
       defaultSrcB = data.avatar;
       defaultPersona = 'photo';
+    } else if (isFemale) {
+      defaultSrcA = '/assets/designs/rbp-portfolio/maya.webp';
+      defaultSrcB = '/assets/designs/rbp-portfolio/maya_wave.webp';
+      defaultPersona = 'female';
     }
 
     // Projects preparation
@@ -1207,20 +1208,6 @@ const RBPKineticMonochromeTemplate = {
             <img id="portrait-fallback-img" src="${TemplateHelper.escapeHtml(data.avatar || defaultSrcA)}" alt="${safeName}" class="portrait-fallback-img" />
             <canvas id="portrait-morph-canvas"></canvas>
           </div>
-
-          <!-- Avatar Persona Switcher Pill -->
-          <div class="avatar-switcher-pill" id="avatar-switcher">
-            <button class="avatar-btn ${defaultPersona === 'male' ? 'active' : ''}" data-persona="male" title="Switch to Male Avatar">
-              <span>👦</span> Josh
-            </button>
-            <button class="avatar-btn ${defaultPersona === 'female' ? 'active' : ''}" data-persona="female" title="Switch to Female Avatar">
-              <span>👧</span> Maya
-            </button>
-            ${hasPhoto ? `
-            <button class="avatar-btn ${defaultPersona === 'photo' ? 'active' : ''}" data-persona="photo" title="Switch to Real Photo">
-              <span>📷</span> Photo
-            </button>` : ''}
-          </div>
         </div>
       </div>
     </section>
@@ -1657,17 +1644,6 @@ const RBPKineticMonochromeTemplate = {
         }
 
         setPersona('${defaultPersona}');
-
-        // Persona switch buttons
-        const switcherBtns = document.querySelectorAll('.avatar-btn');
-        switcherBtns.forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            switcherBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const target = btn.getAttribute('data-persona');
-            setPersona(target);
-          });
-        });
 
         function resize() {
           const rect = frame.getBoundingClientRect();
