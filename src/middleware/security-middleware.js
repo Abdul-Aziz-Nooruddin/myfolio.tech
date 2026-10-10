@@ -13,14 +13,14 @@ class SecurityMiddleware {
       const isProduction = process.env.NODE_ENV === 'production';
       const csp = [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://tagassistant.google.com https://checkout.razorpay.com https://*.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://cdn.tailwindcss.com",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://db.onlinewebfonts.com",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://googletagmanager.com https://www.google-analytics.com https://google-analytics.com https://tagassistant.google.com https://checkout.razorpay.com https://*.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://*.unpkg.com https://cdn.tailwindcss.com",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://*.unpkg.com https://db.onlinewebfonts.com",
         "font-src 'self' https://fonts.gstatic.com https://db.onlinewebfonts.com https://*.supabase.co data:",
-        "img-src 'self' data: https: blob: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://www.google.co.in https://*.figma.site https://*.supabase.co",
+        "img-src 'self' data: https: blob: https://*.google-analytics.com https://google-analytics.com https://*.analytics.google.com https://analytics.google.com https://*.googletagmanager.com https://googletagmanager.com https://www.google.com https://*.google.com https://www.google.co.in https://*.figma.site https://*.supabase.co",
         "media-src 'self' https: data: blob: https://*.cloudfront.net",
         "frame-src 'self' https://myfolio.tech https://*.myfolio.tech https://sketchfab.com https://tagassistant.google.com https://api.razorpay.com https://checkout.razorpay.com",
         "frame-ancestors 'self' https://myfolio.tech https://*.myfolio.tech",
-        "connect-src 'self' blob: data: https://*.cloudfront.net https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://tagassistant.google.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://*.supabase.co",
+        "connect-src 'self' blob: data: https://myfolio.tech https://*.myfolio.tech https://*.cloudfront.net https://google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://googletagmanager.com https://*.googletagmanager.com https://www.google.com https://*.google.com https://tagassistant.google.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://unpkg.com https://*.unpkg.com https://*.supabase.co",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'"

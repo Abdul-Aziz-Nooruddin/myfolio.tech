@@ -2307,7 +2307,7 @@
     </div>
 
     <!-- Precision Generation Modal Overlay (Clean / Minimalist / Anti-AI Slop) -->
-    <div id="thinkingOrbGenModal" class="thinking-orb-modal-overlay" style="display:none;">
+    <div id="thinkingOrbGenModal" class="thinking-orb-modal-overlay" style="display:none;" onclick="if(event.target===this) this.style.display='none'">
       <div class="thinking-orb-modal-card">
         <canvas id="studioThinkingOrbCanvas" width="1" height="1" style="display:none;"></canvas>
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
@@ -2315,7 +2315,10 @@
             <span style="width:6px; height:6px; border-radius:50%; background:#10B981; box-shadow:0 0 8px rgba(16,185,129,0.8);"></span>
             <span style="font-family:var(--mf-font-mono, monospace); font-size:11px; font-weight:600; color:#E2E8F0; letter-spacing:0.06em; text-transform:uppercase;">BUILDING PORTFOLIO</span>
           </div>
-          <div id="orbStagePercent" class="orb-stage-percent">8%</div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div id="orbStagePercent" class="orb-stage-percent">8%</div>
+            <button type="button" onclick="document.getElementById('thinkingOrbGenModal').style.display='none'" style="background:transparent; border:none; color:#9ca3af; font-size:20px; cursor:pointer; padding:2px 6px; border-radius:4px; line-height:1;" title="Dismiss">&times;</button>
+          </div>
         </div>
 
         <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
@@ -3641,12 +3644,15 @@
         }
       } catch (err) {
         clearInterval(progressInterval);
+        const modal = document.getElementById('thinkingOrbGenModal');
+        if (modal) modal.style.display = 'none';
         if (fluidLevel) fluidLevel.style.height = '0%';
         if (fluidBtnPercent) fluidBtnPercent.style.display = 'none';
         if (fluidBtnText) fluidBtnText.textContent = 'Publish Live';
-        showToast('Generation note: ' + err.message, 'error');
+        console.error('[STUDIO] Generation failed:', err);
+        showToast('Generation note: ' + (err.message || 'Network error'), 'error');
       } finally {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
       }
     }
 
