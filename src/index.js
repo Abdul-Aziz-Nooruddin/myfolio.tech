@@ -78,6 +78,7 @@ app.all(['/health', '/healthz', '/api/health', '/healthcheck', '/ping', '/ready'
 
   res.status(200).json({
     status: 'healthy',
+    version: 'v1.6.2-tdz-verified',
     ok: true,
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
