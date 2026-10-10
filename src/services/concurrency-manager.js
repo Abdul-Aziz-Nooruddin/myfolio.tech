@@ -43,10 +43,12 @@ class ConcurrencyManager {
       }
     }
 
-    // 3. Enqueue and wait for available slot
+    // 3. Enqueue and wait for available slot (with 3-second safeguard against stalled queues)
     return new Promise((resolve) => {
-      this.queue.push({
+      let timer = null;
+      const job = {
         resolve: () => {
+          if (timer) clearTimeout(timer);
           this.activeCount++;
           resolve({
             isFastTrack: false,
@@ -54,7 +56,20 @@ class ConcurrencyManager {
           });
         },
         timestamp: Date.now()
-      });
+      };
+
+      timer = setTimeout(() => {
+        const idx = this.queue.indexOf(job);
+        if (idx !== -1) {
+          this.queue.splice(idx, 1);
+        }
+        resolve({
+          isFastTrack: true,
+          release: () => {}
+        });
+      }, 3000);
+
+      this.queue.push(job);
     });
   }
 

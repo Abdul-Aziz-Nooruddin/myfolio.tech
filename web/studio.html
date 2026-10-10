@@ -3170,23 +3170,52 @@
       reader.readAsDataURL(file);
     }
 
+    function compressCandidateImage(dataUrl, callback) {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1200;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressedUrl = canvas.toDataURL('image/jpeg', 0.85);
+        callback(compressedUrl);
+      };
+      img.onerror = () => callback(dataUrl);
+      img.src = dataUrl;
+    }
+
     function handleCandidatePhoto(input) {
       const file = input.files?.[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (e) => {
-        uploadedPhotoData = {
-          name: file.name,
-          mimeType: file.type || 'image/png',
-          dataUrl: e.target.result
-        };
-        const img = document.getElementById('photoPreviewImg');
-        if (img) img.src = e.target.result;
-        const nameEl = document.getElementById('photoPreviewName');
-        if (nameEl) nameEl.textContent = file.name;
-        const cont = document.getElementById('photoPreviewContainer');
-        if (cont) cont.style.display = 'flex';
-        showToast(`Candidate photo "${file.name}" attached!`, 'success');
+        compressCandidateImage(e.target.result, (compressedDataUrl) => {
+          uploadedPhotoData = {
+            name: file.name,
+            mimeType: 'image/jpeg',
+            dataUrl: compressedDataUrl
+          };
+          const img = document.getElementById('photoPreviewImg');
+          if (img) img.src = compressedDataUrl;
+          const nameEl = document.getElementById('photoPreviewName');
+          if (nameEl) nameEl.textContent = file.name;
+          const cont = document.getElementById('photoPreviewContainer');
+          if (cont) cont.style.display = 'flex';
+          showToast(`Candidate photo "${file.name}" attached & optimized!`, 'success');
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -3458,12 +3487,20 @@
 
         payload.publish = false; // Always generate preview draft first
 
-        const res = await fetch('/api/generate/unified', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(payload)
-        });
+        const abortCtrl = new AbortController();
+        const timeoutTimer = setTimeout(() => abortCtrl.abort(), 60000);
+        let res;
+        try {
+          res = await fetch('/api/generate/unified', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            signal: abortCtrl.signal,
+            body: JSON.stringify(payload)
+          });
+        } finally {
+          clearTimeout(timeoutTimer);
+        }
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to generate preview');
