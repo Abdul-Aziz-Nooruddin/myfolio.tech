@@ -601,9 +601,17 @@ Respond ONLY with valid JSON.`;
           console.log(`[AI] Extracted ${extractedText.length} characters of digital text from PDF. Parsing with Gemini...`);
           const textPrompt = `${extractionInstructions}\n\n--- RESUME CONTENT ---\n${extractedText.substring(0, 30000)}\n--- END RESUME CONTENT ---`;
 
-          const textResult = await this.callGemini(textPrompt);
-          if (textResult && textResult.extracted_data && Object.keys(textResult.extracted_data).length > 0) {
-            parsedResult = textResult;
+          try {
+            const textResult = await Promise.race([
+              this.callGemini(textPrompt),
+              new Promise((_, reject) => setTimeout(() => reject(new Error('AI parsing timeout')), 6000))
+            ]);
+            if (textResult && textResult.extracted_data && Object.keys(textResult.extracted_data).length > 0) {
+              parsedResult = textResult;
+            }
+          } catch (aiErr) {
+            console.warn('[AI] Fast AI parse timeout/fallback, using resilient local heuristics:', aiErr.message);
+            parsedResult = this.parseResumeHeuristics(extractedText);
           }
         } else {
           console.log('[AI] PDF has no/minimal selectable text (likely scanned image). Falling back to multimodal vision...');
@@ -617,10 +625,7 @@ Respond ONLY with valid JSON.`;
     if (!parsedResult) {
       const candidateModels = [
         'gemini-flash-latest',
-        'gemini-2.5-flash',
-        'gemini-3.5-flash',
-        'gemini-flash-lite-latest',
-        'gemini-pro-latest'
+        'gemini-2.5-flash'
       ];
       const base64Data = buffer.toString('base64');
 
@@ -635,14 +640,17 @@ Respond ONLY with valid JSON.`;
                 responseMimeType: 'application/json'
               }
             });
-            const result = await m.generateContent([
-              {
-                inlineData: {
-                  data: base64Data,
-                  mimeType: normalizedMime
-                }
-              },
-              extractionInstructions
+            const result = await Promise.race([
+              m.generateContent([
+                {
+                  inlineData: {
+                    data: base64Data,
+                    mimeType: normalizedMime
+                  }
+                },
+                extractionInstructions
+              ]),
+              new Promise((_, reject) => setTimeout(() => reject(new Error('multimodal timeout')), 6000))
             ]);
             const parsed = this.parseJsonResponse(result.response.text());
             if (parsed && parsed.extracted_data && Object.keys(parsed.extracted_data).length > 0) {
@@ -655,6 +663,7 @@ Respond ONLY with valid JSON.`;
             const response = await fetch(url, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              signal: AbortSignal.timeout(6000),
               body: JSON.stringify({
                 contents: [{
                   parts: [
