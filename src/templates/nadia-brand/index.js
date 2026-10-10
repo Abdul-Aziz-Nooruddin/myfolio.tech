@@ -55,8 +55,8 @@ const NadiaBrandTemplate = {
     );
 
     const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'hello@nadiaokonjo.com');
-    const portraitUrl = data.avatar || '/assets/nadia_portrait_nobg.png';
-    const bioPhotoUrl = data.photoUrl || '/assets/nadia_bio.jpg';
+    const portraitUrl = data.avatar || data.photoUrl || '/assets/nadia_portrait_nobg.png';
+    const bioPhotoUrl = data.photoUrl || data.avatar || '/assets/nadia_bio.jpg';
 
     // Talks list - dynamic from candidate data if provided, fallback to Nadia's talks
     let talks = [];
