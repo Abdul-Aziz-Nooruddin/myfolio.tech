@@ -155,6 +155,8 @@ class UnifiedProfileNormalizer {
       resumeData?.photoUrl ||
       resumeData?.avatar ||
       ghAvatar ||
+      (ghUsername ? `https://github.com/${ghUsername}.png` : null) ||
+      (isDefaultFounderVal(name) ? 'https://github.com/Abdul-Aziz-Nooruddin.png' : null) ||
       null;
     if (photoUrl) {
       recordProvenance('photoUrl', input?.avatar ? 'direct_upload' : (photoData?.url ? 'upload' : (ghAvatar ? 'github' : 'manual')), PROVENANCE_LEVELS.USER_PROVIDED);
@@ -250,6 +252,9 @@ class UnifiedProfileNormalizer {
       list.forEach(p => {
         if (!p || (!p.name && !p.title)) return;
         const rawName = String(p.name || p.title || '').trim();
+        // Discard resume noise like "CGPA", "Relevant Coursework", "Coursework", "Dean's list", "nBalancing thoroughness with", "Education"
+        if (/^(cgpa|gpa|relevant coursework|coursework|academic|grades?|percentage|dean'?s list|curriculum|nbalancing|education)\b/i.test(rawName)) return;
+        if (rawName.length < 3 || /^\d+(\.\d+)?(\/\d+)?$/.test(rawName)) return;
         const normName = rawName.toLowerCase().replace(/[^a-z0-9]/g, '');
         if (normName && !seenProjectNames.has(normName)) {
           seenProjectNames.add(normName);

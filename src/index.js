@@ -1736,6 +1736,35 @@ app.post(
         } catch (resImgErr) {
           console.warn('[API] Resume image avatar save error:', resImgErr.message);
         }
+      } else if (!input.avatar && !input.photoUrl) {
+        const ghTarget = targetGithubUser || (isVipFounder ? 'Abdul-Aziz-Nooruddin' : (input.username || userHandle));
+        if (ghTarget && !ghTarget.startsWith('web-')) {
+          try {
+            const avatarUrl = `https://github.com/${ghTarget}.png`;
+            const avResp = await fetch(avatarUrl, { headers: { 'User-Agent': 'MyFolio-Platform' } });
+            if (avResp.ok) {
+              const avatarBuf = Buffer.from(await avResp.arrayBuffer());
+              if (avatarBuf.length > 500) {
+                await fs.promises.writeFile(path.join(siteDir, 'avatar.png'), avatarBuf).catch(() => {});
+                const avatarWebPath = isVipFounder ? `/sites/abdulaziz/avatar.png` : `/sites/${siteId}/avatar.png`;
+                input.avatar = avatarWebPath;
+                input.photoUrl = avatarWebPath;
+                if (isVipFounder) {
+                  try {
+                    const abDir = resolveSafeSiteDir('abdulaziz');
+                    await fs.promises.writeFile(path.join(abDir, 'avatar.png'), avatarBuf).catch(() => {});
+                  } catch (e) {}
+                }
+              }
+            }
+          } catch (ghAvErr) {
+            console.warn('[API] Could not fetch GitHub avatar:', ghAvErr.message);
+          }
+          if (!input.avatar) {
+            input.avatar = `https://github.com/${ghTarget}.png`;
+            input.photoUrl = `https://github.com/${ghTarget}.png`;
+          }
+        }
       }
 
       // 5. Ingest, Save & AI-Parse Uploaded Certificates (Parallelized)
@@ -3745,7 +3774,9 @@ app.get(['/avatar.png', '/sites/:handle/avatar.png', '/u/:handle/avatar.png'], (
   }
   if (!handle) handle = 'abdulaziz';
 
+  const siteDir = resolveSafeSiteDir(handle);
   const candidates = [
+    path.join(siteDir, 'avatar.png'),
     path.join(process.cwd(), 'public', 'sites', handle, 'avatar.png'),
     path.join(process.cwd(), 'public', 'sites', 'abdulaziz', 'avatar.png')
   ];
@@ -3756,6 +3787,12 @@ app.get(['/avatar.png', '/sites/:handle/avatar.png', '/u/:handle/avatar.png'], (
       res.setHeader('Cache-Control', 'public, max-age=86400');
       return res.sendFile(c);
     }
+  }
+
+  // Resilient fallback: redirect to candidate GitHub avatar
+  const ghHandle = (handle === 'abdulaziz' || handle === 'aziz') ? 'Abdul-Aziz-Nooruddin' : handle;
+  if (ghHandle && !ghHandle.startsWith('web-')) {
+    return res.redirect(`https://github.com/${ghHandle}.png`);
   }
   next();
 });
