@@ -2939,26 +2939,29 @@ app.get(['/rbp', '/rbp-portfolio', '/rbp-kinetic', '/rbp-kinetic-monochrome'], (
 });
 
 app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, res) => {
-  const tomCandidates = [
-    path.join(process.cwd(), 'web', 'tom.html'),
-    path.join(process.cwd(), 'public', 'tom.html'),
-    path.join(process.cwd(), 'web', 'landing-pages', 'tom.html'),
-    path.join(process.cwd(), 'public', 'landing-pages', 'tom.html')
-  ];
-  for (const p of tomCandidates) {
-    if (fs.existsSync(p)) {
-      let content = fs.readFileSync(p, 'utf8');
-      content = siteGenerator.injectPreviewWatermark(content, false, 'tom-cel-animator');
-      return res.type('html').send(content);
-    }
-  }
   const { TemplateRegistry } = require('./templates/template-registry');
-  const rendered = TemplateRegistry.render('tom-cel-animator', {
-    name: 'Felix Vance',
-    role: 'Original Cel Animator & Storyboarder',
-    bio: 'Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics and kinetic hand-drawn storytelling.',
-    email: 'contact@myfolio.tech'
-  });
+  const demoData = {
+    name: 'Alex Vance',
+    role: 'Full-Stack & Systems Architect',
+    bio: 'Crafting resilient distributed software systems, high-speed API pipelines, and kinetic interactive surfaces.',
+    email: 'alex.vance@myfolio.tech',
+    location: 'San Francisco & Remote Worldwide',
+    projects: [
+      {
+        title: 'Encrypted Note Messenger',
+        description: 'Secure peer-to-peer message transmission with forward secrecy and ephemeral storage.',
+        tags: ['TypeScript', 'Web Crypto', 'Node.js'],
+        link: 'https://github.com/Abdul-Aziz-Nooruddin'
+      },
+      {
+        title: 'Autonomous Code Engine',
+        description: 'High-speed code synthesis pipeline with automated linting, test suites, and git commits.',
+        tags: ['Python', 'Docker', 'FastAPI'],
+        link: 'https://github.com/Abdul-Aziz-Nooruddin'
+      }
+    ]
+  };
+  const rendered = TemplateRegistry.render('tom-cel-animator', demoData);
   let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'tom-cel-animator');
   res.type('html').send(content);
 });
