@@ -1387,6 +1387,7 @@ app.get('/api/demo/samples', (req, res) => {
     else if (t.id === 'nadia-brand') previewUrl = '/nadia';
     else if (t.id === 'kage-temple') previewUrl = '/kage';
     else if (t.id === 'rbp-kinetic-monochrome') previewUrl = '/rbp';
+    else if (t.id === 'tom-cel-animator' || t.id === 'tom') previewUrl = '/tom';
     return {
       id: t.id,
       name: t.name,
@@ -2934,6 +2935,31 @@ app.get(['/rbp', '/rbp-portfolio', '/rbp-kinetic', '/rbp-kinetic-monochrome'], (
     email: 'josh@example.com'
   });
   let content = siteGenerator.injectPreviewWatermark(rendered.html, false, 'rbp-kinetic-monochrome');
+  res.type('html').send(content);
+});
+
+app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, res) => {
+  const tomCandidates = [
+    path.join(process.cwd(), 'web', 'tom.html'),
+    path.join(process.cwd(), 'public', 'tom.html'),
+    path.join(process.cwd(), 'web', 'landing-pages', 'tom.html'),
+    path.join(process.cwd(), 'public', 'landing-pages', 'tom.html')
+  ];
+  for (const p of tomCandidates) {
+    if (fs.existsSync(p)) {
+      let content = fs.readFileSync(p, 'utf8');
+      content = siteGenerator.injectPreviewWatermark(content, false, 'tom-cel-animator');
+      return res.type('html').send(content);
+    }
+  }
+  const { TemplateRegistry } = require('./templates/template-registry');
+  const rendered = TemplateRegistry.render('tom-cel-animator', {
+    name: 'Felix Vance',
+    role: 'Original Cel Animator & Storyboarder',
+    bio: 'Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics and kinetic hand-drawn storytelling.',
+    email: 'contact@myfolio.tech'
+  });
+  let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'tom-cel-animator');
   res.type('html').send(content);
 });
 

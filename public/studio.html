@@ -1978,6 +1978,17 @@
                   <div class="world-cat-desc" style="font-size: 11.5px; color: #94a3b8; margin-top: 4px; line-height: 1.4;">WebGL flow shader • Morphing portrait (Josh &amp; Maya) • StringTune scroll lerp structure shift • Matter.js physics stack chips</div>
                 </div>
               </div>
+
+              <div class="world-cat-card" onclick="selectCuratedWorld('tom-cel-animator', this)" style="border: 1px solid rgba(255,255,255,0.12); background: rgba(255, 183, 2, 0.05); padding: 14px; border-radius: 12px; display: flex; gap: 16px; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                <div class="world-cat-thumb" style="width: 72px; height: 72px; border-radius: 10px; background-image:url('/assets/templates/tom-cel-animator-hero.webp'); background-size: cover; background-position: center top; background-color: #f7f3eb; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15);"></div>
+                <div class="world-cat-body" style="flex: 1;">
+                  <div class="world-cat-name" style="font-size: 15px; font-weight: 700; color: #ffffff; display: flex; align-items: center; justify-content: space-between;">
+                    <span>Tom 2D Cel Animation</span>
+                    <span class="active-badge" style="font-size: 10px; padding: 2px 8px; border-radius: 9999px; background: rgba(255, 183, 2, 0.2); color: #ffb702; font-family: var(--mf-font-mono); display: none;">ACTIVE</span>
+                  </div>
+                  <div class="world-cat-desc" style="font-size: 11.5px; color: #94a3b8; margin-top: 4px; line-height: 1.4;">285-frame Apple canvas scrollytelling • Slapstick newspaper rip • Hand-inked comic bento • Retro 24 FPS animation reel</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2755,13 +2766,14 @@
         const isNadia = selectedUniverseKey === 'nadia-brand';
         const isKage = selectedUniverseKey === 'kage-temple' || selectedUniverseKey === 'kage';
         const isRbp = selectedUniverseKey === 'rbp-kinetic-monochrome' || selectedUniverseKey === 'rbp';
-        const color = isNadia ? '#ff4d30' : (isKage ? '#e0231c' : (isRbp ? '#fafafa' : 'var(--mf-accent-blue, #38bdf8)'));
+        const isTom = selectedUniverseKey === 'tom-cel-animator' || selectedUniverseKey === 'tom' || selectedUniverseKey === 'tom-animation';
+        const color = isNadia ? '#ff4d30' : (isKage ? '#e0231c' : (isRbp ? '#fafafa' : (isTom ? '#ffb702' : 'var(--mf-accent-blue, #38bdf8)')));
         el.style.border = `2px solid ${color}`;
         const b = el.querySelector('.active-badge');
         if (b) {
           b.style.display = 'inline-block';
           b.style.color = color;
-          b.style.background = isNadia ? 'rgba(255, 77, 48, 0.2)' : (isKage ? 'rgba(224, 35, 28, 0.2)' : (isRbp ? 'rgba(250, 250, 250, 0.2)' : 'rgba(56, 189, 248, 0.2)'));
+          b.style.background = isNadia ? 'rgba(255, 77, 48, 0.2)' : (isKage ? 'rgba(224, 35, 28, 0.2)' : (isRbp ? 'rgba(250, 250, 250, 0.2)' : (isTom ? 'rgba(255, 183, 2, 0.2)' : 'rgba(56, 189, 248, 0.2)')));
         }
       }
 
@@ -2781,6 +2793,9 @@
       } else if (selectedUniverseKey === 'rbp-kinetic-monochrome' || selectedUniverseKey === 'rbp') {
         designUrl = '/rbp';
         displayName = 'RBP Kinetic Monochrome';
+      } else if (selectedUniverseKey === 'tom-cel-animator' || selectedUniverseKey === 'tom' || selectedUniverseKey === 'tom-animation') {
+        designUrl = '/tom';
+        displayName = 'Tom 2D Cel Animation';
       }
 
       if (iframe) {

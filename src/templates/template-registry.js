@@ -9,6 +9,7 @@ const { Jack3DCreatorTemplate } = require('./jack-3d-creator');
 const { NadiaBrandTemplate } = require('./nadia-brand');
 const { KageTempleTemplate } = require('./kage-temple');
 const { RBPKineticMonochromeTemplate } = require('./rbp-kinetic-monochrome');
+const { TomCelAnimatorTemplate } = require('./tom-cel-animator');
 
 class TemplateRegistry {
   static _templates = {
@@ -22,7 +23,12 @@ class TemplateRegistry {
     'rbp-kinetic-monochrome': RBPKineticMonochromeTemplate,
     'rbp-portfolio': RBPKineticMonochromeTemplate,
     'kinetic-monochrome': RBPKineticMonochromeTemplate,
-    'calm-monochrome': RBPKineticMonochromeTemplate
+    'calm-monochrome': RBPKineticMonochromeTemplate,
+    'tom-cel-animator': TomCelAnimatorTemplate,
+    'tom': TomCelAnimatorTemplate,
+    'tom-animation': TomCelAnimatorTemplate,
+    'cel-animator': TomCelAnimatorTemplate,
+    'comic-editorial': TomCelAnimatorTemplate
   };
 
   static templates = new Proxy(TemplateRegistry._templates, {
@@ -68,7 +74,8 @@ class TemplateRegistry {
     'jack-3d-creator',
     'nadia-brand',
     'kage-temple',
-    'rbp-kinetic-monochrome'
+    'rbp-kinetic-monochrome',
+    'tom-cel-animator'
   ];
 
   /**
@@ -114,13 +121,16 @@ class TemplateRegistry {
   }
 
   /**
-   * Universal template selector — routes to Jack 3D Creator, Nadia Personal Brand, or Kage Temple
+   * Universal template selector — routes to Jack 3D Creator, Nadia Personal Brand, Kage Temple, RBP Kinetic, or Tom Cel Animator
    */
   static selectTemplate(requestedId = null, candidateProfile = null, userId = null) {
     if (requestedId && this._templates[requestedId]) {
       return this._templates[requestedId];
     }
     const role = (candidateProfile?.role || candidateProfile?.title || '').toLowerCase();
+    if (role.includes('animat') || role.includes('cartoon') || role.includes('comic') || role.includes('illustrat') || role.includes('storyboard') || role.includes('2d') || role.includes('cel') || role.includes('motion')) {
+      return this._templates['tom-cel-animator'];
+    }
     if (role.includes('speaker') || role.includes('advisor') || role.includes('writer') || role.includes('author') || role.includes('consultant')) {
       return this._templates['nadia-brand'];
     }
@@ -374,7 +384,13 @@ class TemplateRegistry {
    * Render Dedicated 404 Error State Page
    */
   static render404Page(siteId = '', candidateProfile = {}) {
-    let pageHtml = Jack3DCreatorTemplate.render404Page(siteId, candidateProfile);
+    const template = this._templates[siteId];
+    let pageHtml;
+    if (template && typeof template.render404Page === 'function') {
+      pageHtml = template.render404Page(siteId, candidateProfile);
+    } else {
+      pageHtml = Jack3DCreatorTemplate.render404Page(siteId, candidateProfile);
+    }
     const officialFaviconTags = `  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -390,7 +406,9 @@ module.exports = new Proxy({
   TemplateRegistry,
   Jack3DCreatorTemplate,
   KageTempleTemplate,
-  NadiaBrandTemplate
+  NadiaBrandTemplate,
+  RBPKineticMonochromeTemplate,
+  TomCelAnimatorTemplate
 }, {
   get(target, prop) {
     if (prop in target) return target[prop];

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>ToonCraft Studios | Felix Vance</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}@keyframes marquee{0%{transform:translateX(0%);}100%{transform:translateX(-50%);}}.animate-marquee{display:flex;width:max-content;animation:marquee 28s linear infinite;}.animate-marquee:hover{animation-play-state:paused;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"outline-variant":"#e7bcba","inverse-primary":"#ffb3af","surface-container-highest":"#e6e2da","surface-container-high":"#ece8e0","on-secondary-container":"#6b4b00","secondary-container":"#ffb702","surface-container-low":"#f7f3eb","primary-fixed-dim":"#ffb3af","tertiary":"#435667","on-primary-fixed":"#410005","tertiary-fixed":"#d1e5f9","primary":"#ac001e","on-error":"#ffffff","on-surface-variant":"#5d3f3d","on-secondary-fixed":"#271900","secondary":"#7d5800","on-primary":"#ffffff","surface-container":"#f1ede6","surface-bright":"#fdf9f1","surface-tint":"#bf0022","tertiary-fixed-dim":"#b5c9dd","inverse-on-surface":"#f4f0e8","secondary-fixed":"#ffdea9","error":"#ba1a1a","on-surface":"#1c1c17","tertiary-container":"#5b6e80","inverse-surface":"#31302b","on-tertiary-fixed-variant":"#364959","surface-dim":"#dddad2","surface":"#fdf9f1","on-primary-fixed-variant":"#930018","on-primary-container":"#ffeae8","on-secondary":"#ffffff","on-tertiary-fixed":"#081d2c","secondary-fixed-dim":"#ffba27","surface-container-lowest":"#ffffff","background":"#fdf9f1","surface-variant":"#e6e2da","on-tertiary-container":"#e2f0ff","on-tertiary":"#ffffff","primary-container":"#d90429","on-background":"#1c1c17","on-error-container":"#93000a","on-secondary-fixed-variant":"#5e4100","primary-fixed":"#ffdad7","outline":"#926e6c","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-sm":"0.5rem","space-lg":"1.5rem","space-xs":"0.25rem","space-xl":"2.5rem","margin-mobile":"1.25rem","gutter":"1.5rem","margin":"3rem","space-2xl":"4rem","gutter-mobile":"1rem","space-md":"1rem"},"fontFamily":{"display-hero":["Bricolage Grotesque"],"display-hero-mobile":["Bricolage Grotesque"],"title-comic":["Bricolage Grotesque"],"caption":["Space Grotesk"],"body-lg":["Space Grotesk"],"headline-lg-mobile":["Bricolage Grotesque"],"headline-lg":["Bricolage Grotesque"],"headline-sm":["Bricolage Grotesque"],"body-sm":["Space Grotesk"],"label-badge":["Bricolage Grotesque"],"headline-md":["Bricolage Grotesque"],"body-md":["Space Grotesk"]},"fontSize":{"display-hero":["76px",{"lineHeight":"80px","letterSpacing":"-0.04em","fontWeight":"800"}],"display-hero-mobile":["42px",{"lineHeight":"46px","letterSpacing":"-0.03em","fontWeight":"800"}],"title-comic":["20px",{"lineHeight":"26px","letterSpacing":"0.01em","fontWeight":"700"}],"caption":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"500"}],"headline-lg-mobile":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["48px",{"lineHeight":"54px","letterSpacing":"-0.03em","fontWeight":"800"}],"headline-sm":["24px",{"lineHeight":"30px","letterSpacing":"-0.01em","fontWeight":"700"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"label-badge":["14px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"800"}],"headline-md":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}]}}}};</script></head><body class="bg-background font-body-md text-on-background min-h-screen selection:bg-secondary-container selection:text-on-secondary-container"><header class="fixed top-0 left-0 w-full z-50 bg-surface border-b-[3px] border-inverse-surface shadow-[0_4px_0_#31302b]"><div class="h-20 max-w-[1440px] mx-auto px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="Tooncraft Studio Logo" class="h-8 w-auto object-contain" src="/assets/templates/tom/images/tom-asset-3.jpg"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-title-comic text-title-comic uppercase text-on-surface tracking-tight leading-none">ToonCraft</span><span class="font-caption text-caption bg-secondary-container text-on-secondary-container px-1.5 py-0.5 border border-inverse-surface font-bold uppercase rounded">Vol. 42</span></div><span class="font-caption text-caption text-on-surface-variant uppercase tracking-widest">EST. 1994 // ISSUE #42</span></div></div><nav class="hidden xl:flex items-center gap-space-md" data-active-classes="bg-surface-container-highest text-on-surface font-bold border-b-2 border-primary"><a aria-current="page" class="uppercase tracking-wider py-1 px-2 transition-colors bg-surface-container-highest text-on-surface font-bold border-b-2 border-primary" data-path="featured-work" href="#">Featured Work</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary uppercase tracking-wider py-1 px-2 transition-colors" data-path="case-studies" href="#">Case Studies</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary uppercase tracking-wider py-1 px-2 transition-colors" data-path="animation-reel" href="#">Animation Reel</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary uppercase tracking-wider py-1 px-2 transition-colors" data-path="about-philosophy" href="#">About &amp; Philosophy</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary uppercase tracking-wider py-1 px-2 transition-colors" data-path="services-rates" href="#">Services &amp; Rates</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary uppercase tracking-wider py-1 px-2 transition-colors" data-path="client-roll" href="#">Client Roll</a></nav><div class="flex items-center gap-space-md shrink-0"><a class="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-badge text-label-badge uppercase px-space-md py-space-sm border-[3px] border-inverse-surface shadow-[4px_4px_0px_#31302b] hover:shadow-[6px_6px_0px_#31302b] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#31302b] transition-all transform -rotate-1 hover:rotate-0" data-path="book-a-project" href="#"><span>Book a Project! 💥</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background max-w-[1440px] mx-auto min-h-[calc(100vh-80px)]"><div class="flex flex-col w-full">
+<!-- Top Marquee & Announcement Banner -->
+<section class="w-full bg-surface-container border-b-[3px] border-inverse-surface py-2.5 px-gutter">
+<div class="max-w-[1360px] mx-auto flex flex-wrap items-center justify-between gap-space-sm text-body-sm font-caption">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase rounded border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          Studio Status
+        </span>
+<span class="text-on-surface font-medium">Booking Q3/Q4 2025 • Open for Select Feature, Episodic &amp; Commercial Inquiries</span>
+</div>
+<div class="flex items-center gap-space-md text-caption uppercase tracking-wider text-on-surface-variant">
+<span>Syndication No. 42-B</span>
+<span>•</span>
+<span>24 FPS Hand-Inked Fidelity</span>
+<span>•</span>
+<span class="text-primary font-bold">Based in Vancouver &amp; Remote Worldwide</span>
+</div>
+</div>
+</section>
+<!-- Hero Section with Comic Paper Rip Visual -->
+<section class="hero-sequence-section relative min-h-[220vh] w-full overflow-hidden bg-surface" style="min-height: 220vh;">
+<!-- Halftone Dot Decorative Layer -->
+<div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#1c1c17 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="sticky top-20 z-10 mx-auto min-h-[calc(100vh-5rem)] max-w-[1360px] px-gutter py-space-xl lg:py-space-2xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Left: Punchy Slapstick Editorial Copy -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="px-3 py-1 bg-primary text-on-primary font-label-badge text-label-badge uppercase tracking-wider border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] -rotate-2">
+              Original Cel Animator &amp; Storyboarder
+            </span>
+<span class="px-2.5 py-1 bg-surface-container-highest text-on-surface font-caption text-caption uppercase tracking-widest border border-inverse-surface">
+              Folio Issue // 2025 ED.
+            </span>
+</div>
+<h1 class="font-display-hero text-display-hero uppercase text-on-surface tracking-tight leading-[0.95]">
+            BRINGING <span class="text-primary inline-block transform -rotate-1 underline decoration-secondary-container decoration-8">MAYHEM</span> &amp; HEART TO 2D FRAME-BY-FRAME.
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics, lovable troublemakers, and kinetic hand-drawn storytelling for feature films, episodic broadcast, and indie game cinematics.
+          </p>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs">
+<a class="inline-flex items-center gap-space-xs px-space-lg py-3.5 bg-primary-container text-on-primary font-headline-sm text-title-comic uppercase tracking-wider border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] hover:shadow-[7px_7px_0px_#31302b] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#31302b] transition-all" href="#showreel">
+<span class="material-symbols-outlined text-[24px]">movie</span>
+<span>Watch 2025 Showreel (1m 24s)</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-space-md py-3.5 bg-surface-container text-on-surface font-title-comic text-title-comic uppercase tracking-wider border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] hover:bg-surface-container-highest hover:-translate-y-0.5 transition-all" href="#deck">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Production Deck (PDF)</span>
+</a>
+</div>
+<!-- Hero Proof Pill Badges -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm pt-space-md">
+<div class="bg-surface-container-lowest p-space-sm border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col">
+<span class="font-display-hero text-headline-md text-primary leading-none">12+</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold mt-1">Years Frame-by-Frame</span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col">
+<span class="font-display-hero text-headline-md text-secondary leading-none">45M+</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold mt-1">Streaming Views</span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col">
+<span class="font-display-hero text-headline-md text-tertiary leading-none">'23</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold mt-1">Annie Nominee</span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col">
+<span class="font-display-hero text-headline-md text-primary-container leading-none">24</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold mt-1">FPS Squash &amp; Stretch</span>
+</div>
+</div>
+</div>
+<!-- Right: The Hero Visual (Torn Newspaper Breakthrough Artwork) -->
+<div class="lg:col-span-5 relative">
+<!-- Behind Panel Accents -->
+<div class="absolute -top-4 -right-4 w-full h-full bg-secondary-container border-[3px] border-inverse-surface rounded-none transform rotate-2"></div>
+<div class="absolute -bottom-3 -left-3 w-28 h-28 bg-primary/20 rounded-full blur-xl pointer-events-none"></div>
+<!-- Main Newspaper Clipping Frame -->
+<div class="relative bg-surface-container-lowest border-[3px] border-inverse-surface p-space-sm shadow-[8px_8px_0px_#31302b] transform -rotate-1 transition-transform hover:rotate-0">
+<!-- Masthead Header Bar -->
+<div class="border-b-[2px] border-inverse-surface pb-2 mb-2 flex items-center justify-between px-1">
+<div>
+<span class="font-display-hero text-headline-sm uppercase tracking-tight text-on-surface">The Daily Slapstick</span>
+<span class="block font-caption text-[10px] uppercase tracking-widest text-on-surface-variant leading-none">Late City Final • Priceless Mayhem • Vol. 488</span>
+</div>
+<span class="px-2 py-0.5 bg-primary-container text-on-primary font-label-badge text-caption uppercase border border-inverse-surface shadow-[2px_2px_0px_#31302b]">BREAKING</span>
+</div>
+<!-- The Image itself: Tom & Jerry breaking through paper -->
+<div class="relative aspect-video w-full overflow-hidden border-[2px] border-inverse-surface bg-inverse-surface">
+<img id="hero-sequence-fallback" alt="Tom and Jerry breaking through a newspaper" class="h-full w-full object-contain" src="/assets/templates/tom/frames/ezgif-frame-001.jpg"/>
+<canvas aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full opacity-0" id="hero-sequence"></canvas>
+<!-- Comic Blast Stamp Overlay -->
+<div class="absolute bottom-4 right-4 bg-secondary-container text-on-secondary-container font-headline-sm text-title-comic uppercase px-3 py-1.5 border-[3px] border-inverse-surface shadow-[4px_4px_0px_#31302b] transform rotate-6">
+                WHAM! • SPLAT!
+              </div>
+</div>
+<!-- Newspaper Foot Caption -->
+<div class="mt-2.5 pt-2 border-t border-inverse-surface flex items-center justify-between text-caption font-caption text-on-surface-variant">
+<span>FIG 1.0 — RUBBER-HOSE SQUASH PASS</span>
+<span class="font-bold text-on-surface">KEY ANIMATOR: FELIX VANCE</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Selected Featured Works (Portfolio Bento Strip) -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-surface-container-low border-t-[3px] border-inverse-surface" id="featured-work">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-lg">
+<!-- Section Header with Comic Ribbon -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md border-b-[3px] border-inverse-surface pb-space-md">
+<div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="text-primary font-display-hero text-headline-sm leading-none">★</span>
+<span class="font-caption text-caption uppercase tracking-widest text-on-surface-variant font-bold">PANEL DIRECTORY // PRODUCTION LOGS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase text-on-surface tracking-tight">SELECTED FEATURED WORKS</h2>
+</div>
+<!-- Filter Tags / Category Chips -->
+<div class="flex flex-wrap items-center gap-space-xs" id="portfolio-filters">
+<button class="px-3 py-1.5 bg-inverse-surface text-inverse-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b]">All Works (28)</button>
+<button class="px-3 py-1.5 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] hover:bg-secondary-container transition-colors">Feature Film</button>
+<button class="px-3 py-1.5 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] hover:bg-secondary-container transition-colors">Episodic Slapstick</button>
+<button class="px-3 py-1.5 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] hover:bg-secondary-container transition-colors">Comic Strips</button>
+<button class="px-3 py-1.5 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] hover:bg-secondary-container transition-colors">Game Cinematics</button>
+</div>
+</div>
+<!-- Bento Grid of 4 High-Impact Comic Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-space-lg">
+<!-- Project 1: Asymmetric 7-column feature card -->
+<div class="lg:col-span-7 bg-surface border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col group hover:-translate-y-1 transition-transform">
+<!-- Card Comic Panel Header -->
+<div class="bg-surface-container-high px-space-md py-2 border-b-[2px] border-inverse-surface flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary border border-inverse-surface"></span>
+<span class="font-caption text-caption uppercase tracking-wider font-bold text-on-surface">CASE STUDY • EPISODE SPECIAL</span>
+</div>
+<span class="font-label-badge text-caption px-2 py-0.5 bg-secondary-container text-on-secondary-container border border-inverse-surface font-bold uppercase">14M STREAMS</span>
+</div>
+<!-- Thumbnail with Halftone and Torn Tape Mockup -->
+<div class="relative overflow-hidden bg-surface-container-highest border-b-[2px] border-inverse-surface aspect-video">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Dynamic 2D animation screenshot of an elaborate heist inside a giant vintage cheese bank vault with a manic cartoon feline tiptoeing past mousetraps, drawn in mid-century UPA and Chuck Jones animation style with rich warm gouache background colors and bold ink lines." src="/assets/templates/tom/images/tom-asset-1.jpg"/>
+<div class="absolute top-3 left-3 bg-primary text-on-primary font-caption text-caption uppercase px-2 py-0.5 border border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+              DIR / LEAD ANIMATION
+            </div>
+<!-- Angled Masking Tape Sticker on Corner -->
+<div class="absolute -top-2 right-8 w-24 h-6 bg-secondary-fixed/90 border border-inverse-surface/40 transform rotate-12 shadow-sm pointer-events-none flex items-center justify-center font-caption text-[10px] uppercase font-bold text-on-secondary-fixed">
+              ORIGINAL REEL
+            </div>
+</div>
+<!-- Content Inset -->
+<div class="p-space-lg flex flex-col justify-between flex-1 gap-space-md">
+<div>
+<div class="flex flex-wrap items-center gap-space-xs mb-2">
+<span class="font-caption text-caption px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-bold border border-inverse-surface uppercase">TVPaint 11.7</span>
+<span class="font-caption text-caption px-2 py-0.5 bg-surface-container text-on-surface border border-inverse-surface uppercase">24fps Full Animation</span>
+<span class="font-caption text-caption px-2 py-0.5 bg-surface-container text-on-surface border border-inverse-surface uppercase">Annecy Official Selection</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface">The Grand Cheese Heist — 7-Minute Theatrical Short</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                Directed full keyframe animation pipeline, pacing 18 slapstick action sequences with zero dialogue. Engineered physical comedy timing charts, squash-stretch extremes, and background layout in collaboration with 6 remote clean-up inking artists.
+              </p>
+</div>
+<div class="pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">Client: Acme Syndicate Films</span>
+<a class="inline-flex items-center gap-1 font-title-comic text-body-sm text-primary uppercase font-bold group-hover:translate-x-1 transition-transform" href="#">
+<span>Inspect Frame Breakdown</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Project 2: Asymmetric 5-column companion card -->
+<div class="lg:col-span-5 bg-surface border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col group hover:-translate-y-1 transition-transform">
+<div class="bg-surface-container-high px-space-md py-2 border-b-[2px] border-inverse-surface flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-wider font-bold text-on-surface">SERIES PRODUCTION</span>
+<span class="font-label-badge text-caption px-2 py-0.5 bg-primary-fixed text-on-primary-fixed border border-inverse-surface font-bold uppercase">SEASON 02</span>
+</div>
+<div class="relative overflow-hidden bg-surface-container-highest border-b-[2px] border-inverse-surface aspect-video">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Retro animated character design of a frantic alley cat and dapper bird suspended mid-air in kinetic collision pose, vintage cartoon style with bold brush line weights, halftone lithography textures, and saturated primary red and mustard yellow tones." src="/assets/templates/tom/images/tom-asset-6.jpg"/>
+<div class="absolute top-3 left-3 bg-secondary text-on-secondary font-caption text-caption uppercase px-2 py-0.5 border border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+              KEY POSING &amp; CLEAN-UP
+            </div>
+</div>
+<div class="p-space-lg flex flex-col justify-between flex-1 gap-space-md">
+<div>
+<div class="flex flex-wrap items-center gap-space-xs mb-2">
+<span class="font-caption text-caption px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-bold border border-inverse-surface uppercase">Toon Boom Harmony</span>
+<span class="font-caption text-caption px-2 py-0.5 bg-surface-container text-on-surface border border-inverse-surface uppercase">Hand-Drawn Tie Downs</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface">Whiskers &amp; Claws: Episode 04</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                Executed 240+ key drawings for high-speed kitchen chase sequences. Supervised rough-in-between arcs, dry-brush smear frames, and camera shakes to recreate 1948 theatrical energy.
+              </p>
+</div>
+<div class="pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">Cartoon Syndicate TV</span>
+<a class="inline-flex items-center gap-1 font-title-comic text-body-sm text-primary uppercase font-bold group-hover:translate-x-1 transition-transform" href="#">
+<span>Read Storyboard Log</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Project 3: 6-column comic strip card -->
+<div class="lg:col-span-6 bg-surface border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col group hover:-translate-y-1 transition-transform">
+<div class="bg-surface-container-high px-space-md py-2 border-b-[2px] border-inverse-surface flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-wider font-bold text-on-surface">SYNDICATED EDITORIAL</span>
+<span class="font-label-badge text-caption px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-inverse-surface font-bold uppercase">18 NEWSPAPERS</span>
+</div>
+<div class="relative overflow-hidden bg-surface-container-highest border-b-[2px] border-inverse-surface aspect-video">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Sunday newspaper multi-panel comic strip layout featuring humorous misadventures of eccentric characters, classic black ink linework with aged newsprint paper texture and 4-color Ben-Day dot color separation." src="/assets/templates/tom/images/tom-asset-5.jpg"/>
+<div class="absolute bottom-3 left-3 bg-surface text-on-surface font-caption text-caption uppercase px-2 py-0.5 border border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+              SUNDAY GAZETTE SPECIAL
+            </div>
+</div>
+<div class="p-space-lg flex flex-col justify-between flex-1 gap-space-md">
+<div>
+<div class="flex flex-wrap items-center gap-space-xs mb-2">
+<span class="font-caption text-caption px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-bold border border-inverse-surface uppercase">Clip Studio &amp; India Ink</span>
+<span class="font-caption text-caption px-2 py-0.5 bg-surface-container text-on-surface border border-inverse-surface uppercase">Print Halftone Separations</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface">Sunday Morning Gazette Special Series</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                6-panel full-broadsheet narrative run written, penciled, inked with brush-pens, and hand-lettered weekly. Mastered for CMYK offset reproduction with vintage four-color dot screening.
+              </p>
+</div>
+<div class="pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">Universal Press Syndicate</span>
+<a class="inline-flex items-center gap-1 font-title-comic text-body-sm text-primary uppercase font-bold group-hover:translate-x-1 transition-transform" href="#">
+<span>View Full Broadsheet</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Project 4: 6-column game cinematic card -->
+<div class="lg:col-span-6 bg-surface border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col group hover:-translate-y-1 transition-transform">
+<div class="bg-surface-container-high px-space-md py-2 border-b-[2px] border-inverse-surface flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-wider font-bold text-on-surface">INDIE GAME CINEMATIC</span>
+<span class="font-label-badge text-caption px-2 py-0.5 bg-secondary-container text-on-secondary-container border border-inverse-surface font-bold uppercase">STEAM RELEASE</span>
+</div>
+<div class="relative overflow-hidden bg-surface-container-highest border-b-[2px] border-inverse-surface aspect-video">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Action-packed 2D video game cinematic frame showing an explosive retro TNT crate explosion sending stylized smoke puffs and startled raccoon couriers flying, comic sound effect onomatopoeia letters embedded in the artwork." src="/assets/templates/tom/images/tom-asset-4.jpg"/>
+<div class="absolute bottom-3 right-3 bg-primary-container text-on-primary font-caption text-caption uppercase px-2 py-0.5 border border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+              KINETIC VFX &amp; CHARACTER PASS
+            </div>
+</div>
+<div class="p-space-lg flex flex-col justify-between flex-1 gap-space-md">
+<div>
+<div class="flex flex-wrap items-center gap-space-xs mb-2">
+<span class="font-caption text-caption px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-bold border border-inverse-surface uppercase">Blender Grease Pencil</span>
+<span class="font-caption text-caption px-2 py-0.5 bg-surface-container text-on-surface border border-inverse-surface uppercase">Sprite Sheet Export</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface">Dynamite Delivery Co. — Intro Sequence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                Designed opening 90-second game trailer and 48 playable frame animation loops. Rigged dynamic camera depth with hand-drawn cel FX for explosions, smoke plumes, and tire skids.
+              </p>
+</div>
+<div class="pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">Kickstart Games</span>
+<a class="inline-flex items-center gap-1 font-title-comic text-body-sm text-primary uppercase font-bold group-hover:translate-x-1 transition-transform" href="#">
+<span>View Animation Reel Clip</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Animation Showreel Cinema Theater -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-surface" id="showreel">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-lg">
+<!-- Retro Theater Marquee Header -->
+<div class="bg-primary text-on-primary p-space-md lg:p-space-lg border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] relative overflow-hidden">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md relative z-10">
+<div>
+<span class="font-caption text-caption uppercase tracking-widest text-secondary-fixed font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">theaters</span>
+              TODAY'S MATINEE SHOWING • REEL REEL REEL
+            </span>
+<h2 class="font-headline-lg text-headline-lg uppercase tracking-tight leading-none mt-1">
+              2025 CHARACTER RIG &amp; FRAME-BY-FRAME REEL
+            </h2>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="px-3 py-1 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b]">
+              TRT: 01:24
+            </span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b]">
+              STEREO MIX
+            </span>
+</div>
+</div>
+</div>
+<!-- Video Player Mockup Container -->
+<div class="bg-inverse-surface p-space-md border-[3px] border-inverse-surface shadow-[8px_8px_0px_#31302b] flex flex-col">
+<!-- The Screen Display Area -->
+<div class="relative w-full aspect-video bg-black overflow-hidden flex items-center justify-center border-2 border-surface-container-high/20">
+<img class="w-full h-full object-cover opacity-85" data-alt="Animation showreel video player thumbnail showing high-speed cartoon slapstick brawl with exaggerated anatomy, motion blur smears, and comic lightning bolts, cinematic composition with vintage 35mm film grain overlay." src="/assets/templates/tom/images/tom-asset-7.jpg"/>
+<!-- Big Play Button Overlay -->
+<button class="absolute z-20 w-20 h-20 rounded-full bg-primary-container text-on-primary flex items-center justify-center border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[44px] ml-1">play_arrow</span>
+</button>
+<!-- On-Screen Vintage CRT Stamp -->
+<div class="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/75 px-3 py-1 border border-white/20 text-white font-caption text-caption uppercase">
+<span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+<span>REC • 24.00 FPS • TC 00:00:14:08</span>
+</div>
+<div class="absolute bottom-4 right-4 z-10 bg-black/80 text-white font-caption text-caption px-2 py-1 border border-white/20">
+            TVPaint 11 Pro / Color Sync: OK
+          </div>
+</div>
+<!-- Custom Retro Playback Control Deck -->
+<div class="mt-space-md bg-surface-container p-space-md border-2 border-inverse-surface flex flex-col gap-space-sm text-on-surface">
+<!-- Timeline / Squash-Stretch Scrubber -->
+<div class="flex items-center gap-space-md">
+<span class="font-caption text-caption font-bold text-on-surface">00:28</span>
+<div class="relative flex-1 h-3 bg-surface-container-highest border-2 border-inverse-surface cursor-pointer">
+<div class="h-full bg-primary-container w-[33%]"></div>
+<div class="absolute top-1/2 left-[33%] -translate-y-1/2 -translate-x-1/2 w-4 h-6 bg-secondary-container border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b]"></div>
+</div>
+<span class="font-caption text-caption font-bold text-on-surface-variant">01:24</span>
+</div>
+<!-- Deck Buttons & Keyframe Steppers -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-1">
+<div class="flex items-center gap-space-xs">
+<button class="p-1.5 bg-surface hover:bg-surface-container-highest border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] active:translate-y-0.5" title="Step Back 1 Frame">
+<span class="material-symbols-outlined text-[18px]">skip_previous</span>
+</button>
+<button class="px-3 py-1 bg-primary text-on-primary font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] active:translate-y-0.5">
+                Play Reel
+              </button>
+<button class="p-1.5 bg-surface hover:bg-surface-container-highest border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] active:translate-y-0.5" title="Step Forward 1 Frame">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+</button>
+<span class="font-caption text-caption uppercase px-2 font-bold text-on-surface-variant">Frame 672</span>
+</div>
+<!-- Jump Timestamps -->
+<div class="hidden md:flex items-center gap-space-xs text-caption font-caption">
+<button class="px-2 py-0.5 bg-surface border border-inverse-surface hover:bg-secondary-fixed transition-colors font-bold">0:00 Slapstick Timing</button>
+<button class="px-2 py-0.5 bg-secondary-container border border-inverse-surface font-bold text-on-secondary-container">0:28 Weight &amp; Impact</button>
+<button class="px-2 py-0.5 bg-surface border border-inverse-surface hover:bg-secondary-fixed transition-colors font-bold">0:52 Lip-Sync Dialogue</button>
+<button class="px-2 py-0.5 bg-surface border border-inverse-surface hover:bg-secondary-fixed transition-colors font-bold">1:12 Choreography</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Creative Process (The 5-Step Gag Machine) -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-surface-container border-y-[3px] border-inverse-surface">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-xl">
+<!-- Section Header -->
+<div class="text-center max-w-3xl mx-auto flex flex-col items-center gap-space-xs">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b]">
+          PRODUCTION PIPELINE EXPLAINED
+        </span>
+<h2 class="font-headline-lg text-headline-lg uppercase text-on-surface tracking-tight">THE 5-STEP GAG MACHINE</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          From scribble on napkin to full 24fps slapstick payoff. How every sequence travels through the studio to maximize comedic timing, anatomical appeal, and delivery.
+        </p>
+</div>
+<!-- 5 Comic Process Panels -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-space-md">
+<!-- Step 1 -->
+<div class="bg-surface p-space-md border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3 border-b-2 border-inverse-surface pb-2">
+<span class="font-display-hero text-headline-sm text-primary">01</span>
+<span class="font-label-badge text-caption uppercase bg-surface-container px-2 py-0.5 border border-inverse-surface">STORY BEAT</span>
+</div>
+<h3 class="font-title-comic text-title-comic uppercase text-on-surface">The Spark &amp; Beat Board</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Thumbnail doodles exploring rhythm, sight gags, eye-tracking vectors, and the core emotional beats of the character conflict.
+            </p>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant font-caption text-[11px] text-on-surface-variant uppercase font-bold">
+            Output: 12 Thumbnail Cards
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface p-space-md border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3 border-b-2 border-inverse-surface pb-2">
+<span class="font-display-hero text-headline-sm text-secondary">02</span>
+<span class="font-label-badge text-caption uppercase bg-surface-container px-2 py-0.5 border border-inverse-surface">TIMING CHART</span>
+</div>
+<h3 class="font-title-comic text-title-comic uppercase text-on-surface">Slapstick Physics</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Plotting the extremes. Setting up squash-and-stretch ratios, hang-time pauses, anticipation holds, and sudden impact frames.
+            </p>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant font-caption text-[11px] text-on-surface-variant uppercase font-bold">
+            Output: Exposure Sheet (X-Sheet)
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface p-space-md border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3 border-b-2 border-inverse-surface pb-2">
+<span class="font-display-hero text-headline-sm text-tertiary">03</span>
+<span class="font-label-badge text-caption uppercase bg-surface-container px-2 py-0.5 border border-inverse-surface">PENCIL TEST</span>
+</div>
+<h3 class="font-title-comic text-title-comic uppercase text-on-surface">Rough Keyframes</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Raw digital graphite passes testing silhouette clarity, dynamic weight transfer, arcs, and overshoot physics at full frame rate.
+            </p>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant font-caption text-[11px] text-on-surface-variant uppercase font-bold">
+            Output: 24fps Rough QuickTime
+          </div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface p-space-md border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3 border-b-2 border-inverse-surface pb-2">
+<span class="font-display-hero text-headline-sm text-primary-container">04</span>
+<span class="font-label-badge text-caption uppercase bg-surface-container px-2 py-0.5 border border-inverse-surface">INK &amp; BRUSH</span>
+</div>
+<h3 class="font-title-comic text-title-comic uppercase text-on-surface">Clean-Up &amp; Inking</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Tie-down line pass preserving the kinetic looseness while locking volume consistency, expressive tapering, and model-sheet fidelity.
+            </p>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant font-caption text-[11px] text-on-surface-variant uppercase font-bold">
+            Output: Production Vector/Bitmap Cels
+          </div>
+</div>
+<!-- Step 5 -->
+<div class="bg-surface p-space-md border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3 border-b-2 border-inverse-surface pb-2">
+<span class="font-display-hero text-headline-sm text-secondary-container">05</span>
+<span class="font-label-badge text-caption uppercase bg-surface-container px-2 py-0.5 border border-inverse-surface">FINAL COMP</span>
+</div>
+<h3 class="font-title-comic text-title-comic uppercase text-on-surface">Color &amp; Sound Pop</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Four-color litho fills, paper grain texturing, speed-line composite passes, and sync adjustments against custom Foley and orchestral stings.
+            </p>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant font-caption text-[11px] text-on-surface-variant uppercase font-bold">
+            Output: 4K Master Deliverable
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Services & Production Packages (Transparent Tiers) -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-surface" id="services-rates">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-xl">
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md border-b-[3px] border-inverse-surface pb-space-md">
+<div>
+<span class="font-caption text-caption uppercase tracking-widest text-on-surface-variant font-bold">SYNDICATE RATE CARD • CLEAR COMMISSIONS</span>
+<h2 class="font-headline-lg text-headline-lg uppercase text-on-surface tracking-tight">SERVICES &amp; PRODUCTION PACKAGES</h2>
+</div>
+<div class="px-3 py-1 bg-surface-container text-on-surface font-caption text-caption uppercase border-2 border-inverse-surface font-bold">
+          All contracts include full copyright buyout or syndication rights
+        </div>
+</div>
+<!-- 3 Tier Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg items-stretch">
+<!-- Package 1: Character Design & Model Sheets -->
+<div class="bg-surface-container-low p-space-lg border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b-2 border-inverse-surface">
+<span class="font-caption text-caption uppercase font-bold text-on-surface-variant">TIER 01 • PRE-PRODUCTION</span>
+<span class="px-2 py-0.5 bg-surface text-on-surface font-label-badge text-[11px] uppercase border border-inverse-surface">10-Day Turnaround</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface mt-space-md">Character Design &amp; Model Sheets</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              For series showrunners, game directors, and authors establishing definitive hero and villain casts.
+            </p>
+<!-- Price Callout -->
+<div class="my-space-md p-space-sm bg-surface-container border-2 border-inverse-surface">
+<div class="font-display-hero text-headline-md text-primary leading-none">$1,800</div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">per character bible</span>
+</div>
+<!-- Inclusions List -->
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>5-Point Turnaround (Front, 3/4, Profile, 3/4 Back, Back)</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>8 Characteristic Expression Passes (Gag, Shock, Sneer, Cry)</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Proportion Line-Up Chart with Cast Scaling</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Layered Vector &amp; High-Res PSD Assets</span>
+</li>
+</ul>
+</div>
+<a class="mt-space-lg w-full text-center py-2.5 bg-surface text-on-surface hover:bg-surface-container-highest font-title-comic text-body-sm uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] active:translate-y-0.5 transition-all" href="#book-project">
+            Commission Character Bible
+          </a>
+</div>
+<!-- Package 2: Frame-by-Frame Slapstick Sequences (FEATURED TIER) -->
+<div class="bg-surface-container-lowest p-space-lg border-[3px] border-inverse-surface shadow-[8px_8px_0px_#31302b] flex flex-col justify-between relative transform lg:-translate-y-2">
+<!-- Featured Badge -->
+<div class="absolute -top-3.5 right-6 px-3 py-1 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b] rotate-2">
+            MOST POPULAR
+          </div>
+<div>
+<div class="flex items-center justify-between pb-3 border-b-2 border-inverse-surface">
+<span class="font-caption text-caption uppercase font-bold text-primary">TIER 02 • FULL ANIMATION</span>
+<span class="px-2 py-0.5 bg-primary-container text-on-primary font-label-badge text-[11px] uppercase border border-inverse-surface">2-3 Weeks / Block</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface mt-space-md">Frame-by-Frame 2D Sequences</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              High-octane slapstick scenes, explosive title sequences, and punchy promotional cinematics.
+            </p>
+<div class="my-space-md p-space-sm bg-secondary-container/20 border-2 border-inverse-surface">
+<div class="font-display-hero text-headline-md text-on-surface leading-none">$2,400</div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">per 5-second gag sequence (24fps)</span>
+</div>
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Full Rough Pencils &amp; Arc In-betweening</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Crisp Tied-Down Line Clean-Up &amp; Ink Smears</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Flat Color with Optional Halftone Print Separation</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>ProRes 4444 with Alpha Channel / Sprite Sheets</span>
+</li>
+</ul>
+</div>
+<a class="mt-space-lg w-full text-center py-3 bg-primary-container text-on-primary font-title-comic text-body-md uppercase border-[3px] border-inverse-surface shadow-[4px_4px_0px_#31302b] hover:-translate-y-0.5 active:translate-y-0.5 transition-all" href="#book-project">
+            Book Animation Sequence
+          </a>
+</div>
+<!-- Package 3: Production Direction & Storyboarding -->
+<div class="bg-surface-container-low p-space-lg border-[3px] border-inverse-surface shadow-[6px_6px_0px_#31302b] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b-2 border-inverse-surface">
+<span class="font-caption text-caption uppercase font-bold text-on-surface-variant">TIER 03 • EPISODE DIRECTION</span>
+<span class="px-2 py-0.5 bg-surface text-on-surface font-label-badge text-[11px] uppercase border border-inverse-surface">4-6 Weeks</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface mt-space-md">Production Direction &amp; Boards</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              End-to-end storyboard animatics and creative animation supervision for entire short films or pilots.
+            </p>
+<div class="my-space-md p-space-sm bg-surface-container border-2 border-inverse-surface">
+<div class="font-display-hero text-headline-md text-tertiary leading-none">$6,500</div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-bold">per episode block / pilot pitch</span>
+</div>
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Detailed Beat Boards with Gag Choreography</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Storyboard Pro Animatic timed to Temp VO &amp; Foley</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Lead Keyframe Redlines &amp; Supervised Reviews</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Final Delivery Deck for Broadcast Syndication</span>
+</li>
+</ul>
+</div>
+<a class="mt-space-lg w-full text-center py-2.5 bg-surface text-on-surface hover:bg-surface-container-highest font-title-comic text-body-sm uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] active:translate-y-0.5 transition-all" href="#book-project">
+            Discuss Episode Block
+          </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 6: Client & Collaborator Roll (Retro Newspaper Syndicate Stamps) -->
+<section class="w-full px-gutter py-space-xl bg-surface-container-high border-y-[3px] border-inverse-surface" id="client-roll">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-widest text-on-surface font-bold flex items-center gap-2">
+<span class="w-2.5 h-2.5 bg-primary rounded-full"></span>
+          OFFICIAL SYNDICATE STAMP LOG • TRUSTED BY LEADING CARTOON HOUSES
+        </span>
+<span class="font-caption text-caption uppercase text-on-surface-variant">EST. 1994–2025</span>
+</div>
+<!-- Syndicate Stamp Logos -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-md">
+<div class="bg-surface-container-lowest p-space-md border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-title-comic uppercase tracking-wider text-on-surface">ACME</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase font-bold tracking-widest">Pictures Ltd.</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-title-comic uppercase tracking-wider text-on-surface">RETROTOON</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase font-bold tracking-widest">Broadcast Co.</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-title-comic uppercase tracking-wider text-on-surface">METRO 2D</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase font-bold tracking-widest">Animation Labs</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-title-comic uppercase tracking-wider text-on-surface">PAPERBACK</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase font-bold tracking-widest">Comics Guild</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-title-comic uppercase tracking-wider text-on-surface">KICKSTART</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase font-bold tracking-widest">Interactive</span>
+</div>
+</div>
+<!-- Testimonial Quotes -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-space-xs">
+<div class="bg-surface p-space-lg border-2 border-inverse-surface shadow-[4px_4px_0px_#31302b] relative">
+<span class="font-display-hero text-headline-lg text-secondary-container leading-none absolute top-2 right-4 opacity-50">“</span>
+<p class="font-body-md text-body-md text-on-surface relative z-10 italic">
+            “Felix understands physical cartoon gravity better than anyone in the modern industry. His timing on the chase climax saved our festival delivery schedule and got the biggest laugh of the night at Annecy.”
+          </p>
+<div class="mt-space-md pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-title-comic text-body-sm uppercase text-on-surface font-bold">Arthur Sterling</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Supervising Director, Acme Studios</span>
+</div>
+</div>
+<div class="bg-surface p-space-lg border-2 border-inverse-surface shadow-[4px_4px_0px_#31302b] relative">
+<span class="font-display-hero text-headline-lg text-primary leading-none absolute top-2 right-4 opacity-30">“</span>
+<p class="font-body-md text-body-md text-on-surface relative z-10 italic">
+            “Finding artists who still know how to draw proper squash and stretch without relying on robotic puppet tweening is rare. Felix delivered 24 hand-drawn keyframe masterpieces that electrified our game.”
+          </p>
+<div class="mt-space-md pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<span class="font-title-comic text-body-sm uppercase text-on-surface font-bold">Maya Lindqvist</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Creative Producer, Kickstart Games</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 7: About the Animator ("The Man Behind the Pencil") -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-surface" id="about-philosophy">
+<div class="max-w-[1360px] mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Left: Studio Portrait Card with Offset Border -->
+<div class="lg:col-span-5 relative">
+<div class="bg-surface-container p-space-md border-[3px] border-inverse-surface shadow-[8px_8px_0px_#31302b]">
+<div class="relative overflow-hidden border-2 border-inverse-surface aspect-[4/5] bg-inverse-surface">
+<img class="w-full h-full object-cover" data-alt="Charismatic editorial photograph of animator Felix Vance sketching energetically at a large digital drafting tablet surrounded by classic animation peg bars, model sheets of slapstick cartoon characters pinned to corkboards, and warm studio incandescent lamp light." src="/assets/templates/tom/images/tom-asset-2.jpg"/>
+<div class="absolute bottom-3 left-3 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase px-2.5 py-1 border border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+                FELIX VANCE • AT THE DESK
+              </div>
+</div>
+<!-- Fun Stats Strip -->
+<div class="mt-space-md grid grid-cols-2 gap-2 text-center">
+<div class="p-2 bg-surface-container-lowest border border-inverse-surface">
+<span class="font-title-comic text-body-sm text-primary uppercase block">350+ Cels</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase">Drawn Per Coffee Cup</span>
+</div>
+<div class="p-2 bg-surface-container-lowest border border-inverse-surface">
+<span class="font-title-comic text-body-sm text-secondary uppercase block">Tex Avery</span>
+<span class="font-caption text-[11px] text-on-surface-variant uppercase">Eternal Influence</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Bio & Weaponry of Choice -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 bg-primary text-on-primary font-label-badge text-caption uppercase border border-inverse-surface">
+              BIO • ISSUE PROFILE
+            </span>
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-widest font-bold">
+              30 YEARS HOLDING A STYLUS
+            </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase text-on-surface tracking-tight">
+            THE MAN BEHIND THE PENCIL
+          </h2>
+<div class="space-y-4 font-body-md text-body-md text-on-surface-variant">
+<p>
+              I am a traditional animation purist trained in Golden Age physical timing. I cut my teeth analyzing frame-by-frame 35mm film strips from 1940s theatrical shorts, transcribing how the masters bent anatomy to convey raw impact, panic, and heart.
+            </p>
+<p>
+              Over the last twelve years, I have adapted those timeless principles to modern broadcast, streaming, and game engines. Whether directing a full episodic short or polishing a 3-second comic micro-interaction, my philosophy remains constant: <strong class="text-on-surface">if the silhouette doesn’t read in one frame, the joke doesn’t land.</strong>
+</p>
+</div>
+<!-- Tools of the Craft -->
+<div class="pt-space-sm">
+<span class="font-caption text-caption uppercase tracking-wider text-on-surface font-bold block mb-space-xs">
+              PRODUCTION WEAPONRY OF CHOICE:
+            </span>
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">TVPaint Animation Pro 11</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">Toon Boom Harmony 22</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">Storyboard Pro</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">Wacom Cintiq Pro 27</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">Clip Studio Paint EX</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface font-caption text-caption font-bold uppercase border-2 border-inverse-surface">DaVinci Resolve Studio</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 8: Commission Inquiry Form (Interactive Comic Signal) -->
+<section class="w-full px-gutter py-space-xl lg:py-space-2xl bg-secondary-container border-t-[3px] border-inverse-surface relative overflow-hidden" id="book-project">
+<!-- Offset Comic Halftone Screen Pattern -->
+<div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#1c1c17 1.5px, transparent 1.5px); background-size: 12px 12px;"></div>
+<div class="max-w-[1000px] mx-auto relative z-10">
+<!-- Outer Comic Envelope Box -->
+<div class="bg-surface p-space-lg lg:p-space-xl border-[4px] border-inverse-surface shadow-[10px_10px_0px_#31302b]">
+<!-- Form Header -->
+<div class="border-b-[3px] border-inverse-surface pb-space-md mb-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-3 h-3 bg-primary rounded-full animate-ping"></span>
+<span class="font-caption text-caption uppercase tracking-wider font-bold text-primary">TRANSMISSION CHANNEL // COMMISSIONS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase text-on-surface tracking-tight">SEND THE PENCIL SIGNAL</h2>
+</div>
+<span class="px-3 py-1.5 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[2px_2px_0px_#31302b]">
+            Average Response: 24h
+          </span>
+</div>
+<!-- Form Grid -->
+<form class="flex flex-col gap-space-md" id="pencil-inquiry-form" onsubmit="event.preventDefault(); alert('🚀 BZZT! Pencil Signal dispatched to Felix Vance. Expect incoming transmission shortly.');">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Name Input -->
+<div class="flex flex-col gap-1">
+<label class="font-caption text-caption uppercase font-bold text-on-surface" for="producer-name">Producer / Studio Name *</label>
+<input class="w-full p-3 bg-surface-container-low border-[3px] border-inverse-surface font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[2px_2px_0px_#31302b]" id="producer-name" placeholder="e.g. Avery Warner Bros / Jane Doe" required="" type="text"/>
+</div>
+<!-- Email Input -->
+<div class="flex flex-col gap-1">
+<label class="font-caption text-caption uppercase font-bold text-on-surface" for="producer-email">Direct Email Address *</label>
+<input class="w-full p-3 bg-surface-container-low border-[3px] border-inverse-surface font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[2px_2px_0px_#31302b]" id="producer-email" placeholder="producer@syndicate-studios.com" required="" type="email"/>
+</div>
+</div>
+<!-- Project Scope Dropdown & Timeline -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-caption text-caption uppercase font-bold text-on-surface" for="project-type">Scope of Assignment *</label>
+<select class="w-full p-3 bg-surface-container-low border-[3px] border-inverse-surface font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[2px_2px_0px_#31302b]" id="project-type">
+<option>2D Character Animation Sequence (24fps)</option>
+<option>Complete Episode Storyboard &amp; Animatic</option>
+<option>Original Character Design Model Bible</option>
+<option>Game Cutscene / 2D Sprite Choreography</option>
+<option>Syndicated Comic Strip Illustration</option>
+<option>Other Mayhem &amp; Studio Direction</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-caption text-caption uppercase font-bold text-on-surface" for="project-timeline">Target Delivery Date</label>
+<input class="w-full p-3 bg-surface-container-low border-[3px] border-inverse-surface font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[2px_2px_0px_#31302b]" id="project-timeline" placeholder="e.g. Q3 2025 / 6 Weeks from kickoff" type="text"/>
+</div>
+</div>
+<!-- Budget Range Selector Buttons -->
+<div class="flex flex-col gap-2">
+<span class="font-caption text-caption uppercase font-bold text-on-surface">Estimated Budget Range (USD)</span>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs" id="budget-buttons">
+<label class="cursor-pointer">
+<input class="peer sr-only" name="budget" type="radio" value="2k-5k"/>
+<div class="p-2.5 text-center bg-surface-container border-2 border-inverse-surface font-caption text-caption uppercase font-bold peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:shadow-[3px_3px_0px_#31302b] transition-all">
+                  $2K – $5K
+                </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="budget" type="radio" value="5k-10k"/>
+<div class="p-2.5 text-center bg-surface-container border-2 border-inverse-surface font-caption text-caption uppercase font-bold peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:shadow-[3px_3px_0px_#31302b] transition-all">
+                  $5K – $10K
+                </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="budget" type="radio" value="10k-25k"/>
+<div class="p-2.5 text-center bg-surface-container border-2 border-inverse-surface font-caption text-caption uppercase font-bold peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:shadow-[3px_3px_0px_#31302b] transition-all">
+                  $10K – $25K
+                </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="budget" type="radio" value="25k+"/>
+<div class="p-2.5 text-center bg-surface-container border-2 border-inverse-surface font-caption text-caption uppercase font-bold peer-checked:bg-secondary-container peer-checked:text-on-secondary-container peer-checked:shadow-[3px_3px_0px_#31302b] transition-all">
+                  $25K+ (Full Run)
+                </div>
+</label>
+</div>
+</div>
+<!-- Message / Gag Synopsis -->
+<div class="flex flex-col gap-1">
+<label class="font-caption text-caption uppercase font-bold text-on-surface" for="project-synopsis">The Gag Synopsis / Brief *</label>
+<textarea class="w-full p-3 bg-surface-container-low border-[3px] border-inverse-surface font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[2px_2px_0px_#31302b]" id="project-synopsis" placeholder="Tell me about the characters, the tone, any reference animations (e.g. Chuck Jones, Cuphead, Genndy Tartakovsky), and key deliverable deadlines..." required="" rows="4"></textarea>
+</div>
+<!-- Submit Action -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+<div class="flex items-center gap-2 text-caption font-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary">verified_user</span>
+<span>NDA-ready. Direct line to senior animator desk. No agency markup.</span>
+</div>
+<button class="w-full sm:w-auto px-space-xl py-3.5 bg-primary-container text-on-primary font-headline-sm text-title-comic uppercase tracking-wider border-[3px] border-inverse-surface shadow-[5px_5px_0px_#31302b] hover:shadow-[7px_7px_0px_#31302b] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#31302b] transition-all" type="submit">
+              LAUNCH PENCIL SIGNAL 🚀
+            </button>
+</div>
+</form>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Simple interactive filter simulation for Portfolio Chips
+  document.querySelectorAll('#portfolio-filters button').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('#portfolio-filters button').forEach(b => {
+        b.classList.remove('bg-inverse-surface', 'text-inverse-on-surface');
+        b.classList.add('bg-surface', 'text-on-surface');
+      });
+      button.classList.remove('bg-surface', 'text-on-surface');
+      button.classList.add('bg-inverse-surface', 'text-inverse-on-surface');
+    });
+  });
+</script>
+<script>
+  const sequenceCanvas = document.querySelector('#hero-sequence');
+  const sequenceFallback = document.querySelector('#hero-sequence-fallback');
+  const heroSection = sequenceCanvas?.closest('section');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (sequenceCanvas && sequenceFallback && heroSection && !prefersReducedMotion) {
+    const context = sequenceCanvas.getContext('2d');
+    const frameCount = 285;
+    const frames = new Array(frameCount);
+    const framePath = (index) => `/assets/templates/tom/frames/ezgif-frame-${String(index).padStart(3, '0')}.jpg`;
+    let currentFrame = -1;
+    let pendingFrame = 0;
+    let resizeFrame = 0;
+    let scrollFrame = 0;
+    let lastScrollY = window.scrollY;
+    const scrollPoll = window.setInterval(() => {
+      if (window.scrollY !== lastScrollY) {
+        lastScrollY = window.scrollY;
+        handleScroll();
+      }
+    }, 100);
+
+    const drawFrame = (index) => {
+      const image = frames[index];
+      if (!context || !image?.complete || !image.naturalWidth) return;
+
+      const bounds = sequenceCanvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+      const width = Math.max(1, Math.round(bounds.width * ratio));
+      const height = Math.max(1, Math.round(bounds.height * ratio));
+      if (sequenceCanvas.width !== width || sequenceCanvas.height !== height) {
+        sequenceCanvas.width = width;
+        sequenceCanvas.height = height;
+      }
+
+      context.clearRect(0, 0, width, height);
+      const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+      const drawWidth = image.naturalWidth * scale;
+      const drawHeight = image.naturalHeight * scale;
+      context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+
+      currentFrame = index;
+      sequenceCanvas.dataset.frame = String(index + 1).padStart(3, '0');
+      sequenceCanvas.style.opacity = '1';
+      sequenceFallback.style.opacity = '0';
+    };
+
+    const loadFrame = (index) => {
+      if (frames[index]) return frames[index];
+      const image = new Image();
+      image.decoding = 'async';
+      image.src = framePath(index + 1);
+      image.onload = () => {
+        if (index === pendingFrame || currentFrame < 0) drawFrame(index);
+      };
+      frames[index] = image;
+      return image;
+    };
+
+    const drawNearestLoadedFrame = (index) => {
+      for (let distance = 0; distance < frameCount; distance += 1) {
+        const before = index - distance;
+        const after = index + distance;
+        if (before >= 0 && frames[before]?.complete && frames[before].naturalWidth) return drawFrame(before);
+        if (after < frameCount && frames[after]?.complete && frames[after].naturalWidth) return drawFrame(after);
+      }
+    };
+
+    const updateFromScroll = () => {
+      scrollFrame = 0;
+      const bounds = heroSection.getBoundingClientRect();
+      const travel = Math.max(bounds.height - window.innerHeight, 1);
+      const progress = Math.min(Math.max(-bounds.top / travel, 0), 1);
+      sequenceCanvas.dataset.progress = progress.toFixed(3);
+      pendingFrame = Math.round(progress * (frameCount - 1));
+      loadFrame(pendingFrame);
+      drawNearestLoadedFrame(pendingFrame);
+    };
+
+    const handleScroll = () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateFromScroll);
+    };
+
+    const handleResize = () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => drawNearestLoadedFrame(currentFrame < 0 ? 0 : currentFrame));
+    };
+
+    const preloadBatch = (start, batchSize) => {
+      for (let index = start; index < Math.min(start + batchSize, frameCount); index += 1) loadFrame(index);
+      if (start + batchSize < frameCount) {
+        const schedule = window.requestIdleCallback || ((callback) => window.setTimeout(callback, 80));
+        schedule(() => preloadBatch(start + batchSize, batchSize));
+      }
+    };
+
+    frames[0] = sequenceFallback;
+    drawFrame(0);
+    preloadBatch(1, 12);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    window.addEventListener('resize', handleResize);
+    updateFromScroll();
+
+    window.addEventListener('beforeunload', () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('resize', handleResize);
+      window.clearInterval(scrollPoll);
+      cancelAnimationFrame(scrollFrame);
+      cancelAnimationFrame(resizeFrame);
+    }, { once: true });
+  }
+</script></main><div class="w-full bg-secondary-container border-y-[3px] border-inverse-surface overflow-hidden py-2"><div class="animate-marquee whitespace-nowrap"><div class="flex items-center gap-space-lg font-label-badge text-label-badge uppercase text-on-secondary-container tracking-wider"><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>NOW AVAILABLE FOR FREELANCE &amp; STUDIO COMMISSIONS</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>CHARACTER DESIGN</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>2D CLASSIC ANIMATION</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>STORYBOARDING</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>COMIC STRIPS &amp; GAG CARTOONING</span></div><div class="flex items-center gap-space-lg font-label-badge text-label-badge uppercase text-on-secondary-container tracking-wider pl-space-lg"><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>NOW AVAILABLE FOR FREELANCE &amp; STUDIO COMMISSIONS</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>CHARACTER DESIGN</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>2D CLASSIC ANIMATION</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>STORYBOARDING</span><span class="inline-block w-2.5 h-2.5 bg-primary rounded-full"></span><span>COMIC STRIPS &amp; GAG CARTOONING</span></div></div></div><footer class="w-full bg-surface-container border-t-[3px] border-inverse-surface"><div class="max-w-[1440px] mx-auto px-gutter py-space-xl flex flex-col gap-space-lg"><div class="flex flex-col lg:flex-row items-center justify-between gap-space-lg pb-space-lg border-b-2 border-outline-variant/60"><div class="flex flex-col items-center lg:items-start text-center lg:text-left gap-space-xs"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface uppercase">ToonCraft Studios</span><span class="font-caption text-caption uppercase px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-bold border border-inverse-surface rounded">Syndicate #88</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">Hand-inked charm, rubber-hose vitality, and kinetic storycrafting for world-class editorial, gaming, and television productions.</p></div><div class="flex flex-wrap items-center justify-center gap-space-sm"><a class="font-label-badge text-label-badge uppercase px-3 py-1.5 bg-surface text-on-surface border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] hover:bg-surface-container-highest transition-all" href="#">ArtStation</a><a class="font-label-badge text-label-badge uppercase px-3 py-1.5 bg-surface text-on-surface border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] hover:bg-surface-container-highest transition-all" href="#">Vimeo</a><a class="font-label-badge text-label-badge uppercase px-3 py-1.5 bg-surface text-on-surface border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] hover:bg-surface-container-highest transition-all" href="#">Instagram</a><a class="font-label-badge text-label-badge uppercase px-3 py-1.5 bg-surface text-on-surface border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] hover:bg-surface-container-highest transition-all" href="#">Behance</a><a class="font-label-badge text-label-badge uppercase px-3 py-1.5 bg-surface text-on-surface border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b] hover:bg-surface-container-highest transition-all" href="#">X / Twitter</a></div><a class="inline-flex items-center gap-space-xs px-space-md py-space-sm bg-surface-bright text-on-surface font-label-badge text-label-badge uppercase border-[3px] border-inverse-surface shadow-[4px_4px_0px_#31302b] hover:-translate-y-1 active:translate-y-0.5 transition-transform" href="#"><span class="material-symbols-outlined text-primary text-[20px]">rocket_launch</span><span>Top of Strip</span></a></div><div class="flex flex-col md:flex-row items-center justify-between gap-space-sm font-caption text-caption text-on-surface-variant"><p class="text-center md:text-left">© 1994–2025 ToonCraft Studios &amp; Felix Vance. Distributed worldwide by the ACME Syndicate. All rights reserved.</p><div class="flex items-center gap-space-md uppercase font-bold"><a class="hover:text-primary transition-colors" href="#">Syndication Rights</a><span>•</span><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a><span>•</span><a class="hover:text-primary transition-colors" href="#">Color Separation Spec</a></div></div></div></footer></body></html>

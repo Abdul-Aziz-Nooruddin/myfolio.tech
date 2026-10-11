@@ -340,6 +340,13 @@ Antigravity models must draw from this standardized catalog when generating, mat
 - **Key Features**: WebGL Flow Shader background, interactive WebGL displacement morphing portrait with dual male (`josh.webp`/`josh_wave.webp`) and female (`maya.webp`/`maya_wave.webp`) AI character sets, interactive avatar switcher pill `[ 👦 Josh | 👧 Maya | 📷 Photo ]`, Matter-like colliding physics tech chips with gravity reset, Dribbble-style project showcase cards, and click-to-copy email contact terminal.
 - **Recommended For**: Design Engineers, Product Designers, Frontend & Full-Stack Developers, Creative Technologists, Indie Founders.
 
+### 31. Tom 2D Cel Animation (`tom-cel-animator` / `tom`)
+- **Aesthetic DNA**: Vintage cartoon & comic editorial newsprint. Features high-speed 285-frame Apple canvas scrollytelling of Tom & Jerry bursting through newspaper clippings with comic blast FX stamps, vintage slapstick physics pill badges, hand-inked comic bento panels, and 4-step production process walk.
+- **Color Palette**: Comic Newsprint `#F7F3EB` / `#ECE8E0`, Cartoon Cherry Red `#AC001E`, Slapstick Gold `#FFB702`, Ink Borders `#31302B` / `#1C1C17`.
+- **Typography**: Display `Bricolage Grotesque`, Body `Space Grotesk`, Icons `Material Symbols Outlined`.
+- **Key Features**: 285-frame synchronized frame-by-frame HTML5 2D canvas scrub (`/assets/templates/tom/frames/`), newspaper tear hero breakthrough, slapstick physics badges, comic strip pipeline walk, syndicate stamps, and authentic comic newspaper 404 page.
+- **Recommended For**: Animators & Motion Designers, Storyboard Artists & Illustrators, Comic & Graphic Novel Creators, Character Designers, Game Cinematic Directors, Visual Storytellers.
+
 ---
 
 ## Website Creation Guidelines

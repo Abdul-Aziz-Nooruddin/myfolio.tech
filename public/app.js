@@ -340,6 +340,20 @@ function openStudioWithTemplate(templateId) {
       bio: 'Designing and engineering focused software surfaces where ideas and code coexist cleanly.',
       skills: ['TypeScript', 'WebGL', 'React', 'Next.js', 'Tailwind CSS', 'Figma'],
       theme: 'rbp-kinetic-monochrome'
+    },
+    'tom-cel-animator': {
+      name: 'Felix Vance',
+      role: 'Original Cel Animator & Storyboarder',
+      bio: 'Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics and kinetic hand-drawn storytelling.',
+      skills: ['2D Cel Animation', 'Storyboarding', 'Character Design', 'Compositing', 'Toon Boom Harmony', 'Frame-by-Frame'],
+      theme: 'tom-cel-animator'
+    },
+    'tom': {
+      name: 'Felix Vance',
+      role: 'Original Cel Animator & Storyboarder',
+      bio: 'Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics and kinetic hand-drawn storytelling.',
+      skills: ['2D Cel Animation', 'Storyboarding', 'Character Design', 'Compositing', 'Toon Boom Harmony', 'Frame-by-Frame'],
+      theme: 'tom-cel-animator'
     }
   };
 
