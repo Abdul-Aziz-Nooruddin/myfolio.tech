@@ -488,7 +488,7 @@ app.use(async (req, res, next) => {
                          Object.values(TemplateRegistry.templates)[0];
 
         const abdulAzizProfile = { ...DEFAULT_FOUNDER_PROFILE };
-        const rendered = template.render(abdulAzizProfile, {});
+        const rendered = TemplateRegistry.render(activeUniverse, abdulAzizProfile, {});
         html = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
         // Cache to public/sites/abdulaziz so subsequent requests don't need re-rendering
         try {
@@ -3934,7 +3934,7 @@ app.post('/api/vip/set-active-site', AuthMiddleware.requireAdmin, async (req, re
               role: req.body.developerRole || DEFAULT_FOUNDER_PROFILE.role,
               headline: req.body.developerRole || DEFAULT_FOUNDER_PROFILE.headline
             };
-            const rendered = template.render(candidateProfile, {});
+            const rendered = TemplateRegistry.render(universeKey || 'jack-3d-creator', candidateProfile, {});
             html = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
             const siteDir = path.join(process.cwd(), 'public', 'sites', siteId);
             fs.mkdirSync(siteDir, { recursive: true });
@@ -4246,7 +4246,7 @@ app.get('/p/:siteId', async (req, res) => {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; frame-ancestors *;");
         res.setHeader('X-Content-Type-Options', 'nosniff');
-        const rendered = template.render(demoData);
+        const rendered = TemplateRegistry.render(template.id || siteId, demoData);
         let htmlOutput = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
         htmlOutput = siteGenerator.injectPreviewWatermark(htmlOutput, false, template.id || siteId);
         hostingProvider.deploy(siteId, htmlOutput, demoData, true).catch(() => {});
@@ -4295,7 +4295,7 @@ app.get('/p/:siteId', async (req, res) => {
               contact: prof.contact || { email: meta.userEmail || 'abdulaziznoor9876@gmail.com', github: 'https://github.com/Abdul-Aziz-Nooruddin' },
               social: prof.social || { github: 'https://github.com/Abdul-Aziz-Nooruddin' }
             };
-            const rendered = template.render(candidateProfile, {});
+            const rendered = TemplateRegistry.render(uKey, candidateProfile, {});
             const generatedHtml = injectMobileCSS(typeof rendered === 'string' ? rendered : (rendered?.html || ''));
             if (generatedHtml) {
               const targetDir = path.join(sitesBaseDir, siteId);

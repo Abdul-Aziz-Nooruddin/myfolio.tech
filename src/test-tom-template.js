@@ -102,4 +102,27 @@ test('🎨 Tom 2D Cel Animation Template & Scrollytelling Engine', async (t) => 
     assert.ok(!sanitized.includes('id="preview-watermark-overlay"'), 'Watermark must be removed on export');
     assert.ok(!sanitized.includes('preview-watermark-svg'), 'Watermark SVG must be removed on export');
   });
+
+  await t.test('6. Lenis Smooth Inertia Scroll & Scrollytelling Integration', async () => {
+    // 1. TemplateRegistry render incorporates Lenis and official CSS
+    const res = TemplateRegistry.render('tom-cel-animator', { name: 'Alex Animator' });
+    assert.ok(res.html.includes('lenis@1.1.18/dist/lenis.min.js'), 'Must load Lenis from CDN');
+    assert.ok(res.html.includes('lenis@1.1.18/dist/lenis.css'), 'Must load official Lenis stylesheet');
+    assert.ok(res.html.includes('html.lenis'), 'Must include Lenis CSS layout baseline');
+    assert.ok(res.html.includes('window.__folioLenis'), 'Must orchestrate window.__folioLenis instance');
+    assert.ok(res.html.includes('lenis.on(\'scroll\''), 'Must bind Lenis scroll listeners');
+    assert.ok(res.html.includes('lenis.scrollTo'), 'Must include smooth anchor link scrollTo navigation');
+
+    // 2. SiteGenerator generates full portfolio with Lenis engine
+    const siteGen = new SiteGenerator();
+    const site = await siteGen.generateSite({ id: 'test-lenis-site' }, {
+      name: 'Maya Lin',
+      role: 'Character Animator',
+      skills: ['Animation', 'Cel Inking']
+    }, { templateId: 'tom-cel-animator' });
+
+    assert.ok(site.html.includes('lenis.min.js'), 'Generated site HTML must include Lenis');
+    assert.ok(site.html.includes('universal-scroll-motion-engine'), 'Generated site must include motion engine');
+  });
 });
+

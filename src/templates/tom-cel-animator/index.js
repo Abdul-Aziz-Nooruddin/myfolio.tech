@@ -1153,11 +1153,29 @@ const TomCelAnimatorTemplate = {
         window.addEventListener('resize', handleResize);
         updateFromScroll();
 
+        // Connect directly with Lenis smooth inertia engine
+        if (window.__folioLenis) {
+          window.__folioLenis.on('scroll', handleScroll);
+        } else {
+          window.addEventListener('folio:lenis:ready', (e) => {
+            if (e.detail && e.detail.lenis) {
+              e.detail.lenis.on('scroll', handleScroll);
+            }
+          });
+          window.addEventListener('lenis-ready', () => {
+            if (window.__folioLenis) {
+              window.__folioLenis.on('scroll', handleScroll);
+            }
+          });
+        }
+
         window.addEventListener('beforeunload', () => {
+          if (window.__folioLenis && typeof window.__folioLenis.off === 'function') {
+            window.__folioLenis.off('scroll', handleScroll);
+          }
           window.removeEventListener('scroll', handleScroll);
           document.removeEventListener('scroll', handleScroll, true);
           window.removeEventListener('resize', handleResize);
-          window.clearInterval(scrollPoll);
           cancelAnimationFrame(scrollFrame);
           cancelAnimationFrame(resizeFrame);
         }, { once: true });

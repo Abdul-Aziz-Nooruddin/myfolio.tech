@@ -28,6 +28,7 @@ class UniversalScrollMotion {
 
     const motionHeadAssets = `
   <!-- Smooth Inertia Scroll (Lenis) & GSAP Motion Ecosystem -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -47,7 +48,7 @@ class UniversalScrollMotion {
       transition: width 0.08s linear;
     }
 
-    /* Hardware Accelerated Smooth Inertia Scroll Baseline */
+    /* Hardware Accelerated Smooth Inertia Scroll Baseline (Lenis) */
     html.lenis, html.lenis body {
       height: auto;
     }
@@ -58,7 +59,7 @@ class UniversalScrollMotion {
       overscroll-behavior: contain;
     }
     .lenis.lenis-stopped {
-      overflow: hidden;
+      overflow: clip;
     }
     .lenis.lenis-smooth iframe {
       pointer-events: none;
@@ -119,22 +120,30 @@ class UniversalScrollMotion {
         var scrollTimeout;
         var ticking = false;
 
-        // 1. Lenis Smooth Inertia Scroll Orchestration
+        // 1. Lenis Smooth Inertia Scroll Orchestration (@darkroomengineering/lenis)
         var lenis = null;
-        if (typeof Lenis !== 'undefined' && !isReducedMotion) {
+        function startLenis() {
+          if (window.__folioLenis || isReducedMotion || typeof Lenis === 'undefined') return;
           try {
             lenis = new Lenis({
-              duration: 1.15,
+              duration: 1.2,
               easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
               orientation: 'vertical',
               gestureOrientation: 'vertical',
               smoothWheel: true,
-              wheelMultiplier: 0.95,
-              touchMultiplier: 1.4,
-              infinite: false
+              wheelMultiplier: 1.0,
+              touchMultiplier: 1.5,
+              infinite: false,
+              syncTouch: false,
+              autoResize: true
             });
 
             window.__folioLenis = lenis;
+
+            try {
+              window.dispatchEvent(new CustomEvent('folio:lenis:ready', { detail: { lenis: lenis } }));
+              window.dispatchEvent(new Event('lenis-ready'));
+            } catch (evErr) {}
 
             if (typeof ScrollTrigger !== 'undefined') {
               lenis.on('scroll', ScrollTrigger.update);
@@ -152,16 +161,55 @@ class UniversalScrollMotion {
               }
               requestAnimationFrame(raf);
             }
+
+            // Smooth In-Page Anchor Links Navigation
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+              anchor.addEventListener('click', function(e) {
+                var targetId = this.getAttribute('href');
+                if (!targetId) return;
+                if (targetId === '#') {
+                  e.preventDefault();
+                  lenis.scrollTo(0, { duration: 1.2 });
+                  return;
+                }
+                try {
+                  var targetElement = document.querySelector(targetId);
+                  if (targetElement) {
+                    e.preventDefault();
+                    lenis.scrollTo(targetElement, { offset: -24, duration: 1.2 });
+                  }
+                } catch(anchorErr) {}
+              });
+            });
+
+            // Connect Lenis to real-time scroll physics
+            lenis.on('scroll', function(e) {
+              updateScrollPhysics(e.scroll, e.velocity);
+            });
           } catch (e) {
             console.warn('[Lenis] Fallback to native scroll:', e);
           }
         }
 
+        if (typeof Lenis !== 'undefined') {
+          startLenis();
+        } else {
+          var checkCount = 0;
+          var lenisTimer = setInterval(function() {
+            checkCount++;
+            if (typeof Lenis !== 'undefined') {
+              clearInterval(lenisTimer);
+              startLenis();
+            } else if (checkCount > 25) {
+              clearInterval(lenisTimer);
+            }
+          }, 40);
+        }
+
         // 2. Real-time Scroll Velocity & Direction Physics
-        window.addEventListener('scroll', function() {
-          var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        function updateScrollPhysics(currentScroll, velocity) {
           var delta = currentScroll - lastScrollTop;
-          scrollVelocity = delta;
+          scrollVelocity = velocity !== undefined ? velocity : delta;
           lastScrollTop = Math.max(0, currentScroll);
 
           // Update Progress Indicator
@@ -196,6 +244,11 @@ class UniversalScrollMotion {
               el.style.transform = 'skewY(0deg) scaleY(1)';
             });
           }, 110);
+        }
+
+        window.addEventListener('scroll', function() {
+          var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          updateScrollPhysics(currentScroll);
         }, { passive: true });
 
         // 3. Motion Spring-Physics 3D Tilt on Hover
