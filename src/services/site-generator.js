@@ -87,45 +87,130 @@ class SiteGenerator {
 
     const watermarkHtml = `
     <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
-    <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; user-select: none; color: rgba(255, 255, 255, 0.12); transition: color 0.25s ease;">
+    <style id="preview-watermark-styles">
+      #preview-floating-bar {
+        position: fixed !important;
+        bottom: 12px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 999998 !important;
+        background: rgba(15, 23, 42, 0.92) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        border-radius: 9999px !important;
+        padding: 3px 4px 3px 10px !important;
+        display: inline-flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+        color: #ffffff !important;
+        font-family: system-ui, -apple-system, sans-serif !important;
+        font-size: 11.5px !important;
+        max-width: calc(100vw - 20px) !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+      }
+      #preview-floating-bar a.preview-cta-btn {
+        background: linear-gradient(135deg, #75c5de, #13708e) !important;
+        color: #08171c !important;
+        font-weight: 800 !important;
+        font-size: 11px !important;
+        padding: 5px 12px !important;
+        border-radius: 9999px !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 8px rgba(117,197,222,0.3) !important;
+        line-height: 1 !important;
+      }
+      #preview-watermark-pill {
+        pointer-events: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(12, 12, 12, 0.85);
+        color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+        line-height: 1;
+        white-space: nowrap;
+      }
+      @media (max-width: 540px) {
+        #preview-floating-bar {
+          bottom: 8px !important;
+          padding: 2.5px 3px 2.5px 8px !important;
+          gap: 6px !important;
+          font-size: 10.5px !important;
+        }
+        #preview-floating-bar .wm-hide-mobile {
+          display: none !important;
+        }
+        #preview-floating-bar a.preview-cta-btn {
+          font-size: 10px !important;
+          padding: 4px 8px !important;
+        }
+        #preview-watermark-pill {
+          padding: 3px 8px !important;
+          font-size: 9.5px !important;
+        }
+        #preview-watermark-pill .wm-hide-mobile {
+          display: none !important;
+        }
+      }
+    </style>
+    <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; user-select: none; color: rgba(255, 255, 255, 0.10); transition: color 0.25s ease;">
       <!-- FULL-SCREEN DIAGONAL REPEATING WATERMARK SVG GRID -->
       <svg id="preview-watermark-svg" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="wm-pattern" width="420" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
-            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="currentColor">MYFOLIO • ${mainWatermarkWord}</text>
-            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="16" letter-spacing="3" fill="currentColor">${subWatermarkText}</text>
+            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" letter-spacing="4" fill="currentColor">MYFOLIO • ${mainWatermarkWord}</text>
+            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="15" letter-spacing="3" fill="currentColor">${subWatermarkText}</text>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#wm-pattern)" />
       </svg>
 
       <!-- TOP FLOATING PILL BADGE -->
-      <div style="width: 100%; display: flex; justify-content: center; padding-top: 14px; position: relative; z-index: 2;">
-        <div id="preview-watermark-pill" style="pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; padding: 7px 20px; border-radius: 9999px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.22); background: rgba(12, 12, 12, 0.85); color: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
-          <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:6px;">
-            <span id="preview-watermark-dot" style="display:inline-block; width:7px; height:7px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor; transition: background-color 0.25s ease;"></span>
+      <div style="width: 100%; display: flex; justify-content: center; padding-top: 10px; position: relative; z-index: 2;">
+        <div id="preview-watermark-pill">
+          <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:5px;">
+            <span id="preview-watermark-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor;"></span>
             <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
           </span>
           <span style="opacity: 0.4;">•</span>
-          <span style="font-weight: 800; letter-spacing: 0.12em;">${pillText}</span>
+          <span style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
         </div>
       </div>
 
       <!-- ONE BIG BOLD DIAGONAL CENTER MASTHEAD -->
       <div id="preview-big-diagonal" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-28deg); white-space: nowrap; pointer-events: none; user-select: none; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-transform: uppercase; color: currentColor; transition: color 0.25s ease; text-align: center; width: 100%; z-index: 1;">
-        <div style="font-size: clamp(1.2rem, 2.8vw, 2.2rem); font-weight: 800; letter-spacing: 0.35em; opacity: 0.85; margin-bottom: 6px;">MYFOLIO.TECH</div>
-        <div style="font-size: clamp(3.8rem, 12vw, 11rem); font-weight: 900; letter-spacing: 0.16em; line-height: 0.9;">${mainWatermarkWord}</div>
-        <div style="font-size: clamp(0.85rem, 1.8vw, 1.4rem); font-weight: 700; letter-spacing: 0.28em; opacity: 0.75; margin-top: 8px;">${diagonalSubtitle}</div>
+        <div style="font-size: clamp(1rem, 2.2vw, 1.8rem); font-weight: 800; letter-spacing: 0.35em; opacity: 0.85; margin-bottom: 4px;">MYFOLIO.TECH</div>
+        <div style="font-size: clamp(3rem, 9vw, 8rem); font-weight: 900; letter-spacing: 0.14em; line-height: 0.9;">${mainWatermarkWord}</div>
+        <div style="font-size: clamp(0.75rem, 1.5vw, 1.2rem); font-weight: 700; letter-spacing: 0.25em; opacity: 0.75; margin-top: 6px;">${diagonalSubtitle}</div>
       </div>
     </div>
 
-    <!-- FLOATING BOTTOM CONVERSION & UNLOCK BAR -->
-    <div id="preview-floating-bar" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999998; background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 16px 40px rgba(0,0,0,0.6); border-radius: 9999px; padding: 10px 24px; display: flex; align-items: center; gap: 14px; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; max-width: 94vw; flex-wrap: wrap; justify-content: center;">
-      <div style="font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-        <span style="display:inline-block; width:8px; height:8px; background:#75c5de; border-radius:50%; box-shadow: 0 0 8px #75c5de;"></span>
-        <span>🔒 <strong>${barLabel}</strong> • Powered by MyFolio</span>
+    <!-- ULTRA-THIN FLOATING BOTTOM CONVERSION & UNLOCK BAR -->
+    <div id="preview-floating-bar">
+      <div style="display: inline-flex; align-items: center; gap: 6px;">
+        <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
+        <span>🔒 <strong>${barLabel}</strong><span class="wm-hide-mobile"> • MyFolio</span></span>
       </div>
-      <a href="${pricingUrl}" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}" style="background: linear-gradient(135deg, #75c5de, #13708e); color: #08171c; font-weight: 800; font-size: 0.85rem; padding: 8px 18px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(117,197,222,0.35); transition: transform 0.2s ease;">
+      <a href="${pricingUrl}" class="preview-cta-btn" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}">
         <span>${ctaLabel}</span>
       </a>
     </div>
