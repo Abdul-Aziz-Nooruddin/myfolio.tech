@@ -1851,36 +1851,55 @@
       }
     }
 
+    function normalizeUniverseKey(key) {
+      if (!key) return 'jack-3d-creator';
+      const k = String(key).toLowerCase().trim();
+      if (k.includes('tom') || k.includes('comic') || k.includes('cel-anim')) return 'tom-cel-animator';
+      if (k.includes('rbp') || k.includes('kinetic') || k.includes('calm-mono')) return 'rbp-kinetic-monochrome';
+      if (k.includes('kage') || k.includes('temple') || k.includes('kyoto')) return 'kage-temple';
+      if (k.includes('nadia') || k.includes('brand') || k.includes('editorial')) return 'nadia-brand';
+      if (k.includes('jack') || k.includes('3d-creator')) return 'jack-3d-creator';
+      return k;
+    }
+
     const TEMPLATE_THUMBS = {
       'jack-3d-creator': '/assets/templates/jack-3d-creator-hero.webp',
+      '3d-creator': '/assets/templates/jack-3d-creator-hero.webp',
+      'jack': '/assets/templates/jack-3d-creator-hero.webp',
       'nadia-brand': '/assets/templates/nadia-brand-hero.webp',
+      'nadia-personal-brand': '/assets/templates/nadia-brand-hero.webp',
+      'nadia': '/assets/templates/nadia-brand-hero.webp',
       'kage-temple': '/assets/templates/kage-temple-hero.webp',
       'kage': '/assets/templates/kage-temple-hero.webp',
+      'kage-landing-page': '/assets/templates/kage-temple-hero.webp',
       'rbp-kinetic-monochrome': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
       'rbp-portfolio': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
       'rbp': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
+      'kinetic-monochrome': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
+      'calm-monochrome': '/assets/templates/rbp-kinetic-monochrome-hero.webp',
       'tom-cel-animator': '/assets/templates/tom-cel-animator-hero.webp',
       'tom': '/assets/templates/tom-cel-animator-hero.webp',
-      'default': '/images/hero-base.webp'
+      'tom-animation': '/assets/templates/tom-cel-animator-hero.webp',
+      'cel-animator': '/assets/templates/tom-cel-animator-hero.webp',
+      'comic-editorial': '/assets/templates/tom-cel-animator-hero.webp',
+      'default': '/assets/templates/jack-3d-creator-hero.webp'
     };
 
     function getUniverseThumb(key) {
-      return TEMPLATE_THUMBS[key] || TEMPLATE_THUMBS['jack-3d-creator'];
+      const norm = normalizeUniverseKey(key);
+      return TEMPLATE_THUMBS[norm] || TEMPLATE_THUMBS[key] || TEMPLATE_THUMBS['jack-3d-creator'];
     }
 
     function getUniverseName(key) {
+      const norm = normalizeUniverseKey(key);
       const map = {
         'jack-3d-creator': 'Jack 3D Space',
         'nadia-brand': 'Nadia Editorial',
         'kage-temple': 'Kage Kyoto Temple',
-        'kage': 'Kage Kyoto Temple',
         'rbp-kinetic-monochrome': 'RBP Kinetic Monochrome',
-        'rbp-portfolio': 'RBP Kinetic Monochrome',
-        'rbp': 'RBP Kinetic Monochrome',
-        'tom-cel-animator': 'Tom 2D Cel Animation',
-        'tom': 'Tom 2D Cel Animation'
+        'tom-cel-animator': 'Tom 2D Cel Animation'
       };
-      return map[key] || 'Jack 3D Space';
+      return map[norm] || map[key] || 'Jack 3D Space';
     }
 
     async function loadCrossDevicePortfolios() {
@@ -1908,7 +1927,17 @@
         const unifiedMap = new Map();
         cloud.forEach(p => unifiedMap.set(p.siteId, p));
         local.forEach(lp => {
-          if (lp && lp.siteId && !unifiedMap.has(lp.siteId)) unifiedMap.set(lp.siteId, lp);
+          if (lp && lp.siteId) {
+            if (!unifiedMap.has(lp.siteId)) {
+              unifiedMap.set(lp.siteId, lp);
+            } else {
+              const current = unifiedMap.get(lp.siteId);
+              if (current.universeKey === 'jack-3d-creator' && lp.universeKey && lp.universeKey !== 'jack-3d-creator') {
+                current.universeKey = lp.universeKey;
+                current.templateId = lp.universeKey;
+              }
+            }
+          }
         });
 
         // Fallback A: Check cachedDashData siteId
@@ -2079,6 +2108,46 @@
           </div>
         `;
       }).join('');
+
+      // Asynchronously verify and heal template thumbnail for cards on display
+      setTimeout(() => {
+        portfolios.forEach(p => {
+          const sid = p.siteId;
+          if (!sid) return;
+          fetch(`/p/${encodeURIComponent(sid)}`, { method: 'GET', credentials: 'include' })
+            .then(res => res.ok ? res.text() : '')
+            .then(html => {
+              if (!html) return;
+              let detected = null;
+              const metaMatch = html.match(/name=["']myfolio-(?:template|universe)["']\s+content=["']([^"']+)["']/i);
+              if (metaMatch && metaMatch[1]) detected = metaMatch[1];
+              else if (html.includes('tom-cel-animator') || html.includes('Bricolage+Grotesque') || html.includes('font-title-comic') || html.includes('Tom 2D Cel Animation') || html.includes('#ac001e')) detected = 'tom-cel-animator';
+              else if (html.includes('rbp-kinetic-monochrome') || html.includes('string-tune') || html.includes('og-rbp') || html.includes('--site-frame-radius') || html.includes('rbp-portfolio')) detected = 'rbp-kinetic-monochrome';
+              else if (html.includes('kage-temple') || html.includes('Sanmon') || html.includes('shinto') || html.includes('kage.html') || html.includes('Kyoto')) detected = 'kage-temple';
+              else if (html.includes('nadia-brand') || html.includes('Electric Coral') || html.includes('Nadia Personal Brand') || html.includes('nadia-personal-brand')) detected = 'nadia-brand';
+
+              if (detected && normalizeUniverseKey(detected) !== normalizeUniverseKey(p.universeKey)) {
+                p.universeKey = detected;
+                p.templateId = detected;
+                const card = document.querySelector(`.portfolio-card[data-site-id="${sid}"]`);
+                if (card) {
+                  const img = card.querySelector('.card-thumb-img');
+                  if (img) img.src = getUniverseThumb(detected);
+                }
+                try {
+                  const stored = JSON.parse(localStorage.getItem('myfolio_generated_projects_v1') || '[]');
+                  const target = stored.find(x => x && x.siteId === sid);
+                  if (target) {
+                    target.universeKey = detected;
+                    target.templateId = detected;
+                    localStorage.setItem('myfolio_generated_projects_v1', JSON.stringify(stored));
+                  }
+                } catch (e) {}
+              }
+            })
+            .catch(() => {});
+        });
+      }, 300);
     }
 
     function formatTimeAgo(timestamp) {

@@ -55,6 +55,30 @@ const injectMobileCSS = (html) => html && html.includes('</body>')
   ? html.replace('</body>', `${TemplateRegistry.getMobileCSS()}\n</body>`)
   : html;
 
+// Universal helper: inspect HTML content to accurately identify the visual template
+const detectTemplateFromHtml = (html) => {
+  if (!html || typeof html !== 'string') return 'jack-3d-creator';
+  const metaMatch = html.match(/name=["']myfolio-(?:template|universe)["']\s+content=["']([^"']+)["']/i);
+  if (metaMatch && metaMatch[1]) return metaMatch[1];
+
+  if (html.includes('tom-cel-animator') || html.includes('Bricolage+Grotesque') || html.includes('font-title-comic') || html.includes('Tom 2D Cel Animation') || html.includes('#ac001e')) {
+    return 'tom-cel-animator';
+  }
+  if (html.includes('rbp-kinetic-monochrome') || html.includes('string-tune') || html.includes('og-rbp') || html.includes('--site-frame-radius') || html.includes('rbp-portfolio')) {
+    return 'rbp-kinetic-monochrome';
+  }
+  if (html.includes('kage-temple') || html.includes('Sanmon') || html.includes('shinto') || html.includes('kage.html') || html.includes('Kyoto')) {
+    return 'kage-temple';
+  }
+  if (html.includes('nadia-brand') || html.includes('Electric Coral') || html.includes('Nadia Personal Brand') || html.includes('nadia-personal-brand')) {
+    return 'nadia-brand';
+  }
+  if (html.includes('jack-3d-creator') || html.includes('Kanit') || html.includes('jack-portfolio-core-styles') || html.includes("HI, I'M") || html.includes('hero-heading')) {
+    return 'jack-3d-creator';
+  }
+  return 'jack-3d-creator';
+};
+
 // Universal In-Memory Draft Cache: ensures draft sites persist across all requests & cold-starts
 const globalDraftsCache = global.__MYFOLIO_DRAFTS_CACHE || new Map();
 global.__MYFOLIO_DRAFTS_CACHE = globalDraftsCache;
@@ -1833,8 +1857,8 @@ app.post(
 
       const normalized = UnifiedProfileNormalizer.normalize(input);
       const { TemplateRegistry } = require('./templates/template-registry');
-      const chosenTemplate = (input.preferences?.theme && input.preferences.theme !== 'auto') ? input.preferences.theme : null;
-      const selectedTemplate = TemplateRegistry.selectTemplate(chosenTemplate, normalized);
+      const requestedTemplate = input.templateId || input.theme || (input.preferences?.theme && input.preferences.theme !== 'auto' ? input.preferences.theme : null) || null;
+      const selectedTemplate = TemplateRegistry.selectTemplate(requestedTemplate, normalized);
 
       const isSitePaid = Boolean(isVipFounder && shouldPublishLive);
       const siteGen = new SiteGenerator();
@@ -1875,7 +1899,8 @@ app.post(
         siteId,
         handle: userHandle,
         subdomain: isVipFounder ? `${userHandle}.myfolio.tech` : null,
-        universeKey: input.preferences?.theme || 'jack-3d-creator',
+        universeKey: selectedTemplate.id,
+        templateId: selectedTemplate.id,
         developerName: normalized.name,
         developerRole: normalized.role || normalized.title,
         projectsCount: normalized.projects?.length || 6,
@@ -2017,6 +2042,8 @@ app.post(
         handle: userHandle,
         previewUrl: `/p/${siteId}`,
         siteUrl: `/p/${siteId}`,
+        universeKey: selectedTemplate.id,
+        templateId: selectedTemplate.id,
         liveUrl: shouldPublishLive ? (isVipFounder ? 'https://abdulaziz.myfolio.tech' : liveSubdomainUrl) : null,
         subdomain: shouldPublishLive ? (isVipFounder ? 'abdulaziz.myfolio.tech' : customSubdomain) : null,
         customDomain: shouldPublishLive ? (isVipFounder ? 'abdulaziz.myfolio.tech' : customSubdomain) : null,
@@ -3363,12 +3390,29 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
                 const derivedName = meta.developerName || prof.name || (derivedHandle ? derivedHandle.charAt(0).toUpperCase() + derivedHandle.slice(1) : user.name) || 'Developer';
                 const derivedRole = meta.developerRole || prof.role || prof.title || 'Software Engineer';
                 
+                let resolvedUniverse = meta.universeKey || meta.templateId || null;
+                const clientIndexPath = path.join(sitesBaseDir, sid, 'index.html');
+                if ((!resolvedUniverse || resolvedUniverse === 'jack-3d-creator') && fs.existsSync(clientIndexPath)) {
+                  try {
+                    const sampleHtml = fs.readFileSync(clientIndexPath, 'utf8');
+                    const detected = detectTemplateFromHtml(sampleHtml);
+                    if (detected && detected !== 'jack-3d-creator') {
+                      resolvedUniverse = detected;
+                      meta.universeKey = detected;
+                      meta.templateId = detected;
+                      try { fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8'); } catch (e) {}
+                    }
+                  } catch (e) {}
+                }
+                if (!resolvedUniverse) resolvedUniverse = 'jack-3d-creator';
+
                 portfolios.push({
                   siteId: sid,
                   handle: derivedHandle,
                   subdomain: s.custom_domain || meta.subdomain || null,
                   previewUrl: `/p/${sid}`,
-                  universeKey: meta.universeKey || 'jack-3d-creator',
+                  universeKey: resolvedUniverse,
+                  templateId: resolvedUniverse,
                   developerName: derivedName,
                   developerRole: derivedRole,
                   projectsCount: meta.projectsCount || prof.projects?.length || 6,
@@ -3450,12 +3494,28 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
 
             const isLocalPaid = Boolean(meta.isPaid || isFounder || user.subscription_status === 'active' || user.role === 'pro');
             const localPlan = meta.plan || (isFounder ? 'pro' : (user.subscription_status === 'active' || user.role === 'pro' ? 'pro' : (isLocalPaid ? 'starter' : 'preview')));
+
+            let resolvedUniverse = meta.universeKey || meta.templateId || null;
+            if ((!resolvedUniverse || resolvedUniverse === 'jack-3d-creator') && fs.existsSync(indexPath)) {
+              try {
+                const sampleHtml = fs.readFileSync(indexPath, 'utf8');
+                const detected = detectTemplateFromHtml(sampleHtml);
+                if (detected && detected !== 'jack-3d-creator') {
+                  resolvedUniverse = detected;
+                  meta.universeKey = detected;
+                  meta.templateId = detected;
+                }
+              } catch (e) {}
+            }
+            if (!resolvedUniverse) resolvedUniverse = 'jack-3d-creator';
+
             const portfolioItem = {
               siteId: sid,
               handle: meta.handle || (isFounder ? 'abdulaziz' : (user.username || 'developer')),
               subdomain: meta.subdomain || (isFounder ? `${user.username || 'abdulaziz'}.myfolio.tech` : null),
               previewUrl: `/p/${sid}`,
-              universeKey: meta.universeKey || 'jack-3d-creator',
+              universeKey: resolvedUniverse,
+              templateId: resolvedUniverse,
               developerName: meta.developerName || prof.name || user.name || 'Developer',
               developerRole: meta.developerRole || prof.role || prof.title || 'Software Engineer',
               projectsCount: meta.projectsCount || prof.projects?.length || 6,
@@ -3465,15 +3525,13 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
             };
 
             // Save back updated meta.json so future loads are instant
-            if (!fs.existsSync(metaPath)) {
-              try {
-                fs.writeFileSync(metaPath, JSON.stringify({
-                  ...portfolioItem,
-                  userId: isFounder ? 'abdulaziz_founder' : userId,
-                  userEmail: userEmail
-                }, null, 2), 'utf8');
-              } catch (e) {}
-            }
+            try {
+              fs.writeFileSync(metaPath, JSON.stringify({
+                ...portfolioItem,
+                userId: isFounder ? 'abdulaziz_founder' : userId,
+                userEmail: userEmail
+              }, null, 2), 'utf8');
+            } catch (e) {}
 
             portfolios.push(portfolioItem);
           }

@@ -15,13 +15,18 @@ class TemplateRegistry {
   static _templates = {
     'jack-3d-creator': Jack3DCreatorTemplate,
     '3d-creator': Jack3DCreatorTemplate,
+    'jack': Jack3DCreatorTemplate,
+    'jack-3d': Jack3DCreatorTemplate,
     'nadia-brand': NadiaBrandTemplate,
     'nadia-personal-brand': NadiaBrandTemplate,
+    'nadia': NadiaBrandTemplate,
+    'nadia-editorial': NadiaBrandTemplate,
     'kage-temple': KageTempleTemplate,
     'kage': KageTempleTemplate,
     'kage-landing-page': KageTempleTemplate,
     'rbp-kinetic-monochrome': RBPKineticMonochromeTemplate,
     'rbp-portfolio': RBPKineticMonochromeTemplate,
+    'rbp': RBPKineticMonochromeTemplate,
     'kinetic-monochrome': RBPKineticMonochromeTemplate,
     'calm-monochrome': RBPKineticMonochromeTemplate,
     'tom-cel-animator': TomCelAnimatorTemplate,
@@ -124,8 +129,26 @@ class TemplateRegistry {
    * Universal template selector — routes to Jack 3D Creator, Nadia Personal Brand, Kage Temple, RBP Kinetic, or Tom Cel Animator
    */
   static selectTemplate(requestedId = null, candidateProfile = null, userId = null) {
-    if (requestedId && this._templates[requestedId]) {
-      return this._templates[requestedId];
+    if (requestedId) {
+      const cleanId = String(requestedId).toLowerCase().trim();
+      if (this._templates[cleanId]) {
+        return this._templates[cleanId];
+      }
+      if (cleanId.includes('tom') || cleanId.includes('comic') || cleanId.includes('cel-anim')) {
+        return this._templates['tom-cel-animator'];
+      }
+      if (cleanId.includes('rbp') || cleanId.includes('kinetic') || cleanId.includes('calm-mono')) {
+        return this._templates['rbp-kinetic-monochrome'];
+      }
+      if (cleanId.includes('kage') || cleanId.includes('temple') || cleanId.includes('kyoto') || cleanId.includes('sanmon')) {
+        return this._templates['kage-temple'];
+      }
+      if (cleanId.includes('nadia') || cleanId.includes('editorial') || cleanId.includes('speaker')) {
+        return this._templates['nadia-brand'];
+      }
+      if (cleanId.includes('jack') || cleanId.includes('3d-creator')) {
+        return this._templates['jack-3d-creator'];
+      }
     }
     const role = (candidateProfile?.role || candidateProfile?.title || '').toLowerCase();
     if (role.includes('animat') || role.includes('cartoon') || role.includes('comic') || role.includes('illustrat') || role.includes('storyboard') || role.includes('2d') || role.includes('cel') || role.includes('motion')) {
@@ -356,8 +379,10 @@ class TemplateRegistry {
       // Graceful fallback if universal-scroll-motion is optional
     }
 
-    // Automatically inject official myfolio favicon into every template unconditionally
-    const officialFaviconTags = `  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    // Automatically inject official myfolio favicon and template identity tags unconditionally
+    const templateMetaTags = `  <meta name="myfolio-template" content="${templateId || 'jack-3d-creator'}">
+  <meta name="myfolio-universe" content="${templateId || 'jack-3d-creator'}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">`;
@@ -365,7 +390,7 @@ class TemplateRegistry {
     if (html) {
       // Remove any conflicting icon tags
       html = html.replace(/<link[^>]*rel="[^"]*icon[^"]*"[^>]*>\s*/gi, '');
-      html = html.replace('</head>', `${officialFaviconTags}\n</head>`);
+      html = html.replace('</head>', `${templateMetaTags}\n</head>`);
     }
 
     // Inject universal mobile responsive CSS into template

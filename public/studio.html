@@ -3569,6 +3569,8 @@
             projects: projects
           },
           photoData: photoDataPayload,
+          theme: selectedUniverseKey,
+          templateId: selectedUniverseKey,
           preferences: { theme: selectedUniverseKey }
         };
 
@@ -3606,12 +3608,14 @@
         try {
           const cName = document.getElementById('manualFullName')?.value?.trim() || data.profileData?.name || 'Abdul Aziz Nooruddin';
           const cRole = document.getElementById('manualRoleTitle')?.value?.trim() || data.profileData?.role || data.profileData?.title || 'Software Engineer';
+          const finalUniverseKey = data.universeKey || data.templateId || selectedUniverseKey || 'jack-3d-creator';
           const pItem = {
             siteId: data.siteId,
             handle: data.handle || cName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'developer',
             subdomain: data.subdomain || null,
             previewUrl: data.previewUrl || `/p/${data.siteId}`,
-            universeKey: selectedUniverseKey || 'jack-3d-creator',
+            universeKey: finalUniverseKey,
+            templateId: finalUniverseKey,
             developerName: cName,
             developerRole: cRole,
             projectsCount: (data.profileData?.projects || []).length || 6,

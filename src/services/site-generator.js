@@ -14,10 +14,12 @@ class SiteGenerator {
     const data = UnifiedProfileNormalizer.normalize(rawData);
 
     // 2. Determine template from user request, design brief, or role/cycle
-    const requestedTemplate = designBrief?.templateId || data.templateId || data.template || (TemplateRegistry.templates[designBrief?.theme] ? designBrief.theme : null) || (TemplateRegistry.templates[designBrief?.creative_mode] ? designBrief.creative_mode : null);
+    const requestedTemplate = designBrief?.templateId || rawData?.templateId || rawData?.theme || data.templateId || data.template || (TemplateRegistry.templates[designBrief?.theme] ? designBrief.theme : null) || (TemplateRegistry.templates[designBrief?.creative_mode] ? designBrief.creative_mode : null);
 
     let templateId = requestedTemplate;
-    if (!templateId || !TemplateRegistry.templates[templateId] || (process.env.NODE_ENV !== 'test' && !TemplateRegistry._templates[templateId])) {
+    if (templateId && TemplateRegistry._templates && TemplateRegistry._templates[templateId]) {
+      templateId = TemplateRegistry._templates[templateId].id || templateId;
+    } else if (!templateId || !TemplateRegistry.templates[templateId] || (process.env.NODE_ENV !== 'test' && !TemplateRegistry._templates[templateId])) {
       const userId = (conversation && conversation.user && conversation.user.id) ? conversation.user.id : (conversation && conversation.id) ? conversation.id : 'anonymous';
       const autoTemplate = TemplateRegistry.selectTemplate(null, data, userId);
       templateId = autoTemplate.id || 'jack-3d-creator';
@@ -33,6 +35,9 @@ class SiteGenerator {
     finalHtml = this.validateAndSanitizeFidelity(finalHtml, rawData, data);
 
     return {
+      templateId: templateId,
+      universeKey: templateId,
+      theme: templateId,
       html: finalHtml,
       cleanHtml: this.injectSiteTelemetry(templateOutput.html, conversation?.id || ''),
       css: templateOutput.css || '',
@@ -41,7 +46,8 @@ class SiteGenerator {
         iaModel: templateId,
         layoutGrammar: templateId,
         visualUniverse: { id: templateId, name: templateId },
-        projectStrategy: 'template'
+        projectStrategy: 'template',
+        templateId: templateId
       },
       designDNA: {
         iaModel: templateId,
