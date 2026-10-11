@@ -52,19 +52,19 @@ const ApogeeSpatialTemplate = {
   render(rawCandidateData = {}, options = {}) {
     const data = TemplateHelper.normalize ? TemplateHelper.normalize(rawCandidateData) : rawCandidateData;
 
-    const name = TemplateHelper.escapeHtml(data.name || 'Abdul Aziz Nooruddin');
-    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack AI & Smart Contract Architect');
+    const name = TemplateHelper.escapeHtml(data.name || 'Alex Vance');
+    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack AI & Systems Architect');
     const bio = TemplateHelper.escapeHtml(
       data.bio ||
         data.about ||
-        'Engineering high-throughput decentralized protocols, client-side cryptographic systems, and bespoke spatial 3D WebGL developer runtimes.'
+        'Engineering high-throughput distributed protocols, autonomous agent runtimes, and bespoke spatial 3D WebGL web surfaces.'
     );
-    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'abdulaziznoor9876@gmail.com');
+    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'alex.vance@example.com');
     const githubUrl = TemplateHelper.sanitizeUrl(
-      data.contact?.github || data.github || 'https://github.com/Abdul-Aziz-Nooruddin',
-      'https://github.com/Abdul-Aziz-Nooruddin'
+      data.contact?.github || data.github || 'https://github.com/developer',
+      'https://github.com/developer'
     );
-    const location = TemplateHelper.escapeHtml(data.location || 'Hyderabad, India • Remote Web3');
+    const location = TemplateHelper.escapeHtml(data.location || 'San Francisco, CA • Remote Worldwide');
 
     // Parse and bind projects dynamically
     let projects = [];

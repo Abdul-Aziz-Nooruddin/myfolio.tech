@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abdul Aziz Nooruddin // Developer Portfolio</title>
+  <title>Alex Vance // Full-Stack AI &amp; Systems Architect</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -37,6 +37,10 @@
       font-family: 'Inter', sans-serif;
     }
 
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
     .grain-overlay {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
       background-size: 200px 200px;
@@ -48,9 +52,94 @@
     }
 
     .item-will-change {
-      will-change: transform, filter, opacity, left, height, bottom;
+      will-change: transform, filter, opacity, left;
     }
   </style>
+
+  <!-- Smooth Inertia Scroll (Lenis) & GSAP Motion Ecosystem -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <style id="universal-scroll-motion-styles">
+    /* Top Scroll Progress Indicator */
+    #scroll-progress-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3.5px;
+      background: linear-gradient(90deg, #00F0FF, #38bdf8, #ec4899);
+      z-index: 100000;
+      box-shadow: 0 0 14px #00F0FF, 0 0 4px #ffffff;
+      pointer-events: none;
+      transition: width 0.08s linear;
+    }
+
+    /* Hardware Accelerated Smooth Inertia Scroll Baseline (Lenis) */
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: clip;
+    }
+    .lenis.lenis-smooth iframe {
+      pointer-events: none;
+    }
+
+    /* Scroll Velocity Reactive Container */
+    .scroll-velocity-item {
+      will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 3D Perspective Card Tilt Standards */
+    .project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, 
+    .curio-case-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card,
+    .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, filter 0.35s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
+    .project-card:hover, .crystal-project-card:hover, .bio-project-card:hover, .wood-project-card:hover, 
+    .fusion-project-card:hover, .curio-case-card:hover, .cosmic-project-card:hover, .sanctuary-project-card:hover, 
+    .white-crystal-card:hover, .abyss-chest-card:hover, .sprawl-vault-card:hover,
+    .greenhouse-project-card:hover, .monograph-exhibit-card:hover, .parchment-project-card:hover {
+      box-shadow: 0 24px 50px -12px rgba(0,0,0,0.65), 0 0 30px #00F0FF44;
+    }
+
+    /* Spring-physics Magnetic Buttons */
+    .magnetic-btn, .btn-primary, .cosmic-btn-primary, .crystal-btn-primary, .wood-btn-primary {
+      will-change: transform;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+
+    /* Reduced Motion Fallback */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      #scroll-progress-indicator { display: none !important; }
+    }
+  </style>
+
+  <meta name="myfolio-template" content="apogee-spatial">
+  <meta name="myfolio-universe" content="apogee-spatial">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 <body>
   <div id="root"></div>
@@ -62,185 +151,18 @@
   <script type="text/babel">
     const { useState, useEffect, useCallback } = React;
 
-    const PROJECTS = [
-      {
-        id: 'myfolio',
-        name: 'MYFOLIO.TECH',
-        repoName: 'myfolio',
-        domain: 'AI Spatial 3D WebGL Studio',
-        tagline: 'The AI Spatial 3D WebGL Portfolio Platform.',
-        description:
-          'Creator and lead architect of myfolio.tech. Generates award-winning, mobile-first 3D digital worlds for developers with custom Three.js shaders, liquid glass physics, and Web Studio customizer.',
-        bg: '#4EA4F0',
-        accent: '#1E6BB8',
-        src: '/assets/projects/ai_portfolio_generator_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/myfolio',
-        liveUrl: 'https://www.myfolio.tech',
-        tech: ['Three.js', 'WebGL', 'React', 'Node.js', 'Tailwind CSS', 'Vite'],
-        stats: [
-          { label: 'Platform Type', value: '3D WebGL Studio' },
-          { label: 'Viewport Physics', value: 'Three.js Shaders' },
-          { label: 'Customizer Mode', value: 'Web Studio Live' },
-        ],
-        problem:
-          'Engineers struggle to stand out with standard flat resume templates that fail to convey spatial depth and high-craft UI mastery.',
-        solution:
-          'Engineered an AI-assisted 3D WebGL studio generating personalized portfolio environments with organic camera splines, custom material lighting, and responsive typography.',
-        architecture:
-          'Three.js · WebGL 2.0 · GSAP / Lenis · React 18 · Node.js REST API · Supabase Asset Storage',
-      },
-      {
-        id: 'consentchain',
-        name: 'CONSENTCHAIN',
-        repoName: 'ConsentChain-Algorand',
-        domain: 'Algorand Decentralized Governance',
-        tagline: 'Decentralized DPDP Act 2023 Compliance & Escrow Micro-Payments.',
-        description:
-          'A decentralized Consent Management application powered by the Algorand blockchain, enabling DPDP Act 2023 compliance with an escrow-based data micro-payment system.',
-        bg: '#3EB165',
-        accent: '#197036',
-        src: '/assets/projects/algorand_smart_contracts_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/ConsentChain-Algorand',
-        liveUrl: 'https://consent-chain-algorand.vercel.app',
-        tech: ['Algorand', 'TypeScript', 'PyTeal', 'Smart Contracts', 'DPDP Compliance'],
-        stats: [
-          { label: 'Blockchain', value: 'Algorand AVM' },
-          { label: 'Compliance Law', value: 'DPDP Act 2023' },
-          { label: 'Escrow System', value: 'Micro-Payments' },
-        ],
-        problem:
-          'Enterprises handling consumer data face harsh penalties under India’s DPDP Act 2023 without immutable cryptographic consent audit trails.',
-        solution:
-          'Constructed automated Algorand smart contracts managing user consent revoking, escrowed data access payments, and cryptographic verification.',
-        architecture:
-          'Algorand Blockchain · TypeScript · PyTeal Smart Contracts · Vercel Deployment · Cryptographic Escrow',
-      },
-      {
-        id: 'pass-a-note',
-        name: 'PASS-A-NOTE',
-        repoName: 'pass-a-note',
-        domain: 'Encrypted Peer-to-Peer Messaging',
-        tagline: 'Zero-Metadata Ephemeral Note Transmission.',
-        description:
-          'Encrypted peer-to-peer transmission mesh. Ephemeral dispatch without persistent database trails or centralized logging, designed for fast, confidential communication.',
-        bg: '#F56352',
-        accent: '#B82817',
-        src: '/assets/projects/pass_note_messenger_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/pass-a-note',
-        liveUrl: 'https://pass-a-note-iota.vercel.app',
-        tech: ['HTML5', 'JavaScript', 'Cryptography', 'P2P Messaging', 'Vercel'],
-        stats: [
-          { label: 'Data Retention', value: '0 Bytes' },
-          { label: 'Dispatch Speed', value: 'Instant P2P' },
-          { label: 'Encryption', value: 'Client-Side' },
-        ],
-        problem:
-          'Centralized communication services retain message archives, server access logs, and user metadata vulnerable to interception.',
-        solution:
-          'Engineered an encrypted client-side note transmitter where messages self-destruct upon reading without centralized database persistence.',
-        architecture:
-          'JavaScript · Client-side Crypto · HTML5 Web API · Vercel Serverless · Ephemeral Buffers',
-      },
-      {
-        id: 'lms-engine',
-        name: 'LMS MATRIX',
-        repoName: 'lms-user-management',
-        domain: 'Enterprise Access & Identity Matrix',
-        tagline: 'Granular Role Governance & Session Orchestration.',
-        description:
-          'Educational LMS user administration and access matrix system with role-based access control, session orchestration, and scalable relational schema.',
-        bg: '#EC4899',
-        accent: '#BE185D',
-        src: '/assets/projects/lms_user_management_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/lms-user-management',
-        tech: ['JavaScript', 'Node.js', 'Express', 'RBAC', 'Database Matrix'],
-        stats: [
-          { label: 'Architecture', value: 'Role-Based RBAC' },
-          { label: 'Security Layer', value: 'Session Tokens' },
-          { label: 'Data Engine', value: 'Relational Schema' },
-        ],
-        problem:
-          'Educational institutions struggle with messy authorization boundaries, privilege escalation, and inefficient user management.',
-        solution:
-          'Built a structured user administration platform with strict role segmentation, student-instructor permissions, and clean API endpoints.',
-        architecture:
-          'Node.js · Express.js · Relational Database · Role-Based Access Control · RESTful APIs',
-      },
-      {
-        id: 'dual-chain-portfolio',
-        name: 'DUAL-CHAIN PORTFOLIO',
-        repoName: 'portfolio',
-        domain: 'Multi-Chain Web3 Developer Showcase',
-        tagline: 'Glassmorphic Multi-Chain Verification & Particle Runtimes.',
-        description:
-          'Personal developer portfolio featuring glassmorphism design, particle animations, and multi-chain protocol verification across Polygon & Algorand.',
-        bg: '#8B5CF6',
-        accent: '#6D28D9',
-        src: '/assets/projects/developer_showcase_portfolio_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/portfolio',
-        liveUrl: 'https://portfolio-nine-tawny-39.vercel.app',
-        tech: ['TypeScript', 'CSS3', 'Polygon', 'Algorand', 'Particle Shaders'],
-        stats: [
-          { label: 'Chains Verified', value: 'Polygon & Algorand' },
-          { label: 'Design System', value: 'Glassmorphism' },
-          { label: 'Visual Engine', value: 'Particle Canvas' },
-        ],
-        problem:
-          'Developers need verifiable multi-chain proof of work displayed interactively across EVM and AVM ecosystems.',
-        solution:
-          'Engineered an expressive portfolio interface displaying cross-chain decentralized contracts and interactive particle physics.',
-        architecture:
-          'TypeScript · HTML5 Canvas · Algorand AVM · Polygon EVM · Vercel Deployment',
-      },
-      {
-        id: 'algorand-contracts',
-        name: 'ALGORAND SMART CONTRACTS',
-        repoName: 'Algorand-Python-Smart-Contracts',
-        domain: 'Algorand PyTeal Escrow Protocol',
-        tagline: 'Deterministic PyTeal Escrow & Token State Transitions.',
-        description:
-          'Production PyTeal and Python smart contract implementations for Algorand escrow, token distribution, and verifiable state transitions.',
-        bg: '#D97706',
-        accent: '#B45309',
-        src: '/assets/projects/algorand_escrow_protocol_3d.webp',
-        githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/Algorand-Python-Smart-Contracts',
-        tech: ['Python', 'Algorand', 'PyTeal', 'Smart Contracts', 'AVM Escrow'],
-        stats: [
-          { label: 'Contract Engine', value: 'PyTeal / Python' },
-          { label: 'Execution', value: 'Algorand AVM' },
-          { label: 'Protocol Type', value: 'Escrow & Tokens' },
-        ],
-        problem:
-          'Complex escrow and conditional token distribution require auditable, deterministic smart contract logic on Algorand.',
-        solution:
-          'Implemented battle-tested PyTeal smart contracts managing decentralized escrow vaults, automated token releases, and verifiable on-chain state transitions.',
-        architecture:
-          'Python · PyTeal · Algorand AVM · Algorand SDK · Automated Test Harness',
-      },
-    ];
+    const CANDIDATE = {
+      name: "Alex Vance",
+      role: "Full-Stack AI &amp; Systems Architect",
+      bio: "Pioneering intelligent interfaces, autonomous agent runtimes, and spatial 3D web experiences.",
+      email: "alex.vance@example.com",
+      githubUrl: "https://github.com/developer",
+      location: "San Francisco &amp; Remote Worldwide"
+    };
 
-    const SKILL_DOMAINS = [
-      {
-        category: '3D WebGL & Graphics',
-        icon: 'lucide:sparkles',
-        skills: ['Three.js', 'WebGL Shaders', 'ThreeUI Engine', 'Canvas 2D/3D', 'GSAP Motion', 'Lenis Inertia'],
-      },
-      {
-        category: 'Blockchain & Smart Contracts',
-        icon: 'lucide:shield-check',
-        skills: ['Algorand AVM', 'PyTeal', 'Polygon', 'Solidity', 'Escrow Protocols', 'DPDP Compliance'],
-      },
-      {
-        category: 'Full-Stack Web Engineering',
-        icon: 'lucide:layers',
-        skills: ['TypeScript', 'JavaScript (ESNext)', 'React 18', 'Tailwind CSS', 'Vite', 'HTML5 / CSS3'],
-      },
-      {
-        category: 'Backend & System Architecture',
-        icon: 'lucide:cpu',
-        skills: ['Node.js', 'Express', 'RESTful APIs', 'Supabase', 'Relational Databases', 'P2P Networking'],
-      },
-    ];
+    const PROJECTS = [{"id":"proj-0","name":"PASS A NOTE","repoName":"developer","domain":"Full-Stack Software","description":"Encrypted ephemeral peer-to-peer message dispatcher with cryptographic forward secrecy.","bg":"#4EA4F0","src":"/assets/projects/ai_portfolio_generator_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["TypeScript","Web Crypto","Node.js"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"TypeScript · Web Crypto · Node.js · RESTful APIs · Cloud Serverless"},{"id":"proj-1","name":"AUTONOMOUS EDGE AGENT","repoName":"developer","domain":"AI & Deep Learning","description":"Distributed reasoning engine running self-reflective task loops on local models.","bg":"#3EB165","src":"/assets/projects/algorand_smart_contracts_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["Python","FastAPI","Ollama"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"Python · FastAPI · Ollama · RESTful APIs · Cloud Serverless"},{"id":"proj-2","name":"ALGORAND SMART CONTRACTS","repoName":"developer","domain":"Web3 / Blockchain","description":"Decentralized algorithmic block consensus and smart contract execution architecture.","bg":"#F56352","src":"/assets/projects/pass_note_messenger_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["Python","Algorand","PyTeal"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"Python · Algorand · PyTeal · RESTful APIs · Cloud Serverless"},{"id":"proj-3","name":"CONSENTCHAIN PRIVACY","repoName":"developer","domain":"Web3 / Blockchain","description":"Cryptographic privacy shields and DPDP compliance verification network.","bg":"#EC4899","src":"/assets/projects/lms_user_management_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["Solidity","Zero-Knowledge","Web3"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"Solidity · Zero-Knowledge · Web3 · RESTful APIs · Cloud Serverless"},{"id":"proj-4","name":"LMS USER MANAGEMENT","repoName":"developer","domain":"Database & Systems","description":"Enterprise educational database matrices with granular access-control credentials.","bg":"#8B5CF6","src":"/assets/projects/developer_showcase_portfolio_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["React","PostgreSQL","Docker"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"React · PostgreSQL · Docker · RESTful APIs · Cloud Serverless"},{"id":"proj-5","name":"DEVELOPER PORTFOLIO ENGINE","repoName":"developer","domain":"Creative Portfolio","description":"3D holographic developer workspaces rendering WebGL code viewports.","bg":"#D97706","src":"/assets/projects/algorand_escrow_protocol_3d.webp","githubUrl":"https://github.com/developer","liveUrl":"https://github.com/developer","tech":["Three.js","WebGL","Tailwind"],"problem":"Legacy monolithic architecture created latency bottlenecks and maintainability limits.","solution":"Engineered modular, high-throughput distributed architecture with automated CI/CD.","architecture":"Three.js · WebGL · Tailwind · RESTful APIs · Cloud Serverless"}];
+    const SKILL_DOMAINS = [{"category":"3D WebGL & Graphics","icon":"lucide:sparkles","skills":["Three.js","WebGL Shaders","ThreeUI Engine","Canvas 2D/3D","GSAP Motion"]},{"category":"Blockchain & Smart Contracts","icon":"lucide:shield-check","skills":["Algorand AVM","PyTeal","Smart Contracts","Escrow Protocols","DPDP Compliance"]},{"category":"Full-Stack Web Engineering","icon":"lucide:layers","skills":["JavaScript","TypeScript","React"]},{"category":"Backend & Systems Architecture","icon":"lucide:cpu","skills":["Node.js","Python","REST APIs","Cloud Architecture"]}];
+    const EXPERIENCE = [{"role":"Full-Stack AI & Systems Architect","company":"Professional Software Engineering","period":"2024 - Present","desc":"Developing scalable web applications, robust backend services, and interactive user interfaces using JavaScript, TypeScript, React."},{"role":"Open Source Contributor & Developer","company":"Software Ecosystem","period":"2023 - 2025","desc":"Contributed to modular software utilities, tested production features, and authored technical documentation."}];
 
     const App = () => {
       const [activeIndex, setActiveIndex] = useState(0);
@@ -349,12 +271,12 @@
       };
 
       const copyEmail = () => {
-        navigator.clipboard.writeText('abdulaziznoor9876@gmail.com');
+        navigator.clipboard.writeText(CANDIDATE.email);
         setCopiedEmail(true);
         setTimeout(() => setCopiedEmail(false), 2000);
       };
 
-      const activeColor = PROJECTS[activeIndex].bg;
+      const activeColor = PROJECTS[activeIndex] ? PROJECTS[activeIndex].bg : '#4EA4F0';
 
       return (
         <div 
@@ -367,7 +289,7 @@
           <header className="relative z-[60] w-full max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 pt-6 flex items-center justify-between">
             <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-white/90 select-none flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-              <span>ABDUL AZIZ NOORUDDIN // PORTFOLIO</span>
+              <span>{CANDIDATE.name.toUpperCase()} // PORTFOLIO</span>
             </div>
 
             <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-[0.15em] text-white/90">
@@ -376,7 +298,7 @@
               <a href="#skills" className="hover:text-white transition-colors">Stack Matrix</a>
               <a href="#journey" className="hover:text-white transition-colors">Experience</a>
               <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-              <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noreferrer" className="px-4 py-2 rounded-full border border-white text-white hover:bg-white hover:text-black transition-all flex items-center gap-2">
+              <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="px-4 py-2 rounded-full border border-white text-white hover:bg-white hover:text-black transition-all flex items-center gap-2">
                 <iconify-icon icon="lucide:github"></iconify-icon>
                 <span>GitHub Profile</span>
               </a>
@@ -391,7 +313,7 @@
               className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none z-[2] top-[14%] font-anton text-white uppercase tracking-[-0.02em] leading-none whitespace-nowrap opacity-25"
               style={{ fontSize: 'clamp(80px, 22vw, 360px)' }}
             >
-              ABDUL AZIZ
+              {CANDIDATE.name.split(' ')[0]}
             </div>
 
             <div className="relative z-10 max-w-[1800px] mx-auto w-full px-5 sm:px-8 md:px-12 my-auto py-12 flex flex-col items-center text-center">
@@ -407,7 +329,7 @@
               </h1>
 
               <p className="text-white/90 text-base sm:text-xl font-normal leading-relaxed max-w-3xl mb-10">
-                Creator and lead architect of <strong className="text-white underline">myfolio.tech</strong>. Engineering high-throughput Algorand blockchain protocols, encrypted zero-metadata transmission meshes, and custom Three.js WebGL graphics runtimes.
+                {CANDIDATE.bio}
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-4">
@@ -419,7 +341,7 @@
                   <iconify-icon icon="lucide:arrow-down"></iconify-icon>
                 </a>
                 <a
-                  href="https://github.com/Abdul-Aziz-Nooruddin"
+                  href={CANDIDATE.githubUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="px-8 py-4 rounded-full border border-white text-white font-anton uppercase text-sm sm:text-base tracking-wider hover:bg-white hover:text-black transition-all flex items-center gap-2"
@@ -433,7 +355,7 @@
             <div className="relative z-10 px-5 sm:px-8 md:px-12 flex items-end justify-between max-w-[1800px] mx-auto w-full pt-8 border-t border-white/20">
               <div className="flex items-center gap-6 sm:gap-10 text-xs font-semibold uppercase tracking-wider text-white/80">
                 <div>
-                  <span className="text-white font-anton text-2xl sm:text-3xl block">06+</span>
+                  <span className="text-white font-anton text-2xl sm:text-3xl block">0{PROJECTS.length}+</span>
                   <span className="text-[11px] text-white/70">Production Repos</span>
                 </div>
                 <div>
@@ -470,10 +392,10 @@
                 </h2>
                 <div className="space-y-4 text-white/90 text-sm sm:text-base leading-relaxed">
                   <p>
-                    I am <strong className="text-white">Abdul Aziz Nooruddin</strong>, a Full-Stack Systems & Smart Contract Developer based in Hyderabad, India. I am the creator and lead architect of <a href="https://myfolio.tech" target="_blank" rel="noreferrer" className="underline hover:text-white">myfolio.tech</a>—an AI Spatial 3D WebGL Portfolio Studio.
+                    I am <strong className="text-white">{CANDIDATE.name}</strong>, a {CANDIDATE.role} based in {CANDIDATE.location}.
                   </p>
                   <p>
-                    My engineering focus bridges real-time graphics and Web3 decentralization: from interactive Three.js WebGL shader viewports to Algorand smart contracts enforcing statutory DPDP Act compliance and automated data micro-payments.
+                    {CANDIDATE.bio}
                   </p>
                 </div>
 
@@ -491,7 +413,7 @@
 
               <div className="lg:col-span-7 grid grid-cols-2 gap-4 sm:gap-6">
                 <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
-                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">06+</div>
+                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">0{PROJECTS.length}+</div>
                   <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Production Repositories Shipped</div>
                 </div>
                 <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
@@ -522,7 +444,7 @@
                   02 // GITHUB REPOSITORY VAULT
                 </span>
                 <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-white px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20">
-                  {PROJECTS[displayIndex].domain}
+                  {PROJECTS[displayIndex] ? PROJECTS[displayIndex].domain : ''}
                 </span>
               </div>
 
@@ -532,10 +454,10 @@
                 style={{ opacity: isSwappingText ? 0 : 1 }}
               >
                 <h2 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-tight leading-none mb-2 drop-shadow-sm">
-                  {PROJECTS[displayIndex].name}
+                  {PROJECTS[displayIndex] ? PROJECTS[displayIndex].name : ''}
                 </h2>
                 <p className="text-xs sm:text-sm text-white/80 font-mono">
-                  github.com/Abdul-Aziz-Nooruddin/{PROJECTS[displayIndex].repoName}
+                  github.com/{CANDIDATE.name.replace(/s+/g, '-')}/{PROJECTS[displayIndex] ? PROJECTS[displayIndex].repoName : ''}
                 </p>
               </div>
             </div>
@@ -555,9 +477,7 @@
                         else if (isLeft) navigate('prev');
                         else if (isRight) navigate('next');
                       }}
-                      className={`absolute transition-custom item-will-change pointer-events-auto cursor-pointer rounded-2xl sm:rounded-3xl overflow-hidden border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.45)] bg-slate-950/80 backdrop-blur-md group ${
-                        isCenter ? 'hover:scale-[1.02] hover:border-white/50' : 'hover:opacity-80'
-                      }`}
+                      className={"absolute transition-custom item-will-change pointer-events-auto cursor-pointer rounded-2xl sm:rounded-3xl overflow-hidden border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.45)] bg-slate-950/80 backdrop-blur-md group " + (isCenter ? "hover:scale-[1.02] hover:border-white/50" : "hover:opacity-80")}
                       style={{
                         ...getRoleStyle(idx),
                         aspectRatio: '16 / 9',
@@ -594,11 +514,11 @@
                   style={{ opacity: isSwappingText ? 0 : 0.95 }}
                 >
                   <p className="text-xs sm:text-sm text-white/90 leading-relaxed mb-3 font-normal line-clamp-2">
-                    {PROJECTS[displayIndex].description}
+                    {PROJECTS[displayIndex] ? PROJECTS[displayIndex].description : ''}
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5">
-                    {PROJECTS[displayIndex].tech.map((t) => (
+                    {PROJECTS[displayIndex] && PROJECTS[displayIndex].tech.map((t) => (
                       <span key={t} className="px-2.5 py-0.5 rounded-full bg-white/15 text-[11px] font-semibold text-white tracking-wide">
                         {t}
                       </span>
@@ -640,16 +560,18 @@
                   <span>Inspect Case Study</span>
                   <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
                 </button>
-                <a
-                  href={PROJECTS[displayIndex].githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-11 h-11 rounded-full border border-white/40 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
-                  title="View GitHub Repository"
-                >
-                  <iconify-icon icon="lucide:github"></iconify-icon>
-                </a>
-                {PROJECTS[displayIndex].liveUrl && (
+                {PROJECTS[displayIndex] && (
+                  <a
+                    href={PROJECTS[displayIndex].githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-11 h-11 rounded-full border border-white/40 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                    title="View GitHub Repository"
+                  >
+                    <iconify-icon icon="lucide:github"></iconify-icon>
+                  </a>
+                )}
+                {PROJECTS[displayIndex] && PROJECTS[displayIndex].liveUrl && (
                   <a
                     href={PROJECTS[displayIndex].liveUrl}
                     target="_blank"
@@ -722,36 +644,17 @@
                 </h2>
               </div>
               <span className="px-4 py-2 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
-                Hyderabad, India · Open for Full-Time & Web3 Roles
+                {CANDIDATE.location}
               </span>
             </div>
 
             <div className="space-y-4">
-              {[
-                {
-                  role: 'Founder & Lead Architect',
-                  org: 'MyFolio.tech (AI 3D WebGL Portfolio Studio)',
-                  period: '2025 — PRESENT',
-                  summary: 'Architected full-stack platform generating spatial 3D portfolio websites with WebGL shaders, ThreeUI engine, and WhatsApp customizer integration.'
-                },
-                {
-                  role: 'Smart Contract & Web3 Developer',
-                  org: 'ConsentChain Algorand Protocol',
-                  period: '2025 — 2026',
-                  summary: 'Engineered DPDP Act 2023 compliant consent architecture on Algorand blockchain with escrowed micro-payment rails.'
-                },
-                {
-                  role: 'Full-Stack Developer & AI Systems Student',
-                  org: 'Independent Engineering & Open Source',
-                  period: '2024 — PRESENT',
-                  summary: 'Building production Web3, P2P encrypted messaging, and scalable LMS systems with JavaScript, TypeScript, and modern distributed tools.'
-                }
-              ].map((item, idx) => (
+              {EXPERIENCE.map((item, idx) => (
                 <div key={idx} className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-white transition-colors">
                   <div>
                     <div className="font-anton text-2xl sm:text-3xl text-white mb-1">{item.role}</div>
-                    <div className="text-xs sm:text-sm text-white/80 mb-2">{item.org}</div>
-                    <p className="text-xs text-white/70 max-w-[680px]">{item.summary}</p>
+                    <div className="text-xs sm:text-sm text-white/80 mb-2">{item.company || item.org}</div>
+                    <p className="text-xs text-white/70 max-w-[680px]">{item.desc || item.summary}</p>
                   </div>
                   <div className="flex items-center gap-6 shrink-0">
                     <span className="font-anton text-lg sm:text-xl text-white">{item.period}</span>
@@ -780,11 +683,11 @@
                 <div className="space-y-4 text-xs font-semibold uppercase tracking-wider text-white/90">
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Direct Email</div>
-                    <a href="mailto:abdulaziznoor9876@gmail.com" className="hover:underline">abdulaziznoor9876@gmail.com</a>
+                    <a href={"mailto:" + CANDIDATE.email} className="hover:underline">{CANDIDATE.email}</a>
                   </div>
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">GitHub Profile</div>
-                    <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noreferrer" className="hover:underline">github.com/Abdul-Aziz-Nooruddin</a>
+                    <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.githubUrl.replace(/^https?:///i, '')}</a>
                   </div>
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Live Studio</div>
@@ -813,7 +716,7 @@
                       </div>
                       <div>
                         <label className="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">Message / Project Scope</label>
-                        <textarea rows={4} required placeholder="Hi Abdul Aziz, we loved ConsentChain and MyFolio. We would love to discuss..." className="w-full p-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"></textarea>
+                        <textarea rows={4} required placeholder="Hi " + CANDIDATE.name + ", we would love to discuss..." className="w-full p-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"></textarea>
                       </div>
                       <button type="submit" className="w-full h-14 bg-white text-black font-anton uppercase text-xl rounded-xl tracking-wider hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2">
                         <span>Dispatch Direct Message</span>
@@ -831,13 +734,13 @@
           {/* ======================================================== */}
           <footer className="py-12 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/70">
             <div className="flex items-center gap-4">
-              <span className="font-anton text-lg text-white">ABDUL AZIZ NOORUDDIN</span>
+              <span className="font-anton text-lg text-white">{CANDIDATE.name.toUpperCase()}</span>
               <span>·</span>
               <span>GITHUB PORTFOLIO © 2026</span>
             </div>
 
             <div className="flex items-center gap-6 font-semibold uppercase tracking-wider">
-              <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">GitHub</a>
+              <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">GitHub</a>
               <a href="https://myfolio.tech" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">MyFolio.tech</a>
               <a href="#" className="flex items-center gap-1 text-white hover:underline" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <span>Top</span>
@@ -861,7 +764,7 @@
                 </div>
 
                 <h3 className="font-anton text-4xl uppercase mb-2 text-white">{selectedProject.name}</h3>
-                <p className="text-sm text-white/70 font-mono mb-6">github.com/Abdul-Aziz-Nooruddin/{selectedProject.repoName}</p>
+                <p className="text-sm text-white/70 font-mono mb-6">github.com/{CANDIDATE.name.replace(/s+/g, '-')}/{selectedProject.repoName}</p>
 
                 <div className="w-full aspect-video rounded-2xl overflow-hidden mb-6 border border-white/20">
                   <img src={selectedProject.src} alt={selectedProject.name} className="w-full h-full object-cover" />
@@ -910,5 +813,553 @@
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
+
+  <!-- Universal Scroll Progress Bar -->
+  <div id="scroll-progress-indicator"></div>
+
+  <!-- Universal Lenis + GSAP + Three/Postprocessing + Motion Scrollytelling Choreographer -->
+  <script id="universal-scroll-motion-engine">
+    (function() {
+      function initScrollAnimations() {
+        var isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var lastScrollTop = 0;
+        var scrollVelocity = 0;
+        var scrollTimeout;
+        var ticking = false;
+
+        // 1. Lenis Smooth Inertia Scroll Orchestration (@darkroomengineering/lenis)
+        var lenis = null;
+        function startLenis() {
+          if (window.__folioLenis || isReducedMotion || typeof Lenis === 'undefined') return;
+          try {
+            lenis = new Lenis({
+              duration: 1.2,
+              easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+              orientation: 'vertical',
+              gestureOrientation: 'vertical',
+              smoothWheel: true,
+              wheelMultiplier: 1.0,
+              touchMultiplier: 1.5,
+              infinite: false,
+              syncTouch: false,
+              autoResize: true
+            });
+
+            window.__folioLenis = lenis;
+
+            try {
+              window.dispatchEvent(new CustomEvent('folio:lenis:ready', { detail: { lenis: lenis } }));
+              window.dispatchEvent(new Event('lenis-ready'));
+            } catch (evErr) {}
+
+            if (typeof ScrollTrigger !== 'undefined') {
+              lenis.on('scroll', ScrollTrigger.update);
+            }
+
+            if (typeof gsap !== 'undefined') {
+              gsap.ticker.add(function(time) {
+                lenis.raf(time * 1000);
+              });
+              gsap.ticker.lagSmoothing(0);
+            } else {
+              function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+              }
+              requestAnimationFrame(raf);
+            }
+
+            // Smooth In-Page Anchor Links Navigation
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+              anchor.addEventListener('click', function(e) {
+                var targetId = this.getAttribute('href');
+                if (!targetId) return;
+                if (targetId === '#') {
+                  e.preventDefault();
+                  lenis.scrollTo(0, { duration: 1.2 });
+                  return;
+                }
+                try {
+                  var targetElement = document.querySelector(targetId);
+                  if (targetElement) {
+                    e.preventDefault();
+                    lenis.scrollTo(targetElement, { offset: -24, duration: 1.2 });
+                  }
+                } catch(anchorErr) {}
+              });
+            });
+
+            // Connect Lenis to real-time scroll physics
+            lenis.on('scroll', function(e) {
+              updateScrollPhysics(e.scroll, e.velocity);
+            });
+          } catch (e) {
+            console.warn('[Lenis] Fallback to native scroll:', e);
+          }
+        }
+
+        if (typeof Lenis !== 'undefined') {
+          startLenis();
+        } else {
+          var checkCount = 0;
+          var lenisTimer = setInterval(function() {
+            checkCount++;
+            if (typeof Lenis !== 'undefined') {
+              clearInterval(lenisTimer);
+              startLenis();
+            } else if (checkCount > 25) {
+              clearInterval(lenisTimer);
+            }
+          }, 40);
+        }
+
+        // 2. Real-time Scroll Velocity & Direction Physics
+        function updateScrollPhysics(currentScroll, velocity) {
+          var delta = currentScroll - lastScrollTop;
+          scrollVelocity = velocity !== undefined ? velocity : delta;
+          lastScrollTop = Math.max(0, currentScroll);
+
+          // Update Progress Indicator
+          var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          var scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+          var bar = document.getElementById('scroll-progress-indicator');
+          if (bar) bar.style.width = scrolled + '%';
+
+          // Apply Dynamic Velocity Skew to Interactive Cards on Scroll
+          if (!ticking && !isReducedMotion) {
+            window.requestAnimationFrame(function() {
+              var clampedVelocity = Math.max(-20, Math.min(20, scrollVelocity));
+              var skewAngle = clampedVelocity * 0.06;
+              var scaleComp = 1 - Math.min(0.03, Math.abs(clampedVelocity) * 0.001);
+
+              var velocityElements = document.querySelectorAll('.project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .curio-case-card, .cosmic-project-card, .nano-banana-3d-hero, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+              velocityElements.forEach(function(el) {
+                el.style.transform = 'skewY(' + skewAngle + 'deg) scaleY(' + scaleComp + ')';
+              });
+
+              ticking = false;
+            });
+            ticking = true;
+          }
+
+          // Reset velocity skew smoothly when scrolling halts
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(function() {
+            var velocityElements = document.querySelectorAll('.project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .curio-case-card, .cosmic-project-card, .nano-banana-3d-hero, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+            velocityElements.forEach(function(el) {
+              el.style.transform = 'skewY(0deg) scaleY(1)';
+            });
+          }, 110);
+        }
+
+        window.addEventListener('scroll', function() {
+          var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          updateScrollPhysics(currentScroll);
+        }, { passive: true });
+
+        // 3. Motion Spring-Physics 3D Tilt on Hover
+        if (!isReducedMotion) {
+          var tiltCards = document.querySelectorAll('.project-card, .curio-case-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+          tiltCards.forEach(function(card) {
+            card.addEventListener('mousemove', function(e) {
+              var rect = card.getBoundingClientRect();
+              var x = e.clientX - rect.left;
+              var y = e.clientY - rect.top;
+              var centerX = rect.width / 2;
+              var centerY = rect.height / 2;
+              var rotateX = (centerY - y) / 14;
+              var rotateY = (x - centerX) / 14;
+              card.style.transform = 'perspective(1000px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) scale3d(1.025, 1.025, 1.025)';
+            });
+            card.addEventListener('mouseleave', function() {
+              card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+          });
+
+          // Magnetic Buttons Micro-Interaction
+          var magneticBtns = document.querySelectorAll('.magnetic-btn, .cosmic-btn-primary, .crystal-btn-primary, .wood-btn-primary, .btn-primary');
+          magneticBtns.forEach(function(btn) {
+            btn.addEventListener('mousemove', function(e) {
+              var rect = btn.getBoundingClientRect();
+              var x = (e.clientX - rect.left) - rect.width / 2;
+              var y = (e.clientY - rect.top) - rect.height / 2;
+              btn.style.transform = 'translate(' + (x * 0.22) + 'px, ' + (y * 0.22) + 'px)';
+            });
+            btn.addEventListener('mouseleave', function() {
+              btn.style.transform = 'translate(0px, 0px)';
+            });
+          });
+        }
+
+        // 4. GSAP & ScrollTrigger Animations
+        if (typeof gsap === 'undefined') return;
+
+        if (typeof ScrollTrigger !== 'undefined') {
+          gsap.registerPlugin(ScrollTrigger);
+        }
+
+        var mm = gsap.matchMedia();
+
+        mm.add("(min-width: 200px)", function() {
+          // A. Continuous 3D Model Rotation on Scroll Up and Down
+          var hero3D = document.querySelector('.nano-banana-3d-hero, .hero-3d-stage-container, .cosmic-hero-3d-wrapper, .sprawl-3d-stage, .abyss-nautilus-wrapper');
+          if (hero3D && !isReducedMotion) {
+            gsap.to(hero3D, {
+              rotationY: 16,
+              rotationZ: -3,
+              yPercent: 12,
+              ease: "none",
+              scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.5
+              }
+            });
+          }
+
+          // B. Staggered Hero Entrance
+          var heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+          var heroBadge = document.querySelector('.cosmic-hero-badge, .crystal-status-pill, .wood-hero-badge, .bio-status-badge, .fusion-status-pill, .curio-brass-badge, .sprawl-status-badge, .abyss-hero-badge');
+          var heroTitle = document.querySelector('h1, .cosmic-title-gradient, .crystal-glitch-title, .wood-title-gradient, .bio-hero-name, .fusion-hero-name, .sprawl-hero-title');
+          var heroTagline = document.querySelector('.cosmic-tagline, .crystal-hero-desc, .wood-hero-tagline, .bio-hero-bio, .fusion-hero-bio, .hero-bio, .sprawl-hero-bio');
+          var heroCta = document.querySelector('.cosmic-cta-row, .crystal-hero-actions, .wood-hero-actions, .bio-hero-actions, .fusion-hero-actions, .hero-actions, .sprawl-actions');
+
+          if (heroBadge) heroTl.fromTo(heroBadge, { autoAlpha: 0, y: -20 }, { autoAlpha: 1, y: 0, duration: 0.6 });
+          if (heroTitle) heroTl.fromTo(heroTitle, { autoAlpha: 0, y: 35 }, { autoAlpha: 1, y: 0, duration: 0.8 }, "-=0.3");
+          if (heroTagline) heroTl.fromTo(heroTagline, { autoAlpha: 0, y: 25 }, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.4");
+          if (heroCta) heroTl.fromTo(heroCta, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 0.5 }, "-=0.3");
+
+          // C. Continuous Parallax Scrub on All Section Headers
+          gsap.utils.toArray('.cosmic-section-header, .crystal-section-header, .wood-section-header, .bio-section-header, .fusion-section-header, .curio-section-header, .sprawl-section-header, section h2').forEach(function(header) {
+            gsap.fromTo(header,
+              { autoAlpha: 0, y: 40 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: header,
+                  start: "top 88%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          });
+
+          // D. Staggered Project Cards Reveal with Continuous Scrub
+          var projectCards = gsap.utils.toArray('.project-card, .curio-case-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+          if (projectCards.length > 0) {
+            ScrollTrigger.batch(projectCards, {
+              start: "top 86%",
+              onEnter: function(batch) {
+                gsap.fromTo(batch,
+                  { autoAlpha: 0, y: 50, scale: 0.95 },
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.12,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                  }
+                );
+              },
+              onEnterBack: function(batch) {
+                gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, overwrite: "auto" });
+              }
+            });
+          }
+
+          // E. Skills Progress Bars Glide-in on Scroll
+          gsap.utils.toArray('.crystal-skill-fill, .wood-skill-fill, .bio-skill-fill, .fusion-skill-fill, .cosmic-skill-fill, .skill-bar-fill, .skill-meter-fill').forEach(function(bar) {
+            var targetWidth = bar.style.width || '85%';
+            gsap.fromTo(bar,
+              { width: "0%" },
+              {
+                width: targetWidth,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: bar,
+                  start: "top 92%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          });
+
+          // F. Experience Timeline Nodes & Cards
+          var timelineItems = gsap.utils.toArray('.crystal-timeline-item, .wood-timeline-item, .bio-timeline-item, .fusion-timeline-item, .curio-specimen-node, .cosmic-timeline-item, .timeline-item, .sprawl-drift-item, .abyss-timeline-node');
+          if (timelineItems.length > 0) {
+            ScrollTrigger.batch(timelineItems, {
+              start: "top 88%",
+              onEnter: function(batch) {
+                gsap.fromTo(batch,
+                  { autoAlpha: 0, x: -30 },
+                  {
+                    autoAlpha: 1,
+                    x: 0,
+                    duration: 0.7,
+                    stagger: 0.15,
+                    ease: "power2.out"
+                  }
+                );
+              }
+            });
+          }
+
+          // G. Resume Dossier 3D Card & Details Elevation
+          var resumeVisual = document.querySelector('.resume-3d-wrapper, .cosmic-about-visual-card, .resume-codex-container, .nautical-map-frame, .sprawl-blueprint-box');
+          if (resumeVisual) {
+            gsap.fromTo(resumeVisual,
+              { autoAlpha: 0, scale: 0.9, y: 40 },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.9,
+                ease: "back.out(1.2)",
+                scrollTrigger: {
+                  trigger: resumeVisual,
+                  start: "top 85%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          }
+
+          // H. Continuous Interactive 3D Parallax Drift for Background Layers
+          if (!isReducedMotion) {
+            gsap.to('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer', {
+              yPercent: 22,
+              ease: "none",
+              scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.2
+              }
+            });
+          }
+        });
+
+        // Ensure ScrollTrigger positions are synchronized after layout calculation
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+
+        // 5. Scrollytelling Bridge for Theatre.js & 3D Sequences
+        window.__folioScrollytelling = {
+          bindCameraToScroll: function(camera, trackSpline) {
+            if (!camera || !trackSpline || isReducedMotion) return;
+            ScrollTrigger.create({
+              trigger: 'body',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 1.5,
+              onUpdate: function(self) {
+                var pt = trackSpline.getPointAt(self.progress);
+                if (pt) camera.position.set(pt.x, pt.y, pt.z);
+              }
+            });
+          }
+        };
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+      } else {
+        initScrollAnimations();
+      }
+    })();
+  </script>
+
+
+<style id="myfolio-universal-mobile">
+  /* ─── Universal Third-Party Extension Suppression (e.g. Careerflow) ─────── */
+  #careerflow-extension, [id*="careerflow" i], [class*="careerflow" i], [data-careerflow],
+  careerflow-extension, careerflow-app, careerflow-copilot,
+  #cf-root, #cf-sidebar, #cf-sidebar-container, #cf-injected-tab, .cf-sidebar-container, .cf-tab, .cf-button,
+  [id^="cf-"], [class^="cf-"], [id*="-cf-" i], [class*="-cf-" i], [data-cf], cf-root, cf-app, cf-sidebar,
+  img[alt*="Careerflow" i], img[src*="careerflow" i], iframe[src*="careerflow" i], iframe[src*="chrome-extension://"],
+  div:has(> img[alt*="Careerflow" i]), div:has(> img[src*="careerflow" i]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    z-index: -99999 !important;
+  }
+
+  /* ─── Universal Mobile Override ≤600px ─────────────────────────────────── */
+  @media (max-width: 600px) {
+    /* Reset base font size so rem units scale down */
+    html { font-size: 14px !important; }
+
+    /* Hero headline — cap at a safe mobile size */
+    h1:not(.hero-masthead-container),
+    [class*="hero-headline"]:not(.hero-candidate-name):not(.hero-lead-text),
+    [class*="hero-h1"], [class*="hero-title"],
+    [class*="masthead"]:not(.hero-masthead-container), [class*="main-title"], [class*="display-title"],
+    [class*="hero-name"]:not(.hero-candidate-name), [class*="page-title"], [class*="folio-name"],
+    [class*="profile-name"] {
+      font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+      line-height: 1.15 !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    /* Section headings */
+    h2, [class*="section-title"], [class*="section-heading"],
+    [class*="chapter-title"], [class*="block-title"] {
+      font-size: clamp(1.25rem, 5.5vw, 1.8rem) !important;
+      line-height: 1.2 !important;
+    }
+
+    h3, [class*="card-title"], [class*="project-name"],
+    [class*="exp-title"], [class*="role-title"] {
+      font-size: clamp(1rem, 4.5vw, 1.35rem) !important;
+    }
+
+    /* Body / bio text */
+    p, [class*="bio"], [class*="hero-bio"], [class*="subtitle"],
+    [class*="intro-text"], [class*="description"], [class*="lead"] {
+      font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
+      line-height: 1.65 !important;
+    }
+
+    /* Tag / badge / mono accent text */
+    [class*="tag"], [class*="badge"], [class*="chip"], [class*="label"],
+    [class*="kicker"], [class*="mono"], code, pre {
+      font-size: clamp(0.65rem, 2.5vw, 0.8rem) !important;
+    }
+
+    /* Section padding — prevent edges being clipped on main sections */
+    section, .portfolio-section, [class*="section-container"],
+    [class*="page-wrapper"], [class*="content-wrapper"], [class*="main-layout"] {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    /* Hero top-level containers — reduce vertical breathing room without polluting inner elements */
+    section[class*="hero"], [class*="hero-section"], [class*="hero-stage"], [class*="hero-viewport"], [id="home"] {
+      padding-top: 48px !important;
+      padding-bottom: 24px !important;
+      min-height: auto !important;
+    }
+
+    /* Force single-column grids everywhere */
+    [style*="grid-template-columns"],
+    [class*="grid"]:not(.glyphs):not(.proj-links), [class*="bento"], [class*="dual"],
+    [class*="tri-layout"], [class*="two-col"], [class*="three-col"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Navigation — hide multi-item desktop navs, show only brand */
+    [class*="nav-menu"], [class*="header-nav"], [class*="dock"],
+    [class*="vertical-dock"], [class*="sidebar-nav"] {
+      display: none !important;
+    }
+
+    /* Primary CTA buttons — stack cleanly without breaking controls or tags */
+    [class*="action-row"], [class*="btn-group"], [class*="cta-row"] {
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    [class*="cta-btn"], [class*="sprawl-btn"], [class*="hero-btn"],
+    .primary-generate-btn {
+      width: 100% !important;
+      justify-content: center !important;
+      padding: 12px 20px !important;
+      font-size: 0.82rem !important;
+    }
+
+    /* Project / card images */
+    [class*="card-img"], [class*="project-img"], [class*="project-image"],
+    [class*="artwork"], [class*="thumbnail"] {
+      height: 160px !important;
+    }
+
+    /* Skill / telemetry numbers — prevent overflow */
+    [class*="stat-num"], [class*="metric-value"], [class*="counter"],
+    [class*="number-display"] {
+      font-size: clamp(1.4rem, 6vw, 2rem) !important;
+    }
+
+    /* 404 hero numbers */
+    [class*="404"], [class*="error-code"] {
+      font-size: clamp(4rem, 20vw, 7rem) !important;
+    }
+
+    /* Floating 3D assets — reduce to prevent layout blowout */
+    [class*="hero-3d"], [class*="focal-asset"], [class*="floating-asset"],
+    [class*="hero-img"], [class*="hero-visual"] {
+      max-width: 260px !important;
+      width: 70vw !important;
+      margin: 24px auto 0 !important;
+    }
+
+    /* Canvas backgrounds — don't overflow */
+    canvas {
+      max-width: 100vw !important;
+    }
+
+    /* Footer */
+    [class*="footer"] {
+      flex-direction: column !important;
+      gap: 12px !important;
+      padding: 24px 16px !important;
+      text-align: center !important;
+      font-size: 0.72rem !important;
+    }
+  }
+
+  /* ─── Tablet override ≤768px ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    html { font-size: 15px !important; }
+
+    h1,
+    [class*="hero-headline"], [class*="hero-h1"], [class*="hero-title"],
+    [class*="masthead"], [class*="main-title"], [class*="display-title"] {
+      font-size: clamp(2rem, 6vw, 3rem) !important;
+    }
+
+    h2, [class*="section-title"], [class*="section-heading"] {
+      font-size: clamp(1.4rem, 4.5vw, 2rem) !important;
+    }
+
+    section, [class*="section"], [class*="-section"] {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+
+    [class*="grid"], [class*="bento"],
+    [class*="tri-layout"], [class*="three-col"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    [class*="two-col"], [class*="dual"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* ─── Reduced-motion: disable floating keyframes ───────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
 </body>
 </html>

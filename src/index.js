@@ -3073,28 +3073,54 @@ app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, 
 });
 
 app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res) => {
-  const apogeeCandidates = [
-    path.join(process.cwd(), 'web', 'abdul-aziz-portfolio.html'),
-    path.join(process.cwd(), 'public', 'abdul-aziz-portfolio.html'),
-    path.join(__dirname, '..', 'web', 'abdul-aziz-portfolio.html'),
-    path.join(__dirname, '..', 'public', 'abdul-aziz-portfolio.html'),
-    path.join(process.cwd(), 'web', 'apogee-preview.html'),
-    path.join(process.cwd(), 'public', 'apogee-preview.html')
-  ];
-  for (const p of apogeeCandidates) {
-    if (fs.existsSync(p)) {
-      let content = fs.readFileSync(p, 'utf8');
-      content = siteGenerator.injectPreviewWatermark(content, false, 'apogee-spatial');
-      return res.type('html').send(content);
-    }
-  }
   const { TemplateRegistry } = require('./templates/template-registry');
-  const rendered = TemplateRegistry.render('apogee-spatial', {
-    name: 'Abdul Aziz',
-    role: 'Full Stack AI Developer',
-    bio: 'Pioneering intelligent interfaces, autonomous agent workflows, and spatial web experiences.',
-    email: 'abdulaziz@myfolio.tech'
-  });
+  const demoData = {
+    name: 'Alex Vance',
+    role: 'Full-Stack AI & Systems Architect',
+    bio: 'Pioneering intelligent interfaces, autonomous agent runtimes, and spatial 3D web experiences.',
+    email: 'alex.vance@example.com',
+    location: 'San Francisco & Remote Worldwide',
+    github: 'https://github.com/developer',
+    projects: [
+      {
+        title: 'Pass A Note',
+        description: 'Encrypted ephemeral peer-to-peer message dispatcher with cryptographic forward secrecy.',
+        tags: ['TypeScript', 'Web Crypto', 'Node.js'],
+        link: 'https://github.com/developer'
+      },
+      {
+        title: 'Autonomous Edge Agent',
+        description: 'Distributed reasoning engine running self-reflective task loops on local models.',
+        tags: ['Python', 'FastAPI', 'Ollama'],
+        link: 'https://github.com/developer'
+      },
+      {
+        title: 'Algorand Smart Contracts',
+        description: 'Decentralized algorithmic block consensus and smart contract execution architecture.',
+        tags: ['Python', 'Algorand', 'PyTeal'],
+        link: 'https://github.com/developer'
+      },
+      {
+        title: 'ConsentChain Privacy',
+        description: 'Cryptographic privacy shields and DPDP compliance verification network.',
+        tags: ['Solidity', 'Zero-Knowledge', 'Web3'],
+        link: 'https://github.com/developer'
+      },
+      {
+        title: 'LMS User Management',
+        description: 'Enterprise educational database matrices with granular access-control credentials.',
+        tags: ['React', 'PostgreSQL', 'Docker'],
+        link: 'https://github.com/developer'
+      },
+      {
+        title: 'Developer Portfolio Engine',
+        description: '3D holographic developer workspaces rendering WebGL code viewports.',
+        tags: ['Three.js', 'WebGL', 'Tailwind'],
+        link: 'https://github.com/developer'
+      }
+    ]
+  };
+  const rendered = TemplateRegistry.render('apogee-spatial', demoData);
   let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'apogee-spatial');
   res.type('html').send(content);
 });
