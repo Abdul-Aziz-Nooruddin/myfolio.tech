@@ -1162,7 +1162,7 @@ const sitePaidStatusCache = new Map();
 
 async function checkSitePaidStatus(siteId) {
   if (!siteId) return false;
-  if (siteId === 'abdulaziz') return true;
+  if (siteId === 'abdulaziz' || siteId.startsWith('abdulaziz-') || siteId.startsWith('abdulaziz_')) return true;
 
   const now = Date.now();
   const cached = sitePaidStatusCache.get(siteId);

@@ -74,6 +74,17 @@ class SiteGenerator {
 
     const pricingUrl = siteId ? `/pricing?siteId=${encodeURIComponent(siteId)}` : '/pricing';
 
+    // Disambiguate Template Showcase vs. Candidate-Generated Portfolio Preview
+    const { TemplateRegistry } = require('../templates/template-registry');
+    const isTemplateShowcase = Boolean(siteId && TemplateRegistry._templates && Object.prototype.hasOwnProperty.call(TemplateRegistry._templates, siteId));
+
+    const mainWatermarkWord = isTemplateShowcase ? 'TEMPLATE' : 'PREVIEW';
+    const subWatermarkText = isTemplateShowcase ? 'TEMPLATE PREVIEW' : 'PORTFOLIO PREVIEW';
+    const diagonalSubtitle = isTemplateShowcase ? 'PREVIEW ONLY • NOT FOR PRODUCTION' : 'PORTFOLIO PREVIEW • UNPUBLISHED DRAFT';
+    const pillText = isTemplateShowcase ? 'TEMPLATE PREVIEW' : 'PORTFOLIO PREVIEW';
+    const barLabel = isTemplateShowcase ? 'Template Preview' : 'Portfolio Preview (Draft)';
+    const ctaLabel = isTemplateShowcase ? 'Buy Build & Remove Watermark (From ₹149) ➔' : 'Publish Live & Remove Watermark (From ₹149) ➔';
+
     const watermarkHtml = `
     <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
     <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; user-select: none; color: rgba(255, 255, 255, 0.12); transition: color 0.25s ease;">
@@ -81,8 +92,8 @@ class SiteGenerator {
       <svg id="preview-watermark-svg" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="wm-pattern" width="420" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
-            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="currentColor">MYFOLIO • TEMPLATE</text>
-            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="16" letter-spacing="3" fill="currentColor">TEMPLATE PREVIEW</text>
+            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="currentColor">MYFOLIO • ${mainWatermarkWord}</text>
+            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="16" letter-spacing="3" fill="currentColor">${subWatermarkText}</text>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#wm-pattern)" />
@@ -96,15 +107,15 @@ class SiteGenerator {
             <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
           </span>
           <span style="opacity: 0.4;">•</span>
-          <span style="font-weight: 800; letter-spacing: 0.12em;">TEMPLATE PREVIEW</span>
+          <span style="font-weight: 800; letter-spacing: 0.12em;">${pillText}</span>
         </div>
       </div>
 
       <!-- ONE BIG BOLD DIAGONAL CENTER MASTHEAD -->
       <div id="preview-big-diagonal" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-28deg); white-space: nowrap; pointer-events: none; user-select: none; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-transform: uppercase; color: currentColor; transition: color 0.25s ease; text-align: center; width: 100%; z-index: 1;">
         <div style="font-size: clamp(1.2rem, 2.8vw, 2.2rem); font-weight: 800; letter-spacing: 0.35em; opacity: 0.85; margin-bottom: 6px;">MYFOLIO.TECH</div>
-        <div style="font-size: clamp(3.8rem, 12vw, 11rem); font-weight: 900; letter-spacing: 0.16em; line-height: 0.9;">TEMPLATE</div>
-        <div style="font-size: clamp(0.85rem, 1.8vw, 1.4rem); font-weight: 700; letter-spacing: 0.28em; opacity: 0.75; margin-top: 8px;">PREVIEW ONLY • NOT FOR PRODUCTION</div>
+        <div style="font-size: clamp(3.8rem, 12vw, 11rem); font-weight: 900; letter-spacing: 0.16em; line-height: 0.9;">${mainWatermarkWord}</div>
+        <div style="font-size: clamp(0.85rem, 1.8vw, 1.4rem); font-weight: 700; letter-spacing: 0.28em; opacity: 0.75; margin-top: 8px;">${diagonalSubtitle}</div>
       </div>
     </div>
 
@@ -112,10 +123,10 @@ class SiteGenerator {
     <div id="preview-floating-bar" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999998; background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 16px 40px rgba(0,0,0,0.6); border-radius: 9999px; padding: 10px 24px; display: flex; align-items: center; gap: 14px; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; max-width: 94vw; flex-wrap: wrap; justify-content: center;">
       <div style="font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
         <span style="display:inline-block; width:8px; height:8px; background:#75c5de; border-radius:50%; box-shadow: 0 0 8px #75c5de;"></span>
-        <span>🔒 <strong>Template Preview</strong> (24h Evaluation Window) • Powered by MyFolio</span>
+        <span>🔒 <strong>${barLabel}</strong> • Powered by MyFolio</span>
       </div>
       <a href="${pricingUrl}" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}" style="background: linear-gradient(135deg, #75c5de, #13708e); color: #08171c; font-weight: 800; font-size: 0.85rem; padding: 8px 18px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(117,197,222,0.35); transition: transform 0.2s ease;">
-        <span>Buy Build & Remove Watermark (From ₹149) ➔</span>
+        <span>${ctaLabel}</span>
       </a>
     </div>
 
