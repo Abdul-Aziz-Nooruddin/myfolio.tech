@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPOP IDOL — Yu Studio Portfolio</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-anton {
+      font-family: 'Anton', sans-serif;
+    }
+
+    .font-inter {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .grain-overlay {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.4;
+    }
+
+    .transition-custom {
+      transition: all 650ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .item-will-change {
+      will-change: transform, filter, opacity, left, height, bottom;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    const MEMBERS = [
+      {
+        id: 'nari',
+        name: 'Nari',
+        role: 'The Center & Visual Director',
+        bg: '#4EA4F0',
+        copy: "The center. Doesn't smile, doesn't need to. Every fancam is forty seconds of her not blinking and the comments section losing it.",
+        src: 'https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/baf95c76-c10b-4fbd-8958-14c1e85be63c/external-assets/5dab8e4c-5f7d-4953-9389-ca2632c32f33-1-blue-girl.webp',
+        stats: [
+          { label: 'Viral Fancam Views', value: '48M+' },
+          { label: 'Magazine Covers', value: '14' },
+          { label: 'Stage Presence Index', value: '99.8' },
+        ],
+      },
+      {
+        id: 'zehn',
+        name: 'Zehn',
+        role: 'Main Dancer & Performance Architect',
+        bg: '#F56352',
+        copy: "Main dancer. Breaks the choreo, sells it anyway. Three seconds behind the count and somehow still the one you watch.",
+        src: 'https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/baf95c76-c10b-4fbd-8958-14c1e85be63c/external-assets/f77b28bc-00f5-4d20-9741-66c4d0ecc32b-2-red-guy.webp',
+        stats: [
+          { label: 'Choreography Credits', value: '18 Songs' },
+          { label: 'Solo Dance Breaks', value: '34' },
+          { label: 'Kinetic Energy Index', value: '99.4' },
+        ],
+      },
+      {
+        id: 'saera',
+        name: 'Saera',
+        role: 'Maknae & Lead Vocal Virtuoso',
+        bg: '#FF9BA1',
+        copy: "Maknae. Cartoon energy, lethal vocal runs. The laugh alone has two million views, the high note has considerably more.",
+        src: 'https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/baf95c76-c10b-4fbd-8958-14c1e85be63c/external-assets/53571957-a21b-45e0-b3a2-824513328420-3-pink-girl.webp',
+        stats: [
+          { label: 'Peak High Note', value: 'G#6' },
+          { label: 'OST Soundtracks', value: '8 Hits' },
+          { label: 'Acoustic Covers', value: '12M Streams' },
+        ],
+      },
+      {
+        id: 'viro',
+        name: 'Viro',
+        role: 'Producer & Sound Architect',
+        bg: '#3EB165',
+        copy: "Writes half the discography, won't say which half. Quiet through the verses, then takes the bridge and rearranges the room.",
+        src: 'https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/baf95c76-c10b-4fbd-8958-14c1e85be63c/external-assets/b86463a0-d531-479a-8f94-6de2812f0d23-4-green-guy.webp',
+        stats: [
+          { label: 'Produced Tracks', value: '42' },
+          { label: 'Billboard Entries', value: '6' },
+          { label: 'Analog Synth Racks', value: '18 Units' },
+        ],
+      },
+    ];
+
+    const RELEASES = [
+      {
+        title: 'SUPERNOVA VELOCITY',
+        year: '2024',
+        type: 'The 4th Mini Album',
+        streams: '210M+',
+        duration: '18:42',
+        concept: 'Cinematic hyper-pop fusion with hard-hitting 808s and analog synth brass.',
+        tracks: ['01. Orbital Collapse (Title)', '02. Neon Pulse', '03. Zero Gravity Kiss', '04. Afterglow (Outro)'],
+      },
+      {
+        title: 'CHROMA OVERDRIVE',
+        year: '2023',
+        type: 'Studio Album',
+        streams: '480M+',
+        duration: '34:10',
+        concept: 'High-octane club beats, futuristic vocal chops, and theatrical arena bridges.',
+        tracks: ['01. Overdrive Intro', '02. Ignition Red (Title)', '03. Velvet Riot', '04. Midnight Mirage', '05. Static Fire'],
+      },
+      {
+        title: 'PINK GLITCH PROTOCOL',
+        year: '2023',
+        type: 'Special Concept Single',
+        streams: '145M+',
+        duration: '03:48',
+        concept: 'Glitch-hop bassline with hyper-bright vocal runs and whistle harmonies.',
+        tracks: ['01. Glitch Protocol (Title)', '02. Glitch Protocol (Sped Up Remix)'],
+      },
+      {
+        title: 'EMERALD MONOLITH',
+        year: '2022',
+        type: 'Debut Mini Album',
+        streams: '320M+',
+        duration: '22:15',
+        concept: 'Industrial percussion, dark synthwave chords, and relentless dance breaks.',
+        tracks: ['01. Awakening Monolith', '02. Cyber Jade (Title)', '03. Deep Signal', '04. Horizon Line'],
+      },
+    ];
+
+    const App = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const [isAnimating, setIsAnimating] = useState(false);
+      const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+      const [isSwappingText, setIsSwappingText] = useState(false);
+      const [displayIndex, setDisplayIndex] = useState(0);
+      const [selectedRelease, setSelectedRelease] = useState(null);
+      const [formSent, setFormSent] = useState(false);
+
+      useEffect(() => {
+        MEMBERS.forEach(member => {
+          const img = new Image();
+          img.src = member.src;
+        });
+
+        const handleResize = () => setIsMobile(window.innerWidth < 640);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+
+      const navigate = useCallback((direction) => {
+        if (isAnimating) return;
+        
+        setIsAnimating(true);
+        setIsSwappingText(true);
+
+        const nextIndex = direction === 'next' ? (activeIndex + 1) % 4 : (activeIndex + 3) % 4;
+        setActiveIndex(nextIndex);
+
+        setTimeout(() => {
+          setDisplayIndex(nextIndex);
+          setIsSwappingText(false);
+        }, 200);
+
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 650);
+      }, [activeIndex, isAnimating]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowLeft') navigate('prev');
+          if (e.key === 'ArrowRight') navigate('next');
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [navigate]);
+
+      const getRoleStyle = (index) => {
+        const roles = {
+          center: activeIndex,
+          left: (activeIndex + 3) % 4,
+          right: (activeIndex + 1) % 4,
+          back: (activeIndex + 2) % 4,
+        };
+
+        if (index === roles.center) {
+          return {
+            transform: `translateX(-50%) scale(${isMobile ? 1.25 : 1.68})`,
+            filter: 'blur(0px)',
+            opacity: 1,
+            zIndex: 20,
+            left: '50%',
+            height: isMobile ? '60%' : '92%',
+            bottom: isMobile ? '22%' : '0',
+          };
+        }
+        if (index === roles.left) {
+          return {
+            transform: 'translateX(-50%) scale(1)',
+            filter: 'blur(2px)',
+            opacity: 0.85,
+            zIndex: 10,
+            left: isMobile ? '20%' : '30%',
+            height: isMobile ? '16%' : '28%',
+            bottom: isMobile ? '32%' : '12%',
+          };
+        }
+        if (index === roles.right) {
+          return {
+            transform: 'translateX(-50%) scale(1)',
+            filter: 'blur(2px)',
+            opacity: 0.85,
+            zIndex: 10,
+            left: isMobile ? '80%' : '70%',
+            height: isMobile ? '16%' : '28%',
+            bottom: isMobile ? '32%' : '12%',
+          };
+        }
+        if (index === roles.back) {
+          return {
+            transform: 'translateX(-50%) scale(1)',
+            filter: 'blur(4px)',
+            opacity: 1,
+            zIndex: 5,
+            left: '50%',
+            height: isMobile ? '13%' : '22%',
+            bottom: isMobile ? '32%' : '12%',
+          };
+        }
+        return {};
+      };
+
+      return (
+        <div 
+          className="min-h-screen text-white font-inter relative transition-colors duration-[650ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{ backgroundColor: MEMBERS[activeIndex].bg }}
+        >
+          {/* Grain Overlay */}
+          <div className="fixed inset-0 pointer-events-none z-[50] grain-overlay"></div>
+
+          {/* ======================================================== */}
+          {/* HERO CAROUSEL STAGE                                      */}
+          {/* ======================================================== */}
+          <section className="h-screen w-full relative overflow-hidden flex flex-col justify-between">
+            {/* Top Brand Label */}
+            <header className="relative z-[60] w-full max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 pt-6 flex items-center justify-between">
+              <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-white/90 select-none flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                YU STUDIO . DESIGN // KPOP IDOL
+              </div>
+
+              <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-[0.15em] text-white/90">
+                <a href="#manifesto" className="hover:text-white transition-colors">Manifesto</a>
+                <a href="#members" className="hover:text-white transition-colors">Personas</a>
+                <a href="#releases" className="hover:text-white transition-colors">Discography</a>
+                <a href="#tour" className="hover:text-white transition-colors">World Tour</a>
+                <a href="#contact" className="px-4 py-2 rounded-full border border-white text-white hover:bg-white hover:text-black transition-all">Book Studio</a>
+              </nav>
+            </header>
+
+            {/* Giant Ghost Text "KPOP IDOL" */}
+            <div 
+              className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none z-[2] top-[18%] font-anton text-white uppercase tracking-[-0.02em] leading-none whitespace-nowrap opacity-90"
+              style={{ fontSize: 'clamp(90px, 28vw, 380px)' }}
+            >
+              KPOP IDOL
+            </div>
+
+            {/* 3D Depth Spatial Carousel Images */}
+            <div className="absolute inset-0 z-[3] overflow-hidden pointer-events-none">
+              {MEMBERS.map((member, idx) => (
+                <div
+                  key={member.id}
+                  className="absolute transition-custom item-will-change"
+                  style={{
+                    ...getRoleStyle(idx),
+                    aspectRatio: '0.6 / 1',
+                  }}
+                >
+                  <img
+                    src={member.src}
+                    alt={member.name}
+                    className="w-full h-full object-contain object-bottom select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                    draggable="false"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Left UI: Active Member Name, Bio, and Buttons */}
+            <div className="relative z-[60] px-5 sm:px-8 md:px-12 pb-8 sm:pb-16 flex items-end justify-between max-w-[1800px] mx-auto w-full">
+              <div className="max-w-[340px] sm:max-w-[420px]">
+                <div 
+                  className="transition-opacity duration-200"
+                  style={{ opacity: isSwappingText ? 0 : 0.95 }}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="font-anton text-2xl sm:text-4xl uppercase tracking-wider text-white">
+                      {MEMBERS[displayIndex].name}
+                    </span>
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-white/20 font-semibold tracking-wider uppercase backdrop-blur-md">
+                      {MEMBERS[displayIndex].role.split('&')[0]}
+                    </span>
+                  </div>
+                  <p className="hidden sm:block text-xs sm:text-[15px] text-white/90 leading-[1.6] mb-5 font-normal">
+                    {MEMBERS[displayIndex].copy}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={() => navigate('prev')}
+                    id="carousel-prev-btn"
+                    className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white flex items-center justify-center text-white transition-all duration-150 hover:scale-[1.08] hover:bg-white/15 active:scale-95"
+                    aria-label="Previous member"
+                  >
+                    <iconify-icon icon="lucide:arrow-left" style={{ fontSize: '26px' }}></iconify-icon>
+                  </button>
+                  <button 
+                    onClick={() => navigate('next')}
+                    id="carousel-next-btn"
+                    className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white flex items-center justify-center text-white transition-all duration-150 hover:scale-[1.08] hover:bg-white/15 active:scale-95"
+                    aria-label="Next member"
+                  >
+                    <iconify-icon icon="lucide:arrow-right" style={{ fontSize: '26px' }}></iconify-icon>
+                  </button>
+
+                  <div className="hidden sm:flex items-center gap-2 ml-4 text-xs tracking-widest text-white/70 uppercase font-semibold">
+                    <span>0{activeIndex + 1}</span>
+                    <span className="w-8 h-[1px] bg-white/40"></span>
+                    <span>04</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Right "DISCOVER" Link */}
+              <div className="flex flex-col items-end gap-2">
+                <a 
+                  href="#manifesto"
+                  id="discover-link"
+                  className="group flex items-center gap-2 sm:gap-4 font-anton text-white opacity-95 hover:opacity-100 transition-opacity duration-200 uppercase tracking-[-0.02em] leading-none"
+                  style={{ fontSize: 'clamp(24px, 4.5vw, 64px)' }}
+                >
+                  <span>DISCOVER</span>
+                  <iconify-icon icon="lucide:arrow-down" className="w-6 h-6 sm:w-10 sm:h-10 group-hover:translate-y-2 transition-transform"></iconify-icon>
+                </a>
+                <span className="text-[11px] uppercase tracking-[0.2em] text-white/70 hidden sm:block font-semibold">
+                  Scroll to view full portfolio ↓
+                </span>
+              </div>
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* SECTION 02: MANIFESTO & SCORECARD                       */}
+          {/* ======================================================== */}
+          <section id="manifesto" className="py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+              <div className="lg:col-span-5">
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 block mb-4">
+                  01 // CREATIVE DIRECTION & MANIFESTO
+                </span>
+                <h2 className="font-anton uppercase text-4xl sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight mb-6">
+                  REDEFINING POP PERFORMANCE ARCHITECTURE.
+                </h2>
+                <div className="space-y-4 text-white/90 text-sm sm:text-base leading-relaxed">
+                  <p>
+                    Yu Studio engineers immersive sonic and visual universes. Every release represents an explosive synthesis of avant-garde streetwear, sub-bass engineering, and kinetic stage presence.
+                  </p>
+                  <p>
+                    From sold-out Tokyo Dome concerts to viral multi-million-view fancams, our creative portfolio bridges high-concept storytelling with global arena entertainment.
+                  </p>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 grid grid-cols-2 gap-4 sm:gap-6">
+                <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
+                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">420M+</div>
+                  <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Global Streams</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
+                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">18</div>
+                  <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Visual MV Awards</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
+                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">#04</div>
+                  <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Billboard World Peak</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20">
+                  <div className="font-anton text-4xl sm:text-6xl mb-2 text-white">98.4%</div>
+                  <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Stadium Sell-Out Rate</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* SECTION 03: PERSONAS SHOWCASE                           */}
+          {/* ======================================================== */}
+          <section id="members" className="py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+              <div>
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 block mb-3">
+                  02 // THE IDOL ROSTER
+                </span>
+                <h2 className="font-anton uppercase text-4xl sm:text-6xl lg:text-7xl leading-none">
+                  FOUR FORCES. ONE UNIVERSE.
+                </h2>
+              </div>
+              <p className="text-sm text-white/80 max-w-[360px]">
+                Click any persona to shift the studio into their chromatic colorway.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {MEMBERS.map((m, idx) => {
+                const isCurrent = activeIndex === idx;
+                return (
+                  <div
+                    key={m.id}
+                    onClick={() => {
+                      setActiveIndex(idx);
+                      setDisplayIndex(idx);
+                    }}
+                    className={`group cursor-pointer rounded-3xl p-6 sm:p-8 border transition-all duration-300 flex flex-col justify-between ${
+                      isCurrent
+                        ? 'bg-black/35 border-white shadow-2xl scale-[1.02]'
+                        : 'bg-black/15 border-white/20 hover:border-white/50 hover:bg-black/25'
+                    }`}
+                  >
+                    <div>
+                      <div className="h-64 sm:h-72 w-full mb-6 relative flex items-end justify-center overflow-hidden rounded-2xl bg-black/20">
+                        <img
+                          src={m.src}
+                          alt={m.name}
+                          className="h-full object-contain object-bottom transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase bg-white/20 backdrop-blur-md">
+                          0{idx + 1}
+                        </div>
+                      </div>
+
+                      <h3 className="font-anton text-3xl sm:text-4xl uppercase text-white mb-1">
+                        {m.name}
+                      </h3>
+                      <div className="text-xs font-semibold uppercase tracking-wider text-white/80 mb-4">
+                        {m.role}
+                      </div>
+                      <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-6 font-normal">
+                        {m.copy}
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="space-y-2 pt-4 border-t border-white/20">
+                        {m.stats.map((s, sIdx) => (
+                          <div key={sIdx} className="flex items-center justify-between text-xs">
+                            <span className="text-white/70">{s.label}</span>
+                            <span className="font-bold text-white">{s.value}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        className={`w-full mt-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${
+                          isCurrent ? 'bg-white text-black' : 'border border-white text-white hover:bg-white hover:text-black'
+                        }`}
+                      >
+                        {isCurrent ? 'Active Atmosphere ✦' : 'Select Atmosphere'}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* SECTION 04: DISCOGRAPHY RELEASES                        */}
+          {/* ======================================================== */}
+          <section id="releases" className="py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+              <div>
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 block mb-3">
+                  03 // AUDIO PRODUCTION & SINGLES
+                </span>
+                <h2 className="font-anton uppercase text-4xl sm:text-6xl lg:text-7xl leading-none">
+                  FEATURED DISCOGRAPHY.
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {RELEASES.map((rel, idx) => (
+                <div
+                  key={idx}
+                  className="p-8 sm:p-10 rounded-3xl bg-black/25 backdrop-blur-md border border-white/20 hover:border-white/50 transition-all flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-white/70 mb-4">
+                      <span>{rel.type}</span>
+                      <span>{rel.year} · {rel.duration}</span>
+                    </div>
+
+                    <h3 className="font-anton text-3xl sm:text-5xl uppercase text-white mb-3 group-hover:translate-x-1 transition-transform">
+                      {rel.title}
+                    </h3>
+
+                    <p className="text-sm text-white/85 leading-relaxed mb-6">
+                      {rel.concept}
+                    </p>
+
+                    <div className="space-y-2 mb-8">
+                      {rel.tracks.map((t, tIdx) => (
+                        <div
+                          key={tIdx}
+                          className="flex items-center justify-between py-2 border-b border-white/10 text-xs text-white/80"
+                        >
+                          <span>{t}</span>
+                          <iconify-icon icon="lucide:disc" style={{ fontSize: '14px', opacity: 0.7 }}></iconify-icon>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-white/20">
+                    <span className="text-xs font-semibold uppercase text-white/80">
+                      {rel.streams} Streams
+                    </span>
+                    <button
+                      onClick={() => setSelectedRelease(rel)}
+                      className="px-5 py-2 rounded-full border border-white text-xs font-bold uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all flex items-center gap-1.5"
+                    >
+                      <span>Liner Notes</span>
+                      <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* SECTION 05: WORLD TOUR SCHEDULE                         */}
+          {/* ======================================================== */}
+          <section id="tour" className="py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+              <div>
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 block mb-3">
+                  04 // TOUR MILESTONES
+                </span>
+                <h2 className="font-anton uppercase text-4xl sm:text-6xl lg:text-7xl leading-none">
+                  WORLD TOUR 2025.
+                </h2>
+              </div>
+              <span className="px-4 py-2 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+                Stadium Dates Sold Out
+              </span>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { city: 'SEOUL, KR', venue: 'KSPO Dome Arena', date: 'OCT 24 - 26', status: 'SOLD OUT' },
+                { city: 'TOKYO, JP', venue: 'Tokyo Dome Arena', date: 'NOV 08 - 10', status: 'SOLD OUT' },
+                { city: 'LONDON, UK', venue: 'The O2 Arena', date: 'DEC 02 - 04', status: 'SOLD OUT' },
+                { city: 'LOS ANGELES, USA', venue: 'Crypto.com Arena', date: 'JAN 15 - 17', status: 'SOLD OUT' },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 sm:p-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/20 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-white transition-colors"
+                >
+                  <div>
+                    <div className="font-anton text-2xl sm:text-4xl text-white mb-1">
+                      {item.city}
+                    </div>
+                    <div className="text-xs sm:text-sm text-white/80">
+                      {item.venue}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-6">
+                    <span className="font-anton text-lg sm:text-2xl text-white">
+                      {item.date}
+                    </span>
+                    <span className="px-4 py-1.5 rounded-full bg-white text-black text-xs font-bold tracking-widest uppercase">
+                      {item.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* SECTION 06: BOOKING & STUDIO CONTACT                     */}
+          {/* ======================================================== */}
+          <section id="contact" className="py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+              <div className="lg:col-span-5">
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 block mb-3">
+                  05 // DIRECT INQUIRIES
+                </span>
+                <h2 className="font-anton uppercase text-4xl sm:text-6xl lg:text-7xl leading-[0.95] mb-6">
+                  WORK WITH YU STUDIO.
+                </h2>
+                <p className="text-sm sm:text-base text-white/85 leading-relaxed mb-8">
+                  Available for global brand ambassadorships, festival headline stages, sync licensing, and audiovisual creative direction.
+                </p>
+
+                <div className="space-y-4 text-xs font-semibold uppercase tracking-wider text-white/90">
+                  <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
+                    <div className="text-white/50 text-[11px] mb-1">Seoul Headquarters</div>
+                    <div>Gangnam-gu Studio 04, Seoul, Korea</div>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
+                    <div className="text-white/50 text-[11px] mb-1">Official Management</div>
+                    <div>booking@yustudio.design</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7">
+                <div className="p-8 sm:p-12 rounded-3xl bg-black/25 backdrop-blur-md border border-white/20">
+                  {formSent ? (
+                    <div className="text-center py-12">
+                      <iconify-icon icon="lucide:check-circle-2" style={{ fontSize: '54px' }} className="mb-4 text-white"></iconify-icon>
+                      <h3 className="font-anton text-3xl uppercase mb-2">INQUIRY DISPATCHED.</h3>
+                      <p className="text-sm text-white/80">
+                        Our management team will respond within 24 hours.
+                      </p>
+                    </div>
+                  ) : (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setFormSent(true);
+                      }}
+                      className="space-y-4"
+                    >
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">
+                          Client / Organization
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Gucci Global / Live Nation"
+                          className="w-full h-12 px-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">
+                          Official Contact Email
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="agency@global.com"
+                          className="w-full h-12 px-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">
+                          Brief / Project Scope
+                        </label>
+                        <textarea
+                          rows="4"
+                          required
+                          placeholder="Specify campaign scope, tour dates, or collaboration parameters..."
+                          className="w-full p-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"
+                        ></textarea>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full h-14 bg-white text-black font-anton uppercase text-xl rounded-xl tracking-wider hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2"
+                      >
+                        <span>Dispatch Studio Brief</span>
+                        <iconify-icon icon="lucide:send"></iconify-icon>
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* FOOTER                                                   */}
+          {/* ======================================================== */}
+          <footer className="py-12 px-5 sm:px-8 md:px-12 max-w-[1800px] mx-auto border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/70">
+            <div className="flex items-center gap-4">
+              <span className="font-anton text-lg text-white">YU STUDIO</span>
+              <span>·</span>
+              <span>KPOP IDOL PORTFOLIO © 2026</span>
+            </div>
+
+            <div className="flex items-center gap-6 font-semibold uppercase tracking-wider">
+              <a href="#" className="hover:text-white transition-colors">Instagram</a>
+              <a href="#" className="hover:text-white transition-colors">YouTube</a>
+              <a href="#" className="hover:text-white transition-colors">TikTok</a>
+              <a href="#" className="hover:text-white transition-colors">Spotify</a>
+              <a 
+                href="#" 
+                className="text-white hover:underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Top ↑
+              </a>
+            </div>
+          </footer>
+
+          {/* LINER NOTES MODAL */}
+          {selectedRelease && (
+            <div className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6">
+              <div className="w-full max-w-[640px] bg-black/90 border border-white/30 rounded-3xl p-8 relative max-h-[90vh] overflow-y-auto">
+                <button
+                  onClick={() => setSelectedRelease(null)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
+                >
+                  ✕
+                </button>
+
+                <span className="text-xs uppercase font-bold tracking-widest text-white/60 block mb-2">
+                  Liner Notes & Credits
+                </span>
+
+                <h3 className="font-anton text-4xl uppercase mb-2 text-white">
+                  {selectedRelease.title}
+                </h3>
+
+                <div className="text-xs text-white/80 uppercase font-semibold mb-6">
+                  {selectedRelease.type} · Released {selectedRelease.year} · {selectedRelease.duration}
+                </div>
+
+                <p className="text-sm text-white/90 leading-relaxed mb-6">
+                  {selectedRelease.concept}
+                </p>
+
+                <div className="mb-6">
+                  <span className="text-xs uppercase font-bold tracking-widest text-white/60 block mb-3">
+                    Tracklist
+                  </span>
+                  <div className="space-y-2">
+                    {selectedRelease.tracks.map((t, idx) => (
+                      <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-white/90">
+                        {t}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setSelectedRelease(null)}
+                  className="w-full py-3.5 bg-white text-black font-anton uppercase text-lg rounded-xl tracking-wider hover:opacity-90 transition-opacity"
+                >
+                  Close Notes
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

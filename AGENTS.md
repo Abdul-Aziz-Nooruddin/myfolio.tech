@@ -347,6 +347,13 @@ Antigravity models must draw from this standardized catalog when generating, mat
 - **Key Features**: 285-frame synchronized frame-by-frame HTML5 2D canvas scrub (`/assets/templates/tom/frames/`), newspaper tear hero breakthrough, slapstick physics badges, comic strip pipeline walk, syndicate stamps, and authentic comic newspaper 404 page.
 - **Recommended For**: Animators & Motion Designers, Storyboard Artists & Illustrators, Comic & Graphic Novel Creators, Character Designers, Game Cinematic Directors, Visual Storytellers.
 
+### 32. Apogee Spatial 3D (`apogee-spatial` / `apogee`)
+- **Aesthetic DNA**: High-energy dynamic color-shifting studio, procedural film grain overlay, and bold industrial typography. Features an interactive 3D depth spatial repository carousel where each repo projects dynamic color themes across the entire viewport.
+- **Color Palette**: Dynamic palette shifting between Electric Cyan `#00F0FF`, Leaf Emerald `#3EB165`, Crimson Coral `#F56352`, Magenta Pulse `#EC4899`, Deep Violet `#8B5CF6`, and Amber Gold `#D97706`.
+- **Typography**: Display `Anton`, Body `Inter`, Monospace `JetBrains Mono` / `Fira Code`.
+- **Key Features**: 6-slot 3D depth spatial repository carousel (elevated center 16:9 card, scaled blur flanking cards), prominent project title stage above the carousel, live color physics synchronization, interactive architectural inspect modal, full dynamic GitHub repo ingestion, and decoupled spatial 404 page.
+- **Recommended For**: Full-Stack AI Engineers, Systems Architects, Smart Contract & Web3 Developers, Spatial & Creative Developers.
+
 ---
 
 ## Website Creation Guidelines

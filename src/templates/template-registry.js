@@ -10,6 +10,7 @@ const { NadiaBrandTemplate } = require('./nadia-brand');
 const { KageTempleTemplate } = require('./kage-temple');
 const { RBPKineticMonochromeTemplate } = require('./rbp-kinetic-monochrome');
 const { TomCelAnimatorTemplate } = require('./tom-cel-animator');
+const { ApogeeSpatialTemplate } = require('./apogee-spatial');
 
 class TemplateRegistry {
   static _templates = {
@@ -33,7 +34,11 @@ class TemplateRegistry {
     'tom': TomCelAnimatorTemplate,
     'tom-animation': TomCelAnimatorTemplate,
     'cel-animator': TomCelAnimatorTemplate,
-    'comic-editorial': TomCelAnimatorTemplate
+    'comic-editorial': TomCelAnimatorTemplate,
+    'apogee-spatial': ApogeeSpatialTemplate,
+    'apogee': ApogeeSpatialTemplate,
+    'apogee-hero': ApogeeSpatialTemplate,
+    'spatial-3d': ApogeeSpatialTemplate
   };
 
   static templates = new Proxy(TemplateRegistry._templates, {
@@ -80,7 +85,8 @@ class TemplateRegistry {
     'nadia-brand',
     'kage-temple',
     'rbp-kinetic-monochrome',
-    'tom-cel-animator'
+    'tom-cel-animator',
+    'apogee-spatial'
   ];
 
   /**

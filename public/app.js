@@ -354,6 +354,20 @@ function openStudioWithTemplate(templateId) {
       bio: 'Senior Character Animator, Storyboard Artist, and Comic Illustrator crafting slapstick physics and kinetic hand-drawn storytelling.',
       skills: ['2D Cel Animation', 'Storyboarding', 'Character Design', 'Compositing', 'Toon Boom Harmony', 'Frame-by-Frame'],
       theme: 'tom-cel-animator'
+    },
+    'apogee-spatial': {
+      name: 'Abdul Aziz',
+      role: 'Full Stack AI Developer',
+      bio: 'Pioneering intelligent interfaces, autonomous agent workflows, and spatial web experiences.',
+      skills: ['Python', 'TypeScript', 'Autonomous Agents', 'Three.js / WebGL', 'FastAPI', 'Next.js'],
+      theme: 'apogee-spatial'
+    },
+    'apogee': {
+      name: 'Abdul Aziz',
+      role: 'Full Stack AI Developer',
+      bio: 'Pioneering intelligent interfaces, autonomous agent workflows, and spatial web experiences.',
+      skills: ['Python', 'TypeScript', 'Autonomous Agents', 'Three.js / WebGL', 'FastAPI', 'Next.js'],
+      theme: 'apogee-spatial'
     }
   };
 

@@ -1077,21 +1077,100 @@ app.get('/api/generate/github/status/:jobId', (req, res) => {
 });
 
 // Helper to get or initialize PortfolioState for a siteId
-function getOrInitPortfolioState(siteId) {
+async function getOrInitPortfolioState(siteId) {
+  if (!siteId) return null;
   if (portfolioCustomizerMap.has(siteId)) {
     return portfolioCustomizerMap.get(siteId);
   }
-  const sitesBaseDir = path.join(process.cwd(), 'public', 'sites');
-  const siteDir = path.join(sitesBaseDir, siteId);
-  const htmlPath = path.join(siteDir, 'index.html');
-  if (!fs.existsSync(htmlPath)) {
+
+  const os = require('os');
+  const candidateDirs = [
+    path.join(process.cwd(), 'public', 'sites', siteId),
+    path.join(os.tmpdir(), 'sites', siteId)
+  ];
+  if (siteId === 'abdulaziz' || siteId === 'aziz') {
+    candidateDirs.push(
+      path.join(process.cwd(), 'public', 'sites', 'abdulaziz'),
+      path.join(os.tmpdir(), 'sites', 'abdulaziz')
+    );
+  }
+
+  let html = null;
+  let css = '';
+  let js = '';
+
+  for (const siteDir of candidateDirs) {
+    const htmlPath = path.join(siteDir, 'index.html');
+    if (fs.existsSync(htmlPath)) {
+      try {
+        html = fs.readFileSync(htmlPath, 'utf8');
+        const cssPath = path.join(siteDir, 'style.css');
+        const jsPath = path.join(siteDir, 'script.js');
+        if (fs.existsSync(cssPath)) css = fs.readFileSync(cssPath, 'utf8');
+        if (fs.existsSync(jsPath)) js = fs.readFileSync(jsPath, 'utf8');
+        break;
+      } catch (e) {}
+    }
+  }
+
+  // Fallback 1: hostingProvider (handles Supabase storage, tmp fallback, etc.)
+  if (!html && hostingProvider) {
+    try {
+      html = await hostingProvider.getSiteHtml(siteId);
+      if (!html && (siteId === 'abdulaziz' || siteId === 'aziz')) {
+        html = (await hostingProvider.getSiteHtml('abdulaziz')) || (await hostingProvider.getSiteHtml('aziz'));
+      }
+    } catch (e) {}
+  }
+
+  // Fallback 2: customDomainService hostname lookup (if siteId is a subdomain or custom domain)
+  if (!html && customDomainService) {
+    const resolvedId = customDomainService.resolveHostname(siteId) ||
+                       (siteId.includes('myfolio.tech') ? customDomainService.resolveHostname(siteId.split('.')[0]) : null);
+    if (resolvedId && resolvedId !== siteId) {
+      return await getOrInitPortfolioState(resolvedId);
+    }
+  }
+
+  // Fallback 3: Dedicated pre-rendered files on disk (for founder/showcase)
+  if (!html && (siteId === 'abdulaziz' || siteId === 'aziz')) {
+    const staticFiles = [
+      path.join(process.cwd(), 'web', 'abdul-aziz-portfolio.html'),
+      path.join(process.cwd(), 'public', 'abdul-aziz-portfolio.html'),
+      path.join(process.cwd(), 'web', 'apogee-preview.html'),
+      path.join(process.cwd(), 'public', 'apogee-preview.html')
+    ];
+    for (const sf of staticFiles) {
+      if (fs.existsSync(sf)) {
+        try {
+          html = fs.readFileSync(sf, 'utf8');
+          break;
+        } catch (e) {}
+      }
+    }
+  }
+
+  // Fallback 4: globalDraftsCache
+  if (!html && globalDraftsCache?.has(siteId)) {
+    html = globalDraftsCache.get(siteId)?.html;
+  }
+
+  // Fallback 5: Dynamic render from TemplateRegistry if this is a registered template or demo
+  if (!html) {
+    try {
+      const { TemplateRegistry } = require('./templates/template-registry');
+      if (TemplateRegistry.templates[siteId]) {
+        const { DEFAULT_FOUNDER_PROFILE } = require('./data/default-founder-profile');
+        const rendered = TemplateRegistry.render(siteId, DEFAULT_FOUNDER_PROFILE);
+        html = typeof rendered === 'string' ? rendered : (rendered?.html || '');
+      }
+    } catch (e) {}
+  }
+
+  if (!html) {
     return null;
   }
-  const html = fs.readFileSync(htmlPath, 'utf8');
-  const cssPath = path.join(siteDir, 'style.css');
-  const jsPath = path.join(siteDir, 'script.js');
-  const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf8') : '';
-  const js = fs.existsSync(jsPath) ? fs.readFileSync(jsPath, 'utf8') : '';
+
   const state = new PortfolioState({ html, css, js, id: siteId });
   portfolioCustomizerMap.set(siteId, state);
   return state;
@@ -1250,7 +1329,7 @@ app.get('/api/portfolio/:siteId/customizer', AuthMiddleware.requireAuth, async (
     if (!ownership.allowed) {
       return res.status(ownership.status).json({ error: ownership.error });
     }
-    const state = getOrInitPortfolioState(siteId);
+    const state = await getOrInitPortfolioState(siteId);
     if (!state) {
       return res.status(404).json({ error: 'Portfolio not found or expired.' });
     }
@@ -1285,7 +1364,7 @@ app.post('/api/portfolio/:siteId/customizer', AuthMiddleware.requireAuth, async 
     }
     const { action, newOrder, sectionId, visible, token, value } = req.body;
 
-    const state = getOrInitPortfolioState(siteId);
+    const state = await getOrInitPortfolioState(siteId);
     if (!state) {
       return res.status(404).json({ error: 'Portfolio not found.' });
     }
@@ -1368,7 +1447,7 @@ app.post('/api/portfolio/:siteId/export', AuthMiddleware.requireAuth, async (req
       });
     }
 
-    const state = getOrInitPortfolioState(siteId);
+    const state = await getOrInitPortfolioState(siteId);
     if (!state) {
       return res.status(404).json({ error: 'Portfolio not found or expired.' });
     }
@@ -2992,6 +3071,34 @@ app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, 
   let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'tom-cel-animator');
   res.type('html').send(content);
 });
+
+app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res) => {
+  const apogeeCandidates = [
+    path.join(process.cwd(), 'web', 'abdul-aziz-portfolio.html'),
+    path.join(process.cwd(), 'public', 'abdul-aziz-portfolio.html'),
+    path.join(__dirname, '..', 'web', 'abdul-aziz-portfolio.html'),
+    path.join(__dirname, '..', 'public', 'abdul-aziz-portfolio.html'),
+    path.join(process.cwd(), 'web', 'apogee-preview.html'),
+    path.join(process.cwd(), 'public', 'apogee-preview.html')
+  ];
+  for (const p of apogeeCandidates) {
+    if (fs.existsSync(p)) {
+      let content = fs.readFileSync(p, 'utf8');
+      content = siteGenerator.injectPreviewWatermark(content, false, 'apogee-spatial');
+      return res.type('html').send(content);
+    }
+  }
+  const { TemplateRegistry } = require('./templates/template-registry');
+  const rendered = TemplateRegistry.render('apogee-spatial', {
+    name: 'Abdul Aziz',
+    role: 'Full Stack AI Developer',
+    bio: 'Pioneering intelligent interfaces, autonomous agent workflows, and spatial web experiences.',
+    email: 'abdulaziz@myfolio.tech'
+  });
+  let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'apogee-spatial');
+  res.type('html').send(content);
+});
+
 
 app.get(['/profile', '/settings', '/account'], AuthMiddleware.requirePageAuth, (req, res) => {
   res.sendFile(getPagePath('profile.html'));

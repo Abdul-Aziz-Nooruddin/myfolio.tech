@@ -1854,6 +1854,7 @@
     function normalizeUniverseKey(key) {
       if (!key) return 'jack-3d-creator';
       const k = String(key).toLowerCase().trim();
+      if (k.includes('apogee') || k.includes('spatial')) return 'apogee-spatial';
       if (k.includes('tom') || k.includes('comic') || k.includes('cel-anim')) return 'tom-cel-animator';
       if (k.includes('rbp') || k.includes('kinetic') || k.includes('calm-mono')) return 'rbp-kinetic-monochrome';
       if (k.includes('kage') || k.includes('temple') || k.includes('kyoto')) return 'kage-temple';
@@ -1882,6 +1883,10 @@
       'tom-animation': '/assets/templates/tom-cel-animator-hero.webp',
       'cel-animator': '/assets/templates/tom-cel-animator-hero.webp',
       'comic-editorial': '/assets/templates/tom-cel-animator-hero.webp',
+      'apogee-spatial': '/assets/templates/apogee-spatial-hero.webp',
+      'apogee': '/assets/templates/apogee-spatial-hero.webp',
+      'apogee-hero': '/assets/templates/apogee-spatial-hero.webp',
+      'spatial-3d': '/assets/templates/apogee-spatial-hero.webp',
       'default': '/assets/templates/jack-3d-creator-hero.webp'
     };
 
@@ -1897,7 +1902,8 @@
         'nadia-brand': 'Nadia Editorial',
         'kage-temple': 'Kage Kyoto Temple',
         'rbp-kinetic-monochrome': 'RBP Kinetic Monochrome',
-        'tom-cel-animator': 'Tom 2D Cel Animation'
+        'tom-cel-animator': 'Tom 2D Cel Animation',
+        'apogee-spatial': 'Apogee Spatial 3D'
       };
       return map[norm] || map[key] || 'Jack 3D Space';
     }
@@ -2215,7 +2221,10 @@
           method: 'POST',
           credentials: 'include'
         });
-        if (!res.ok) throw new Error('Export failed. Ensure portfolio is saved.');
+        if (!res.ok) {
+          const errData = await res.json().catch(() => null);
+          throw new Error(errData?.error || 'Export failed. Ensure portfolio is saved.');
+        }
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

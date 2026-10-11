@@ -28,7 +28,7 @@
       ]
     },
     {
-      "source": "/(jack-3d-creator|nadia-brand|kage-temple|rbp|rbp-portfolio|rbp-kinetic-monochrome|tom|tom-animation|tom-cel-animator|about|contact|privacy|terms)",
+      "source": "/(jack-3d-creator|nadia-brand|kage-temple|rbp|rbp-portfolio|rbp-kinetic-monochrome|tom|tom-animation|tom-cel-animator|apogee|apogee-spatial|apogee-hero|about|contact|privacy|terms)",
       "headers": [
         {
           "key": "Cache-Control",
