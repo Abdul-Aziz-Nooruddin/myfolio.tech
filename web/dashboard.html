@@ -25,16 +25,16 @@
   <!-- Typography: Inter for clean UI, JetBrains Mono for URLs and numbers -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="/assets/youpi.js"></script>
-  <script src="/assets/payment-maintenance.js"></script>
+  <script src="/assets/youpi.js" defer></script>
+  <script src="/assets/payment-maintenance.js" defer></script>
   
-  <link rel="stylesheet" href="/web/app-tokens.css">
   <link rel="stylesheet" href="/app-tokens.css">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/button-system.css">
 
-  <script src="/sidebar.js"></script>
+  <script src="/sidebar.js" defer></script>
   <script src="/cookie-banner.js" defer></script>
   <script src="/analytics.js" defer></script>
 
@@ -1546,29 +1546,42 @@
     let selectedSiteId = null;
 
     async function initDashboard() {
+      // 1. Immediate optimistic render from local storage (0 ms UI flash)
       try {
-        const meRes = await fetch('/api/auth/me', { credentials: 'include' });
-        if (meRes.ok) {
-          const meData = await meRes.json();
-          currentUser = meData.user || meData;
-        } else if (meRes.status === 401) {
+        const cachedUserRaw = localStorage.getItem('myfolio_user');
+        if (cachedUserRaw) {
+          currentUser = JSON.parse(cachedUserRaw);
+          if (currentUser) renderDashboard({ user: currentUser }, []);
+        }
+      } catch (e) {}
+
+      try {
+        // 2. Parallel network dispatch: Fetch user profile, dashboard stats, and cloud portfolios simultaneously
+        const [meResult, dashResult, portfoliosResult] = await Promise.allSettled([
+          fetch('/api/auth/me', { credentials: 'include' }).then(async r => {
+            if (r.status === 401) throw new Error('UNAUTHORIZED');
+            return r.ok ? r.json() : null;
+          }),
+          fetch('/api/web/dashboard', { credentials: 'include' }).then(r => r.ok ? r.json() : null),
+          fetch('/api/user/portfolios', { credentials: 'include' }).then(r => r.ok ? r.json() : null)
+        ]);
+
+        if (meResult.status === 'rejected' && meResult.reason?.message === 'UNAUTHORIZED') {
           window.location.replace('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
           return;
         }
 
-        try {
-          const dashRes = await fetch('/api/web/dashboard', { credentials: 'include' });
-          if (dashRes.ok) {
-            const dashData = await dashRes.json();
-            if (dashData.success) {
-              cachedDashData = dashData;
-            }
-          }
-        } catch (e) {
-          console.warn('[DASHBOARD DATA FETCH WARN]', e);
+        if (meResult.status === 'fulfilled' && meResult.value) {
+          currentUser = meResult.value.user || meResult.value;
+          try { localStorage.setItem('myfolio_user', JSON.stringify(currentUser)); } catch (e) {}
         }
 
-        await loadCrossDevicePortfolios();
+        if (dashResult.status === 'fulfilled' && dashResult.value?.success) {
+          cachedDashData = dashResult.value;
+        }
+
+        const preloadedPortfolios = portfoliosResult.status === 'fulfilled' && portfoliosResult.value?.success ? portfoliosResult.value.portfolios : null;
+        await loadCrossDevicePortfolios(preloadedPortfolios);
       } catch (e) {
         console.error('[DASHBOARD INIT ERROR]', e);
       }
@@ -1915,16 +1928,18 @@
       return map[norm] || map[key] || 'Jack 3D Space';
     }
 
-    async function loadCrossDevicePortfolios() {
+    async function loadCrossDevicePortfolios(preloadedCloud = null) {
       const grid = document.getElementById('syncedPortfoliosGrid');
       if (!grid) return;
 
       try {
-        const res = await fetch('/api/user/portfolios', { credentials: 'include' });
-        let cloud = [];
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && Array.isArray(data.portfolios)) cloud = data.portfolios;
+        let cloud = Array.isArray(preloadedCloud) ? preloadedCloud : [];
+        if (!preloadedCloud) {
+          const res = await fetch('/api/user/portfolios', { credentials: 'include' });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success && Array.isArray(data.portfolios)) cloud = data.portfolios;
+          }
         }
 
         let local = [];
@@ -2502,7 +2517,6 @@
           youpi.open();
         } else {
           showToast('Payment system initialized. Please scan the QR code to proceed.');
-        }
           window.location.href = `/studio?publish=${encodeURIComponent(siteIdToPublish)}`;
         }
       } catch (err) {

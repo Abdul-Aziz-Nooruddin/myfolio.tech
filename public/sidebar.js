@@ -24,6 +24,16 @@ function injectSidebarStyles() {
       color: #0F172A !important;
     }
 
+    #sidebarMount {
+      width: 250px;
+      min-width: 250px;
+      max-width: 250px;
+      flex: 0 0 250px;
+      display: block;
+      position: relative;
+      z-index: 1000;
+    }
+
     .app-main-content {
       flex: 1;
       min-width: 0;
@@ -832,56 +842,74 @@ function closePlansDrawer() {
   if (backdrop) backdrop.classList.remove('active');
 }
 
+function renderSidebarUserDock(dock, user) {
+  if (!dock || !user) return;
+  const displayName = user.name || user.username || (user.email ? user.email.split('@')[0] : 'Engineer');
+  const email = (user.email || '').toLowerCase().trim();
+  const username = user.username || (email ? email.split('@')[0] : 'developer');
+  const initial = displayName.charAt(0).toUpperCase();
+  const isVip = email === 'abdulaziznoor9876@gmail.com';
+
+  dock.innerHTML = `
+    <div class="plan-status-pill">
+      <span>Weekly Builds</span>
+      <span class="plan-pill-tag" style="${isVip ? 'color:#FCD34D; background:rgba(252,211,77,0.15);' : ''}">${isVip ? 'VIP Founder' : 'Starter Free'}</span>
+    </div>
+    <div class="user-dock-profile">
+      <a href="/profile" class="user-avatar-circle" title="View Profile" style="text-decoration: none;">${initial}</a>
+      <a href="/profile" class="user-meta-wrap" title="View Profile & Settings" style="text-decoration: none; color: inherit;">
+        <div class="user-name-text">${displayName}</div>
+        <div class="user-email-text">@${username}</div>
+      </a>
+      <button class="user-logout-btn" onclick="sidebarSignOut()" title="Sign Out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+    </div>
+  `;
+}
+
 async function hydrateSidebarUser() {
   const dock = document.getElementById('sidebarUserCard');
   if (!dock) return;
+
+  // Immediate synchronous cache render (0 ms latency)
+  try {
+    const cachedRaw = localStorage.getItem('myfolio_user');
+    if (cachedRaw) {
+      const u = JSON.parse(cachedRaw);
+      if (u && (u.name || u.username || u.email)) {
+        renderSidebarUserDock(dock, u);
+      }
+    }
+  } catch (e) {}
 
   try {
     const res = await fetch('/api/auth/me', { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
       const user = data.user || data;
-      const displayName = user.name || user.username || (user.email ? user.email.split('@')[0] : 'Engineer');
-      const email = (user.email || '').toLowerCase().trim();
-      const username = user.username || (email ? email.split('@')[0] : 'developer');
-      const initial = displayName.charAt(0).toUpperCase();
-      const isVip = email === 'abdulaziznoor9876@gmail.com';
-
+      renderSidebarUserDock(dock, user);
       try {
         localStorage.setItem('myfolio_user', JSON.stringify(user));
-        if (isVip) {
+        const email = (user.email || '').toLowerCase().trim();
+        if (email === 'abdulaziznoor9876@gmail.com') {
           localStorage.setItem('myfolio_vip_admin', 'true');
         } else {
           localStorage.removeItem('myfolio_vip_admin');
         }
       } catch (e) {}
-
-      dock.innerHTML = `
-        <div class="plan-status-pill">
-          <span>Weekly Builds</span>
-          <span class="plan-pill-tag" style="${isVip ? 'color:#FCD34D; background:rgba(252,211,77,0.15);' : ''}">${isVip ? 'VIP Founder' : 'Starter Free'}</span>
-        </div>
-        <div class="user-dock-profile">
-          <a href="/profile" class="user-avatar-circle" title="View Profile" style="text-decoration: none;">${initial}</a>
-          <a href="/profile" class="user-meta-wrap" title="View Profile & Settings" style="text-decoration: none; color: inherit;">
-            <div class="user-name-text">${displayName}</div>
-            <div class="user-email-text">@${username}</div>
-          </a>
-          <button class="user-logout-btn" onclick="sidebarSignOut()" title="Sign Out">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-          </button>
-        </div>
-      `;
       return;
     }
   } catch (err) {}
 
-  dock.innerHTML = `
-    <a href="/auth" class="sidebar-login-btn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
-      <span>Sign In / Enter</span>
-    </a>
-  `;
+  if (!localStorage.getItem('myfolio_user')) {
+    dock.innerHTML = `
+      <a href="/auth" class="sidebar-login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        <span>Sign In / Enter</span>
+      </a>
+    `;
+  }
 }
 
 async function sidebarSignOut() {
@@ -1058,4 +1086,28 @@ if (typeof window !== 'undefined') {
     console.warn('[NATIVE DIALOG BLOCKED] alert() called with:', msg);
     showAlertModal({ title: 'Notice', message: String(msg) });
   };
+
+  // Autonomous Self-Mounting on DOM Readiness
+  function autoMountSidebar() {
+    const mount = document.getElementById('sidebarMount');
+    if (mount && !document.getElementById('mainAppSidebar')) {
+      const p = (window.location.pathname || '').toLowerCase();
+      let page = 'dashboard';
+      if (p.includes('studio') || p.includes('builder')) page = 'studio';
+      else if (p.includes('pricing') || p.includes('plans')) page = 'plans';
+      else if (p.includes('profile') || p.includes('settings') || p.includes('account')) page = 'profile';
+      else if (mount.dataset && mount.dataset.page) page = mount.dataset.page;
+      initUniversalSidebar(page);
+    }
+  }
+
+  window.autoMountSidebar = autoMountSidebar;
+
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', autoMountSidebar);
+    } else {
+      autoMountSidebar();
+    }
+  }
 }

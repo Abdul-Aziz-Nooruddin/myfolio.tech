@@ -43,18 +43,17 @@
   <meta name="twitter:description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time with live GitHub sync.">
   <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
 
-  <link rel="stylesheet" href="/web/app-tokens.css">
   <link rel="stylesheet" href="/app-tokens.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/youpi.js"></script>
-  <script src="/assets/payment-maintenance.js"></script>
-  <script src="/sidebar.js"></script>
+  <script src="/assets/youpi.js" defer></script>
+  <script src="/assets/payment-maintenance.js" defer></script>
+  <script src="/sidebar.js" defer></script>
   <script src="/cookie-banner.js" defer></script>
   <script src="/analytics.js" defer></script>
-  <script src="/thinking-orbs.js"></script>
+  <script src="/thinking-orbs.js" defer></script>
 
 
   <style>
@@ -3919,6 +3918,7 @@
           } else if (typeof window.Razorpay !== 'undefined') {
             const rzp = new window.Razorpay(options);
             rzp.open();
+          }
         } else if (typeof window.YoupiCheckout !== 'undefined') {
           const youpi = new window.YoupiCheckout(options);
           youpi.open();

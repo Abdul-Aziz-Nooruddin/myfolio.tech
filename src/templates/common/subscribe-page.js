@@ -19,7 +19,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
-  <script src="/sidebar.js"></script>
+  <script src="/sidebar.js" defer></script>
   <style>
     :root {
       --bg: #060814;

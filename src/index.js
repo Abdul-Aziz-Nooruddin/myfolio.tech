@@ -394,19 +394,23 @@ app.get([
 // Serve assets directly from web/assets and public/assets before domain rewrites
 app.use('/assets', express.static(path.join(process.cwd(), 'web', 'assets'), {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (/\.(js|css)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
   }
 }));
 app.use('/assets', express.static(path.join(process.cwd(), 'public', 'assets'), {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (/\.(js|css)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
   }
 }));
