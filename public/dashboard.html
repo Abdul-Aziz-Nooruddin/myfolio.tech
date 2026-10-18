@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/assets/youpi.js"></script>
   <script src="/assets/payment-maintenance.js"></script>
   
   <link rel="stylesheet" href="/web/app-tokens.css">
@@ -1449,7 +1449,7 @@
         </button>
       </div>
       <div style="font-size:11.5px; color:var(--dash-text-muted); margin-top:10px;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Secure checkout via Razorpay, UPI &amp; Cards • Instant permanent deployment
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Secure checkout via YouPI PG (Direct UPI &amp; Bank QR) • 0% Fees • Instant permanent deployment
       </div>
     </div>
   </div>
@@ -1758,11 +1758,8 @@
           btnPublishPermanent.style.display = 'inline-flex';
           btnPublishPermanent.innerHTML = '<span>Upgrade to Pro Subdomain (₹149/mo)</span> &rarr;';
           btnPublishPermanent.onclick = () => {
-            if (typeof window.showPaymentMaintenanceModal === 'function') {
-              window.showPaymentMaintenanceModal({ plan: 'pro', siteId: target.siteId });
-            } else {
-              window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}&plan=pro`;
-            }
+            currentSiteId = target.siteId;
+            startPublishCheckout('pro');
           };
         }
 
@@ -1790,11 +1787,8 @@
           btnPublishPermanent.style.display = 'inline-flex';
           btnPublishPermanent.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:5px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Buy Build & Remove Watermark (From ₹149) ➔</span>';
           btnPublishPermanent.onclick = () => {
-            if (typeof window.showPaymentMaintenanceModal === 'function') {
-              window.showPaymentMaintenanceModal({ plan: 'starter', siteId: target.siteId });
-            } else {
-              window.location.href = `/pricing?siteId=${encodeURIComponent(target.siteId)}`;
-            }
+            currentSiteId = target.siteId;
+            startPublishCheckout('starter');
           };
         }
 
@@ -2362,12 +2356,6 @@
     async function startPublishCheckout(plan = 'starter') {
       const siteIdToPublish = currentSiteId || (window.cachedDashData && window.cachedDashData.siteId);
       
-      // Payment Gateway Infrastructure Upgrade: Display graceful maintenance notice
-      if (typeof window.showPaymentMaintenanceModal === 'function') {
-        window.showPaymentMaintenanceModal({ plan, siteId: siteIdToPublish });
-        return;
-      }
-
       if (!siteIdToPublish) {
         window.location.href = '/studio';
         return;
@@ -2411,14 +2399,16 @@
           }
           return;
         }
-        if (orderData.isCustomCheckout && window.Razorpay) {
+        if (orderData.isCustomCheckout && (window.YoupiCheckout || window.Youpi || window.Razorpay)) {
           const options = {
             key: orderData.keyId,
-            amount: orderData.amount,
+            amount: orderData.amountRupees || (orderData.amount / 100),
             currency: orderData.currency || 'INR',
             name: 'MyFolio Platform',
             description: plan === 'starter' ? 'Permanent Netlify Hosting (₹149 one-time)' : 'Pro Subdomain & Live Sync (₹149/mo)',
             order_id: orderData.orderId,
+            orderId: orderData.orderId,
+            checkoutUrl: orderData.checkoutUrl,
             handler: async function (paymentResponse) {
               showToast('Payment confirmed! Removing watermarks and deploying permanently...');
               try {
@@ -2427,9 +2417,10 @@
                   headers: { 'Content-Type': 'application/json' },
                   credentials: 'include',
                   body: JSON.stringify({
-                    razorpay_order_id: paymentResponse.razorpay_order_id,
-                    razorpay_payment_id: paymentResponse.razorpay_payment_id,
-                    razorpay_signature: paymentResponse.razorpay_signature,
+                    order_id: paymentResponse.order_id || paymentResponse.orderId || paymentResponse.razorpay_order_id,
+                    payment_id: paymentResponse.payment_id || paymentResponse.paymentId || paymentResponse.razorpay_payment_id || `youpi_${paymentResponse.utr || Date.now()}`,
+                    signature: paymentResponse.signature || paymentResponse.razorpay_signature || '',
+                    utr: paymentResponse.utr || '',
                     siteId: siteIdToPublish,
                     plan: plan
                   })
@@ -2444,17 +2435,32 @@
                 setTimeout(() => window.location.reload(), 1500);
               }
             },
+            customer: {
+              email: currentUser?.email || '',
+              name: currentUser?.name || ''
+            },
             prefill: {
               email: currentUser?.email || '',
               name: currentUser?.name || ''
             },
             theme: { color: plan === 'pro' ? '#10b981' : '#75c5de' }
           };
-          const rzp = new Razorpay(options);
-          rzp.open();
-        } else if (orderData.paymentUrl) {
-          window.location.href = orderData.paymentUrl;
+
+          if (typeof window.YoupiCheckout !== 'undefined') {
+            const youpi = new window.YoupiCheckout(options);
+            youpi.open();
+          } else if (typeof window.Youpi !== 'undefined' && typeof window.Youpi.pay === 'function') {
+            window.Youpi.pay(options);
+          } else if (typeof window.Razorpay !== 'undefined') {
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+          }
+        } else if (window.YoupiCheckout) {
+          const youpi = new window.YoupiCheckout(options);
+          youpi.open();
         } else {
+          showToast('Payment system initialized. Please scan the QR code to proceed.');
+        }
           window.location.href = `/studio?publish=${encodeURIComponent(siteIdToPublish)}`;
         }
       } catch (err) {

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo — Compact About Me &amp; Founder Details | MyFolio</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo-3d.png" />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --paper-soft: #eae7de;
+      --paper-card: #fcfbf9;
+      --ink: #171817;
+      --ink-soft: #2d2e2b;
+      --muted: #60615b;
+      --muted-light: #8e9087;
+      --border: rgba(23, 24, 23, 0.12);
+      --border-dark: rgba(23, 24, 23, 0.22);
+      --sky: #75c5de;
+      --sky-deep: #13708e;
+      --sky-tint: rgba(117, 197, 222, 0.12);
+      --emerald: #10b981;
+      --card-shadow: 0 8px 24px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+
+    /* Interactive Demo HUD Bar */
+    .demo-hud {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #171817;
+      color: #f4f1e8;
+      padding: 10px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .demo-hud-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .demo-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sky);
+      box-shadow: 0 0 10px var(--sky);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .demo-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-pill-badge {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--sky);
+      color: #0b1a20;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Site Header Mockup */
+    .site-header {
+      padding: 18px clamp(20px, 4vw, 56px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(244, 241, 232, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+    }
+    .brand-logo-img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .brand-period { color: var(--sky-deep); }
+    .header-nav {
+      display: none;
+      align-items: center;
+      gap: 28px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    @media (min-width: 860px) { .header-nav { display: flex; } }
+    .header-nav a:hover { color: var(--ink); }
+
+    /* Common Section Styles */
+    .section-pad {
+      padding: clamp(48px, 5.5vw, 76px) clamp(20px, 4vw, 56px);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-index {
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .section-title {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .section-subtitle {
+      font-size: clamp(14px, 1.4vw, 16px);
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    /* Surrounding Context Sections (09 & 11) */
+    .context-section {
+      opacity: 0.65;
+      border-bottom: 1px dashed var(--border-dark);
+      background: #f0ece1;
+      padding-top: 28px;
+      padding-bottom: 28px;
+    }
+    .context-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .context-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(23, 24, 23, 0.08);
+      color: var(--muted);
+    }
+
+    /* ========================================================
+       COMPACT BENTO ARCHITECTURE (ALL-IN-ONE BALANCED VIEWPORT)
+       ======================================================== */
+    .section-compact-founder {
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .compact-bento-grid {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1.25fr) minmax(0, 1.15fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+    @media (max-width: 1100px) {
+      .compact-bento-grid {
+        grid-template-columns: 310px 1fr;
+      }
+      .bento-col-skills {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 768px) {
+      .compact-bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-col-skills {
+        grid-column: auto;
+      }
+    }
+
+    /* --------------------------------------------------------
+       BENTO CARD 1: PROFILE DOSSIER & SCHOOLING (LEFT)
+       -------------------------------------------------------- */
+    .bento-card-profile {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+
+    .profile-top-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .profile-avatar-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12), 0 0 0 1px var(--border);
+    }
+    .status-dot-active {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--emerald);
+      border: 2px solid #ffffff;
+    }
+    .profile-meta-header {
+      min-width: 0;
+    }
+    .profile-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+    .profile-role {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sky-deep);
+      margin-top: 3px;
+    }
+    .profile-loc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Compact Schooling Box */
+    .schooling-card {
+      background: #faf8f3;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .schooling-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sky-deep);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+    .schooling-degree {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .schooling-inst {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* Compact Contacts */
+    .profile-coords {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .coord-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .coord-row a:hover {
+      color: var(--sky-deep);
+      text-decoration: underline;
+    }
+    .coord-row-icon {
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* Profile Action Buttons */
+    .profile-btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .btn-profile-primary {
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-profile-primary:hover { background: #2f302d; }
+    .btn-profile-ghost {
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #faf8f3;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-profile-ghost:hover { background: #eae7de; }
+
+
+    /* --------------------------------------------------------
+       BENTO CARD 2: ABOUT ME & BACKGROUND (MIDDLE)
+       -------------------------------------------------------- */
+    .bento-card-story {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px clamp(20px, 2.5vw, 28px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .story-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sky-deep);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .story-headline {
+      font-size: clamp(18px, 1.8vw, 22px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .story-headline span {
+      color: var(--sky-deep);
+    }
+    .story-text {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+    }
+    .story-text strong {
+      color: var(--ink);
+    }
+
+    /* 3 Background Highlights Bar */
+    .story-pillars-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 640px) {
+      .story-pillars-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .story-pillar-item {
+      background: #faf8f3;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .pillar-item-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pillar-item-desc {
+      font-size: 10.5px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+
+    /* --------------------------------------------------------
+       BENTO CARD 3: TECHNICAL ARSENAL & SKILLS (RIGHT)
+       -------------------------------------------------------- */
+    .bento-card-skills {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .skills-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .skills-main-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .skills-sub-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(19, 112, 142, 0.08);
+      color: var(--sky-deep);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .skills-compact-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .skill-compact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .skill-compact-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .skill-compact-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .tag-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #faf8f3;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      transition: all 0.2s ease;
+    }
+    .tag-pill:hover {
+      border-color: var(--sky-deep);
+      color: var(--sky-deep);
+    }
+    .tag-pill.accent {
+      background: var(--sky-tint);
+      border-color: rgba(117, 197, 222, 0.4);
+      color: var(--sky-deep);
+    }
+
+    /* Core Strengths Quick Bar at bottom of skills */
+    .strengths-quick-bar {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 10.5px;
+      color: var(--muted);
+    }
+    .strength-dot-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    /* Footer Mockup */
+    .site-footer {
+      padding: 60px clamp(20px, 4vw, 56px) 30px;
+      border-top: 1px solid var(--border);
+      background: var(--paper);
+      text-align: center;
+    }
+    .footer-wordmark {
+      font-size: clamp(50px, 10vw, 120px);
+      font-weight: 600;
+      line-height: 0.85;
+      letter-spacing: -0.06em;
+      color: #E4E4E4;
+      user-select: none;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================
+       TOP INTERACTIVE HUD BAR
+       ======================================================== -->
+  <aside class="demo-hud" aria-label="Interactive Demo Toolbar">
+    <div class="demo-hud-title">
+      <span class="demo-pulse" aria-hidden="true"></span>
+      <span>COMPACT ABOUT ME &amp; FOUNDER SECTION // LIVE VIEWPORT</span>
+    </div>
+    
+    <div class="demo-controls">
+      <span class="demo-pill-badge">Single-Fold Layout (Height ~640px)</span>
+      <span style="font-size:12px; color:#c5c7bd;">Zero Projects • No CGPA • High Clarity</span>
+    </div>
+  </aside>
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="MyFolio home">
+      <img src="/assets/logo-3d.png" alt="MyFolio" class="brand-logo-img" />
+      <span>myfolio<span class="brand-period">.</span></span>
+    </a>
+    <nav class="header-nav">
+      <a href="/#features">Features</a>
+      <a href="/#templates">Templates</a>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="#founder-section" style="color:var(--sky-deep); font-weight:700;">About the Founder</a>
+      <a href="/about">Our Story</a>
+    </nav>
+    <div>
+      <a href="/studio" style="padding: 7px 16px; border-radius: 9999px; background: #ffffff; border: 1px solid var(--border); font-size: 12px; font-weight: 600;">Open studio ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================================
+         SURROUNDING CONTEXT: SECTION 09 (A LITTLE GUIDANCE)
+         ======================================================== -->
+    <section class="context-section">
+      <div class="section-pad" style="padding-top:0; padding-bottom:0;">
+        <div class="context-header">
+          <div class="section-label" style="margin-bottom:0; border:none; padding:0;">
+            <span class="section-index">09 / A LITTLE GUIDANCE</span>
+            <span>Preceding Section on Landing Page</span>
+          </div>
+          <span class="context-badge">Context Above ⭡</span>
+        </div>
+        <p style="font-size:12px; color:var(--muted); max-width:820px;">
+          Visitors explore practical guidance on curating repositories and telling the truth about what was built. Directly below, they meet the founder.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         COMPACT DEDICATED FOUNDER SECTION (SECTION 10)
+         ======================================================== -->
+    <section class="section-compact-founder" id="founder-section">
+      <div class="section-pad">
+        
+        <div class="section-label">
+          <span class="section-index">10 / BEHIND THE CRAFT</span>
+          <span>About Me, Background, Schooling &amp; Skills</span>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:28px; flex-wrap:wrap; gap:16px;">
+          <div>
+            <h2 class="section-title">
+              Crafted by an engineer who felt<br/>
+              the sting of compression.
+            </h2>
+            <p class="section-subtitle" style="margin-bottom:0;">
+              Meet Abdul Aziz Nooruddin — the software architect behind MyFolio. Who he is, where he comes from, and why he builds.
+            </p>
+          </div>
+          <div style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--sky-deep); background:rgba(19, 112, 142, 0.08); padding:5px 12px; border-radius:9999px;">
+            <span>✦ Single-Fold Unified Bento</span>
+          </div>
+        </div>
+
+        <!-- ====================================================
+             3-COLUMN COMPACT BENTO GRID
+             ==================================================== -->
+        <div class="compact-bento-grid">
+          
+          <!-- --------------------------------------------------
+               COLUMN 1: PROFILE DOSSIER & SCHOOLING (LEFT)
+               -------------------------------------------------- -->
+          <div class="bento-card-profile">
+            
+            <!-- Top Avatar & Name -->
+            <div class="profile-top-row">
+              <div class="profile-avatar-wrap">
+                <img 
+                  src="/assets/abdul-aziz-founder.jpg" 
+                  alt="Abdul Aziz Nooruddin" 
+                  class="profile-avatar-img" 
+                />
+                <span class="status-dot-active" title="Active Builder"></span>
+              </div>
+              <div class="profile-meta-header">
+                <h3 class="profile-name">Abdul Aziz Nooruddin</h3>
+                <p class="profile-role">Founder &amp; Software Architect</p>
+                <p class="profile-loc">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                  <span>Hyderabad, India</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Schooling & Education Card (No CGPA) -->
+            <div class="schooling-card">
+              <span class="schooling-kicker">
+                <span>🎓</span> Schooling &amp; Academics
+              </span>
+              <p class="schooling-degree">B.Tech in Computer Science<br/>(AI &amp; Machine Learning)</p>
+              <p class="schooling-inst">Lords Institute of Engineering and Technology, Hyderabad (Expected 2028)</p>
+            </div>
+
+            <!-- Direct Coordinates -->
+            <div class="profile-coords">
+              <div class="coord-row">
+                <span class="coord-row-icon">✉️</span>
+                <a href="mailto:abdulaziznoor9876@gmail.com">abdulaziznoor9876@gmail.com</a>
+              </div>
+              <div class="coord-row">
+                <span class="coord-row-icon">📞</span>
+                <a href="tel:+919912836034">+91 99128 36034</a>
+              </div>
+              <div class="coord-row">
+                <span class="coord-row-icon">🐙</span>
+                <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noopener">github.com/Abdul-Aziz-Nooruddin ↗</a>
+              </div>
+              <div class="coord-row">
+                <span class="coord-row-icon">🌐</span>
+                <a href="https://portfolio-nine-tawny-39.vercel.app" target="_blank" rel="noopener">portfolio-nine-tawny-39.vercel.app ↗</a>
+              </div>
+            </div>
+
+            <!-- Action CTAs -->
+            <div class="profile-btn-row">
+              <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noopener" class="btn-profile-primary">
+                GitHub ↗
+              </a>
+              <a href="mailto:abdulaziznoor9876@gmail.com" class="btn-profile-ghost">
+                Email ✉
+              </a>
+            </div>
+
+          </div>
+
+
+          <!-- --------------------------------------------------
+               COLUMN 2: ABOUT ME & BACKGROUND (MIDDLE)
+               -------------------------------------------------- -->
+          <div class="bento-card-story">
+            <div>
+              <span class="story-kicker">
+                <span>✦</span> About Me &amp; The Mission
+              </span>
+              <h3 class="story-headline">
+                “A portfolio should feel like walking into your <span>personal workshop</span>.”
+              </h3>
+              <p class="story-text">
+                I am a Computer Science undergraduate specializing in Artificial Intelligence and Machine Learning from Hyderabad. My passion is bridging deep backend architecture with expressive front-end spatial experiences.
+              </p>
+              <p class="story-text">
+                I created <strong>MyFolio</strong> because reducing months of engineering effort into sterile bullet points on a PDF resume hurts. Candidates get reduced to 6-second keyword checklists. MyFolio turns authentic code into an interactive 3D universe—with <strong>100% full source code ZIP exports</strong> and zero vendor lock-in.
+              </p>
+            </div>
+
+            <!-- 3 Background Pillar Badges -->
+            <div class="story-pillars-row">
+              <div class="story-pillar-item">
+                <p class="pillar-item-title">⚡ Full-Stack &amp; Web3</p>
+                <p class="pillar-item-desc">React, Next.js, FastAPI, Spring Boot &amp; Solidity / Algorand smart contracts.</p>
+              </div>
+
+              <div class="story-pillar-item">
+                <p class="pillar-item-title">👁️ Spatial CV &amp; 3D</p>
+                <p class="pillar-item-desc">MediaPipe hand tracking &amp; Three.js WebGL interactive viewports.</p>
+              </div>
+
+              <div class="story-pillar-item">
+                <p class="pillar-item-title">🚀 Independent Builder</p>
+                <p class="pillar-item-desc">Active hackathon builder leveraging AI tools to ship complete tools end-to-end.</p>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- --------------------------------------------------
+               COLUMN 3: TECHNICAL ARSENAL & SKILLS (RIGHT)
+               -------------------------------------------------- -->
+          <div class="bento-card-skills bento-col-skills">
+            
+            <div>
+              <div class="skills-header-row">
+                <h3 class="skills-main-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+                  <span>Technical Arsenal</span>
+                </h3>
+                <span class="skills-sub-badge">Stack Matrix</span>
+              </div>
+
+              <div class="skills-compact-groups">
+                
+                <!-- Languages -->
+                <div class="skill-compact-row">
+                  <span class="skill-compact-label">⚡ Languages</span>
+                  <div class="skill-compact-tags">
+                    <span class="tag-pill accent">Python</span>
+                    <span class="tag-pill accent">Java</span>
+                    <span class="tag-pill accent">Solidity</span>
+                    <span class="tag-pill">C</span>
+                    <span class="tag-pill">JavaScript</span>
+                    <span class="tag-pill">TypeScript</span>
+                    <span class="tag-pill">HTML/CSS</span>
+                  </div>
+                </div>
+
+                <!-- Frameworks -->
+                <div class="skill-compact-row">
+                  <span class="skill-compact-label">🛠️ Frameworks &amp; Stacks</span>
+                  <div class="skill-compact-tags">
+                    <span class="tag-pill accent">React</span>
+                    <span class="tag-pill accent">Next.js</span>
+                    <span class="tag-pill accent">FastAPI</span>
+                    <span class="tag-pill">Flutter</span>
+                    <span class="tag-pill">Spring Boot</span>
+                    <span class="tag-pill">Hardhat</span>
+                    <span class="tag-pill">AlgoKit</span>
+                  </div>
+                </div>
+
+                <!-- CV & AI / 3D -->
+                <div class="skill-compact-row">
+                  <span class="skill-compact-label">👁️ CV, 3D &amp; AI</span>
+                  <div class="skill-compact-tags">
+                    <span class="tag-pill accent">MediaPipe</span>
+                    <span class="tag-pill accent">Three.js (WebGL)</span>
+                    <span class="tag-pill">Gesture Tracking</span>
+                    <span class="tag-pill">Anthropic API</span>
+                    <span class="tag-pill">Applied AI/ML</span>
+                  </div>
+                </div>
+
+                <!-- Cloud & Data -->
+                <div class="skill-compact-row">
+                  <span class="skill-compact-label">☁️ Cloud, Data &amp; Dev Tools</span>
+                  <div class="skill-compact-tags">
+                    <span class="tag-pill accent">Supabase</span>
+                    <span class="tag-pill accent">PostgreSQL</span>
+                    <span class="tag-pill">MySQL</span>
+                    <span class="tag-pill">Vercel</span>
+                    <span class="tag-pill">Koyeb</span>
+                    <span class="tag-pill">Git / GitHub</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Strengths Micro-Row -->
+            <div class="strengths-quick-bar">
+              <span class="strength-dot-item">✦ Fast Learner</span>
+              <span class="strength-dot-item">✦ AI-Assisted Velocity</span>
+              <span class="strength-dot-item">✦ Creative Architecture</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SURROUNDING CONTEXT: SECTION 11 (FAQ)
+         ======================================================== -->
+    <section class="context-section">
+      <div class="section-pad" style="padding-top:0; padding-bottom:0;">
+        <div class="context-header">
+          <div class="section-label" style="margin-bottom:0; border:none; padding:0;">
+            <span class="section-index">11 / GOOD QUESTIONS (FAQ)</span>
+            <span>Succeeding Section on Landing Page</span>
+          </div>
+          <span class="context-badge">Context Below ⭣</span>
+        </div>
+        <p style="font-size:12px; color:var(--muted); max-width:820px;">
+          Directly after the Founder section, visitors review frequently asked questions covering full ZIP source code exports, free weekly builds, and custom domain setup.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-wordmark">myfolio.</div>
+    <p style="font-size:13px; color:var(--muted);">
+      Created by Abdul Aziz Nooruddin • Built for developers who take genuine pride in their craft.
+    </p>
+  </footer>
+
+</body>
+</html>

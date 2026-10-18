@@ -49,7 +49,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/assets/youpi.js"></script>
   <script src="/assets/payment-maintenance.js"></script>
   <script src="/sidebar.js"></script>
   <script src="/cookie-banner.js" defer></script>
@@ -2423,77 +2423,41 @@
         <div class="upm-title">Choose Your Launch Plan</div>
         <p class="upm-sub">Select how you want to deploy your 3D digital world. Watermarks are permanently stripped upon launch.</p>
 
-        <!-- Dual Plan Grid -->
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:18px;">
-          
-          <!-- Plan A: Lifetime Starter (₹149 One-Time) -->
-          <div class="launch-plan-card" style="background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.1); border-radius:18px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:10.5px; font-weight:800; letter-spacing:1px; color:#38BDF8; background:rgba(56,189,248,0.12); padding:3px 8px; border-radius:100px; text-transform:uppercase;">One-Time Pay</span>
-                <span style="font-size:18px; font-weight:900; color:#fff;"><span style="font-size:13px; font-weight:500; text-decoration:line-through; color:#94a3b8; margin-right:4px;">₹749</span>₹149</span>
-              </div>
-              <h3 style="font-size:16px; font-weight:800; color:#fff; margin:0 0 6px 0;">Lifetime Starter</h3>
-              <p style="font-size:12px; color:#94a3b8; line-height:1.45; margin-bottom:12px;">
-                Permanent deployment on <strong>Netlify Edge CDN</strong>. Pay once, live forever.
-              </p>
-              <div style="background:rgba(0,0,0,0.3); border:1px dashed rgba(56,189,248,0.35); border-radius:10px; padding:8px 10px; margin-bottom:12px; font-family:var(--mf-font-mono, monospace); font-size:11.5px; color:#38bdf8;">
-                https://<span id="starterNetlifyPreview">yourname</span>.netlify.app
-              </div>
-              <ul style="list-style:none; padding:0; margin:0 0 16px 0; font-size:12px; color:#cbd5e1; display:flex; flex-direction:column; gap:6px;">
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> 100% Watermark-Free</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> Netlify Edge Domain (Permanent)</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> Full Source Code ZIP Export</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> 1 Production Portfolio Build</li>
-              </ul>
+        <!-- Single Plan Card -->
+        <div class="launch-plan-card" style="background:rgba(15,23,42,0.85); border:1.5px solid rgba(56,189,248,0.4); border-radius:18px; padding:22px; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-size:11px; font-weight:800; letter-spacing:1px; color:#38BDF8; background:rgba(56,189,248,0.12); padding:3px 10px; border-radius:100px; text-transform:uppercase;">One-Time Pay • Zero Subscriptions</span>
+            <span style="font-size:22px; font-weight:900; color:#fff;"><span style="font-size:14px; font-weight:500; text-decoration:line-through; color:#94a3b8; margin-right:6px;">₹749</span>₹149</span>
+          </div>
+          <h3 style="font-size:18px; font-weight:800; color:#fff; margin:0 0 6px 0;">Lifetime Single Portfolio License</h3>
+          <p style="font-size:12.5px; color:#94a3b8; line-height:1.45; margin-bottom:14px;">
+            Permanent global edge CDN hosting with complete source code export. Pay once for this specific portfolio, live forever.
+          </p>
+
+          <!-- Optional Custom Subdomain claim -->
+          <div style="background:rgba(0,0,0,0.3); border:1px dashed rgba(56,189,248,0.35); border-radius:12px; padding:10px 12px; margin-bottom:14px;">
+            <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Choose Custom Address (Included):</div>
+            <div class="upm-domain-row" style="margin-bottom:6px;">
+              <span class="upm-domain-prefix">https://</span>
+              <input type="text" id="upmUsernameInput" placeholder="yourname" maxlength="30"
+                oninput="onUpmInput()"
+                onkeydown="if(event.key==='Enter') checkUsernameAvailability()"
+              />
+              <span class="upm-domain-suffix">.myfolio.tech</span>
             </div>
-            <button type="button" class="btn-launch-starter" id="btnLaunchStarter" onclick="startStudioPayment('starter')" style="width:100%; padding:12px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 14px rgba(2,132,199,0.3);">
-              Pay ₹149 &amp; Launch on Netlify ➔
-            </button>
+            <div id="upmStatus" class="upm-status" style="margin-bottom:4px; padding:4px 8px; font-size:11px;"></div>
           </div>
 
-          <!-- Plan B: Pro Creator (₹149 / month) -->
-          <div class="launch-plan-card featured" style="background:rgba(22,25,33,0.88); border:1px solid rgba(56,189,248,0.4); border-radius:18px; padding:20px; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:0 0 25px rgba(56,189,248,0.12);">
-            <div style="position:absolute; top:-10px; right:18px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:9.5px; font-weight:800; padding:2px 8px; border-radius:100px; text-transform:uppercase; letter-spacing:0.8px;">
-              Branded Domain
-            </div>
-            <div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:10.5px; font-weight:800; letter-spacing:1px; color:#FCD34D; background:rgba(245,158,11,0.15); padding:3px 8px; border-radius:100px; text-transform:uppercase;">Monthly Pro</span>
-                <span style="font-size:18px; font-weight:900; color:#fff;"><span style="font-size:13px; font-weight:500; text-decoration:line-through; color:#94a3b8; margin-right:4px;">₹499</span>₹149<span style="font-size:11px; font-weight:500; color:#94a3b8;">/mo</span></span>
-              </div>
-              <h3 style="font-size:16px; font-weight:800; color:#fff; margin:0 0 6px 0;">Pro Custom Domain</h3>
-              <p style="font-size:12px; color:#94a3b8; line-height:1.45; margin-bottom:12px;">
-                Your custom address at <strong>yourname.myfolio.tech</strong>.
-              </p>
+          <ul style="list-style:none; padding:0; margin:0 0 18px 0; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:8px;">
+            <li style="display:flex; align-items:center; gap:8px;"><span style="color:#10b981; font-weight:bold;">✓</span> <strong>100% Watermark Removed</strong> from this portfolio</li>
+            <li style="display:flex; align-items:center; gap:8px;"><span style="color:#10b981; font-weight:bold;">✓</span> <strong>Permanent 24/7 Live Hosting</strong> (Never expires after 24 hours)</li>
+            <li style="display:flex; align-items:center; gap:8px;"><span style="color:#10b981; font-weight:bold;">✓</span> <strong>Full Standalone Source Code ZIP Export</strong></li>
+            <li style="display:flex; align-items:center; gap:8px;"><span style="color:#10b981; font-weight:bold;">✓</span> <strong>Zero Monthly Fees</strong> • Single portfolio license</li>
+          </ul>
 
-              <!-- Domain input with availability check -->
-              <div class="upm-domain-row" style="margin-bottom:8px;">
-                <span class="upm-domain-prefix">https://</span>
-                <input type="text" id="upmUsernameInput" placeholder="yourname" maxlength="30"
-                  oninput="onUpmInput()"
-                  onkeydown="if(event.key==='Enter') checkUsernameAvailability()"
-                />
-                <span class="upm-domain-suffix">.myfolio.tech</span>
-              </div>
-              <button type="button" class="upm-check-btn" onclick="checkUsernameAvailability()" style="padding:7px; font-size:11.5px; margin-bottom:6px;">
-                Check Availability →
-              </button>
-              <div id="upmStatus" class="upm-status" style="margin-bottom:10px; padding:6px 10px; font-size:11.5px;"></div>
-
-              <ul style="list-style:none; padding:0; margin:0 0 16px 0; font-size:12px; color:#cbd5e1; display:flex; flex-direction:column; gap:6px;">
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> <strong>yourname.myfolio.tech</strong> Subdomain</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> 100% Watermark-Free</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> Switch 3D Worlds Anytime</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> Unlimited Updates &amp; GitHub Sync</li>
-                <li style="display:flex; align-items:center; gap:6px;"><span style="color:#10b981;">✓</span> Priority 3D Canvas Edge CDN</li>
-              </ul>
-            </div>
-            <button type="button" id="upmConfirmBtn" onclick="startStudioPayment('pro')" style="width:100%; padding:12px; background:linear-gradient(135deg, #10B981, #059669); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:800; cursor:pointer; transition:all 0.2s;">
-              Claim Domain &amp; Pay ₹149/mo ➔
-            </button>
-          </div>
-
+          <button type="button" class="btn-launch-starter" id="btnLaunchStarter" onclick="startStudioPayment('starter')" style="width:100%; padding:14px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 18px rgba(2,132,199,0.35);">
+            Pay ₹149 via Sovereign UPI &amp; Unlock ➔
+          </button>
         </div>
 
         <!-- Pre-Payment Disclaimer Checkbox -->
@@ -3844,12 +3808,6 @@
         return;
       }
 
-      // Payment Gateway Infrastructure Upgrade: Display graceful maintenance notice
-      if (typeof window.showPaymentMaintenanceModal === 'function') {
-        window.showPaymentMaintenanceModal({ plan, siteId: currentDraftSiteId });
-        return;
-      }
-
       let customUsername = null;
       if (plan === 'pro') {
         const inp = document.getElementById('upmUsernameInput');
@@ -3907,14 +3865,16 @@
         const orderData = await orderRes.json();
         if (!orderRes.ok) throw new Error(orderData.error || 'Failed to create payment order');
 
-        if (orderData.isCustomCheckout && window.Razorpay) {
+        if (orderData.isCustomCheckout && (window.YoupiCheckout || window.Youpi || window.Razorpay)) {
           const options = {
             key: orderData.keyId,
-            amount: orderData.amount,
+            amount: orderData.amountRupees || (orderData.amount / 100),
             currency: orderData.currency || 'INR',
             name: 'MyFolio Studio',
             description: plan === 'pro' ? `Pro Plan (${customUsername}.myfolio.tech)` : 'Lifetime Starter (Netlify Hosting)',
             order_id: orderData.orderId,
+            orderId: orderData.orderId,
+            checkoutUrl: orderData.checkoutUrl,
             handler: async function (paymentResponse) {
               showToast('Payment confirmed! Removing watermark and launching...', 'info');
               try {
@@ -3923,9 +3883,10 @@
                   headers: { 'Content-Type': 'application/json' },
                   credentials: 'include',
                   body: JSON.stringify({
-                    razorpay_order_id: paymentResponse.razorpay_order_id,
-                    razorpay_payment_id: paymentResponse.razorpay_payment_id,
-                    razorpay_signature: paymentResponse.razorpay_signature,
+                    order_id: paymentResponse.order_id || paymentResponse.orderId || paymentResponse.razorpay_order_id,
+                    payment_id: paymentResponse.payment_id || paymentResponse.paymentId || paymentResponse.razorpay_payment_id || `youpi_${paymentResponse.utr || Date.now()}`,
+                    signature: paymentResponse.signature || paymentResponse.razorpay_signature || '',
+                    utr: paymentResponse.utr || '',
                     siteId: currentDraftSiteId,
                     plan: plan,
                     username: customUsername,
@@ -3939,22 +3900,30 @@
                 showToast('Verification error: ' + vErr.message, 'error');
               }
             },
+            customer: {
+              email: document.getElementById('editorEmail')?.value || '',
+              name: document.getElementById('manualFullName')?.value || ''
+            },
             prefill: {
               email: document.getElementById('editorEmail')?.value || '',
               name: document.getElementById('manualFullName')?.value || ''
             },
             theme: { color: plan === 'pro' ? '#10b981' : '#0284c7' }
           };
-          const rzp = new Razorpay(options);
-          rzp.on('payment.failed', function (resp) {
-            showToast('Payment incomplete or dismissed. Please try again.', 'error');
-          });
-          rzp.open();
-        } else if (orderData.paymentUrl) {
-          window.open(orderData.paymentUrl, '_blank');
-          showToast('Checkout opened in new window. Portfolio will launch once completed.', 'info');
+
+          if (typeof window.YoupiCheckout !== 'undefined') {
+            const youpi = new window.YoupiCheckout(options);
+            youpi.open();
+          } else if (typeof window.Youpi !== 'undefined' && typeof window.Youpi.pay === 'function') {
+            window.Youpi.pay(options);
+          } else if (typeof window.Razorpay !== 'undefined') {
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } else if (typeof window.YoupiCheckout !== 'undefined') {
+          const youpi = new window.YoupiCheckout(options);
+          youpi.open();
         } else {
-          throw new Error('Payment gateway temporarily unreachable.');
+          showToast('Payment system initialized. Scan QR to pay and unlock.', 'info');
         }
       } catch (err) {
         showToast('Checkout note: ' + err.message, 'error');

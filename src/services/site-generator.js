@@ -216,13 +216,73 @@ class SiteGenerator {
         <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
         <span>🔒 <strong>${barLabel}</strong><span class="wm-hide-mobile"> • MyFolio</span></span>
       </div>
-      <a href="${pricingUrl}" class="preview-cta-btn" onclick="if(window.parent&&window.parent!==window){window.parent.postMessage({type:'OPEN_PUBLISH_MODAL'},'*');return false;}">
+      <a href="javascript:void(0)" class="preview-cta-btn" onclick="openPreviewCheckoutModal(); return false;">
         <span>${ctaLabel}</span>
       </a>
     </div>
 
-    <!-- DYNAMIC BACKGROUND LUMINANCE & CONTRAST SYNC CONTROLLER -->
+    <script src="/assets/youpi.js"></script>
     <script id="preview-watermark-script">
+      function openPreviewCheckoutModal() {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'OPEN_PUBLISH_MODAL' }, '*');
+          return;
+        }
+
+        var siteId = '${siteId}';
+        fetch('/api/web/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ siteId: siteId, plan: 'starter' })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(orderData) {
+          if (typeof window.YoupiCheckout !== 'undefined') {
+            var youpi = new window.YoupiCheckout({
+              amount: orderData.amountRupees || 149,
+              currency: 'INR',
+              name: 'MyFolio Technologies',
+              description: 'Unlock Portfolio (' + siteId + ')',
+              orderId: orderData.orderId,
+              order_id: orderData.orderId,
+              vpa: '9912836034@mbk',
+              handler: function(paymentResponse) {
+                fetch('/api/web/verify-payment', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    siteId: siteId,
+                    plan: 'starter',
+                    order_id: paymentResponse.order_id || paymentResponse.orderId,
+                    payment_id: paymentResponse.payment_id || paymentResponse.paymentId || ('youpi_' + Date.now()),
+                    signature: paymentResponse.signature || '',
+                    utr: paymentResponse.utr || ''
+                  })
+                })
+                .then(function(vRes) { return vRes.json(); })
+                .then(function(verifyData) {
+                  if (verifyData.success) {
+                    alert('🎉 Payment verified! Watermark has been removed and your portfolio is live 24/7.');
+                    window.location.reload();
+                  } else {
+                    alert('Payment notice: ' + (verifyData.error || 'Please contact support'));
+                  }
+                })
+                .catch(function(err) { alert('Verification error: ' + err.message); });
+              }
+            });
+            youpi.open();
+          } else {
+            alert('Loading checkout. Please try again.');
+          }
+        })
+        .catch(function(err) {
+          alert('Could not start checkout: ' + err.message);
+        });
+      }
+
       (function() {
         function getLuminance(r, g, b) {
           return 0.299 * r + 0.587 * g + 0.114 * b;

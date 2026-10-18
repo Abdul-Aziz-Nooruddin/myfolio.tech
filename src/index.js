@@ -20,6 +20,7 @@ const { AIService } = require('./services/ai-service');
 const { DatabaseService } = require('./services/db-service');
 const { SiteGenerator } = require('./services/site-generator');
 const { HostingProvider, NetlifyDeployer } = require('./services/hosting-provider');
+const { YoupiService } = require('./services/youpi-service');
 const { RazorpayService } = require('./services/razorpay-service');
 const { EmailService } = require('./services/email-service');
 const { LifecycleService } = require('./services/lifecycle-service');
@@ -613,9 +614,12 @@ app.use(async (req, res, next) => {
   next();
 });
 
-const razorpayService = (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET)
-  ? new RazorpayService(process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET, process.env.RAZORPAY_WEBHOOK_SECRET)
-  : null;
+const youpiService = new YoupiService({
+  apiUrl: process.env.YOUPI_API_URL || 'http://localhost:6100',
+  merchantId: process.env.YOUPI_MERCHANT_ID || process.env.RAZORPAY_KEY_ID || 'youpi_merchant_live',
+  webhookSecret: process.env.YOUPI_WEBHOOK_SECRET || process.env.RAZORPAY_WEBHOOK_SECRET || 'youpi_webhook_secret_default'
+});
+const razorpayService = youpiService;
 
 const lifecycleService = new LifecycleService(dbService, emailService, null, hostingProvider);
 if (require.main === module) {
@@ -680,34 +684,35 @@ app.post('/api/webhook/whatsapp', async (req, res) => {
   }
 });
 
-// Razorpay Payment & Subscription Webhook Route
+// ⚡ YouPI PG V2 & Legacy Webhook Handler
 const processedWebhookEvents = new Set();
 
-app.post('/webhook/razorpay', async (req, res) => {
-  if (!razorpayService) {
-    console.warn('❌ [RAZORPAY WEBHOOK] Rejected: Razorpay service not configured.');
-    return res.status(503).json({ error: 'Razorpay service unavailable' });
+app.post(['/webhook/youpi', '/webhook/razorpay'], async (req, res) => {
+  if (!youpiService) {
+    console.warn('❌ [PAYMENT WEBHOOK] Rejected: Gateway service not configured.');
+    return res.status(503).json({ error: 'Payment service unavailable' });
   }
   try {
-    const signature = req.headers['x-razorpay-signature'];
+    const signature = req.headers['x-gateway-signature'] ||
+      req.headers['x-youpi-signature'] ||
+      req.headers['x-razorpay-signature'];
+
     if (!signature || !req.rawBody) {
-      console.warn('❌ [RAZORPAY WEBHOOK] Rejected: Missing signature header or raw body.');
+      console.warn('❌ [PAYMENT WEBHOOK] Rejected: Missing signature header or raw body.');
       return res.status(400).json({ error: 'Missing webhook signature' });
     }
 
-    const isValid = razorpayService.verifyWebhookSignature(req.rawBody.toString(), signature);
+    const isValid = youpiService.verifyWebhookSignature(req.rawBody.toString(), signature);
     if (!isValid) {
-      console.warn('❌ [RAZORPAY WEBHOOK] Rejected: Cryptographic signature mismatch.');
+      console.warn('❌ [PAYMENT WEBHOOK] Rejected: Cryptographic signature mismatch.');
       return res.status(401).json({ error: 'Invalid webhook signature' });
     }
 
-    const event = req.body;
-    const paymentEntity = event.payload?.payment?.entity || event.payload?.payment_link?.entity;
-    const subscriptionEntity = event.payload?.subscription?.entity;
-    const eventId = event.id || paymentEntity?.id;
+    const parsedEvent = youpiService.parseWebhookEvent(req.body);
+    const eventId = parsedEvent.paymentId || parsedEvent.orderId || req.body.id;
 
     if (eventId && processedWebhookEvents.has(eventId)) {
-      console.log(`[RAZORPAY] Duplicate webhook event ${eventId} safely ignored.`);
+      console.log(`[PAYMENT WEBHOOK] Duplicate webhook event ${eventId} safely ignored.`);
       return res.status(200).json({ status: 'ok', message: 'Event already processed' });
     }
     if (eventId) {
@@ -717,59 +722,64 @@ app.post('/webhook/razorpay', async (req, res) => {
         for (let i = 0; i < 500; i++) processedWebhookEvents.delete(iter.next().value);
       }
     }
-      const userId = paymentEntity?.notes?.user_id || subscriptionEntity?.notes?.user_id;
 
-      if (event.event === 'payment.captured' || event.event === 'payment_link.paid' || event.event === 'subscription.charged') {
-        if (userId) {
-          const plan = paymentEntity?.notes?.plan || subscriptionEntity?.notes?.plan || 'lite';
-          await dbService.recordPayment(paymentEntity?.id || event.id, userId, paymentEntity?.amount || 14900, 'razorpay');
-          await dbService.updatePaymentStatus(paymentEntity?.id || event.id, 'captured');
+    const userId = parsedEvent.metadata?.user_id || parsedEvent.metadata?.userId || parsedEvent.orderId;
+    const isSuccess = parsedEvent.event === 'SUCCESS' ||
+      parsedEvent.event === 'payment.captured' ||
+      parsedEvent.event === 'payment_link.paid' ||
+      parsedEvent.event === 'subscription.charged';
 
-          const conversation = await dbService.getConversation(userId);
-          if (conversation) {
-            await dbService.updateConversation(conversation.id, {
-              status: 'paid',
-              lifecycle_state: 'live',
-              state_entered_at: new Date().toISOString()
+    if (isSuccess) {
+      if (userId) {
+        const plan = parsedEvent.metadata?.plan || 'lite';
+        await dbService.recordPayment(parsedEvent.paymentId || eventId, userId, parsedEvent.amount || 14900, 'youpi');
+        await dbService.updatePaymentStatus(parsedEvent.paymentId || eventId, 'captured');
+
+        const conversation = await dbService.getConversation(userId);
+        if (conversation) {
+          await dbService.updateConversation(conversation.id, {
+            status: 'paid',
+            lifecycle_state: 'live',
+            state_entered_at: new Date().toISOString()
+          });
+          const user = await dbService.getUserById(userId);
+          if (user?.email) {
+            const liveUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/p/${conversation.id}`;
+            await emailService.sendReactivationConfirmation(user.email, {
+              userId,
+              name: conversation.extracted_data?.name || 'there',
+              siteUrl: liveUrl,
+              plan: plan.toUpperCase()
             });
-            const user = await dbService.getUserById(userId);
-            if (user?.email) {
-              const liveUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/p/${conversation.id}`;
-              await emailService.sendReactivationConfirmation(user.email, {
-                userId,
-                name: conversation.extracted_data?.name || 'there',
-                siteUrl: liveUrl,
-                plan: plan.toUpperCase()
-              });
-            }
           }
-          console.log(`[RAZORPAY] Payment captured & subscription activated for user ${userId}`);
         }
-      } else if (event.event === 'payment.failed' || event.event === 'subscription.halted') {
-        if (userId) {
-          const conversation = await dbService.getConversation(userId);
-          if (conversation) {
-            const now = new Date().toISOString();
-            await dbService.updateConversation(conversation.id, {
-              status: 'grace_period',
-              lifecycle_state: 'preview_lapsed',
-              state_entered_at: now
+        console.log(`⚡ [YOUPI PG] Payment captured & subscription activated for user ${userId} (Bank UTR: ${parsedEvent.utr || 'N/A'})`);
+      }
+    } else if (parsedEvent.event === 'FAILED' || parsedEvent.event === 'EXPIRED' || parsedEvent.event === 'payment.failed') {
+      if (userId) {
+        const conversation = await dbService.getConversation(userId);
+        if (conversation) {
+          const now = new Date().toISOString();
+          await dbService.updateConversation(conversation.id, {
+            status: 'grace_period',
+            lifecycle_state: 'preview_lapsed',
+            state_entered_at: now
+          });
+          const user = await dbService.getUserById(userId);
+          if (user?.email) {
+            const retryUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/payment/retry?userId=${userId}`;
+            await emailService.sendPaymentFailedEmail(user.email, {
+              userId,
+              name: conversation.extracted_data?.name || 'there',
+              retryUrl
             });
-            const user = await dbService.getUserById(userId);
-            if (user?.email) {
-              const retryUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/payment/retry?userId=${userId}`;
-              await emailService.sendPaymentFailedEmail(user.email, {
-                userId,
-                name: conversation.extracted_data?.name || 'there',
-                retryUrl
-              });
-            }
           }
         }
       }
+    }
     res.status(200).json({ status: 'ok' });
   } catch (err) {
-    console.error('[RAZORPAY WEBHOOK ERROR]', err.message);
+    console.error('[PAYMENT WEBHOOK ERROR]', err.message);
     res.status(200).send('OK');
   }
 });
@@ -2415,7 +2425,7 @@ app.post('/api/figma/generate', async (req, res) => {
   }
 });
 
-// 3. Web Razorpay Payment Order (Protected with Token Bucket Rate Limiting)
+// 3. ⚡ YouPI PG V2 Payment Order (0% Fees, Direct UPI Rails & Vector QR)
 app.post('/api/web/create-order', checkoutLimiter, async (req, res) => {
   try {
     const { siteId, plan = 'lite' } = req.body;
@@ -2427,8 +2437,7 @@ app.post('/api/web/create-order', checkoutLimiter, async (req, res) => {
     };
     const amountInPaise = PRICING_MAP[String(plan).toLowerCase()] || 14900;
 
-    // Payment Gateway Infrastructure Upgrade: scheduled multi-currency banking rails integration
-    const isPaymentMaintenance = process.env.PAYMENT_GATEWAY_MAINTENANCE !== 'false';
+    const isPaymentMaintenance = process.env.PAYMENT_GATEWAY_MAINTENANCE === 'true';
     if (isPaymentMaintenance) {
       return res.json({
         success: true,
@@ -2441,95 +2450,62 @@ app.post('/api/web/create-order', checkoutLimiter, async (req, res) => {
         siteId,
         maintenance: {
           title: 'Global Payment Infrastructure Upgrade',
-          message: 'Payment processing is currently undergoing scheduled maintenance for global banking rails and RBI/FCA multi-currency compliance (supporting Apple Pay, Google Pay, UPI AutoPay, and international zero-fee cards across 140+ countries). Direct online card checkout is temporarily paused during banking verification and will resume on October 25, 2026. In the meantime, full 3D portfolio creation, WebGL templates, and live preview links remain 100% unlocked and free for evaluation!',
-          liveDate: 'October 25, 2026',
-          contactEmail: 'abdulaziznoor9876@gmail.com'
+          message: 'Payment processing is currently undergoing scheduled maintenance for sovereign direct UPI rails. Direct checkout will resume shortly.',
+          liveDate: 'Active',
+          contactEmail: 'support@myfolio.tech'
         }
       });
     }
 
-    if (!razorpayService) {
-      return res.json({
-        success: true,
-        isCustomCheckout: false,
-        paymentUrl: process.env.PERSONAL_UPI_ID
-          ? `upi://pay?pa=${process.env.PERSONAL_UPI_ID}&pn=PortfolioBot&am=${amountInPaise / 100}&cu=INR`
-          : 'https://razorpay.me/@portfoliobot',
-        amount: amountInPaise,
-        plan
-      });
-    }
-
-    try {
-      // 1. Try Razorpay Orders API for in-page Checkout modal
-      const order = await razorpayService.createOrder(
-        amountInPaise,
-        'INR',
-        `rcpt_${String(siteId || 'web').slice(0, 8)}_${Date.now()}`,
-        { siteId: siteId || 'web-user', plan, userId: req.user?.id || siteId }
-      );
-
-      return res.json({
-        success: true,
-        isCustomCheckout: true,
-        orderId: order.id,
-        amount: order.amount,
-        currency: order.currency,
-        keyId: process.env.RAZORPAY_KEY_ID,
+    const orderId = `ORD-${String(siteId || 'web').slice(0, 8)}-${Date.now()}`;
+    const payment = await youpiService.createPayment({
+      orderId,
+      amount: amountInPaise / 100,
+      amountPaise: amountInPaise,
+      currency: 'INR',
+      customer: {
+        fullName: req.user?.name || '',
+        email: req.user?.email || '',
+        phoneNumber: req.user?.phone || ''
+      },
+      metadata: {
+        siteId: siteId || 'web-user',
         plan,
-        siteId
-      });
-    } catch (orderErr) {
-      console.warn('[RAZORPAY ORDER FALLBACK]', orderErr.message);
-      // 2. Fallback to Payment Link if Orders API is rate limited
-      try {
-        const paymentLink = await razorpayService.createPaymentLink(
-          siteId || 'web-user',
-          plan,
-          amountInPaise,
-          'INR'
-        );
-
-        return res.json({
-          success: true,
-          isCustomCheckout: false,
-          paymentUrl: paymentLink.shortUrl || paymentLink.url,
-          orderId: paymentLink.paymentLinkId,
-          amount: amountInPaise,
-          plan
-        });
-      } catch (rzpErr) {
-        console.warn('[RAZORPAY LINK FALLBACK]', rzpErr.message);
-        return res.json({
-          success: true,
-          isCustomCheckout: false,
-          paymentUrl: process.env.PERSONAL_UPI_ID
-            ? `upi://pay?pa=${process.env.PERSONAL_UPI_ID}&pn=PortfolioBot&am=${amountInPaise / 100}&cu=INR`
-            : 'https://razorpay.me/@portfoliobot',
-          amount: amountInPaise,
-          plan
-        });
+        userId: req.user?.id || siteId
       }
-    }
+    });
+
+    return res.json({
+      success: true,
+      isCustomCheckout: true,
+      orderId: payment.orderId,
+      paymentId: payment.paymentId,
+      amount: payment.amount,
+      amountRupees: payment.amountRupees,
+      currency: payment.currency,
+      keyId: youpiService.merchantId,
+      checkoutUrl: payment.checkoutUrl,
+      gateway: 'youpi',
+      plan,
+      siteId
+    });
   } catch (err) {
-    console.error('[WEB API] create-order error:', err);
-    res.status(500).json({ error: err.message || 'Order creation failed' });
+    console.error('[YOUPI API] create-order error:', err);
+    res.status(500).json({ error: err.message || 'Payment order creation failed' });
   }
 });
 
-// 4. Web Razorpay Payment Verification & Anti-Tampering Approval
+// 4. ⚡ YouPI PG Payment Verification & Anti-Tampering Approval
 app.post('/api/web/verify-payment', async (req, res) => {
   try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      siteId,
-      plan = 'lite'
-    } = req.body;
+    const paymentId = req.body.payment_id || req.body.paymentId || req.body.razorpay_payment_id;
+    const orderId = req.body.order_id || req.body.orderId || req.body.razorpay_order_id;
+    const signature = req.body.signature || req.body.razorpay_signature;
+    const utr = req.body.utr || req.body.bankRef || '';
+    const { siteId, plan = 'lite' } = req.body;
 
-    if (!razorpay_payment_id) {
-      return res.status(400).json({ error: 'Missing razorpay_payment_id' });
+    if (!paymentId) {
+      return res.status(400).json({ error: 'Missing payment_id' });
     }
 
     const PRICING_MAP = {
@@ -2590,7 +2566,7 @@ app.post('/api/web/verify-payment', async (req, res) => {
     };
 
     // Test runner mock payment support
-    if ((process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') && razorpay_payment_id.startsWith('pay_mock_')) {
+    if ((process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') && (paymentId.startsWith('pay_mock_') || paymentId.startsWith('youpi_mock_'))) {
       const deployResult = await hostingProvider.approveAndUnwatermark(siteId, { name: requestedUsername || siteId }, req.body.siteHtml || '');
       let liveUrl = deployResult.deployUrl || `/p/${siteId}`;
       if (requestedUsername && (plan === 'pro' || plan === 'all_access')) {
@@ -2601,7 +2577,7 @@ app.post('/api/web/verify-payment', async (req, res) => {
         success: true,
         approved: true,
         message: 'Payment approved (Test Mode)',
-        paymentId: razorpay_payment_id,
+        paymentId,
         amount: expectedAmount,
         plan,
         liveUrl,
@@ -2611,30 +2587,12 @@ app.post('/api/web/verify-payment', async (req, res) => {
       });
     }
 
-    if (!razorpayService) {
-      // Mock / Dev approval fallback
-      const unwatermarked = await hostingProvider.approveAndUnwatermark(siteId, { name: requestedUsername || siteId }, req.body.siteHtml || '');
-      let liveUrl = unwatermarked.deployUrl || `/p/${siteId}`;
-      if (requestedUsername && (plan === 'pro' || plan === 'all_access')) {
-        const bound = await bindSubdomain(siteId, requestedUsername, req.user?.id || 'dev_user');
-        if (bound) liveUrl = bound;
-      }
-      return res.json({
-        success: true,
-        approved: true,
-        message: 'Payment approved (Development Mode)',
-        liveUrl,
-        provider: unwatermarked.provider || (requestedUsername ? 'custom_subdomain' : 'netlify'),
-        domain: requestedUsername ? `${requestedUsername}.myfolio.tech` : null,
-        plan
-      });
-    }
-
     // Anti-Tampering Validation & Approval Engine
-    const verification = await razorpayService.verifyAndApprovePayment({
-      paymentId: razorpay_payment_id,
-      orderId: razorpay_order_id,
-      signature: razorpay_signature,
+    const verification = await youpiService.verifyAndApprovePayment({
+      paymentId,
+      orderId,
+      signature,
+      utr,
       expectedPlan: plan,
       expectedAmount
     });
@@ -2645,8 +2603,8 @@ app.post('/api/web/verify-payment', async (req, res) => {
 
     // 1. Record payment in database
     const userId = req.user?.id || siteId || 'web-user';
-    await dbService.recordPayment(razorpay_payment_id, userId, verification.amount, 'razorpay').catch(() => {});
-    await dbService.updatePaymentStatus(razorpay_payment_id, 'captured').catch(() => {});
+    await dbService.recordPayment(paymentId, userId, verification.amount, 'youpi').catch(() => {});
+    await dbService.updatePaymentStatus(paymentId, 'captured').catch(() => {});
 
     if (req.user?.id) {
       await dbService.updateUser(req.user.id, { role: 'pro', subscription_status: 'active' }).catch(() => {});
@@ -3153,6 +3111,11 @@ app.get(['/thank-you', '/success'], (req, res) => {
 // Interactive Pricing Lab & Display Preview
 app.get(['/pricing-preview', '/pricing-lab', '/pricing-test'], (req, res) => {
   res.sendFile(getPagePath('pricing-preview.html'));
+});
+
+// Founder Details Demo Showcase
+app.get(['/demo-founder', '/demo-founder-section'], (req, res) => {
+  res.sendFile(getPagePath('demo-founder.html'));
 });
 
 // New SEO Pages: About & Contact
@@ -4621,7 +4584,7 @@ app.get('/p/:siteId/*', (req, res) => {
 app.get(['/subscribe', '/pricing', '/payment/retry'], (req, res) => {
   const siteId = req.query.siteId || req.query.userId || 'demo';
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.send(renderSubscribePage({ siteId, razorpayKeyId: process.env.RAZORPAY_KEY_ID || '' }));
+  res.send(renderSubscribePage({ siteId, youpiKeyId: youpiService.merchantId, razorpayKeyId: youpiService.merchantId }));
 });
 
 
@@ -4669,13 +4632,16 @@ app.use(SecurityMiddleware.safeErrorHandler());
 function validateStartupEnv(env = process.env) {
   const isProduction = env.NODE_ENV === 'production' || Boolean(env.RENDER);
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY;
+  const hasPaymentKey = Boolean((env.YOUPI_MERCHANT_ID && String(env.YOUPI_MERCHANT_ID).trim()) || (env.RAZORPAY_KEY_ID && String(env.RAZORPAY_KEY_ID).trim()));
   const mandatoryVars = [
-    'RAZORPAY_KEY_ID',
-    'RAZORPAY_KEY_SECRET',
     'SUPABASE_URL'
   ];
 
   const missing = mandatoryVars.filter(key => !env[key] || String(env[key]).trim() === '');
+  if (!hasPaymentKey) {
+    missing.push('YOUPI_MERCHANT_ID');
+    missing.push('RAZORPAY_KEY_ID');
+  }
   if (!supabaseKey || String(supabaseKey).trim() === '') {
     missing.push('SUPABASE_SERVICE_ROLE_KEY');
   }

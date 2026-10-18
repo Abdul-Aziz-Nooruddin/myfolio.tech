@@ -3,9 +3,9 @@
  * Rendered at /subscribe, /pricing, and /payment/retry
  */
 
-function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZORPAY_KEY_ID || '') } = {}) {
+function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_MERCHANT_ID || ''), razorpayKeyId = (process.env.RAZORPAY_KEY_ID || '') } = {}) {
   const safeSiteId = String(siteId).replace(/[^a-zA-Z0-9_\-\.]/g, '');
-  const safeKeyId = String(razorpayKeyId || '').replace(/[^a-zA-Z0-9_]/g, '');
+  const safeKeyId = String(youpiKeyId || razorpayKeyId || 'youpi_merchant_live').replace(/[^a-zA-Z0-9_\-]/g, '');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,6 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script src="/sidebar.js"></script>
-  <script src="/assets/payment-maintenance.js"></script>
   <style>
     :root {
       --bg: #060814;
@@ -238,53 +237,57 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
     <div id="sidebarMount"></div>
     <div class="checkout-wrap">
       <div class="checkout-container">
-        <div class="title-tag">PORTFOLIO STUDIO • SELECT YOUR PLAN</div>
-        <h1 class="main-title">Unlock Your 3D Portfolio</h1>
-        <p class="subtitle">Remove the 24-hour preview watermark, keep your portfolio online, and choose the plan that best fits your workflow.</p>
+        <div class="title-tag">PORTFOLIO STUDIO • SINGLE PORTFOLIO LICENSE</div>
+        <h1 class="main-title">Publish &amp; Unlock Your Portfolio</h1>
+        <p class="subtitle">Pay once for this specific portfolio (<code style="background:rgba(37,99,235,0.1); color:#2563eb; padding:2px 8px; border-radius:6px; font-weight:700;">${safeSiteId}</code>). 100% Watermark removed, permanent 24/7 live hosting, and full source code export with zero recurring subscriptions.</p>
 
         <div class="pricing-grid-side-by-side">
-          <!-- Box 1: Lifetime Starter -->
+          <!-- Card 1: Lifetime Starter (₹149 One-Time) -->
           <div class="plan-box-card plan-box-starter">
             <div>
-              <span class="badge badge-starter">LIFETIME STARTER</span>
+              <span class="badge badge-starter" style="background:#0d9488; color:#fff;">LIFETIME STARTER • 80% OFF</span>
               <h3 class="plan-name">Lifetime Starter</h3>
-              <div class="plan-price"><span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹749</span>₹149 <span>/ one-time</span></div>
-              <div style="font-size:0.75rem; font-weight:700; color:#c2410c; margin-top:-14px; margin-bottom:16px;">Limited Deal • Price dropped from ₹749</div>
+              <p style="font-size:0.85rem; color:#64748B; margin-bottom:14px; line-height:1.4;">Pay once and own your live portfolio forever. Ideal for job hunting, resumes, and sharing clean links without monthly fees.</p>
+              <div class="plan-price">
+                <span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹749</span>₹149 <span>/ one-time</span>
+              </div>
+              <div style="font-size:0.8rem; font-weight:700; color:#0d9488; margin-top:-14px; margin-bottom:16px;">✓ Pay once • Zero recurring charges</div>
               <ul class="plan-features">
-                <li>Permanent 24/7 Live Hosting (Never goes down after 24h)</li>
-                <li>Deployed &amp; Hosted on Netlify Edge CDN</li>
-                <li>Permanent Global Netlify Live Link</li>
-                <li>100% Watermark-Free Clean Website</li>
-                <li>Static Standalone ZIP Code Export</li>
-                <li>Pay Once • Zero Recurring Subscriptions</li>
+                <li><strong>Permanent 24/7 Hosting:</strong> Your site stays online permanently and never goes down.</li>
+                <li><strong>100% Watermark-Free:</strong> All preview badges, upgrade banners, and countdown timers are removed.</li>
+                <li><strong>Standalone Source Code (.ZIP):</strong> Download your full HTML, CSS, Three.js shaders, and assets to host anywhere.</li>
+                <li><strong>1 Free Style Rebuild:</strong> Regenerate your theme or update skills once at any time.</li>
+                <li><strong>Global Netlify Edge CDN:</strong> High-speed worldwide distribution with sub-100ms load times.</li>
               </ul>
             </div>
-            <button class="pay-btn pay-btn-starter" onclick="startPayment('starter', 14900)">Unlock Lifetime Link (₹149)</button>
+            <button class="pay-btn pay-btn-starter" onclick="startPayment('starter', 14900)">Unlock Lifetime Link (₹149) &rarr;</button>
           </div>
 
-          <!-- Box 2: Pro Creator -->
+          <!-- Card 2: Pro Creator (₹149 / Month) -->
           <div class="plan-box-card plan-box-pro">
             <div>
-              <span class="badge badge-pro">MOST POPULAR</span>
+              <span class="badge badge-pro" style="background:#2563eb; color:#fff;">PRO CREATOR • 70% OFF</span>
               <h3 class="plan-name">Pro Creator</h3>
-              <div class="plan-price"><span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹499</span>₹149 <span>/ month</span></div>
-              <div style="font-size:0.75rem; font-weight:700; color:#2563eb; margin-top:-14px; margin-bottom:16px;">Limited Deal • Price dropped from ₹499/mo</div>
+              <p style="font-size:0.85rem; color:#64748B; margin-bottom:14px; line-height:1.4;">Personalized vanity domain, automatic GitHub synchronization, and continuous rebuilds for active software builders.</p>
+              <div class="plan-price">
+                <span style="font-size:1.1rem; text-decoration:line-through; color:#94a3b8; font-weight:600; margin-right:8px;">₹499</span>₹149 <span>/ month</span>
+              </div>
+              <div style="font-size:0.8rem; font-weight:700; color:#2563eb; margin-top:-14px; margin-bottom:16px;">✓ Billed monthly • Cancel anytime with 1-click</div>
               <ul class="plan-features">
-                <li>Permanent 24/7 Live Hosting (Never goes down)</li>
-                <li>Branded Subdomain: <code>&lt;username&gt;.myfolio.tech</code></li>
-                <li>Custom Domain Linking (<code>yourname.dev</code>)</li>
-                <li>Switch 3D Worlds Anytime</li>
-                <li>Continuous Live GitHub Auto-Sync</li>
-                <li>100% Watermark-Free Clean Website</li>
-                <li>Static Standalone ZIP Code Export</li>
+                <li><strong>Branded MyFolio Subdomain:</strong> Claim your vanity address (<code>&lt;username&gt;.myfolio.tech</code>) with SSL.</li>
+                <li><strong>Custom Domain Support:</strong> Connect your personal root domain (<code>yourname.dev</code>).</li>
+                <li><strong>Continuous Live GitHub Auto-Sync:</strong> Repos, stars, and commit milestones update automatically.</li>
+                <li><strong>Switch 3D Worlds Anytime:</strong> Swap between templates without rebuilding.</li>
+                <li><strong>Permanent 24/7 Hosting &amp; Watermark Removal:</strong> All Lifetime Starter features included.</li>
+                <li><strong>Standalone Source Code (.ZIP):</strong> Full offline production package included.</li>
               </ul>
             </div>
-            <button class="pay-btn pay-btn-pro" onclick="startPayment('pro', 14900)">Unlock Pro Domain (₹149/mo)</button>
+            <button class="pay-btn pay-btn-pro" onclick="startPayment('pro', 14900)">Unlock Pro Subdomain (₹149/mo) &rarr;</button>
           </div>
         </div>
 
         <!-- Pre-Payment Disclaimer Notice -->
-        <div style="margin: 20px auto; max-width: 640px; padding: 14px 18px; background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; text-align: left; font-size: 0.85rem; color: #cbd5e1;">
+        <div style="margin: 20px auto; max-width: 620px; padding: 14px 18px; background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; text-align: left; font-size: 0.85rem; color: #cbd5e1;">
           <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
             <input type="checkbox" id="subscribeLegalCheck" checked style="margin-top: 3px; accent-color: #2563eb; width: 16px; height: 16px;" />
             <span>
@@ -294,105 +297,89 @@ function renderSubscribePage({ siteId = 'demo', razorpayKeyId = (process.env.RAZ
         </div>
 
         <div style="color: #94a3b8; font-size: 0.85rem; text-align: center;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 100% Secure Checkout via Razorpay, UPI &amp; Cards • Instant Automated Activation
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 100% Secure Checkout via YouPI PG (Direct UPI &amp; Bank QR) • 0% Platform Fees • Instant Automated Activation
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/assets/youpi.js"></script>
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', function () {
       if (typeof initUniversalSidebar === 'function') {
         initUniversalSidebar('pricing');
       }
     });
 
     async function startPayment(plan, amount) {
-      if (typeof showPaymentMaintenanceModal === 'function') {
-        showPaymentMaintenanceModal({ plan, siteId: '${safeSiteId}' });
-        return;
-      }
-
-      const chk = document.getElementById('subscribeLegalCheck');
+      var chk = document.getElementById('subscribeLegalCheck');
       if (chk && !chk.checked) {
         alert('Please review and check the acknowledgment box confirming the non-refundable terms and policies before checkout.');
         chk.focus();
         return;
       }
 
-      const btn = event?.target;
-      const originalText = btn ? btn.textContent : '';
+      var btn = event ? event.target : null;
+      var originalText = btn ? btn.textContent : '';
       if (btn) {
         btn.disabled = true;
-        btn.textContent = 'Connecting Razorpay...';
+        btn.textContent = 'Opening Secure Checkout...';
       }
 
       try {
-        const res = await fetch('/api/web/create-order', {
+        var res = await fetch('/api/web/create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ siteId: '${safeSiteId}', plan })
+          body: JSON.stringify({ siteId: '${safeSiteId}', plan: plan || 'starter' })
         });
-        const data = await res.json();
+        var data = await res.json();
 
         if (btn) {
           btn.disabled = false;
           btn.textContent = originalText;
         }
 
-        if (data.orderId && typeof Razorpay !== 'undefined') {
-          const options = {
-            key: data.keyId || '${safeKeyId}',
-            amount: data.amount,
-            currency: data.currency || 'INR',
-            name: 'myfolio.tech',
-            description: plan === 'pro' ? 'Pro Creator Domain & Unlimited Sync' : 'Lifetime Starter Portfolio Unlock',
-            image: '/assets/logo-3d.jpg',
+        if (typeof window.YoupiCheckout !== 'undefined') {
+          var youpi = new window.YoupiCheckout({
+            key: data.keyId,
+            amount: data.amountRupees || (data.amount / 100) || 149,
+            currency: 'INR',
+            name: 'MyFolio Technologies',
+            description: 'Unlock Portfolio (${safeSiteId})',
             order_id: data.orderId,
-            handler: async function (response) {
-              if (btn) {
-                btn.disabled = true;
-                btn.textContent = 'Verifying Payment...';
-              }
-              const verifyRes = await fetch('/api/web/verify-payment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({
-                  siteId: '${safeSiteId}',
-                  plan: plan,
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature
-                })
-              });
-              const verifyData = await verifyRes.json();
-              if (verifyData.success) {
-                window.location.href = '/dashboard.html?payment=success';
-              } else {
-                alert('Payment verification error: ' + (verifyData.error || 'Please contact support'));
-                if (btn) {
-                  btn.disabled = false;
-                  btn.textContent = originalText;
+            orderId: data.orderId,
+            vpa: '9912836034@mbk',
+            handler: async function (paymentResponse) {
+              try {
+                var verifyRes = await fetch('/api/web/verify-payment', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    siteId: '${safeSiteId}',
+                    plan: plan || 'starter',
+                    order_id: paymentResponse.order_id || paymentResponse.orderId,
+                    payment_id: paymentResponse.payment_id || paymentResponse.paymentId || ('youpi_' + Date.now()),
+                    signature: paymentResponse.signature || '',
+                    utr: paymentResponse.utr || ''
+                  })
+                });
+                var verifyData = await verifyRes.json();
+                if (verifyData.success) {
+                  alert('🎉 Payment verified! Watermark has been removed and your portfolio is live 24/7.');
+                  window.location.href = verifyData.liveUrl || ('/p/' + encodeURIComponent('${safeSiteId}'));
+                } else {
+                  alert('Payment verification notice: ' + (verifyData.error || 'Please contact support'));
                 }
+              } catch (vErr) {
+                alert('Verification error: ' + vErr.message);
               }
-            },
-            theme: {
-              color: '#2563eb'
             }
-          };
-
-          const rzp = new Razorpay(options);
-          rzp.on('payment.failed', function (response) {
-            alert('Payment failed: ' + (response.error.description || 'Transaction cancelled.'));
           });
-          rzp.open();
-        } else if (data.paymentUrl) {
-          window.location.href = data.paymentUrl;
+          youpi.open();
         } else {
-          alert('Could not initialize checkout. Please verify your payment settings.');
+          alert('Payment rails initializing. Please try again in a moment.');
         }
       } catch (e) {
         if (btn) {
