@@ -429,7 +429,11 @@
         verifyBtn.onclick = () => {
           const val = utrInput.value.trim();
           if (!val || val.length < 6) {
-            alert('Please enter a valid 12-digit UPI UTR or bank reference number.');
+            if (typeof window.showAlertModal === 'function') {
+              window.showAlertModal({ title: 'Invalid UTR', message: 'Please enter a valid 12-digit UPI UTR or bank reference number.', type: 'error' });
+            } else {
+              alert('Please enter a valid 12-digit UPI UTR or bank reference number.');
+            }
             utrInput.focus();
             return;
           }

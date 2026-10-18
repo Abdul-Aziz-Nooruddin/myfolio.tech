@@ -137,9 +137,48 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
     .plan-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; color: #0f172a; }
     .plan-price { font-size: 2.4rem; font-weight: 900; color: #0f172a; margin-bottom: 20px; }
     .plan-price span { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
-    .plan-features { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: #334155; }
-    .plan-features li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
-    .plan-features li::before { content: '✔'; color: #059669; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.5;
+    }
+    .plan-features .feat-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(13, 148, 136, 0.15);
+      color: #0d9488;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .plan-box-pro .plan-features .feat-icon {
+      background: rgba(37, 99, 235, 0.15);
+      color: #2563eb;
+    }
+    .plan-features .feat-content {
+      flex: 1;
+      font-size: 0.92rem;
+      color: #334155;
+    }
+    .plan-features .feat-content strong {
+      color: #0f172a;
+      font-weight: 700;
+      margin-right: 4px;
+    }
     
     .pay-btn {
       display: block; width: 100%; text-align: center; color: #ffffff;
@@ -194,8 +233,11 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
     [data-theme="dark"] .plan-price span {
       color: #94A3B8;
     }
-    [data-theme="dark"] .plan-features {
+    [data-theme="dark"] .plan-features .feat-content {
       color: #CBD5E1;
+    }
+    [data-theme="dark"] .plan-features .feat-content strong {
+      color: #FFFFFF;
     }
     [data-theme="dark"] .plan-features li code {
       background: rgba(255, 255, 255, 0.1);
@@ -253,11 +295,11 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
               </div>
               <div style="font-size:0.8rem; font-weight:700; color:#0d9488; margin-top:-14px; margin-bottom:16px;">✓ Pay once • Zero recurring charges</div>
               <ul class="plan-features">
-                <li><strong>Permanent 24/7 Hosting:</strong> Your site stays online permanently and never goes down.</li>
-                <li><strong>100% Watermark-Free:</strong> All preview badges, upgrade banners, and countdown timers are removed.</li>
-                <li><strong>Standalone Source Code (.ZIP):</strong> Download your full HTML, CSS, Three.js shaders, and assets to host anywhere.</li>
-                <li><strong>1 Free Style Rebuild:</strong> Regenerate your theme or update skills once at any time.</li>
-                <li><strong>Global Netlify Edge CDN:</strong> High-speed worldwide distribution with sub-100ms load times.</li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Permanent 24/7 Hosting:</strong> Your site stays online permanently and never goes down.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>100% Watermark-Free:</strong> All preview badges, upgrade banners, and countdown timers are removed.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Standalone Source Code (.ZIP):</strong> Download your full HTML, CSS, Three.js shaders, and assets to host anywhere.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>1 Free Style Rebuild:</strong> Regenerate your theme or update skills once at any time.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Global Netlify Edge CDN:</strong> High-speed worldwide distribution with sub-100ms load times.</div></li>
               </ul>
             </div>
             <button class="pay-btn pay-btn-starter" onclick="startPayment('starter', 14900)">Unlock Lifetime Link (₹149) &rarr;</button>
@@ -274,12 +316,12 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
               </div>
               <div style="font-size:0.8rem; font-weight:700; color:#2563eb; margin-top:-14px; margin-bottom:16px;">✓ Billed monthly • Cancel anytime with 1-click</div>
               <ul class="plan-features">
-                <li><strong>Branded MyFolio Subdomain:</strong> Claim your vanity address (<code>&lt;username&gt;.myfolio.tech</code>) with SSL.</li>
-                <li><strong>Custom Domain Support:</strong> Connect your personal root domain (<code>yourname.dev</code>).</li>
-                <li><strong>Continuous Live GitHub Auto-Sync:</strong> Repos, stars, and commit milestones update automatically.</li>
-                <li><strong>Switch 3D Worlds Anytime:</strong> Swap between templates without rebuilding.</li>
-                <li><strong>Permanent 24/7 Hosting &amp; Watermark Removal:</strong> All Lifetime Starter features included.</li>
-                <li><strong>Standalone Source Code (.ZIP):</strong> Full offline production package included.</li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Branded MyFolio Subdomain:</strong> Claim your vanity address (<code>&lt;username&gt;.myfolio.tech</code>) with SSL.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Custom Domain Support:</strong> Connect your personal root domain (<code>yourname.dev</code>).</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Continuous Live GitHub Auto-Sync:</strong> Repos, stars, and commit milestones update automatically.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Switch 3D Worlds Anytime:</strong> Swap between templates without rebuilding.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Permanent 24/7 Hosting &amp; Watermark Removal:</strong> All Lifetime Starter features included.</div></li>
+                <li><span class="feat-icon">✓</span> <div class="feat-content"><strong>Standalone Source Code (.ZIP):</strong> Full offline production package included.</div></li>
               </ul>
               <div style="margin-bottom: 16px; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.25); border-radius: 10px; padding: 10px 12px; text-align: left;">
                 <label style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: #2563eb; display: block; margin-bottom: 4px;">Choose Your Subdomain Handle:</label>
@@ -322,7 +364,11 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
     async function startPayment(plan, amount) {
       var chk = document.getElementById('subscribeLegalCheck');
       if (chk && !chk.checked) {
-        alert('Please review and check the acknowledgment box confirming the non-refundable terms and policies before checkout.');
+        if (typeof window.showAlertModal === 'function') {
+          window.showAlertModal({ title: 'Acknowledgment Required', message: 'Please review and check the acknowledgment box confirming the non-refundable terms before checkout.', type: 'info' });
+        } else {
+          alert('Please review and check the acknowledgment box confirming the non-refundable terms before checkout.');
+        }
         chk.focus();
         return;
       }
@@ -332,7 +378,11 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
         var subInput = document.getElementById('pricingProSubdomainInput');
         chosenSubdomain = subInput ? subInput.value.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '') : '';
         if (!chosenSubdomain || chosenSubdomain.length < 2) {
-          alert('Please enter a valid subdomain handle (min 2 characters).');
+          if (typeof window.showAlertModal === 'function') {
+            window.showAlertModal({ title: 'Invalid Subdomain', message: 'Please enter a valid subdomain handle (min 2 characters).', type: 'error' });
+          } else {
+            alert('Please enter a valid subdomain handle (min 2 characters).');
+          }
           if (subInput) subInput.focus();
           return;
         }
@@ -387,26 +437,48 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
                 });
                 var verifyData = await verifyRes.json();
                 if (verifyData.success) {
-                  alert('🎉 Payment verified! Watermark has been removed and your portfolio is live 24/7.');
-                  window.location.href = verifyData.liveUrl || ('/p/' + encodeURIComponent('${safeSiteId}'));
+                  var finalUrl = verifyData.liveUrl || ('/p/' + encodeURIComponent('${safeSiteId}'));
+                  if (typeof window.showAlertModal === 'function') {
+                    await window.showAlertModal({ title: '🎉 Portfolio Unlocked', message: 'Payment verified! Watermark removed and your site is live at: ' + finalUrl, type: 'success' });
+                    window.location.href = finalUrl;
+                  } else {
+                    alert('🎉 Payment verified! Watermark has been removed and your portfolio is live 24/7.');
+                    window.location.href = finalUrl;
+                  }
                 } else {
-                  alert('Payment verification notice: ' + (verifyData.error || 'Please contact support'));
+                  if (typeof window.showAlertModal === 'function') {
+                    window.showAlertModal({ title: 'Payment Notice', message: verifyData.error || 'Please contact support', type: 'error' });
+                  } else {
+                    alert('Payment verification notice: ' + (verifyData.error || 'Please contact support'));
+                  }
                 }
               } catch (vErr) {
-                alert('Verification error: ' + vErr.message);
+                if (typeof window.showAlertModal === 'function') {
+                  window.showAlertModal({ title: 'Verification Error', message: vErr.message, type: 'error' });
+                } else {
+                  alert('Verification error: ' + vErr.message);
+                }
               }
             }
           });
           youpi.open();
         } else {
-          alert('Payment rails initializing. Please try again in a moment.');
+          if (typeof window.showAlertModal === 'function') {
+            window.showAlertModal({ title: 'Payment Initializing', message: 'Payment rails initializing. Please try again in a moment.', type: 'info' });
+          } else {
+            alert('Payment rails initializing. Please try again in a moment.');
+          }
         }
       } catch (e) {
         if (btn) {
           btn.disabled = false;
           btn.textContent = originalText;
         }
-        alert('Could not start checkout: ' + e.message);
+        if (typeof window.showAlertModal === 'function') {
+          window.showAlertModal({ title: 'Checkout Error', message: 'Could not start checkout: ' + e.message, type: 'error' });
+        } else {
+          alert('Could not start checkout: ' + e.message);
+        }
       }
     }
   </script>

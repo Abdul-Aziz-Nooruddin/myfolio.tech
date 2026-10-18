@@ -2243,7 +2243,11 @@
         a.remove();
         showToast('Standalone source ZIP downloaded!');
       } catch (e) {
-        alert(e.message || 'Export failed');
+        if (typeof window.showAlertModal === 'function') {
+          window.showAlertModal({ title: 'Export Failed', message: e.message || 'Export failed', type: 'error' });
+        } else {
+          showToast(e.message || 'Export failed', 'error');
+        }
       }
     }
 
@@ -2313,7 +2317,14 @@
 
     async function deleteSyncedPortfolio(siteId, event) {
       if (event) event.stopPropagation();
-      if (!confirm(`Delete deployment version ${siteId}? This will free up 1 portfolio build slot.`)) return;
+      const confirmed = await window.showConfirmModal({
+        title: 'Delete Deployment Version',
+        message: `Delete deployment version ${siteId}? This will free up 1 portfolio build slot.`,
+        confirmText: 'Delete Version',
+        cancelText: 'Keep Version',
+        danger: true
+      });
+      if (!confirmed) return;
 
       try {
         // 1. Send DELETE request to backend
@@ -2500,7 +2511,14 @@
     }
 
     async function deleteCurrentPortfolio() {
-      if (!confirm('Permanently delete your current active portfolio?')) return;
+      const confirmed = await window.showConfirmModal({
+        title: 'Delete Active Portfolio',
+        message: 'Permanently delete your current active portfolio? This action cannot be undone.',
+        confirmText: 'Delete Portfolio',
+        cancelText: 'Cancel',
+        danger: true
+      });
+      if (!confirmed) return;
       try {
         const username = currentUser?.username || 'abdulaziz';
         await fetch(`/api/sites/${encodeURIComponent(username)}`, { method: 'DELETE', credentials: 'include' });

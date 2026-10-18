@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="/sidebar.js"></script>
   <script>
     (function() {
       fetch('/api/auth/me', { credentials: 'include' })
@@ -691,7 +692,8 @@
     }
 
     async function handleOverrideGrace(userId) {
-      if (!confirm('Extend grace period by 5 days for this user?')) return;
+      const ok = await window.showConfirmModal({ title: 'Extend Grace Period', message: 'Extend grace period by 5 days for this user?', confirmText: 'Extend 5 Days' });
+      if (!ok) return;
       try {
         const res = await fetch('/api/admin/override-grace', {
           method: 'POST',
@@ -711,7 +713,8 @@
     }
 
     async function handleForceRestore(userId) {
-      if (!confirm('Force-restore this account to active live status?')) return;
+      const ok = await window.showConfirmModal({ title: 'Force-Restore Account', message: 'Force-restore this account to active live status?', confirmText: 'Restore Account' });
+      if (!ok) return;
       try {
         const res = await fetch('/api/admin/force-restore', {
           method: 'POST',
@@ -731,7 +734,8 @@
     }
 
     async function handleForceTakedown(userId) {
-      if (!confirm('Are you sure you want to force takedown & delete this account?')) return;
+      const ok = await window.showConfirmModal({ title: 'Force Takedown', message: 'Are you sure you want to force takedown & delete this account?', confirmText: 'Force Takedown', danger: true });
+      if (!ok) return;
       try {
         const res = await fetch('/api/admin/force-takedown', {
           method: 'POST',

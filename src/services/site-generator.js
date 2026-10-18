@@ -379,10 +379,24 @@ class SiteGenerator {
         }
       }
 
+      function showPreviewNotice(title, msg, type) {
+        var existing = document.getElementById('mf-preview-toast');
+        if (existing) existing.remove();
+        var toast = document.createElement('div');
+        toast.id = 'mf-preview-toast';
+        var borderCol = type === 'error' ? 'rgba(239,68,68,0.5)' : (type === 'success' ? 'rgba(16,185,129,0.5)' : 'rgba(56,189,248,0.5)');
+        toast.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999999; background:rgba(15,23,42,0.96); backdrop-filter:blur(12px); border:1px solid ' + borderCol + '; border-radius:14px; padding:12px 20px; color:#FFFFFF; font-family:system-ui,-apple-system,sans-serif; font-size:13px; box-shadow:0 12px 35px rgba(0,0,0,0.8); display:flex; align-items:center; gap:10px; max-width:90vw; line-height:1.4;';
+        toast.innerHTML = '<span>' + (type === 'error' ? '⚠️' : (type === 'success' ? '🎉' : 'ℹ️')) + '</span> <div><strong style="color:#F8FAFC;">' + title + ':</strong> <span style="color:#CBD5E1;">' + msg + '</span></div>';
+        document.body.appendChild(toast);
+        setTimeout(function() {
+          if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 4500);
+      }
+
       function executeSelectedPlanCheckout() {
         var termsChk = document.getElementById('mf-precheck-terms');
         if (termsChk && !termsChk.checked) {
-          alert('Please agree to the Terms and Refund Policy to proceed with checkout.');
+          showPreviewNotice('Terms Required', 'Please agree to the Terms and Refund Policy to proceed with checkout.', 'error');
           termsChk.focus();
           return;
         }
@@ -392,7 +406,7 @@ class SiteGenerator {
           var subInput = document.getElementById('mf-pro-subdomain-input');
           chosenSubdomain = subInput ? subInput.value.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '') : '';
           if (!chosenSubdomain || chosenSubdomain.length < 2) {
-            alert('Please enter a valid subdomain handle (at least 2 letters/numbers).');
+            showPreviewNotice('Invalid Handle', 'Please enter a valid subdomain handle (at least 2 letters/numbers).', 'error');
             if (subInput) subInput.focus();
             return;
           }
@@ -443,23 +457,25 @@ class SiteGenerator {
                 .then(function(verifyData) {
                   if (verifyData.success) {
                     var finalUrl = verifyData.liveUrl || ('/p/' + siteId);
-                    alert('🎉 Payment verified! Watermark removed and your portfolio is permanently live at: ' + finalUrl);
-                    window.location.href = finalUrl;
+                    showPreviewNotice('Portfolio Activated', 'Payment verified! Watermark removed and your site is live at: ' + finalUrl, 'success');
+                    setTimeout(function() {
+                      window.location.href = finalUrl;
+                    }, 1500);
                   } else {
-                    alert('Payment notice: ' + (verifyData.error || 'Please contact support'));
+                    showPreviewNotice('Verification Notice', verifyData.error || 'Please contact support', 'error');
                   }
                 })
-                .catch(function(err) { alert('Verification error: ' + err.message); });
+                .catch(function(err) { showPreviewNotice('Verification Error', err.message, 'error'); });
               }
             });
             youpi.open();
           } else {
-            alert('Loading checkout. Please try again.');
+            showPreviewNotice('Loading Checkout', 'Payment system initializing. Please try again.', 'info');
           }
         })
         .catch(function(err) {
           if (proceedBtn) proceedBtn.disabled = false;
-          alert('Could not start checkout: ' + err.message);
+          showPreviewNotice('Checkout Error', err.message, 'error');
         });
       }
 
