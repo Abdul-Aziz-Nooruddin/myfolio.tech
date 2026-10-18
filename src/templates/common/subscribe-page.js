@@ -281,6 +281,14 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
                 <li><strong>Permanent 24/7 Hosting &amp; Watermark Removal:</strong> All Lifetime Starter features included.</li>
                 <li><strong>Standalone Source Code (.ZIP):</strong> Full offline production package included.</li>
               </ul>
+              <div style="margin-bottom: 16px; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.25); border-radius: 10px; padding: 10px 12px; text-align: left;">
+                <label style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: #2563eb; display: block; margin-bottom: 4px;">Choose Your Subdomain Handle:</label>
+                <div style="display: flex; align-items: center; background: rgba(255,255,255,0.9); border: 1px solid rgba(37,99,235,0.3); border-radius: 6px; padding: 4px 8px; font-family: monospace; font-size: 0.9rem;">
+                  <span style="color: #64748b;">https://</span>
+                  <input type="text" id="pricingProSubdomainInput" value="${safeSiteId.split('-')[0].toLowerCase()}" placeholder="yourname" style="border:none; outline:none; background:transparent; font-weight:700; color:#2563eb; flex:1; min-width:60px;" />
+                  <span style="color: #2563eb; font-weight: 700;">.myfolio.tech</span>
+                </div>
+              </div>
             </div>
             <button class="pay-btn pay-btn-pro" onclick="startPayment('pro', 14900)">Unlock Pro Subdomain (₹149/mo) &rarr;</button>
           </div>
@@ -319,6 +327,17 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
         return;
       }
 
+      var chosenSubdomain = '';
+      if (plan === 'pro') {
+        var subInput = document.getElementById('pricingProSubdomainInput');
+        chosenSubdomain = subInput ? subInput.value.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '') : '';
+        if (!chosenSubdomain || chosenSubdomain.length < 2) {
+          alert('Please enter a valid subdomain handle (min 2 characters).');
+          if (subInput) subInput.focus();
+          return;
+        }
+      }
+
       var btn = event ? event.target : null;
       var originalText = btn ? btn.textContent : '';
       if (btn) {
@@ -331,7 +350,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ siteId: '${safeSiteId}', plan: plan || 'starter' })
+          body: JSON.stringify({ siteId: '${safeSiteId}', plan: plan || 'starter', username: chosenSubdomain })
         });
         var data = await res.json();
 
@@ -346,7 +365,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
             amount: data.amountRupees || (data.amount / 100) || 149,
             currency: 'INR',
             name: 'MyFolio Technologies',
-            description: 'Unlock Portfolio (${safeSiteId})',
+            description: plan === 'pro' ? ('Pro Subdomain (' + chosenSubdomain + '.myfolio.tech)') : 'Unlock Portfolio (${safeSiteId})',
             order_id: data.orderId,
             orderId: data.orderId,
             vpa: '9912836034@mbk',
@@ -359,6 +378,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
                   body: JSON.stringify({
                     siteId: '${safeSiteId}',
                     plan: plan || 'starter',
+                    username: chosenSubdomain,
                     order_id: paymentResponse.order_id || paymentResponse.orderId,
                     payment_id: paymentResponse.payment_id || paymentResponse.paymentId || ('youpi_' + Date.now()),
                     signature: paymentResponse.signature || '',

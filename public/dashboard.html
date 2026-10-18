@@ -1428,6 +1428,14 @@
               <li><span class="check">✓</span> <span><strong>100% Watermark-Free</strong></span></li>
               <li><span class="check">✓</span> <span><strong>Standalone Source Code (.zip)</strong></span></li>
             </ul>
+            <div style="margin: 12px 0 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(52,211,153,0.35); border-radius: 8px; padding: 8px 10px; text-align: left;">
+              <div style="font-size: 10px; text-transform: uppercase; color: #34D399; font-weight: 700; margin-bottom: 4px;">Choose Subdomain Handle:</div>
+              <div style="display: flex; align-items: center; background: rgba(15,23,42,0.85); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 8px; font-family: monospace; font-size: 11.5px;">
+                <span style="color: #64748b;">https://</span>
+                <input type="text" id="dashProSubdomainInput" placeholder="username" style="background: transparent; border: none; color: #34D399; font-weight: 700; font-family: monospace; font-size: 12px; outline: none; padding: 0 4px; flex: 1; min-width: 60px;" />
+                <span style="color: #34D399; font-weight: 700;">.myfolio.tech</span>
+              </div>
+            </div>
           </div>
           <button type="button" class="mf-btn mf-btn-primary" style="width:100%; font-size:12.5px; padding:10px; background:linear-gradient(135deg, #10B981, #059669); border-color:#059669;" onclick="startPublishCheckout('pro')">
             Choose Pro Subdomain (₹149/mo)
@@ -1580,6 +1588,11 @@
       if (topName) topName.textContent = displayName;
       const initial = document.getElementById('avatarInitial');
       if (initial) initial.textContent = displayName.charAt(0).toUpperCase();
+
+      const subInput = document.getElementById('dashProSubdomainInput');
+      if (subInput && !subInput.value) {
+        subInput.value = (user.username || user.name || 'developer').toLowerCase().replace(/[^a-z0-9-_]/g, '');
+      }
 
       // Tier label & build allowance
       const tierLabel = document.getElementById('tierLabel');
@@ -2361,6 +2374,17 @@
         return;
       }
 
+      let chosenSubdomain = '';
+      if (plan === 'pro') {
+        const subInput = document.getElementById('dashProSubdomainInput');
+        chosenSubdomain = subInput ? subInput.value.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '') : '';
+        if (!chosenSubdomain || chosenSubdomain.length < 2) {
+          showToast('Please enter a valid subdomain handle (min 2 characters)', 'warning');
+          if (subInput) subInput.focus();
+          return;
+        }
+      }
+
       const disclaimer = document.getElementById('dashPaymentDisclaimerCheck');
       if (disclaimer && !disclaimer.checked) {
         showToast('Please check the box to agree to the Terms, Privacy, and Refund Policy before checkout.', 'warning');
@@ -2382,13 +2406,13 @@
       window.__dashLegalTermsConfirmed = false;
 
       try {
-        const planName = plan === 'starter' ? 'Lifetime Starter (₹149 one-time)' : 'Pro Subdomain (₹149/month)';
+        const planName = plan === 'starter' ? 'Lifetime Starter (₹149 one-time)' : `Pro Subdomain (${chosenSubdomain || 'name'}.myfolio.tech)`;
         showToast(`Initiating checkout for ${planName}...`);
         const orderRes = await fetch('/api/web/create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ siteId: siteIdToPublish, plan })
+          body: JSON.stringify({ siteId: siteIdToPublish, plan, username: chosenSubdomain })
         });
         const orderData = await orderRes.json();
         if (orderData.isMaintenance) {
@@ -2405,7 +2429,7 @@
             amount: orderData.amountRupees || (orderData.amount / 100),
             currency: orderData.currency || 'INR',
             name: 'MyFolio Platform',
-            description: plan === 'starter' ? 'Permanent Netlify Hosting (₹149 one-time)' : 'Pro Subdomain & Live Sync (₹149/mo)',
+            description: plan === 'starter' ? 'Permanent Netlify Hosting (₹149 one-time)' : `Pro Subdomain (${chosenSubdomain}.myfolio.tech)`,
             order_id: orderData.orderId,
             orderId: orderData.orderId,
             checkoutUrl: orderData.checkoutUrl,
@@ -2422,13 +2446,20 @@
                     signature: paymentResponse.signature || paymentResponse.razorpay_signature || '',
                     utr: paymentResponse.utr || '',
                     siteId: siteIdToPublish,
-                    plan: plan
+                    plan: plan,
+                    username: chosenSubdomain
                   })
                 });
                 const verifyData = await verifyRes.json();
                 if (verifyData.success) {
                   showToast('Your permanent live website is now deployed 24/7!');
-                  setTimeout(() => window.location.reload(), 1200);
+                  setTimeout(() => {
+                    if (verifyData.liveUrl) {
+                      window.location.href = verifyData.liveUrl;
+                    } else {
+                      window.location.reload();
+                    }
+                  }, 1200);
                 }
               } catch (vErr) {
                 showToast('Verification notice: ' + vErr.message);

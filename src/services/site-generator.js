@@ -221,29 +221,206 @@ class SiteGenerator {
       </a>
     </div>
 
+    <!-- PRE-CHECKOUT PLAN & SUBDOMAIN SELECTION MODAL -->
+    <div id="mf-plan-selection-modal" style="position:fixed; inset:0; z-index:9999999; background:rgba(4,7,16,0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); display:none; align-items:center; justify-content:center; padding:16px; font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+      <div style="background:#0D1117; border:1px solid rgba(255,255,255,0.14); border-radius:24px; max-width:620px; width:100%; padding:28px 24px; color:#FFFFFF; box-shadow:0 30px 80px rgba(0,0,0,0.85); position:relative; max-height:92vh; overflow-y:auto; text-align:left; box-sizing:border-box;">
+        <button type="button" onclick="closePlanSelectionModal()" style="position:absolute; top:18px; right:18px; background:rgba(255,255,255,0.06); border:none; color:#94A3B8; font-size:22px; width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">&times;</button>
+        
+        <div style="font-size:11px; font-weight:800; color:#38BDF8; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px;">PORTFOLIO STUDIO • CHOOSE YOUR PUBLISHING PLAN</div>
+        <h2 style="font-size:1.45rem; font-weight:800; color:#FFFFFF; margin:0 0 6px 0; letter-spacing:-0.01em;">Publish &amp; Unlock Your Portfolio</h2>
+        <p style="font-size:13px; color:#94A3B8; margin:0 0 20px 0; line-height:1.5;">Choose how you want your portfolio to go live permanently. 100% watermark removed with instant automated provisioning.</p>
+        
+        <style>
+          @media (max-width: 560px) {
+            #mf-plan-cards-container { grid-template-columns: 1fr !important; }
+          }
+        </style>
+
+        <!-- Plan Cards Grid -->
+        <div id="mf-plan-cards-container" style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;">
+          <!-- Plan Card 1: Lifetime Starter -->
+          <div id="mf-card-starter" onclick="selectPlanChoice('starter')" style="background:rgba(13,148,136,0.08); border:2px solid #0D9488; border-radius:16px; padding:18px 16px; cursor:pointer; position:relative; transition:all 0.2s; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:10px; font-weight:800; background:#0D9488; color:#fff; padding:3px 8px; border-radius:9999px; letter-spacing:0.04em;">LIFETIME • 80% OFF</span>
+                <input type="radio" name="mfPlanChoice" id="mfRadioStarter" checked style="accent-color:#0D9488; width:16px; height:16px; cursor:pointer;" />
+              </div>
+              <div style="font-size:1.1rem; font-weight:800; color:#FFFFFF; margin-bottom:4px;">Lifetime Starter</div>
+              <div style="font-size:1.35rem; font-weight:900; color:#FFFFFF; margin-bottom:8px;">
+                <span style="font-size:12px; text-decoration:line-through; color:#64748B; font-weight:600; margin-right:4px;">₹749</span>₹149 <span style="font-size:11px; color:#94A3B8; font-weight:600;">/ one-time</span>
+              </div>
+              <div style="font-size:11px; font-weight:700; color:#2DD4BF; margin-bottom:12px;">✓ Pay once • No subscriptions</div>
+              <ul style="list-style:none; padding:0; margin:0; font-size:11.5px; color:#CBD5E1; display:flex; flex-direction:column; gap:7px; line-height:1.35;">
+                <li style="display:flex; gap:6px;"><span style="color:#2DD4BF;">✓</span> <span>Permanent 24/7 Live Hosting</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#2DD4BF;">✓</span> <span>Netlify Edge CDN Live Link</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#2DD4BF;">✓</span> <span>100% Watermark-Free</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#2DD4BF;">✓</span> <span>Full ZIP Source Code Export</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Plan Card 2: Pro Creator -->
+          <div id="mf-card-pro" onclick="selectPlanChoice('pro')" style="background:rgba(255,255,255,0.02); border:1.5px solid rgba(255,255,255,0.12); border-radius:16px; padding:18px 16px; cursor:pointer; position:relative; transition:all 0.2s; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:10px; font-weight:800; background:#2563EB; color:#fff; padding:3px 8px; border-radius:9999px; letter-spacing:0.04em;">PRO • 70% OFF</span>
+                <input type="radio" name="mfPlanChoice" id="mfRadioPro" style="accent-color:#2563EB; width:16px; height:16px; cursor:pointer;" />
+              </div>
+              <div style="font-size:1.1rem; font-weight:800; color:#FFFFFF; margin-bottom:4px;">Pro Creator</div>
+              <div style="font-size:1.35rem; font-weight:900; color:#FFFFFF; margin-bottom:8px;">
+                <span style="font-size:12px; text-decoration:line-through; color:#64748B; font-weight:600; margin-right:4px;">₹499</span>₹149 <span style="font-size:11px; color:#94A3B8; font-weight:600;">/ month</span>
+              </div>
+              <div style="font-size:11px; font-weight:700; color:#60A5FA; margin-bottom:12px;">✓ Billed monthly • Cancel anytime</div>
+              <ul style="list-style:none; padding:0; margin:0; font-size:11.5px; color:#CBD5E1; display:flex; flex-direction:column; gap:7px; line-height:1.35;">
+                <li style="display:flex; gap:6px;"><span style="color:#60A5FA;">✓</span> <span>Branded Custom Subdomain</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#60A5FA;">✓</span> <span>Live GitHub Auto-Sync</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#60A5FA;">✓</span> <span>Switch 3D Worlds Anytime</span></li>
+                <li style="display:flex; gap:6px;"><span style="color:#60A5FA;">✓</span> <span>100% Watermark-Free</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subdomain Configuration Section (Revealed when Pro is chosen) -->
+        <div id="mf-subdomain-config-wrap" style="display:none; margin-bottom:16px; background:rgba(37,99,235,0.08); border:1px solid rgba(56,189,248,0.35); border-radius:14px; padding:14px 16px;">
+          <label style="font-size:11px; font-weight:800; text-transform:uppercase; color:#38BDF8; display:block; margin-bottom:6px; letter-spacing:0.05em;">
+            Choose Your Branded Subdomain Handle:
+          </label>
+          <div style="display:flex; align-items:center; background:#070B14; border:1px solid rgba(56,189,248,0.4); border-radius:8px; padding:7px 12px; font-family:monospace; font-size:13px;">
+            <span style="color:#64748B; user-select:none;">https://</span>
+            <input type="text" id="mf-pro-subdomain-input" value="${String(siteId).split('-')[0].toLowerCase().replace(/[^a-z0-9-_]/g, '') || 'developer'}" placeholder="yourname" style="background:transparent; border:none; outline:none; color:#38BDF8; font-weight:800; font-family:monospace; font-size:13.5px; flex:1; min-width:80px; padding:0 4px;" />
+            <span style="color:#38BDF8; font-weight:800; user-select:none;">.myfolio.tech</span>
+          </div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:6px;">Includes automated SSL certificate and live portfolio routing.</div>
+        </div>
+
+        <!-- Non-refundable Legal Terms Checkbox -->
+        <div style="margin-bottom:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
+          <label style="display:flex; align-items:flex-start; gap:8px; font-size:11.5px; color:#CBD5E1; cursor:pointer;">
+            <input type="checkbox" id="mf-precheck-terms" checked style="margin-top:2px; accent-color:#0D9488; width:15px; height:15px;" />
+            <span>I agree to the <a href="/terms" target="_blank" style="color:#38BDF8; text-decoration:underline;">Terms</a> and <a href="/refund" target="_blank" style="color:#38BDF8; text-decoration:underline;">Refund Policy</a> (100% non-refundable once digital portfolio is provisioned).</span>
+          </label>
+        </div>
+
+        <!-- Primary Action Button -->
+        <button type="button" id="mf-proceed-upi-btn" onclick="executeSelectedPlanCheckout()" style="width:100%; padding:13px 18px; background:linear-gradient(135deg, #0D9488, #059669); color:#FFFFFF; font-weight:800; font-size:13.5px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,0.35); transition:transform 0.15s, box-shadow 0.15s;">
+          Proceed to UPI Payment (₹149 One-Time) &rarr;
+        </button>
+      </div>
+    </div>
+
     <script src="/assets/youpi.js"></script>
     <script id="preview-watermark-script">
+      var selectedPublishPlan = 'starter';
+
       function openPreviewCheckoutModal() {
         if (window.parent && window.parent !== window) {
           window.parent.postMessage({ type: 'OPEN_PUBLISH_MODAL' }, '*');
           return;
         }
 
+        var modal = document.getElementById('mf-plan-selection-modal');
+        if (modal) {
+          modal.style.display = 'flex';
+          selectPlanChoice('starter');
+        } else {
+          executeSelectedPlanCheckout();
+        }
+      }
+
+      function closePlanSelectionModal() {
+        var modal = document.getElementById('mf-plan-selection-modal');
+        if (modal) modal.style.display = 'none';
+      }
+
+      function selectPlanChoice(plan) {
+        selectedPublishPlan = plan;
+        var starterCard = document.getElementById('mf-card-starter');
+        var proCard = document.getElementById('mf-card-pro');
+        var radioStarter = document.getElementById('mfRadioStarter');
+        var radioPro = document.getElementById('mfRadioPro');
+        var subWrap = document.getElementById('mf-subdomain-config-wrap');
+        var proceedBtn = document.getElementById('mf-proceed-upi-btn');
+
+        if (plan === 'starter') {
+          if (radioStarter) radioStarter.checked = true;
+          if (radioPro) radioPro.checked = false;
+          if (starterCard) {
+            starterCard.style.borderColor = '#0D9488';
+            starterCard.style.background = 'rgba(13,148,136,0.12)';
+          }
+          if (proCard) {
+            proCard.style.borderColor = 'rgba(255,255,255,0.12)';
+            proCard.style.background = 'rgba(255,255,255,0.02)';
+          }
+          if (subWrap) subWrap.style.display = 'none';
+          if (proceedBtn) {
+            proceedBtn.innerHTML = 'Proceed to UPI Payment (₹149 One-Time) &rarr;';
+            proceedBtn.style.background = 'linear-gradient(135deg, #0D9488, #059669)';
+            proceedBtn.style.boxShadow = '0 4px 18px rgba(13,148,136,0.35)';
+          }
+        } else {
+          if (radioStarter) radioStarter.checked = false;
+          if (radioPro) radioPro.checked = true;
+          if (proCard) {
+            proCard.style.borderColor = '#2563EB';
+            proCard.style.background = 'rgba(37,99,235,0.12)';
+          }
+          if (starterCard) {
+            starterCard.style.borderColor = 'rgba(255,255,255,0.12)';
+            starterCard.style.background = 'rgba(255,255,255,0.02)';
+          }
+          if (subWrap) subWrap.style.display = 'block';
+          if (proceedBtn) {
+            proceedBtn.innerHTML = 'Proceed to UPI Payment (₹149/mo) &rarr;';
+            proceedBtn.style.background = 'linear-gradient(135deg, #2563EB, #1D4ED8)';
+            proceedBtn.style.boxShadow = '0 4px 18px rgba(37,99,235,0.35)';
+          }
+        }
+      }
+
+      function executeSelectedPlanCheckout() {
+        var termsChk = document.getElementById('mf-precheck-terms');
+        if (termsChk && !termsChk.checked) {
+          alert('Please agree to the Terms and Refund Policy to proceed with checkout.');
+          termsChk.focus();
+          return;
+        }
+
+        var chosenSubdomain = '';
+        if (selectedPublishPlan === 'pro') {
+          var subInput = document.getElementById('mf-pro-subdomain-input');
+          chosenSubdomain = subInput ? subInput.value.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '') : '';
+          if (!chosenSubdomain || chosenSubdomain.length < 2) {
+            alert('Please enter a valid subdomain handle (at least 2 letters/numbers).');
+            if (subInput) subInput.focus();
+            return;
+          }
+        }
+
+        closePlanSelectionModal();
+
         var siteId = '${siteId}';
+        var proceedBtn = document.getElementById('mf-proceed-upi-btn');
+        if (proceedBtn) proceedBtn.disabled = true;
+
         fetch('/api/web/create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ siteId: siteId, plan: 'starter' })
+          body: JSON.stringify({ siteId: siteId, plan: selectedPublishPlan, username: chosenSubdomain })
         })
         .then(function(res) { return res.json(); })
         .then(function(orderData) {
+          if (proceedBtn) proceedBtn.disabled = false;
           if (typeof window.YoupiCheckout !== 'undefined') {
             var youpi = new window.YoupiCheckout({
               amount: orderData.amountRupees || 149,
               currency: 'INR',
               name: 'MyFolio Technologies',
-              description: 'Unlock Portfolio (' + siteId + ')',
+              description: selectedPublishPlan === 'pro' 
+                ? ('Pro Subdomain (' + chosenSubdomain + '.myfolio.tech)') 
+                : ('Lifetime Portfolio (' + siteId + ')'),
               orderId: orderData.orderId,
               order_id: orderData.orderId,
               vpa: '9912836034@mbk',
@@ -254,7 +431,8 @@ class SiteGenerator {
                   credentials: 'include',
                   body: JSON.stringify({
                     siteId: siteId,
-                    plan: 'starter',
+                    plan: selectedPublishPlan,
+                    username: chosenSubdomain,
                     order_id: paymentResponse.order_id || paymentResponse.orderId,
                     payment_id: paymentResponse.payment_id || paymentResponse.paymentId || ('youpi_' + Date.now()),
                     signature: paymentResponse.signature || '',
@@ -264,8 +442,9 @@ class SiteGenerator {
                 .then(function(vRes) { return vRes.json(); })
                 .then(function(verifyData) {
                   if (verifyData.success) {
-                    alert('🎉 Payment verified! Watermark has been removed and your portfolio is live 24/7.');
-                    window.location.reload();
+                    var finalUrl = verifyData.liveUrl || ('/p/' + siteId);
+                    alert('🎉 Payment verified! Watermark removed and your portfolio is permanently live at: ' + finalUrl);
+                    window.location.href = finalUrl;
                   } else {
                     alert('Payment notice: ' + (verifyData.error || 'Please contact support'));
                   }
@@ -279,6 +458,7 @@ class SiteGenerator {
           }
         })
         .catch(function(err) {
+          if (proceedBtn) proceedBtn.disabled = false;
           alert('Could not start checkout: ' + err.message);
         });
       }
