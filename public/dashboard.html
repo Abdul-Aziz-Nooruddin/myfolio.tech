@@ -1659,6 +1659,16 @@
 
       // Track portfolio list and selected portfolio
       currentPortfoliosList = portfolios;
+      if (!hasAnyPortfolio) {
+        const slotsBadge = document.getElementById('slotsBadge');
+        const slotsBanner = document.getElementById('slotsFullBanner');
+        if (slotsBanner) slotsBanner.style.display = 'none';
+        if (slotsBadge && !isPro) {
+          slotsBadge.textContent = '0 / 3 Slots In Use';
+          slotsBadge.className = 'mf-badge mf-badge-accent';
+        }
+      }
+
       if (!selectedSiteId && portfolios.length > 0) {
         selectedSiteId = localStorage.getItem('myfolio_selected_portfolio_id') ||
                          localStorage.getItem('myfolio_active_vip_site') ||
@@ -1932,6 +1942,11 @@
       const grid = document.getElementById('syncedPortfoliosGrid');
       if (!grid) return;
 
+      const user = cachedDashData?.user || currentUser || {};
+      const userEmail = (user.email || '').toLowerCase().trim();
+      const isVip = userEmail === 'abdulaziznoor9876@gmail.com';
+      const isPro = Boolean(isVip || user?.role === 'pro' || user?.role === 'admin' || user?.subscription_status === 'active' || cachedDashData?.plan?.isPro);
+
       try {
         let cloud = Array.isArray(preloadedCloud) ? preloadedCloud : [];
         if (!preloadedCloud) {
@@ -1942,81 +1957,48 @@
           }
         }
 
-        let local = [];
-        try {
-          local = JSON.parse(localStorage.getItem('myfolio_generated_projects_v1') || '[]');
-          if (currentUser && currentUser.email) {
-            const userKey = `myfolio_history_${currentUser.email.replace(/[^a-z0-9]/g, '_')}`;
-            const userHist = JSON.parse(localStorage.getItem(userKey) || '[]');
-            local = [...userHist, ...local];
-          }
-        } catch (e) {}
-
         const unifiedMap = new Map();
-        cloud.forEach(p => unifiedMap.set(p.siteId, p));
-        local.forEach(lp => {
-          if (lp && lp.siteId) {
-            if (!unifiedMap.has(lp.siteId)) {
-              unifiedMap.set(lp.siteId, lp);
-            } else {
-              const current = unifiedMap.get(lp.siteId);
-              if (current.universeKey === 'jack-3d-creator' && lp.universeKey && lp.universeKey !== 'jack-3d-creator') {
-                current.universeKey = lp.universeKey;
-                current.templateId = lp.universeKey;
-              }
-            }
-          }
+        // 1. Authoritative server-verified portfolios
+        cloud.forEach(p => {
+          if (p && p.siteId) unifiedMap.set(p.siteId, p);
         });
 
-        // Fallback A: Check cachedDashData siteId
-        if (cachedDashData?.siteId && !unifiedMap.has(cachedDashData.siteId)) {
-          unifiedMap.set(cachedDashData.siteId, {
-            siteId: cachedDashData.siteId,
-            handle: currentUser?.username || 'developer',
-            previewUrl: `/p/${cachedDashData.siteId}`,
-            universeKey: 'jack-3d-creator',
-            developerName: currentUser?.name || 'Abdul Aziz Nooruddin',
-            developerRole: 'Software Engineer',
-            timestamp: Date.now()
-          });
-        }
-
-        // Fallback B: Check last generated site in localStorage
+        // 2. User-specific local history strictly matching current logged-in email
         try {
-          const lastGen = JSON.parse(localStorage.getItem('myfolio_last_generated_site') || 'null');
-          if (lastGen && lastGen.siteId && !unifiedMap.has(lastGen.siteId)) {
-            unifiedMap.set(lastGen.siteId, lastGen);
-          }
-        } catch (e) {}
-
-        // Fallback C: Check active site ID in localStorage
-        try {
-          const actId = localStorage.getItem('myfolio_active_site_id');
-          if (actId && !unifiedMap.has(actId)) {
-            unifiedMap.set(actId, {
-              siteId: actId,
-              handle: currentUser?.username || 'developer',
-              previewUrl: `/p/${actId}`,
-              universeKey: 'jack-3d-creator',
-              developerName: currentUser?.name || 'Abdul Aziz Nooruddin',
-              developerRole: 'Software Engineer',
-              timestamp: Date.now()
+          if (userEmail) {
+            const userKey = `myfolio_history_${userEmail.replace(/[^a-z0-9]/g, '_')}`;
+            const userHist = JSON.parse(localStorage.getItem(userKey) || '[]');
+            userHist.forEach(lp => {
+              if (lp && lp.siteId && !unifiedMap.has(lp.siteId)) {
+                unifiedMap.set(lp.siteId, lp);
+              }
             });
           }
         } catch (e) {}
 
+        // If the user has zero server sites and zero account history, purge any foreign/stale test data
+        if (cloud.length === 0 && unifiedMap.size === 0) {
+          try {
+            const rawGen = localStorage.getItem('myfolio_generated_projects_v1');
+            if (rawGen) {
+              const list = JSON.parse(rawGen);
+              const filtered = list.filter(x => x && (x.userEmail === userEmail || x.userId === user.id));
+              if (filtered.length !== list.length) {
+                localStorage.setItem('myfolio_generated_projects_v1', JSON.stringify(filtered));
+              }
+              filtered.forEach(p => {
+                if (p && p.siteId) unifiedMap.set(p.siteId, p);
+              });
+            }
+          } catch (e) {}
+        }
+
         let merged = Array.from(unifiedMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
         // Enforce 3-slot cap for Free tier users
-        const isPro = Boolean(cachedDashData?.plan?.isPro || currentUser?.role === 'pro' || currentUser?.is_vip);
         if (!isPro && merged.length > 3) {
           merged = merged.slice(0, 3);
-          try {
-            localStorage.setItem('myfolio_generated_projects_v1', JSON.stringify(merged));
-          } catch (e) {}
         }
-        
-
 
         // Update slots indicators
         const slotsBadge = document.getElementById('slotsBadge');
@@ -2027,15 +2009,16 @@
         if (!isPro) {
           if (slotsBadge) {
             slotsBadge.textContent = `${count} / 3 Slots In Use`;
-            slotsBadge.className = count >= 3 ? 'mf-badge mf-badge-danger' : 'mf-badge mf-badge-accent';
+            slotsBadge.className = (count >= 3 && count > 0) ? 'mf-badge mf-badge-danger' : 'mf-badge mf-badge-accent';
           }
           if (slotsBanner) {
-            slotsBanner.style.display = count >= 3 ? 'flex' : 'none';
+            // STRICT SAFETY: Never show slots full error banner if user has 0 portfolios!
+            slotsBanner.style.display = (count >= 3 && count > 0) ? 'flex' : 'none';
           }
           if (quotaDisplay) {
             const rem = Math.max(0, 3 - count);
-            quotaDisplay.textContent = rem === 0 ? '0 / 3 Builds (Slots Full)' : `${rem} / 3 Builds Remaining`;
-            quotaDisplay.style.color = rem === 0 ? '#EF4444' : 'var(--dash-accent-sky)';
+            quotaDisplay.textContent = (count >= 3 && count > 0) ? '0 / 3 Builds (Slots Full)' : `${rem} / 3 Builds Remaining`;
+            quotaDisplay.style.color = (count >= 3 && count > 0) ? '#EF4444' : 'var(--dash-accent-sky)';
           }
         } else {
           if (slotsBadge) {
@@ -2052,14 +2035,20 @@
         renderDashboard(cachedDashData || { success: true, user: currentUser }, merged);
         renderSyncedPortfolios(merged);
       } catch (err) {
+        console.error('[LOAD CROSS DEVICE ERROR]', err);
         renderDashboard(cachedDashData || { success: true, user: currentUser }, []);
-        grid.innerHTML = `<div style="padding:2.5rem; text-align:center; color:var(--dash-text-muted); grid-column:1 / -1;">No portfolios generated yet.</div>`;
+        renderSyncedPortfolios([]);
       }
     }
 
     function renderSyncedPortfolios(portfolios) {
       const grid = document.getElementById('syncedPortfoliosGrid');
       if (!grid) return;
+
+      const user = cachedDashData?.user || currentUser || {};
+      const userEmail = (user.email || '').toLowerCase().trim();
+      const isVip = userEmail === 'abdulaziznoor9876@gmail.com';
+      const isPro = Boolean(isVip || user?.role === 'pro' || user?.role === 'admin' || user?.subscription_status === 'active' || cachedDashData?.plan?.isPro);
 
       if (!portfolios || portfolios.length === 0) {
         grid.innerHTML = `
