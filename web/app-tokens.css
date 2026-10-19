@@ -6,15 +6,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import url('button-system.css');
 
-:root {
+:root,
+[data-theme="dark"],
+html[data-theme="dark"] {
   /* Surface Physics & Backgrounds */
-  --mf-bg-primary: #0A0A0A;
-  --mf-bg-secondary: #111111;
-  --mf-surface: #141414;
-  --mf-surface-deep: #0D0D0D;
-  --mf-surface-glass: rgba(20, 20, 20, 0.85);
-  --mf-surface-glass-subtle: rgba(20, 20, 20, 0.50);
-  --mf-surface-glass-elevated: rgba(26, 26, 26, 0.90);
+  --mf-bg-primary: #0A0A0B;
+  --mf-bg-secondary: #111113;
+  --mf-surface: #141416;
+  --mf-surface-deep: #0D0D0F;
+  --mf-surface-glass: rgba(20, 20, 22, 0.85);
+  --mf-surface-glass-subtle: rgba(20, 20, 22, 0.50);
+  --mf-surface-glass-elevated: rgba(26, 26, 30, 0.90);
 
   /* Typography */
   --mf-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -22,22 +24,22 @@
   --mf-font-mono: 'JetBrains Mono', monospace;
 
   /* Text Colors */
-  --mf-text-primary: #F4F1E8;
-  --mf-text-secondary: #A0A0A0;
-  --mf-text-muted: #666666;
-  --mf-text-inverse: #0A0A0A;
+  --mf-text-primary: #F8FAFC;
+  --mf-text-secondary: #94A3B8;
+  --mf-text-muted: #64748B;
+  --mf-text-inverse: #0A0A0B;
 
   /* Borders & Dividers */
-  --mf-border: #242424;
-  --mf-border-strong: #333333;
+  --mf-border: rgba(255, 255, 255, 0.08);
+  --mf-border-strong: rgba(255, 255, 255, 0.14);
   --mf-border-glow: rgba(95, 165, 249, 0.35);
   --mf-border-violet: rgba(95, 165, 249, 0.25);
 
   /* Curated Accents */
-  --mf-accent-blue: #5FA5F9;
+  --mf-accent-blue: #38BDF8;
   --mf-accent-violet: #818CF8;
   --mf-accent-cyan: #38BDF8;
-  --mf-success: #22C55E;
+  --mf-success: #10B981;
   --mf-warning: #F59E0B;
   --mf-error: #EF4444;
 
@@ -64,6 +66,45 @@
   --mf-transition-slow: 400ms var(--mf-ease-out);
 }
 
+[data-theme="light"],
+html[data-theme="light"] {
+  /* Light Theme Surface Physics & Backgrounds */
+  --mf-bg-primary: #F8FAFC;
+  --mf-bg-secondary: #F1F5F9;
+  --mf-surface: #FFFFFF;
+  --mf-surface-deep: #F8FAFC;
+  --mf-surface-glass: rgba(255, 255, 255, 0.90);
+  --mf-surface-glass-subtle: rgba(248, 250, 252, 0.85);
+  --mf-surface-glass-elevated: #FFFFFF;
+
+  /* Text Colors */
+  --mf-text-primary: #0F172A;
+  --mf-text-secondary: #475569;
+  --mf-text-muted: #94A3B8;
+  --mf-text-inverse: #FFFFFF;
+
+  /* Borders & Dividers */
+  --mf-border: #E2E8F0;
+  --mf-border-strong: #CBD5E1;
+  --mf-border-glow: rgba(59, 130, 246, 0.35);
+  --mf-border-violet: rgba(99, 102, 241, 0.25);
+
+  /* Curated Accents */
+  --mf-accent-blue: #2563EB;
+  --mf-accent-violet: #6366F1;
+  --mf-accent-cyan: #0284C7;
+  --mf-success: #059669;
+  --mf-warning: #D97706;
+  --mf-error: #DC2626;
+
+  /* Shadows & Depth */
+  --mf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --mf-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --mf-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --mf-shadow-glow-blue: 0 0 25px rgba(37, 99, 235, 0.12);
+  --mf-shadow-glow-violet: 0 0 25px rgba(99, 102, 241, 0.12);
+}
+
 /* Global Reset & Base Setup */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -83,15 +124,22 @@ body {
   min-height: 100vh;
 }
 
-/* Atmospheric CSS Background (Clean Obsidian Vignette) */
+/* Atmospheric CSS Background (Clean Obsidian Vignette / Clean Slate Canvas) */
 .mf-atmospheric-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   background: 
     radial-gradient(ellipse 90% 60% at 50% -15%, rgba(95, 165, 249, 0.05) 0%, transparent 65%),
-    linear-gradient(180deg, #0A0A0A 0%, #111111 100%);
+    linear-gradient(180deg, #0A0A0B 0%, #111113 100%);
   pointer-events: none;
+}
+
+[data-theme="light"] .mf-atmospheric-bg,
+html[data-theme="light"] .mf-atmospheric-bg {
+  background: 
+    radial-gradient(ellipse 90% 60% at 50% -15%, rgba(37, 99, 235, 0.04) 0%, transparent 65%),
+    linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
 }
 
 /* Glass Panels & Surfaces */

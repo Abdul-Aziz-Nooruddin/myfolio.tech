@@ -44,10 +44,11 @@
   <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
 
   <link rel="stylesheet" href="/app-tokens.css">
+  <script src="/theme-toggle.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/turbo-nav.js" defer></script>
   <script src="/assets/youpi.js" defer></script>
   <script src="/assets/payment-maintenance.js" defer></script>
   <script src="/sidebar.js" defer></script>
@@ -57,14 +58,48 @@
 
 
   <style>
+    :root,
+    [data-theme="dark"],
+    html[data-theme="dark"] {
+      --studio-bg: #0A0A0B;
+      --studio-topbar-bg: rgba(14, 15, 17, 0.95);
+      --studio-col-bg: rgba(18, 20, 23, 0.96);
+      --studio-viewport-bg: radial-gradient(ellipse at 50% 30%, rgba(56, 189, 248, 0.05) 0%, #0A0B0D 100%);
+      --studio-card-bg: rgba(24, 26, 30, 0.75);
+      --studio-card-inner: rgba(18, 20, 24, 0.65);
+      --studio-border: rgba(255, 255, 255, 0.08);
+      --studio-border-hover: rgba(56, 189, 248, 0.35);
+      --studio-text-primary: #F8FAFC;
+      --studio-text-secondary: #94A3B8;
+      --studio-text-muted: #64748B;
+      --studio-screen-bg: #0A0B0D;
+    }
+
+    [data-theme="light"],
+    html[data-theme="light"],
+    body[data-theme="light"] {
+      --studio-bg: #F8FAFC;
+      --studio-topbar-bg: rgba(255, 255, 255, 0.95);
+      --studio-col-bg: #FFFFFF;
+      --studio-viewport-bg: radial-gradient(ellipse at 50% 30%, rgba(37, 99, 235, 0.04) 0%, #F1F5F9 100%);
+      --studio-card-bg: #F8FAFC;
+      --studio-card-inner: #FFFFFF;
+      --studio-border: #E2E8F0;
+      --studio-border-hover: #3B82F6;
+      --studio-text-primary: #0F172A;
+      --studio-text-secondary: #475569;
+      --studio-text-muted: #94A3B8;
+      --studio-screen-bg: #FFFFFF;
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
     }
 
     /* Studio Full-Screen Creative OS Layout */
     body {
-      background-color: var(--mf-bg-primary, #0C0D0C);
-      color: var(--mf-text-primary, #F4F1E8);
+      background-color: var(--studio-bg);
+      color: var(--studio-text-primary);
       font-family: var(--mf-font-sans, 'Inter', -apple-system, sans-serif);
       overflow-x: hidden;
       margin: 0;
@@ -72,13 +107,14 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* Top Studio Bar */
     .studio-topbar {
       height: 52px;
-      background: rgba(14, 15, 14, 0.94);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-topbar-bg);
+      border-bottom: 1px solid var(--studio-border);
       backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
@@ -87,6 +123,7 @@
       position: relative;
       z-index: 100;
       flex-shrink: 0;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .topbar-left {
@@ -102,7 +139,7 @@
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       font-size: 14px;
-      color: #F4F1E8;
+      color: var(--studio-text-primary);
       text-decoration: none;
     }
 
@@ -112,7 +149,7 @@
       gap: 6px;
       font-family: var(--mf-font-mono, monospace);
       font-size: 11px;
-      color: var(--mf-text-muted, #888983);
+      color: var(--studio-text-muted);
       letter-spacing: 0.05em;
     }
 
@@ -130,7 +167,8 @@
       overflow: hidden;
       position: relative;
       z-index: 10;
-      background: #0C0D0C;
+      background: var(--studio-bg);
+      transition: background 0.25s ease;
     }
 
     /* Column 1: Left Navigator & Story */
@@ -138,8 +176,8 @@
       width: 380px;
       min-width: 350px;
       max-width: 420px;
-      background: rgba(18, 20, 18, 0.96);
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-col-bg);
+      border-right: 1px solid var(--studio-border);
       backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
@@ -147,6 +185,7 @@
       overflow-x: hidden;
       padding: 1.25rem 1rem;
       gap: 1.25rem;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     /* Column 2: Center Live Viewport Canvas */
@@ -154,29 +193,31 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: radial-gradient(ellipse at 50% 30%, rgba(117, 197, 222, 0.05) 0%, #0A0B0A 100%);
+      background: var(--studio-viewport-bg);
       position: relative;
       overflow: hidden;
+      transition: background 0.25s ease;
     }
 
     .center-viewport-toolbar {
       height: 44px;
-      background: rgba(18, 20, 18, 0.88);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-col-bg);
+      border-bottom: 1px solid var(--studio-border);
       backdrop-filter: blur(16px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 1rem;
       z-index: 10;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .device-switcher-dock {
       display: flex;
       align-items: center;
       gap: 3px;
-      background: rgba(26, 28, 26, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-card-bg);
+      border: 1px solid var(--studio-border);
       border-radius: 9999px;
       padding: 3px;
     }
@@ -184,7 +225,7 @@
     .device-btn {
       background: transparent;
       border: none;
-      color: var(--mf-text-muted, #9D9E95);
+      color: var(--studio-text-muted);
       padding: 4px 10px;
       border-radius: 9999px;
       cursor: pointer;
@@ -194,9 +235,9 @@
     }
 
     .device-btn.active {
-      color: #F4F1E8;
-      background: rgba(117, 197, 222, 0.18);
-      box-shadow: 0 0 10px rgba(117, 197, 222, 0.15);
+      color: var(--studio-text-primary);
+      background: var(--studio-card-inner);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .viewport-canvas-frame {
@@ -262,14 +303,15 @@
       width: 310px;
       min-width: 310px;
       max-width: 310px;
-      background: rgba(18, 20, 18, 0.96);
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-col-bg);
+      border-left: 1px solid var(--studio-border);
       backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       padding: 1.25rem 1rem;
       overflow-y: auto;
       gap: 1.25rem;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     /* Guided Workflow Steps */
@@ -279,7 +321,7 @@
       gap: 6px;
       font-family: var(--mf-font-mono, monospace);
       font-size: 11px;
-      color: var(--mf-accent-sky, #75C5DE);
+      color: var(--mf-accent-blue);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 4px;
@@ -287,31 +329,31 @@
     }
 
     .workflow-card {
-      background: rgba(24, 26, 24, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-card-bg);
+      border: 1px solid var(--studio-border);
       border-radius: 14px;
       padding: 14px;
       transition: all 0.2s var(--mf-ease-out);
       width: 100%;
       overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     }
 
     .workflow-card:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: var(--studio-border-hover);
       transform: translateY(-1px);
     }
 
     .workflow-card-title {
       font-size: 13.5px;
       font-weight: 600;
-      color: #F4F1E8;
+      color: var(--studio-text-primary);
       margin-bottom: 4px;
     }
 
     .workflow-card-desc {
       font-size: 12px;
-      color: #9D9E95;
+      color: var(--studio-text-secondary);
       line-height: 1.45;
       margin-bottom: 10px;
     }
@@ -321,11 +363,45 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(24, 26, 24, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--studio-card-bg);
+      border: 1px solid var(--studio-border);
       border-radius: 14px;
       padding: 11px 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    [data-theme="light"] .readiness-box {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    [data-theme="light"] #studioResumeDropZone {
+      background: #FFFFFF !important;
+      border: 1px dashed #CBD5E1 !important;
+    }
+    [data-theme="light"] .mf-input {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .ai-command-wrap {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    [data-theme="light"] .ai-command-input {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .stepper-item {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .stepper-item:hover {
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+    }
+    [data-theme="light"] .stepper-item.active {
+      color: #2563EB !important;
+      background: #EFF6FF !important;
+      border-color: #BFDBFE !important;
     }
 
     .readiness-circle {
@@ -1689,12 +1765,12 @@
   <header class="studio-topbar">
     <h1 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">MyFolio Creator Studio — AI 3D WebGL Portfolio Builder</h1>
     <div class="topbar-left">
-      <a href="/dashboard" class="topbar-brand" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#FFF;">
+      <a href="/dashboard" class="topbar-brand" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--studio-text-primary);">
         <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
-        <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;letter-spacing:-0.02em;">myfolio<span style="color:#5FA5F9;">.</span> <span style="font-weight:400;color:#A0A0A0;font-size:11.5px;letter-spacing:0.04em;">STUDIO</span></span>
+        <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;letter-spacing:-0.02em;color:var(--studio-text-primary);">myfolio<span style="color:#5FA5F9;">.</span> <span style="font-weight:500;color:var(--studio-text-muted);font-size:11.5px;letter-spacing:0.04em;">STUDIO</span></span>
       </a>
-      <span style="color:#333333; font-size:12px;">/</span>
-      <span style="font-size:12px; color:#A0A0A0;" id="topbarProjectName">Interactive Canvas</span>
+      <span style="color:var(--studio-border); font-size:12px;">/</span>
+      <span style="font-size:12px; color:var(--studio-text-secondary);" id="topbarProjectName">Interactive Canvas</span>
     </div>
 
     <div class="topbar-center-saved">
@@ -1703,6 +1779,10 @@
     </div>
 
     <div class="topbar-right-actions">
+      <!-- Modern Minimal Theme Toggle Button -->
+      <button type="button" class="theme-toggle-btn" onclick="togglePlatformTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="background:var(--studio-card-bg); border:1px solid var(--studio-border); color:var(--studio-text-primary); border-radius:8px; padding:7px 10px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: all 0.2s ease;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
       <a href="/jack-3d" target="_blank" rel="noopener noreferrer" class="mf-btn mf-btn-secondary mf-btn-sm" id="btnOpenGeneratedLive">
         <span>Preview</span> &nearr;
       </a>

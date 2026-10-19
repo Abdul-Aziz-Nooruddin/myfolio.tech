@@ -44,6 +44,7 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
-    "impeccable": "latest"
+    "impeccable": "latest",
+    "rea-agents": "^6.7.0"
   }
 }

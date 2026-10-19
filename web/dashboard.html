@@ -34,25 +34,61 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/button-system.css">
 
+  <script src="/theme-toggle.js"></script>
+  <script src="/turbo-nav.js" defer></script>
   <script src="/sidebar.js" defer></script>
   <script src="/cookie-banner.js" defer></script>
   <script src="/analytics.js" defer></script>
 
   <style>
-    :root {
-      --dash-bg: #0A0A0A;
-      --dash-surface: rgba(20, 22, 20, 0.85);
-      --dash-surface-elevated: rgba(28, 30, 28, 0.95);
+    :root,
+    [data-theme="dark"],
+    html[data-theme="dark"] {
+      --dash-bg: #0A0A0B;
+      --dash-surface: #141417;
+      --dash-surface-elevated: #1C1C21;
+      --dash-surface-inner: #0F0F12;
       --dash-border: rgba(255, 255, 255, 0.08);
       --dash-border-subtle: rgba(255, 255, 255, 0.05);
-      --dash-border-hover: rgba(117, 197, 222, 0.35);
-      --dash-accent-sky: #75C5DE;
+      --dash-border-hover: rgba(56, 189, 248, 0.4);
+      --dash-accent-sky: #38BDF8;
+      --dash-accent-emerald: #10B981;
       --dash-success: #10B981;
       --dash-warning: #F59E0B;
       --dash-danger: #EF4444;
-      --dash-text-primary: #F4F1E8;
-      --dash-text-secondary: #9D9E95;
-      --dash-text-muted: #6B6D65;
+      --dash-text-primary: #F8FAFC;
+      --dash-text-secondary: #94A3B8;
+      --dash-text-muted: #64748B;
+      --dash-canvas-bg: radial-gradient(circle 800px at 50% -120px, rgba(56, 189, 248, 0.06), transparent 70%), linear-gradient(180deg, #09090B 0%, #0D0E11 100%);
+      --dash-card-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+      --dash-mockup-bg: #121316;
+      --dash-mockup-header: #18191E;
+      --dash-kpi-bg: #111215;
+    }
+
+    [data-theme="light"],
+    html[data-theme="light"],
+    body[data-theme="light"] {
+      --dash-bg: #F8FAFC;
+      --dash-surface: #FFFFFF;
+      --dash-surface-elevated: #F1F5F9;
+      --dash-surface-inner: #F8FAFC;
+      --dash-border: #E2E8F0;
+      --dash-border-subtle: #EDF2F7;
+      --dash-border-hover: #3B82F6;
+      --dash-accent-sky: #0284C7;
+      --dash-accent-emerald: #059669;
+      --dash-success: #059669;
+      --dash-warning: #D97706;
+      --dash-danger: #DC2626;
+      --dash-text-primary: #0F172A;
+      --dash-text-secondary: #475569;
+      --dash-text-muted: #94A3B8;
+      --dash-canvas-bg: radial-gradient(circle 800px at 50% -120px, rgba(2, 132, 199, 0.04), transparent 70%), linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+      --dash-card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+      --dash-mockup-bg: #F8FAFC;
+      --dash-mockup-header: #EDF2F7;
+      --dash-kpi-bg: #F8FAFC;
     }
 
     *, *::before, *::after {
@@ -68,6 +104,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* Ambient Subtle Backdrop */
@@ -75,10 +112,9 @@
       position: fixed;
       inset: 0;
       z-index: 0;
-      background:
-        radial-gradient(circle 700px at 50% -120px, rgba(117, 197, 222, 0.07), transparent 70%),
-        linear-gradient(180deg, #090A09 0%, #0D0E0D 100%);
+      background: var(--dash-canvas-bg);
       pointer-events: none;
+      transition: background 0.25s ease;
     }
 
     .app-shell-layout {
@@ -225,8 +261,8 @@
 
     /* Subdomain Box */
     .subdomain-display-box {
-      background: rgba(14, 16, 14, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--dash-surface-inner);
+      border: 1px solid var(--dash-border);
       border-radius: 14px;
       padding: 1rem 1.25rem;
       display: flex;
@@ -234,6 +270,7 @@
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .subdomain-info {
@@ -280,22 +317,23 @@
     /* Side Preview Thumbnail & Browser Mockup */
     .portfolio-side-viewport {
       border-left: 1px solid var(--dash-border);
-      background: linear-gradient(180deg, rgba(16, 18, 16, 0.8) 0%, rgba(10, 12, 10, 0.95) 100%);
+      background: var(--dash-surface-inner);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 1.5rem;
       overflow: hidden;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .browser-mockup-frame {
       width: 100%;
-      background: #141614;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--dash-mockup-bg);
+      border: 1px solid var(--dash-border);
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--dash-border-subtle);
       display: flex;
       flex-direction: column;
       cursor: pointer;
@@ -303,14 +341,14 @@
     }
     .browser-mockup-frame:hover {
       transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.16);
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.65), 0 0 24px rgba(16, 185, 129, 0.08);
+      border-color: var(--dash-border-hover);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
     }
 
     .browser-mockup-header {
       padding: 8px 12px;
-      background: rgba(22, 24, 22, 0.95);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--dash-mockup-header);
+      border-bottom: 1px solid var(--dash-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -435,13 +473,14 @@
     }
 
     .real-kpi-card {
-      background: rgba(14, 16, 14, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--dash-kpi-bg);
+      border: 1px solid var(--dash-border);
       border-radius: 14px;
       padding: 1.25rem 1.4rem;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .real-kpi-title {
@@ -467,8 +506,8 @@
 
     /* Empty State Banner when no traffic exists yet */
     .empty-analytics-banner {
-      background: rgba(14, 16, 14, 0.5);
-      border: 1px dashed rgba(255, 255, 255, 0.1);
+      background: var(--dash-surface-inner);
+      border: 1px dashed var(--dash-border);
       border-radius: 14px;
       padding: 1.5rem;
       display: flex;
@@ -480,9 +519,9 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: rgba(117, 197, 222, 0.1);
-      border: 1px solid rgba(117, 197, 222, 0.25);
-      color: #75C5DE;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--dash-accent-sky);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -492,7 +531,7 @@
 
     .empty-banner-text strong {
       font-size: 13.5px;
-      color: #F4F1E8;
+      color: var(--dash-text-primary);
       display: block;
       margin-bottom: 3px;
     }
@@ -511,9 +550,11 @@
       border-radius: 20px;
       padding: 1.75rem 2rem;
       backdrop-filter: blur(16px);
+      box-shadow: var(--dash-card-shadow);
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .library-header {
@@ -543,8 +584,8 @@
     }
 
     .portfolio-card {
-      background: rgba(14, 16, 14, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--dash-kpi-bg);
+      border: 1px solid var(--dash-border);
       border-radius: 14px;
       overflow: hidden;
       display: flex;
@@ -553,18 +594,18 @@
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .portfolio-card:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: var(--dash-border-hover);
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     }
     .portfolio-card.active-selected-card {
       border-color: var(--dash-accent-sky) !important;
-      box-shadow: 0 0 0 2px var(--dash-accent-sky), 0 14px 35px rgba(117, 197, 222, 0.2) !important;
+      box-shadow: 0 0 0 2px var(--dash-accent-sky), 0 14px 35px rgba(56, 189, 248, 0.2) !important;
     }
 
     .cap-chip {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: var(--dash-surface-inner);
+      border: 1px solid var(--dash-border);
       border-radius: 10px;
       padding: 8px 10px;
       display: flex;
@@ -1131,6 +1172,10 @@
           </div>
 
           <div class="topbar-actions">
+            <!-- Sleek Modern Minimal Theme Toggle Button -->
+            <button type="button" class="mf-btn mf-btn-secondary mf-btn-sm theme-toggle-btn" onclick="togglePlatformTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="padding: 7px 11px; border-radius: 9999px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
             <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm">
               <span>+ New in Studio</span>
             </a>
@@ -1177,7 +1222,7 @@
             </div>
 
             <!-- Selected Portfolio Plan & Feature Capabilities -->
-            <div class="portfolio-plan-caps-box" id="selectedPlanCapsBox" style="background: rgba(255,255,255,0.02); border: 1px solid var(--dash-border); border-radius: 14px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="portfolio-plan-caps-box" id="selectedPlanCapsBox" style="background: var(--dash-surface-inner); border: 1px solid var(--dash-border); border-radius: 14px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
               <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <div style="display:flex; align-items:center; gap:8px;">
                   <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--dash-text-muted);">Current Plan Features:</span>
@@ -1549,9 +1594,13 @@
       // 1. Immediate optimistic render from local storage (0 ms UI flash)
       try {
         const cachedUserRaw = localStorage.getItem('myfolio_user');
-        if (cachedUserRaw) {
-          currentUser = JSON.parse(cachedUserRaw);
-          if (currentUser) renderDashboard({ user: currentUser }, []);
+        const cachedDashRaw = localStorage.getItem('myfolio_dash_data');
+        const cachedPortsRaw = localStorage.getItem('myfolio_portfolios_cache');
+        if (cachedUserRaw) currentUser = JSON.parse(cachedUserRaw);
+        if (cachedDashRaw) cachedDashData = JSON.parse(cachedDashRaw);
+        const cachedPortfolios = cachedPortsRaw ? JSON.parse(cachedPortsRaw) : [];
+        if (currentUser) {
+          renderDashboard(cachedDashData || { user: currentUser }, cachedPortfolios);
         }
       } catch (e) {}
 
@@ -1578,9 +1627,13 @@
 
         if (dashResult.status === 'fulfilled' && dashResult.value?.success) {
           cachedDashData = dashResult.value;
+          try { localStorage.setItem('myfolio_dash_data', JSON.stringify(cachedDashData)); } catch (e) {}
         }
 
         const preloadedPortfolios = portfoliosResult.status === 'fulfilled' && portfoliosResult.value?.success ? portfoliosResult.value.portfolios : null;
+        if (preloadedPortfolios) {
+          try { localStorage.setItem('myfolio_portfolios_cache', JSON.stringify(preloadedPortfolios)); } catch (e) {}
+        }
         await loadCrossDevicePortfolios(preloadedPortfolios);
       } catch (e) {
         console.error('[DASHBOARD INIT ERROR]', e);
@@ -1821,7 +1874,7 @@
         if (openBtn) { openBtn.href = currentSiteUrl; openBtn.innerHTML = '<span>Open Preview (24h)</span> &nearr;'; }
         if (btnPublishPermanent) {
           btnPublishPermanent.style.display = 'inline-flex';
-          btnPublishPermanent.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:5px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Buy Build & Remove Watermark (From ₹149) ➔</span>';
+          btnPublishPermanent.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:5px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Publish Portfolio (From ₹149) ➔</span>';
           btnPublishPermanent.onclick = () => {
             currentSiteId = target.siteId;
             startPublishCheckout('starter');

@@ -96,13 +96,21 @@ class CompositionIntentEngine {
     else if (roleLower.includes('design') || roleLower.includes('ui/ux') || roleLower.includes('product designer')) dominantWorkType = 'design_systems';
     else if (roleLower.includes('robot') || roleLower.includes('hardware') || roleLower.includes('embedded')) dominantWorkType = 'embedded_robotics';
 
-    // 9. Career Stage
-    let careerStage = 'senior_engineer';
-    if (experienceDepth === 'veteran') careerStage = 'principal_architect';
-    else if (experienceDepth === 'student') careerStage = 'student';
-    else if (dominantWorkType === 'ai_ml_research') careerStage = 'academic_researcher';
-    else if (dominantWorkType === 'design_systems') careerStage = 'lead_designer';
-    else if (experienceDepth === 'early') careerStage = 'junior_dev';
+    // 9. Career Stage (Honors verified CareerStageAssessment and authentic signals)
+    let careerStage = profile.careerStage || profile.authenticityGuarantee?.careerStage || 'mid_engineer';
+    if (profile.careerStage) {
+      careerStage = profile.careerStage === 'junior' ? 'junior_dev' : (profile.careerStage === 'lead_architect' ? 'principal_architect' : profile.careerStage);
+    } else if (experienceDepth === 'student' || roleLower.includes('student') || bioLower.includes('student')) {
+      careerStage = 'student';
+    } else if (experienceDepth === 'veteran') {
+      careerStage = 'principal_architect';
+    } else if (experienceDepth === 'early') {
+      careerStage = 'junior_dev';
+    } else if (dominantWorkType === 'ai_ml_research') {
+      careerStage = 'academic_researcher';
+    } else if (dominantWorkType === 'design_systems') {
+      careerStage = 'lead_designer';
+    }
 
     // 10. Profile Completeness (0 - 100)
     let completeness = 30;

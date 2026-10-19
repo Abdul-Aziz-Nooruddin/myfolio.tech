@@ -391,6 +391,27 @@ app.get([
   return res.sendFile(filePath);
 });
 
+// Dedicated Service Worker Route (Scoped to root '/', always revalidated)
+app.get('/service-worker.js', (req, res) => {
+  const swPath = fs.existsSync(path.join(process.cwd(), 'web', 'service-worker.js'))
+    ? path.join(process.cwd(), 'web', 'service-worker.js')
+    : path.join(process.cwd(), 'public', 'service-worker.js');
+  res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+  res.setHeader('Service-Worker-Allowed', '/');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.sendFile(swPath);
+});
+
+// Dedicated Turbo Navigation Engine
+app.get('/turbo-nav.js', (req, res) => {
+  const tnPath = fs.existsSync(path.join(process.cwd(), 'web', 'turbo-nav.js'))
+    ? path.join(process.cwd(), 'web', 'turbo-nav.js')
+    : path.join(process.cwd(), 'public', 'turbo-nav.js');
+  res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+  res.sendFile(tnPath);
+});
+
 // Serve assets directly from web/assets and public/assets before domain rewrites
 app.use('/assets', express.static(path.join(process.cwd(), 'web', 'assets'), {
   setHeaders: (res, filePath) => {
@@ -3087,6 +3108,10 @@ app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res
   res.type('html').send(content);
 });
 
+app.get(['/slush', '/slush-portfolio', '/slush-sticker'], (req, res) => {
+  res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; frame-ancestors *;");
+  res.sendFile(getPagePath('slush.html'));
+});
 
 app.get(['/profile', '/settings', '/account'], AuthMiddleware.requirePageAuth, (req, res) => {
   res.sendFile(getPagePath('profile.html'));
@@ -3893,12 +3918,24 @@ app.post('/api/portfolio/:siteId/sync-github', async (req, res) => {
 app.use('/sites', express.static(path.join(process.cwd(), 'public', 'sites')));
 app.use('/sites', express.static(path.join(require('os').tmpdir(), 'sites')));
 
+// Dedicated Service Worker Route (Scoped to root '/', always revalidated)
+app.get('/service-worker.js', (req, res) => {
+  const swPath = path.join(webDir, 'service-worker.js');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Service-Worker-Allowed', '/');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.sendFile(swPath);
+});
+
 // Serve Static Web Assets with HTTP Cache-Control (7 days for JS/CSS/images/fonts, 0s for dynamic HTML)
 app.use(express.static(webDir, {
   extensions: ['html'],
   maxAge: '7d',
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html') || filePath.includes('spatial-realtime-engine')) {
+    if (filePath.endsWith('service-worker.js')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      res.setHeader('Service-Worker-Allowed', '/');
+    } else if (filePath.endsWith('.html') || filePath.includes('spatial-realtime-engine')) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     } else if (/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?|ttf|eot|webp|glb|gltf|bin|wasm)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable');
@@ -4548,12 +4585,29 @@ app.get('/p/:siteId', async (req, res) => {
   const isPaid = await checkSitePaidStatus(siteId);
 
   if (!isPaid) {
-    // If the HTML has old watermark structure, clean it to upgrade
-    if (html.includes('watermark-diagonal-strip') || (html.includes('preview-watermark-overlay') && !html.includes('preview-watermark-svg'))) {
+    // If the HTML has old watermark structure, or outdated TEMPLATE branding on a user site, clean it to upgrade
+    const { TemplateRegistry } = require('./templates/template-registry');
+    const isTemplateShowcase = Boolean(
+      siteId && (
+        (TemplateRegistry._templates && Object.prototype.hasOwnProperty.call(TemplateRegistry._templates, siteId)) ||
+        siteId.startsWith('rbp') || siteId.startsWith('jack') || siteId.startsWith('nadia') || siteId.startsWith('kage') || siteId.startsWith('tom') || siteId.startsWith('apogee')
+      )
+    );
+
+    const hasOutdatedWatermark = html.includes('watermark-diagonal-strip') ||
+      (html.includes('preview-watermark-overlay') && !html.includes('preview-watermark-svg')) ||
+      (!isTemplateShowcase && (html.includes('MYFOLIO • TEMPLATE') || html.includes('Template Preview') || html.includes('TEMPLATE PREVIEW'))) ||
+      (isTemplateShowcase && (html.includes('preview-watermark-svg') || html.includes('Buy Build & Remove Watermark')));
+
+    if (hasOutdatedWatermark) {
       html = html.replace(/<!--[\s\S]*?WATERMARK OVERLAY[\s\S]*?-->[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<div id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-      html = html.replace(/<script id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
+      html = html.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
+      html = html.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>\s*<\/div>/gi, '');
+      html = html.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>/gi, '');
+      html = html.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>/gi, '');
+      html = html.replace(/<script[^>]*id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
       html = html.replace(/<script>[\s\S]*?updateWatermarkLuminance[\s\S]*?<\/script>/gi, '');
+      html = html.replace(/<script>[\s\S]*?syncWatermarkTheme[\s\S]*?<\/script>/gi, '');
     }
 
     if (!html.includes('id="preview-watermark-overlay"')) {

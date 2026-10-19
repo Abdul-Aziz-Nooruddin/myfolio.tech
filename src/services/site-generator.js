@@ -82,134 +82,51 @@ class SiteGenerator {
 
     // Disambiguate Template Showcase vs. Candidate-Generated Portfolio Preview
     const { TemplateRegistry } = require('../templates/template-registry');
-    const isTemplateShowcase = Boolean(siteId && TemplateRegistry._templates && Object.prototype.hasOwnProperty.call(TemplateRegistry._templates, siteId));
+    const isTemplateShowcase = Boolean(
+      siteId && (
+        (TemplateRegistry._templates && Object.prototype.hasOwnProperty.call(TemplateRegistry._templates, siteId)) ||
+        siteId.startsWith('rbp') || siteId.startsWith('jack') || siteId.startsWith('nadia') || siteId.startsWith('kage') || siteId.startsWith('tom') || siteId.startsWith('apogee')
+      )
+    );
 
     const mainWatermarkWord = isTemplateShowcase ? 'TEMPLATE' : 'PREVIEW';
     const subWatermarkText = isTemplateShowcase ? 'TEMPLATE PREVIEW' : 'PORTFOLIO PREVIEW';
     const diagonalSubtitle = isTemplateShowcase ? 'PREVIEW ONLY • NOT FOR PRODUCTION' : 'PORTFOLIO PREVIEW • UNPUBLISHED DRAFT';
-    const pillText = isTemplateShowcase ? 'TEMPLATE PREVIEW' : 'PORTFOLIO PREVIEW';
-    const barLabel = isTemplateShowcase ? 'Template Preview' : 'Portfolio Preview (Draft)';
-    const ctaLabel = isTemplateShowcase ? 'Buy Build & Remove Watermark (From ₹149) ➔' : 'Publish Live & Remove Watermark (From ₹149) ➔';
+    const pillText = isTemplateShowcase ? 'MYFOLIO • TEMPLATE' : 'PORTFOLIO PREVIEW';
+    const barLabel = isTemplateShowcase ? 'Template Showcase' : 'Portfolio Preview (Draft)';
+    const ctaLabel = isTemplateShowcase ? 'Use This Template in Studio ➔' : 'Publish Live (From ₹149) ➔';
 
-    const watermarkHtml = `
-    <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
-    <style id="preview-watermark-styles">
-      #preview-floating-bar {
-        position: fixed !important;
-        bottom: 12px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        z-index: 999998 !important;
-        background: rgba(15, 23, 42, 0.92) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.16) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        border-radius: 9999px !important;
-        padding: 3px 4px 3px 10px !important;
-        display: inline-flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-        align-items: center !important;
-        gap: 8px !important;
-        color: #ffffff !important;
-        font-family: system-ui, -apple-system, sans-serif !important;
-        font-size: 11.5px !important;
-        max-width: calc(100vw - 20px) !important;
-        box-sizing: border-box !important;
-        line-height: 1 !important;
-      }
-      #preview-floating-bar a.preview-cta-btn {
-        background: linear-gradient(135deg, #75c5de, #13708e) !important;
-        color: #08171c !important;
-        font-weight: 800 !important;
-        font-size: 11px !important;
-        padding: 5px 12px !important;
-        border-radius: 9999px !important;
-        text-decoration: none !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        white-space: nowrap !important;
-        box-shadow: 0 2px 8px rgba(117,197,222,0.3) !important;
-        line-height: 1 !important;
-      }
-      #preview-watermark-pill {
-        pointer-events: auto;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-family: system-ui, -apple-system, sans-serif;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255,255,255,0.22);
-        background: rgba(12, 12, 12, 0.85);
-        color: #ffffff;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-        line-height: 1;
-        white-space: nowrap;
-      }
-      @media (max-width: 540px) {
-        #preview-floating-bar {
-          bottom: 8px !important;
-          padding: 2.5px 3px 2.5px 8px !important;
-          gap: 6px !important;
-          font-size: 10.5px !important;
-        }
-        #preview-floating-bar .wm-hide-mobile {
-          display: none !important;
-        }
-        #preview-floating-bar a.preview-cta-btn {
-          font-size: 10px !important;
-          padding: 4px 8px !important;
-        }
-        #preview-watermark-pill {
-          padding: 3px 8px !important;
-          font-size: 9.5px !important;
-        }
-        #preview-watermark-pill .wm-hide-mobile {
-          display: none !important;
-        }
-      }
-    </style>
-    <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; user-select: none; color: rgba(255, 255, 255, 0.10); transition: color 0.25s ease;">
+    const diagonalSvg = isTemplateShowcase ? '' : `
       <!-- FULL-SCREEN DIAGONAL REPEATING WATERMARK SVG GRID -->
       <svg id="preview-watermark-svg" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="wm-pattern" width="420" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
-            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" letter-spacing="4" fill="currentColor">MYFOLIO • ${mainWatermarkWord}</text>
-            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="15" letter-spacing="3" fill="currentColor">${subWatermarkText}</text>
+            <text x="210" y="65" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" letter-spacing="4" fill="currentColor">MYFOLIO • PREVIEW</text>
+            <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="15" letter-spacing="3" fill="currentColor">PORTFOLIO PREVIEW</text>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#wm-pattern)" />
-      </svg>
+      </svg>`;
 
-      <!-- TOP FLOATING PILL BADGE -->
-      <div style="width: 100%; display: flex; justify-content: center; padding-top: 10px; position: relative; z-index: 2;">
-        <div id="preview-watermark-pill">
-          <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:5px;">
-            <span id="preview-watermark-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor;"></span>
-            <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
-          </span>
-          <span style="opacity: 0.4;">•</span>
-          <span style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
-        </div>
-      </div>
-
+    const bigDiagonal = isTemplateShowcase ? '' : `
       <!-- ONE BIG BOLD DIAGONAL CENTER MASTHEAD -->
       <div id="preview-big-diagonal" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-28deg); white-space: nowrap; pointer-events: none; user-select: none; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-transform: uppercase; color: currentColor; transition: color 0.25s ease; text-align: center; width: 100%; z-index: 1;">
         <div style="font-size: clamp(1rem, 2.2vw, 1.8rem); font-weight: 800; letter-spacing: 0.35em; opacity: 0.85; margin-bottom: 4px;">MYFOLIO.TECH</div>
-        <div style="font-size: clamp(3rem, 9vw, 8rem); font-weight: 900; letter-spacing: 0.14em; line-height: 0.9;">${mainWatermarkWord}</div>
-        <div style="font-size: clamp(0.75rem, 1.5vw, 1.2rem); font-weight: 700; letter-spacing: 0.25em; opacity: 0.75; margin-top: 6px;">${diagonalSubtitle}</div>
-      </div>
-    </div>
+        <div style="font-size: clamp(3rem, 9vw, 8rem); font-weight: 900; letter-spacing: 0.14em; line-height: 0.9;">PREVIEW</div>
+        <div style="font-size: clamp(0.75rem, 1.5vw, 1.2rem); font-weight: 700; letter-spacing: 0.25em; opacity: 0.75; margin-top: 6px;">PORTFOLIO PREVIEW • UNPUBLISHED DRAFT</div>
+      </div>`;
 
+    const floatingBarHtml = isTemplateShowcase ? `
+    <!-- ULTRA-THIN FLOATING BOTTOM TEMPLATE BAR -->
+    <div id="preview-floating-bar">
+      <div style="display: inline-flex; align-items: center; gap: 6px;">
+        <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
+        <span>✨ <strong>${barLabel}</strong><span class="wm-hide-mobile"> • MyFolio</span></span>
+      </div>
+      <a href="/studio?template=${encodeURIComponent(siteId)}" class="preview-cta-btn">
+        <span>${ctaLabel}</span>
+      </a>
+    </div>` : `
     <!-- ULTRA-THIN FLOATING BOTTOM CONVERSION & UNLOCK BAR -->
     <div id="preview-floating-bar">
       <div style="display: inline-flex; align-items: center; gap: 6px;">
@@ -219,8 +136,9 @@ class SiteGenerator {
       <a href="javascript:void(0)" class="preview-cta-btn" onclick="openPreviewCheckoutModal(); return false;">
         <span>${ctaLabel}</span>
       </a>
-    </div>
+    </div>`;
 
+    const modalHtml = isTemplateShowcase ? '' : `
     <!-- PRE-CHECKOUT PLAN & SUBDOMAIN SELECTION MODAL -->
     <div id="mf-plan-selection-modal" style="position:fixed; inset:0; z-index:9999999; background:rgba(4,7,16,0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); display:none; align-items:center; justify-content:center; padding:16px; font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
       <div style="background:#0D1117; border:1px solid rgba(255,255,255,0.14); border-radius:24px; max-width:620px; width:100%; padding:28px 24px; color:#FFFFFF; box-shadow:0 30px 80px rgba(0,0,0,0.85); position:relative; max-height:92vh; overflow-y:auto; text-align:left; box-sizing:border-box;">
@@ -309,11 +227,134 @@ class SiteGenerator {
       </div>
     </div>
 
-    <script src="/assets/youpi.js"></script>
+    <script src="/assets/youpi.js"></script>`;
+
+    const watermarkHtml = `
+    <!-- TOP PREVIEW ONLY // MYFOLIO.TECH PROMINENT WATERMARK OVERLAY (ABOVE PORTFOLIO) -->
+    <style id="preview-watermark-styles">
+      #preview-floating-bar {
+        position: fixed !important;
+        bottom: 12px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 999998 !important;
+        background: rgba(15, 23, 42, 0.92) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        border-radius: 9999px !important;
+        padding: 3px 4px 3px 10px !important;
+        display: inline-flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+        color: #ffffff !important;
+        font-family: system-ui, -apple-system, sans-serif !important;
+        font-size: 11.5px !important;
+        max-width: calc(100vw - 20px) !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+      }
+      #preview-floating-bar a.preview-cta-btn {
+        background: linear-gradient(135deg, #75c5de, #13708e) !important;
+        color: #08171c !important;
+        font-weight: 800 !important;
+        font-size: 11px !important;
+        padding: 5px 12px !important;
+        border-radius: 9999px !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 8px rgba(117,197,222,0.3) !important;
+        line-height: 1 !important;
+      }
+      #preview-watermark-pill {
+        pointer-events: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(12, 12, 12, 0.85);
+        color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+        line-height: 1;
+        white-space: nowrap;
+      }
+      @media (max-width: 540px) {
+        #preview-floating-bar {
+          bottom: 8px !important;
+          padding: 2.5px 3px 2.5px 8px !important;
+          gap: 6px !important;
+          font-size: 10.5px !important;
+        }
+        #preview-floating-bar .wm-hide-mobile {
+          display: none !important;
+        }
+        #preview-floating-bar a.preview-cta-btn {
+          font-size: 10px !important;
+          padding: 4px 8px !important;
+        }
+        #preview-watermark-pill {
+          padding: 3px 8px !important;
+          font-size: 9.5px !important;
+        }
+        #preview-watermark-pill .wm-hide-mobile {
+          display: none !important;
+        }
+      }
+    </style>
+    <div id="preview-watermark-overlay" style="position: fixed; inset: 0; pointer-events: none; z-index: 999999; overflow: hidden; display: flex; flex-direction: column; justify-content: ${isTemplateShowcase ? 'flex-start' : 'space-between'}; user-select: none; color: rgba(255, 255, 255, 0.10); transition: color 0.25s ease;">
+      ${diagonalSvg}
+
+      <!-- TOP FLOATING PILL BADGE -->
+      <div style="width: 100%; display: flex; justify-content: center; padding-top: 10px; position: relative; z-index: 2;">
+        <div id="preview-watermark-pill">
+          <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:5px;">
+            <span id="preview-watermark-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor;"></span>
+            <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
+          </span>
+          <span style="opacity: 0.4;">•</span>
+          <span style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
+        </div>
+      </div>
+
+      ${bigDiagonal}
+    </div>
+
+    ${floatingBarHtml}
+    ${modalHtml}
+
     <script id="preview-watermark-script">
+      // Auto-hide preview bars and overlays if embedded in an iframe (e.g. Studio preview) or explicitly requested
+      if (window.parent && window.parent !== window || new URLSearchParams(window.location.search).has('embed')) {
+        var fb = document.getElementById('preview-floating-bar');
+        if (fb) fb.style.display = 'none';
+        var wo = document.getElementById('preview-watermark-overlay');
+        if (wo) wo.style.display = 'none';
+      }
+
+      var isTemplate = ${isTemplateShowcase ? 'true' : 'false'};
       var selectedPublishPlan = 'starter';
 
       function openPreviewCheckoutModal() {
+        if (isTemplate) {
+          window.location.href = '/studio?template=${encodeURIComponent(siteId)}';
+          return;
+        }
+
         if (window.parent && window.parent !== window) {
           window.parent.postMessage({ type: 'OPEN_PUBLISH_MODAL' }, '*');
           return;

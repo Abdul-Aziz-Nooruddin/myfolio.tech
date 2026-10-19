@@ -21,27 +21,30 @@
   <meta name="description" content="Manage your developer identity, public portfolio domain, security, and account settings.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/app-tokens.css">
-  <link rel="stylesheet" href="/web/app-tokens.css">
+  <script src="/theme-toggle.js"></script>
   <script src="/sidebar.js"></script>
+  <script src="/turbo-nav.js" defer></script>
   <script src="/cookie-banner.js" defer></script>
   <script src="/analytics.js" defer></script>
 
-
   <style>
-    :root {
-      --mf-bg-primary: #0A0A0A;
-      --mf-bg-secondary: #111111;
-      --mf-surface: #141414;
-      --mf-surface-glass: #141414;
-      --mf-surface-glass-elevated: #181818;
-      --mf-border: #242424;
-      --mf-border-strong: #333333;
-      --mf-text-primary: #F4F1E8;
-      --mf-text-secondary: #A0A0A0;
-      --mf-text-muted: #666666;
-      --mf-accent-blue: #5FA5F9;
+    :root,
+    [data-theme="dark"],
+    html[data-theme="dark"] {
+      --mf-bg-primary: #0A0A0B;
+      --mf-bg-secondary: #111113;
+      --mf-surface: #141416;
+      --mf-surface-glass: #141416;
+      --mf-surface-glass-elevated: #1C1C21;
+      --mf-surface-subtle: #0F0F12;
+      --mf-border: rgba(255, 255, 255, 0.08);
+      --mf-border-strong: rgba(255, 255, 255, 0.14);
+      --mf-text-primary: #F8FAFC;
+      --mf-text-secondary: #94A3B8;
+      --mf-text-muted: #64748B;
+      --mf-accent-blue: #38BDF8;
       --mf-accent-violet: #818CF8;
-      --mf-success: #22C55E;
+      --mf-success: #10B981;
       --mf-error: #EF4444;
       --mf-radius-sm: 8px;
       --mf-radius-md: 12px;
@@ -50,6 +53,28 @@
       --mf-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --mf-font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --mf-font-mono: 'JetBrains Mono', monospace;
+      --mf-card-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"],
+    html[data-theme="light"],
+    body[data-theme="light"] {
+      --mf-bg-primary: #F8FAFC;
+      --mf-bg-secondary: #F1F5F9;
+      --mf-surface: #FFFFFF;
+      --mf-surface-glass: #FFFFFF;
+      --mf-surface-glass-elevated: #F8FAFC;
+      --mf-surface-subtle: #F1F5F9;
+      --mf-border: #E2E8F0;
+      --mf-border-strong: #CBD5E1;
+      --mf-text-primary: #0F172A;
+      --mf-text-secondary: #475569;
+      --mf-text-muted: #94A3B8;
+      --mf-accent-blue: #2563EB;
+      --mf-accent-violet: #6366F1;
+      --mf-success: #059669;
+      --mf-error: #DC2626;
+      --mf-card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
     }
 
     *, *::before, *::after {
@@ -57,24 +82,32 @@
     }
 
     html, body {
-      background-color: #0A0A0A !important;
-      color: #F4F1E8 !important;
+      background-color: var(--mf-bg-primary) !important;
+      color: var(--mf-text-primary) !important;
       font-family: var(--mf-font-sans) !important;
       min-height: 100vh;
       margin: 0;
       padding: 0;
       -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* Atmospheric Dark Vignette */
+    /* Atmospheric Vignette */
     .mf-atmospheric-bg {
       position: fixed;
       inset: 0;
       z-index: 0;
       background: 
-        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(95, 165, 249, 0.05) 0%, transparent 65%),
-        linear-gradient(180deg, #0A0A0A 0%, #111111 100%);
+        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
+        linear-gradient(180deg, #0A0A0B 0%, #111113 100%);
       pointer-events: none;
+      transition: background 0.25s ease;
+    }
+
+    [data-theme="light"] .mf-atmospheric-bg {
+      background: 
+        radial-gradient(ellipse 90% 60% at 50% -15%, rgba(37, 99, 235, 0.04) 0%, transparent 65%),
+        linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
     }
 
     .app-shell-layout {
@@ -113,21 +146,21 @@
     }
     .mf-input, .mf-textarea {
       width: 100%;
-      background: #141414;
-      border: 1px solid #282828;
+      background: var(--mf-surface-subtle);
+      border: 1px solid var(--mf-border);
       border-radius: var(--mf-radius-md, 12px);
       padding: 12px 16px;
       font-family: var(--mf-font-sans, 'Inter', sans-serif);
       font-size: 14.5px;
-      color: var(--mf-text-primary, #F4F1E8);
+      color: var(--mf-text-primary);
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
       box-sizing: border-box;
     }
     .mf-input:focus, .mf-textarea:focus {
-      border-color: #5FA5F9;
-      background: #161616;
-      box-shadow: 0 0 0 3px rgba(95, 165, 249, 0.15);
+      border-color: var(--mf-accent-blue);
+      background: var(--mf-surface);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
     .mf-textarea {
       min-height: 96px;
@@ -342,7 +375,7 @@
     .tab-btn {
       background: transparent;
       border: none;
-      color: var(--mf-text-secondary, #A8B2CC);
+      color: var(--mf-text-secondary);
       font-family: var(--mf-font-sans);
       font-size: 14px;
       font-weight: 600;
@@ -359,13 +392,28 @@
 
     .tab-btn:hover {
       color: var(--mf-text-primary);
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--mf-surface-subtle);
     }
 
     .tab-btn.active {
       color: var(--mf-accent-blue);
-      background: rgba(110, 168, 255, 0.08);
+      background: rgba(56, 189, 248, 0.1);
       border-bottom: 2px solid var(--mf-accent-blue);
+    }
+
+    [data-theme="light"] .tab-btn {
+      color: #64748B !important;
+    }
+
+    [data-theme="light"] .tab-btn:hover {
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+    }
+
+    [data-theme="light"] .tab-btn.active {
+      color: #2563EB !important;
+      background: #EFF6FF !important;
+      border-bottom: 2px solid #2563EB !important;
     }
 
     /* Tab Sections */
@@ -416,10 +464,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 16px;
-      background: rgba(8, 13, 32, 0.6);
+      background: var(--mf-surface-subtle);
       border: 1px solid var(--mf-border);
       border-radius: var(--mf-radius-md);
       margin-bottom: 10px;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .connection-brand {
@@ -511,6 +560,10 @@
           </div>
 
           <div class="identity-actions-dock">
+            <!-- Modern Minimal Theme Toggle Button -->
+            <button type="button" class="mf-btn mf-btn-secondary mf-btn-sm theme-toggle-btn" onclick="togglePlatformTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="padding: 7px 11px; border-radius: 9999px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
             <a href="/studio" target="_blank" rel="noopener noreferrer" class="mf-btn mf-btn-secondary mf-btn-sm" id="btnOpenLiveSite" style="display:none;">
               <span>Open Live Portfolio</span> &nearr;
             </a>
@@ -763,154 +816,181 @@
       }
     }
 
-    async function loadUserProfile() {
-      try {
-        const res = await fetch('/api/auth/me', { credentials: 'include' });
-        if (!res.ok) {
-          window.location.href = '/auth';
-          return;
-        }
+    function renderProfileData(userData, portfolios) {
+      if (!userData) return;
+      currentUserData = userData;
+      const email = (userData.email || '').toLowerCase().trim();
+      const name = userData.name || userData.username || (email ? email.split('@')[0] : 'Engineer');
+      const username = userData.username || (email ? email.split('@')[0] : 'developer');
+      const isVip = email === 'abdulaziznoor9876@gmail.com';
 
-        const data = await res.json();
-        currentUserData = data.user || data;
+      const elFullName = document.getElementById('profileFullName');
+      const elUsername = document.getElementById('profileUsername');
+      const elEmail = document.getElementById('profileEmail');
+      const elAvatar = document.getElementById('userAvatarChar');
+      if (elFullName) elFullName.textContent = name;
+      if (elUsername) elUsername.textContent = `@${username}`;
+      if (elEmail) elEmail.textContent = email;
+      if (elAvatar) elAvatar.textContent = name.charAt(0).toUpperCase();
 
-        const email = (currentUserData.email || '').toLowerCase().trim();
-        const name = currentUserData.name || currentUserData.username || (email ? email.split('@')[0] : 'Engineer');
-        const username = currentUserData.username || (email ? email.split('@')[0] : 'developer');
-        const isVip = email === 'abdulaziznoor9876@gmail.com';
+      const elInName = document.getElementById('inputName');
+      const elInEmail = document.getElementById('inputEmail');
+      const elInUser = document.getElementById('inputUsername');
+      if (elInName && !elInName.value) elInName.value = userData.name || '';
+      if (elInEmail && !elInEmail.value) elInEmail.value = email;
+      if (elInUser && !elInUser.value) elInUser.value = username;
 
-        document.getElementById('profileFullName').textContent = name;
-        document.getElementById('profileUsername').textContent = `@${username}`;
-        document.getElementById('profileEmail').textContent = email;
-        document.getElementById('userAvatarChar').textContent = name.charAt(0).toUpperCase();
-
-        document.getElementById('inputName').value = currentUserData.name || '';
-        document.getElementById('inputEmail').value = email;
-        document.getElementById('inputUsername').value = username;
-
-        // Plan Badge
-        const planBadge = document.getElementById('profilePlanBadge');
-        if (planBadge) {
-          if (isVip) {
-            planBadge.className = 'mf-badge mf-badge-vip';
-            planBadge.style.cssText = '';
-            planBadge.innerHTML = `<svg class="w-3.5 h-3.5 inline mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/></svg>VIP MASTER`;
-          } else {
-            planBadge.className = 'mf-badge';
-            planBadge.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA; font-weight:600; font-size:11px; padding:3px 8px; border-radius:9999px;';
-            planBadge.textContent = 'STARTER FREE';
-          }
-        }
-
-        // Fetch User Portfolios
-        let activeSite = null;
-        try {
-          const pRes = await fetch('/api/user/portfolios', { credentials: 'include' });
-          if (pRes.ok) {
-            const pData = await pRes.json();
-            const list = pData.portfolios || [];
-            if (list.length > 0) activeSite = list[0];
-          }
-        } catch (e) {
-          console.warn('Failed to load user portfolios:', e);
-        }
-
-        const statusBadgeContainer = document.getElementById('profileStatusBadgeContainer');
-        const statusBadge = document.getElementById('profileStatusBadge');
-        const btnOpenLive = document.getElementById('btnOpenLiveSite');
-        const domainCardWrap = document.getElementById('portfolioDomainCardWrap');
-
-        if (activeSite) {
-          const domainUrl = activeSite.subdomain ? (activeSite.subdomain.startsWith('http') ? activeSite.subdomain : `https://${activeSite.subdomain}`) : (activeSite.handle ? `https://${activeSite.handle}.myfolio.tech` : window.location.origin + activeSite.previewUrl);
-          if (statusBadgeContainer && statusBadge) {
-            statusBadgeContainer.className = 'mf-badge mf-badge-success';
-            statusBadgeContainer.style.cssText = '';
-            statusBadgeContainer.innerHTML = `<span class="mf-pulse-dot"></span><span id="profileStatusBadge">LIVE SUBDOMAIN</span>`;
-          }
-          if (btnOpenLive) {
-            btnOpenLive.style.display = 'inline-flex';
-            btnOpenLive.href = domainUrl;
-          }
-          if (domainCardWrap) {
-            domainCardWrap.innerHTML = `
-              <div style="background:rgba(8,13,32,0.6); border:1px solid var(--mf-border); border-radius:var(--mf-radius-md); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:12px;">
-                <div>
-                  <div style="font-family:var(--mf-font-mono); font-size:15px; font-weight:600; color:var(--mf-accent-blue);">
-                    ${domainUrl}
-                  </div>
-                  <div style="font-size:12px; color:var(--mf-text-muted); margin-top:4px;">
-                    Hosted on global edge CDN • Automated Edge SSL Active
-                  </div>
-                </div>
-                <a href="${domainUrl}" target="_blank" rel="noopener noreferrer" class="mf-btn mf-btn-secondary mf-btn-sm">
-                  <span>Visit Domain</span> &nearr;
-                </a>
-              </div>
-            `;
-          }
+      // Plan Badge
+      const planBadge = document.getElementById('profilePlanBadge');
+      if (planBadge) {
+        if (isVip) {
+          planBadge.className = 'mf-badge mf-badge-vip';
+          planBadge.style.cssText = '';
+          planBadge.innerHTML = `<svg class="w-3.5 h-3.5 inline mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/></svg>VIP MASTER`;
         } else {
-          if (statusBadgeContainer && statusBadge) {
-            statusBadgeContainer.className = 'mf-badge';
-            statusBadgeContainer.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA; font-size:10px; font-weight:600; padding:2px 8px; border-radius:9999px;';
-            statusBadgeContainer.innerHTML = `<span id="profileStatusBadge">PENDING BUILD</span>`;
-          }
-          if (btnOpenLive) {
-            btnOpenLive.style.display = 'none';
-          }
-          if (domainCardWrap) {
-            domainCardWrap.innerHTML = `
-              <div style="background:rgba(8,13,32,0.4); border:1px dashed rgba(255,255,255,0.12); border-radius:var(--mf-radius-md); padding:26px 20px; text-align:center; margin-bottom:1.5rem;">
-                <div style="font-size:14px; font-weight:600; color:#E4E4E7; margin-bottom:6px;">No Active Domain Yet</div>
-                <div style="font-size:12px; color:var(--mf-text-muted); max-width:440px; margin:0 auto 16px; line-height:1.5;">
-                  You haven't generated or published a live portfolio yet. Open Studio to assemble your 3D portfolio and link your custom <code style="color:#38bdf8;">${username}.myfolio.tech</code> domain.
+          planBadge.className = 'mf-badge';
+          planBadge.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA; font-weight:600; font-size:11px; padding:3px 8px; border-radius:9999px;';
+          planBadge.textContent = 'STARTER FREE';
+        }
+      }
+
+      // Active site domain
+      let activeSite = null;
+      if (portfolios && portfolios.length > 0) {
+        activeSite = portfolios[0];
+      }
+
+      const statusBadgeContainer = document.getElementById('profileStatusBadgeContainer');
+      const statusBadge = document.getElementById('profileStatusBadge');
+      const btnOpenLive = document.getElementById('btnOpenLiveSite');
+      const domainCardWrap = document.getElementById('portfolioDomainCardWrap');
+
+      if (activeSite) {
+        const domainUrl = activeSite.subdomain ? (activeSite.subdomain.startsWith('http') ? activeSite.subdomain : `https://${activeSite.subdomain}`) : (activeSite.handle ? `https://${activeSite.handle}.myfolio.tech` : window.location.origin + activeSite.previewUrl);
+        if (statusBadgeContainer && statusBadge) {
+          statusBadgeContainer.className = 'mf-badge mf-badge-success';
+          statusBadgeContainer.style.cssText = '';
+          statusBadgeContainer.innerHTML = `<span class="mf-pulse-dot"></span><span id="profileStatusBadge">LIVE SUBDOMAIN</span>`;
+        }
+        if (btnOpenLive) {
+          btnOpenLive.style.display = 'inline-flex';
+          btnOpenLive.href = domainUrl;
+        }
+        if (domainCardWrap) {
+          domainCardWrap.innerHTML = `
+            <div style="background:rgba(8,13,32,0.6); border:1px solid var(--mf-border); border-radius:var(--mf-radius-md); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-family:var(--mf-font-mono); font-size:15px; font-weight:600; color:var(--mf-accent-blue);">
+                  ${domainUrl}
                 </div>
-                <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm" style="display:inline-flex; align-items:center; gap:6px;">
-                  <span>Open Web Studio</span> &rarr;
+                <div style="font-size:12px; color:var(--mf-text-muted); margin-top:4px;">
+                  Hosted on global edge CDN • Automated Edge SSL Active
+                </div>
+              </div>
+              <a href="${domainUrl}" target="_blank" rel="noopener noreferrer" class="mf-btn mf-btn-secondary mf-btn-sm">
+                <span>Visit Domain</span> &nearr;
+              </a>
+            </div>
+          `;
+        }
+      } else if (portfolios !== null) {
+        if (statusBadgeContainer && statusBadge) {
+          statusBadgeContainer.className = 'mf-badge';
+          statusBadgeContainer.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA; font-size:10px; font-weight:600; padding:2px 8px; border-radius:9999px;';
+          statusBadgeContainer.innerHTML = `<span id="profileStatusBadge">PENDING BUILD</span>`;
+        }
+        if (btnOpenLive) {
+          btnOpenLive.style.display = 'none';
+        }
+        if (domainCardWrap) {
+          domainCardWrap.innerHTML = `
+            <div style="background:rgba(8,13,32,0.4); border:1px dashed rgba(255,255,255,0.12); border-radius:var(--mf-radius-md); padding:26px 20px; text-align:center; margin-bottom:1.5rem;">
+              <div style="font-size:14px; font-weight:600; color:#E4E4E7; margin-bottom:6px;">No Active Domain Yet</div>
+              <div style="font-size:12px; color:var(--mf-text-muted); max-width:440px; margin:0 auto 16px; line-height:1.5;">
+                You haven't generated or published a live portfolio yet. Open Studio to assemble your 3D portfolio and link your custom <code style="color:#38bdf8;">${username}.myfolio.tech</code> domain.
+              </div>
+              <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm" style="display:inline-flex; align-items:center; gap:6px;">
+                <span>Open Web Studio</span> &rarr;
+              </a>
+            </div>
+          `;
+        }
+      }
+
+      // Plan tab content
+      const planWrap = document.getElementById('planDetailsCardWrap');
+      if (planWrap) {
+        if (isVip) {
+          planWrap.innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+              <div>
+                <div style="font-size:1.25rem; font-weight:700; color:#FCD34D;">VIP Founder / Master Edition</div>
+                <div style="font-size:13px; color:var(--mf-text-secondary); margin-top:2px;">Unlimited weekly builds • Subdomain routing enabled</div>
+              </div>
+              <span class="mf-badge mf-badge-vip">ACTIVE</span>
+            </div>
+          `;
+        } else {
+          planWrap.innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+              <div>
+                <div style="font-size:1.25rem; font-weight:700; color:#FFFFFF;">Free Starter Tier</div>
+                <div style="font-size:13px; color:var(--mf-text-secondary); margin-top:2px;">
+                  Free preview builds • Upgrade to Pro Domain (₹149/mo) for your personal branded subdomain & edge hosting.
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span class="mf-badge" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA;">FREE</span>
+                <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm">
+                  <span>Upgrade to Pro (₹149/mo)</span> &rarr;
                 </a>
               </div>
-            `;
-          }
+            </div>
+          `;
         }
+      }
 
-        // Plan tab content
-        const planWrap = document.getElementById('planDetailsCardWrap');
-        if (planWrap) {
-          if (isVip) {
-            planWrap.innerHTML = `
-              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
-                <div>
-                  <div style="font-size:1.25rem; font-weight:700; color:#FCD34D;">VIP Founder / Master Edition</div>
-                  <div style="font-size:13px; color:var(--mf-text-secondary); margin-top:2px;">Unlimited weekly builds • Subdomain routing enabled</div>
-                </div>
-                <span class="mf-badge mf-badge-vip">ACTIVE</span>
-              </div>
-            `;
-          } else {
-            planWrap.innerHTML = `
-              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
-                <div>
-                  <div style="font-size:1.25rem; font-weight:700; color:#FFFFFF;">Free Starter Tier</div>
-                  <div style="font-size:13px; color:var(--mf-text-secondary); margin-top:2px;">
-                    Free preview builds • Upgrade to Pro Domain (₹149/mo) for your personal branded subdomain & edge hosting.
-                  </div>
-                </div>
-                <div style="display:flex; align-items:center; gap:10px;">
-                  <span class="mf-badge" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#A1A1AA;">FREE</span>
-                  <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm">
-                    <span>Upgrade to Pro (₹149/mo)</span> &rarr;
-                  </a>
-                </div>
-              </div>
-            `;
-          }
+      const statusGoogle = document.getElementById('statusGoogle');
+      if (statusGoogle) {
+        statusGoogle.textContent = (userData.emailVerified || userData.email_verified) ? 'Active' : 'Connected';
+      }
+    }
+
+    async function loadUserProfile() {
+      // 1. Instant Optimistic Render from Local Storage (0ms)
+      try {
+        const cachedUser = JSON.parse(localStorage.getItem('myfolio_user') || 'null');
+        const cachedPortfolios = JSON.parse(localStorage.getItem('myfolio_portfolios_cache') || 'null');
+        if (cachedUser) {
+          renderProfileData(cachedUser, cachedPortfolios);
         }
+      } catch (e) {}
 
-        const statusGoogle = document.getElementById('statusGoogle');
-        if (statusGoogle) {
-          statusGoogle.textContent = currentUserData.emailVerified ? 'Active' : 'Connected';
+      // 2. Parallel Network Revalidation
+      try {
+        const [authRes, portRes] = await Promise.allSettled([
+          fetch('/api/auth/me', { credentials: 'include' }),
+          fetch('/api/user/portfolios', { credentials: 'include' })
+        ]);
+
+        if (authRes.status === 'fulfilled' && authRes.value.ok) {
+          const authData = await authRes.value.json();
+          const freshUser = authData.user || authData;
+          localStorage.setItem('myfolio_user', JSON.stringify(freshUser));
+
+          let freshPortfolios = null;
+          if (portRes.status === 'fulfilled' && portRes.value.ok) {
+            const pData = await portRes.value.json();
+            freshPortfolios = pData.portfolios || [];
+            localStorage.setItem('myfolio_portfolios_cache', JSON.stringify(freshPortfolios));
+          }
+
+          renderProfileData(freshUser, freshPortfolios);
+        } else if (authRes.status === 'fulfilled' && authRes.value.status === 401) {
+          window.location.href = '/auth';
         }
       } catch (err) {
-        console.error('Failed to load profile:', err);
+        console.error('Failed to revalidate profile:', err);
       }
     }
 

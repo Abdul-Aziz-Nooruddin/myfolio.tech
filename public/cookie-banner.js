@@ -120,6 +120,27 @@
       .cookie-btn-secondary:hover {
         background: rgba(74, 63, 122, 0.55);
       }
+      [data-theme="light"] #myfolioCookieBanner,
+      html[data-theme="light"] #myfolioCookieBanner {
+        background: rgba(255, 255, 255, 0.96) !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        color: #0F172A !important;
+      }
+      [data-theme="light"] .cookie-title {
+        color: #0F172A !important;
+      }
+      [data-theme="light"] .cookie-desc {
+        color: #475569 !important;
+      }
+      [data-theme="light"] .cookie-btn-secondary {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      [data-theme="light"] .cookie-btn-secondary:hover {
+        background: #E2E8F0 !important;
+      }
       @media (max-width: 600px) {
         .cookie-btn-group {
           width: 100%;

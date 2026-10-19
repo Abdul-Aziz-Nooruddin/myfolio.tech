@@ -5,12 +5,13 @@
 
 const DEFAULT_FOUNDER_PROFILE = {
   name: 'Abdul Aziz Nooruddin',
-  role: 'Smart Contract Developer & Full-Stack AI Engineer',
-  title: 'Smart Contract Developer & Full-Stack AI Engineer',
-  headline: 'AI Systems & Machine Learning Researcher',
+  role: 'Computer Science & AI Student • Web3 Developer',
+  title: 'Computer Science & AI Student • Web3 Developer',
+  headline: 'CS & AI Student • Algorand & Web3 Protocol Builder',
+  careerStage: 'student',
   tagline: 'AI Student & Smart Contract Developer | Building Real-World Web3 Products | Blockchain • DeFi • RegTech 🇮🇳',
   bio: 'Computer Science & Artificial Intelligence student actively engineering open-source Web3 protocols, smart contracts on Algorand and Polygon, and immersive 3D developer experiences. Bridging cutting-edge research with shipped software.',
-  about: 'Specialized in decentralized systems, cryptographic verification, and spatial 3D WebGL interfaces. Architect of ConsentChain Algorand (DPDP Act 2023 compliance with automated micro-payment escrow) and creator of MyFolio. Committed to high-throughput, security-first architectures with zero boilerplate and mathematical precision.',
+  about: 'Specialized in decentralized systems, cryptographic verification, and spatial 3D WebGL interfaces. Creator of ConsentChain Algorand (DPDP Act 2023 compliance with automated micro-payment escrow) and builder of MyFolio. Committed to high-integrity architectures with zero boilerplate and mathematical precision.',
   email: 'abdulaziznoor9876@gmail.com',
   location: 'Hyderabad, India • Remote Web3',
   skills: [
