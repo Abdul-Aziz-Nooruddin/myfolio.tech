@@ -35,6 +35,7 @@ build/
 tmp/
 scratch/
 archive/
+tools/prospector/output/
 .design_memory.json
 public/sites/*
 !public/sites/.gitkeep
