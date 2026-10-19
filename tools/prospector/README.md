@@ -35,6 +35,18 @@ node tools/prospector/index.js --niche "Web3 Startups" --city "San Francisco" --
 
 ---
 
+### Automated Email Dispatch
+
+To automatically find leads, profile them, write sequences, AND send the emails without manual clicking:
+```bash
+node tools/prospector/index.js --niche "Fashion Designers" --city "New York" --limit 5 --auto-send
+```
+* Uses your configured SMTP from `.env` (`support@myfolio.tech` / Titan / Gmail).
+* Features automated 10-second pacing between sends to safeguard your domain sender reputation.
+* Automatically appends a standard 1-click unsubscribe opt-out footer.
+
+---
+
 ### View Output
 After running, open the visual dashboard in your browser:
 ```bash

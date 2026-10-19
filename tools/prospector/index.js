@@ -11,20 +11,23 @@ const { discoverBusinesses } = require('./discover');
 const { profileWebsite } = require('./profiler');
 const { writeEmailSequence } = require('./writer');
 const { generateDashboard } = require('./dashboard');
+const { sendOutreachEmail, getTransporter } = require('./sender');
 
-// Parse CLI flags (e.g. --city "Bangalore" --niche "Interior Designers" --limit 5)
+// Parse CLI flags (e.g. --city "Bangalore" --niche "Interior Designers" --limit 5 --auto-send)
 function parseArgs() {
   const args = process.argv.slice(2);
   const options = {
     city: 'Mumbai',
     niche: 'Architectural Studios',
-    limit: 3
+    limit: 3,
+    autoSend: false
   };
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--city' && args[i + 1]) options.city = args[++i];
     if (args[i] === '--niche' && args[i + 1]) options.niche = args[++i];
     if (args[i] === '--limit' && args[i + 1]) options.limit = parseInt(args[++i], 10) || 3;
+    if (args[i] === '--auto-send') options.autoSend = true;
   }
   return options;
 }
@@ -96,6 +99,29 @@ async function main() {
     csvRows.push(`"${r.name}","${r.city}","${r.website || ''}","${email}","${r.techStack.join(', ')}","${gaps}","${subj}"`);
   }
   fs.writeFileSync(csvPath, csvRows.join('\n'), 'utf8');
+
+  // Stage 4 (Optional): Automated Email Dispatch
+  if (autoSend) {
+    console.log('\n🚀 [STAGE 4/4] Automated Dispatch (--auto-send enabled)...');
+    for (const r of results) {
+      const recipient = (r.emails && r.emails[0]) || r.contactEmail;
+      if (!recipient) {
+        console.log(`   ⏭️  Skipping ${r.name} (no email address found).`);
+        continue;
+      }
+      process.stdout.write(`   ✉️  Sending Touch 1 to ${recipient} (${r.name})... `);
+      try {
+        const sendRes = await sendOutreachEmail(r, { delayMs: 10000 });
+        if (sendRes.success) {
+          console.log('✅ Sent! (Pacing 10s)');
+        } else {
+          console.log(`❌ Failed: ${sendRes.reason}`);
+        }
+      } catch (err) {
+        console.log(`❌ Error: ${err.message}`);
+      }
+    }
+  }
 
   console.log('\n======================================================');
   console.log('🎉 Prospecting Cycle Complete!');
