@@ -3,12 +3,28 @@
  * All database operations go through here
  */
 
+// Ensure WebSocket is defined for @supabase/supabase-js realtime initialization across any Node.js environment
+if (typeof globalThis.WebSocket === 'undefined') {
+  globalThis.WebSocket = class WebSocketShim {
+    constructor() {}
+    addEventListener() {}
+    removeEventListener() {}
+    send() {}
+    close() {}
+  };
+}
+
 const { createClient } = require('@supabase/supabase-js');
 
 class DatabaseService {
   constructor(supabaseUrl, supabaseKey) {
     if (supabaseUrl && supabaseKey) {
-      this.client = createClient(supabaseUrl, supabaseKey);
+      this.client = createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false
+        }
+      });
     } else {
       // In-memory / Mock client fallback for localized testing & graceful degradation
       this.client = this._createMockClient();
