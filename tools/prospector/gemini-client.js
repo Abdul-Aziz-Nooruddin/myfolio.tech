@@ -1,5 +1,6 @@
 /**
- * Prospector - Smart Gemini Client with Multi-Key Rotation and 429 Retry
+ * Prospector - Smart Multi-Model & Multi-Key Resilient Gemini Client
+ * Automatically cascades across models and rotates API keys to prevent 429/503 errors.
  */
 
 require('dotenv').config();
@@ -8,30 +9,41 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const rawKeys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
 let currentKeyIndex = 0;
 
-function getNextModel() {
+// High-speed, high-quota free tier models
+const CANDIDATE_MODELS = [
+  'gemini-flash-lite-latest',
+  'gemini-3.5-flash-lite',
+  'gemini-3.7-flash',
+  'gemini-3.8-flash'
+];
+
+async function callWithRetry(prompt, maxRetries = 6) {
   if (rawKeys.length === 0) {
     throw new Error('GEMINI_API_KEY not found in .env');
   }
-  const key = rawKeys[currentKeyIndex % rawKeys.length];
-  currentKeyIndex = (currentKeyIndex + 1) % rawKeys.length;
-  const genAI = new GoogleGenerativeAI(key);
-  return genAI.getGenerativeModel({ model: 'gemini-3.8-flash' });
-}
 
-async function callWithRetry(prompt, retries = 3) {
-  for (let attempt = 1; attempt <= retries; attempt++) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const key = rawKeys[currentKeyIndex % rawKeys.length];
+    const modelName = CANDIDATE_MODELS[attempt % CANDIDATE_MODELS.length];
+    currentKeyIndex = (currentKeyIndex + 1) % rawKeys.length;
+
     try {
-      const model = getNextModel();
+      const genAI = new GoogleGenerativeAI(key);
+      const model = genAI.getGenerativeModel({ model: modelName });
       const res = await model.generateContent(prompt);
       return res.response.text();
     } catch (err) {
-      const isRateLimit = err.message && (err.message.includes('429') || err.message.includes('Quota exceeded'));
-      if (isRateLimit && attempt < retries) {
-        // Rotate to next key and wait a moment
-        const waitSec = attempt * 4;
-        process.stdout.write(` [429 Quota - rotating key & waiting ${waitSec}s] `);
-        await new Promise(r => setTimeout(r, waitSec * 1000));
-      } else {
+      const isTransient = err.message && (
+        err.message.includes('429') ||
+        err.message.includes('503') ||
+        err.message.includes('Quota') ||
+        err.message.includes('high demand')
+      );
+
+      if (isTransient && attempt < maxRetries - 1) {
+        process.stdout.write(` [Demand spike on ${modelName} - shifting to ${CANDIDATE_MODELS[(attempt + 1) % CANDIDATE_MODELS.length]}] `);
+        await new Promise(r => setTimeout(r, 1500));
+      } else if (attempt === maxRetries - 1) {
         throw err;
       }
     }
