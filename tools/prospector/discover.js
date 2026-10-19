@@ -4,19 +4,9 @@
  */
 
 require('dotenv').config();
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-function getGeminiModel() {
-  const keys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
-  if (keys.length === 0) {
-    throw new Error('GEMINI_API_KEY not found in .env');
-  }
-  const genAI = new GoogleGenerativeAI(keys[0]);
-  return genAI.getGenerativeModel({ model: 'gemini-3.8-flash' });
-}
+const { callWithRetry } = require('./gemini-client');
 
 async function discoverBusinesses({ niche = 'architects', city = 'Mumbai', limit = 5 }) {
-  const model = getGeminiModel();
   const prompt = `You are a B2B sales research assistant.
 Find ${limit} real, existing companies or studios in the following category and location:
 - Category / Niche: ${niche}
@@ -41,8 +31,7 @@ Return ONLY valid JSON array with no extra markdown formatting:
   }
 ]`;
 
-  const response = await model.generateContent(prompt);
-  let text = response.response.text().trim();
+  let text = (await callWithRetry(prompt)).trim();
   
   // Clean markdown backticks if present
   if (text.startsWith('```json')) {

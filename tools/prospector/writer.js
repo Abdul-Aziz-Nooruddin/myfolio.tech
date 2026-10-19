@@ -4,16 +4,9 @@
  */
 
 require('dotenv').config();
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-function getGeminiModel() {
-  const keys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
-  const genAI = new GoogleGenerativeAI(keys[0]);
-  return genAI.getGenerativeModel({ model: 'gemini-3.8-flash' });
-}
+const { callWithRetry } = require('./gemini-client');
 
 async function writeEmailSequence(profile, senderInfo = {}) {
-  const model = getGeminiModel();
   const senderName = senderInfo.name || 'Abdul-Aziz';
   const myProduct = senderInfo.product || 'MyFolio (myfolio.tech)';
 
@@ -50,8 +43,7 @@ Return ONLY valid JSON matching this schema:
   }
 }`;
 
-  const res = await model.generateContent(prompt);
-  let text = res.response.text().trim();
+  let text = (await callWithRetry(prompt)).trim();
   
   if (text.startsWith('```json')) text = text.substring(7);
   if (text.startsWith('```')) text = text.substring(3);

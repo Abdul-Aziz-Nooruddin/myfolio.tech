@@ -33,7 +33,7 @@ function parseArgs() {
 }
 
 async function main() {
-  const { city, niche, limit } = parseArgs();
+  const { city, niche, limit, autoSend } = parseArgs();
 
   console.log('\n======================================================');
   console.log('⚡ HARVEY MINI - AUTONOMOUS B2B PROSPECTOR');
@@ -41,7 +41,8 @@ async function main() {
   console.log('======================================================');
   console.log(`🎯 Target:   ${niche}`);
   console.log(`📍 Location: ${city}`);
-  console.log(`🔢 Quantity: ${limit} prospects\n`);
+  console.log(`🔢 Quantity: ${limit} prospects`);
+  console.log(`✉️  Mode:     ${autoSend ? 'AUTOMATED EMAIL DISPATCH (--auto-send)' : 'LOCAL REVIEW (Manual Approval)'}\n`);
 
   // Stage 1: Discover
   console.log('🔍 [STAGE 1/3] Discovering real target businesses...');
@@ -73,6 +74,8 @@ async function main() {
       const seq = await writeEmailSequence(prof);
       results.push({ ...prof, sequence: seq });
       console.log('Done.');
+      // Pacing delay between LLM generations
+      await new Promise(r => setTimeout(r, 2000));
     } catch (err) {
       console.log('Failed writing:', err.message);
       results.push({ ...prof, sequence: null });
