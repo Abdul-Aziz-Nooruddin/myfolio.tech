@@ -261,7 +261,10 @@ function generateDashboard(prospects, outputPath) {
 
           <div class="actions">
             <button class="btn btn-primary" onclick="copyEmail(\${idx})">📋 Copy Draft</button>
-            \${l.emails && l.emails.length > 0 ? '<a class="btn btn-secondary" href="mailto:' + l.emails[0] + '?subject=' + encodeURIComponent(t1.subject) + '&body=' + encodeURIComponent(t1.body) + '">🚀 Open in Mail Client</a>' : ''}
+            \${l.emails && l.emails.length > 0 ? \`
+              <a class="btn" id="gmail-btn-\${idx}" style="background:#EA4335; color:#fff;" target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=\${encodeURIComponent(l.emails[0])}&su=\${encodeURIComponent(t1.subject)}&body=\${encodeURIComponent(t1.body)}">✉️ Open in Gmail</a>
+              <a class="btn btn-secondary" id="mail-btn-\${idx}" href="mailto:\${l.emails[0]}?subject=\${encodeURIComponent(t1.subject)}&body=\${encodeURIComponent(t1.body)}">📱 Default Mail</a>
+            \` : ''}
           </div>
         </div>
       \`;
@@ -274,6 +277,17 @@ function generateDashboard(prospects, outputPath) {
       const seq = l.sequence ? l.sequence['touch' + touchNum] : { subject: '', body: '' };
       document.getElementById('subject-' + idx).innerText = 'Subject: ' + seq.subject;
       document.getElementById('body-' + idx).innerText = seq.body;
+
+      if (l.emails && l.emails.length > 0) {
+        const gmailBtn = document.getElementById('gmail-btn-' + idx);
+        if (gmailBtn) {
+          gmailBtn.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(l.emails[0]) + '&su=' + encodeURIComponent(seq.subject) + '&body=' + encodeURIComponent(seq.body);
+        }
+        const mailBtn = document.getElementById('mail-btn-' + idx);
+        if (mailBtn) {
+          mailBtn.href = 'mailto:' + l.emails[0] + '?subject=' + encodeURIComponent(seq.subject) + '&body=' + encodeURIComponent(seq.body);
+        }
+      }
 
       const tabs = event.target.parentElement.querySelectorAll('.tab-btn');
       tabs.forEach(t => t.classList.remove('active'));
