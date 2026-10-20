@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions — MyFolio (Flat Design Demo)</title>
+  <link rel="stylesheet" href="/demo/flat-design.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <!-- Header Nav -->
+  <header class="flat-nav">
+    <div class="flat-container flat-nav-inner">
+      <a href="/demo/index.html" class="flat-brand">
+        <div class="flat-brand-icon">M</div>
+        <span>MyFolio</span>
+      </a>
+      <nav class="flat-nav-links">
+        <a href="/demo/studio.html" class="flat-nav-link">Studio</a>
+        <a href="/demo/pricing.html" class="flat-nav-link">Pricing</a>
+        <a href="/demo/about.html" class="flat-nav-link">About</a>
+        <a href="/demo/faq.html" class="flat-nav-link active">FAQ</a>
+        <a href="/demo/contact.html" class="flat-nav-link">Contact</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="/demo/auth.html" class="flat-btn flat-btn-outline flat-btn-sm">Sign In</a>
+        <a href="/demo/studio.html" class="flat-btn flat-btn-gold flat-btn-sm">Launch Studio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- FAQ Section -->
+  <section class="flat-section" style="padding-top: 72px; padding-bottom: 96px;">
+    <div class="flat-container" style="max-width: 840px;">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <div class="flat-badge flat-badge-gold" style="margin-bottom: 20px;">KNOWLEDGE BASE</div>
+        <h1 class="flat-h1" style="margin-bottom: 20px;">Frequently Asked Questions</h1>
+        <p class="flat-lead">Everything you need to know about MyFolio, source code exports, and custom domains.</p>
+      </div>
+
+      <!-- Flat Accordion List -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="flat-card" style="padding: 24px;">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 8px;">What does "Full Source Code Export" actually include?</h3>
+          <p class="flat-body">When you download your portfolio ZIP, you get 100% clean, standalone HTML, CSS, JavaScript files, and 3D assets. There are no obfuscated bundles, no mandatory Node.js runtime, and zero external proprietary dependencies. You can double-click `index.html` on your desktop or push directly to GitHub Pages.</p>
+        </div>
+
+        <div class="flat-card" style="padding: 24px;">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 8px;">Can I host my portfolio on Vercel, Netlify, or AWS?</h3>
+          <p class="flat-body">Yes. Because every exported website is built on standard web technologies, you can deploy your exported folder to Vercel, Netlify, Cloudflare Pages, AWS S3, or any basic Apache/Nginx web server with zero configuration.</p>
+        </div>
+
+        <div class="flat-card" style="padding: 24px;">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 8px;">How does custom domain mapping work?</h3>
+          <p class="flat-body">If you prefer MyFolio to handle high-speed global hosting, simply enter your custom domain (like `jane.dev`) in the Dashboard and add the two DNS records provided. We automatically provision an SSL certificate and serve your portfolio via global Cloudflare edge caching.</p>
+        </div>
+
+        <div class="flat-card" style="padding: 24px;">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 8px;">Are there any recurring monthly charges?</h3>
+          <p class="flat-body">No. MyFolio operates on a transparent, developer-friendly one-time license. Once unlocked for ₹149, your portfolio is yours forever with unlimited revisions and free downloads.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Injected Demo Switcher Bar -->
+  <script src="/demo/demo-bar.js"></script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+/* ==========================================================================
+   MyFolio — Flat Design System
+   Minimalist 2D visual language matching MyFolio landing page colors
+   - Solid colors (Space Void, Solar Gold, Cobalt Blue, Crisp White, Slate)
+   - Two-dimensional surfaces (Zero blurry shadows, crisp 1px borders)
+   - Simple 2D stroke icons
+   - Soft rounded edges (8px - 14px)
+   - Ample whitespace & breathable layout geometry
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Flat Light Palette (Primary) */
+  --flat-bg: #FFFFFF;
+  --flat-bg-subtle: #F8FAFC;
+  --flat-surface: #FFFFFF;
+  --flat-surface-alt: #F1F5F9;
+  --flat-surface-raised: #FFFFFF;
+  
+  /* Text & Contrast */
+  --flat-ink: #0F172A;
+  --flat-ink-secondary: #334155;
+  --flat-muted: #64748B;
+  --flat-subtle: #94A3B8;
+  --flat-white: #FFFFFF;
+
+  /* Landing Page Brand Colors */
+  --flat-gold: #F5A623;
+  --flat-gold-hover: #E09618;
+  --flat-gold-subtle: #FEF3C7;
+  --flat-gold-ink: #78350F;
+  --flat-void: #06070B;
+  --flat-blue: #2563EB;
+  --flat-blue-hover: #1D4ED8;
+  --flat-blue-subtle: #EFF6FF;
+  --flat-emerald: #10B981;
+  --flat-emerald-subtle: #D1FAE5;
+  --flat-coral: #EF4444;
+  --flat-coral-subtle: #FEE2E2;
+
+  /* 2D Flat Borders (No Gradients) */
+  --flat-border: #E2E8F0;
+  --flat-border-strong: #CBD5E1;
+  --flat-border-focus: #0F172A;
+
+  /* Soft Edges */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing Scale (Ample Whitespace) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --container-max: 1200px;
+}
+
+[data-theme="dark"] {
+  /* Flat Dark Palette (Matches Void Landing Theme) */
+  --flat-bg: #06070B;
+  --flat-bg-subtle: #0B0E14;
+  --flat-surface: #0F172A;
+  --flat-surface-alt: #1E293B;
+  --flat-surface-raised: #1A2234;
+
+  --flat-ink: #F8FAFC;
+  --flat-ink-secondary: #E2E8F0;
+  --flat-muted: #94A3B8;
+  --flat-subtle: #64748B;
+  --flat-white: #06070B;
+
+  --flat-border: #1E293B;
+  --flat-border-strong: #334155;
+  --flat-border-focus: #F5A623;
+
+  --flat-gold-subtle: rgba(245, 166, 35, 0.15);
+  --flat-gold-ink: #F5A623;
+  --flat-blue-subtle: rgba(37, 99, 235, 0.18);
+  --flat-emerald-subtle: rgba(16, 185, 129, 0.15);
+  --flat-coral-subtle: rgba(239, 68, 68, 0.15);
+}
+
+/* ==========================================================================
+   Base & Reset
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--flat-bg);
+  color: var(--flat-ink);
+  line-height: 1.65;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+/* Container */
+.flat-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+/* ==========================================================================
+   Flat Typography
+   ========================================================================== */
+.flat-h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--flat-ink);
+}
+
+.flat-h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--flat-ink);
+}
+
+.flat-h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--flat-ink);
+}
+
+.flat-lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--flat-muted);
+  font-weight: 400;
+}
+
+.flat-body {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--flat-ink-secondary);
+}
+
+.flat-caption {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--flat-muted);
+}
+
+/* ==========================================================================
+   Flat UI Components (Pure 2D, Solid Colors, Soft Edges)
+   ========================================================================== */
+
+/* Buttons */
+.flat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.flat-btn:active {
+  transform: translateY(1px);
+}
+
+.flat-btn-primary {
+  background-color: var(--flat-ink);
+  color: var(--flat-bg);
+  border-color: var(--flat-ink);
+}
+
+.flat-btn-primary:hover {
+  background-color: #1E293B;
+  border-color: #1E293B;
+}
+
+[data-theme="dark"] .flat-btn-primary:hover {
+  background-color: #E2E8F0;
+  border-color: #E2E8F0;
+}
+
+.flat-btn-gold {
+  background-color: var(--flat-gold);
+  color: #06070B;
+  border-color: var(--flat-gold);
+  font-weight: 700;
+}
+
+.flat-btn-gold:hover {
+  background-color: var(--flat-gold-hover);
+  border-color: var(--flat-gold-hover);
+}
+
+.flat-btn-blue {
+  background-color: var(--flat-blue);
+  color: #FFFFFF;
+  border-color: var(--flat-blue);
+}
+
+.flat-btn-blue:hover {
+  background-color: var(--flat-blue-hover);
+  border-color: var(--flat-blue-hover);
+}
+
+.flat-btn-outline {
+  background-color: transparent;
+  color: var(--flat-ink);
+  border-color: var(--flat-border-strong);
+}
+
+.flat-btn-outline:hover {
+  border-color: var(--flat-ink);
+  background-color: var(--flat-bg-subtle);
+}
+
+.flat-btn-subtle {
+  background-color: var(--flat-surface-alt);
+  color: var(--flat-ink);
+  border-color: var(--flat-surface-alt);
+}
+
+.flat-btn-subtle:hover {
+  background-color: var(--flat-border);
+}
+
+.flat-btn-sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+}
+
+.flat-btn-lg {
+  padding: 16px 32px;
+  font-size: 1.05rem;
+  border-radius: var(--radius-lg);
+}
+
+/* Badges / Pills */
+.flat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.flat-badge-gold {
+  background-color: var(--flat-gold-subtle);
+  color: var(--flat-gold-ink);
+  border-color: rgba(245, 166, 35, 0.3);
+}
+
+.flat-badge-blue {
+  background-color: var(--flat-blue-subtle);
+  color: var(--flat-blue);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.flat-badge-emerald {
+  background-color: var(--flat-emerald-subtle);
+  color: #065F46;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.flat-badge-gray {
+  background-color: var(--flat-surface-alt);
+  color: var(--flat-muted);
+  border-color: var(--flat-border);
+}
+
+/* Cards (Pure 2D Flat) */
+.flat-card {
+  background-color: var(--flat-surface);
+  border: 1px solid var(--flat-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.flat-card:hover {
+  border-color: var(--flat-border-strong);
+}
+
+.flat-card-interactive {
+  cursor: pointer;
+}
+
+.flat-card-interactive:hover {
+  border-color: var(--flat-ink);
+  background-color: var(--flat-bg-subtle);
+}
+
+.flat-card-gold {
+  background-color: var(--flat-surface);
+  border: 2px solid var(--flat-gold);
+}
+
+/* Input Fields */
+.flat-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--flat-border-strong);
+  background-color: var(--flat-surface);
+  color: var(--flat-ink);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.flat-input:focus {
+  border-color: var(--flat-ink);
+}
+
+.flat-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--flat-ink);
+  margin-bottom: var(--space-2);
+}
+
+/* Section Geometry & Whitespace */
+.flat-section {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+}
+
+.flat-section-sm {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.flat-section-alt {
+  background-color: var(--flat-bg-subtle);
+  border-top: 1px solid var(--flat-border);
+  border-bottom: 1px solid var(--flat-border);
+}
+
+/* Grid Utilities */
+.flat-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-8);
+}
+
+.flat-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+}
+
+.flat-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .flat-grid-3, .flat-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .flat-grid-2, .flat-grid-3, .flat-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Flat Nav */
+.flat-nav {
+  position: sticky;
+  top: 48px; /* Offset for demo switcher bar */
+  z-index: 90;
+  background-color: var(--flat-surface);
+  border-bottom: 1px solid var(--flat-border);
+}
+
+.flat-nav-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flat-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--flat-ink);
+  letter-spacing: -0.03em;
+}
+
+.flat-brand-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background-color: var(--flat-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #06070B;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.flat-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.flat-nav-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--flat-muted);
+  transition: color 0.15s ease;
+}
+
+.flat-nav-link:hover, .flat-nav-link.active {
+  color: var(--flat-ink);
+}
+
+/* Flat Footer */
+.flat-footer {
+  border-top: 1px solid var(--flat-border);
+  padding: var(--space-16) 0 var(--space-8);
+  background-color: var(--flat-surface);
+}
+
+.flat-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+@media (max-width: 768px) {
+  .flat-footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.flat-footer-col h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--flat-ink);
+  margin-bottom: var(--space-4);
+}
+
+.flat-footer-col ul {
+  list-style: none;
+}
+
+.flat-footer-col li {
+  margin-bottom: var(--space-2);
+}
+
+.flat-footer-col a {
+  font-size: 0.9rem;
+  color: var(--flat-muted);
+  transition: color 0.15s ease;
+}
+
+.flat-footer-col a:hover {
+  color: var(--flat-ink);
+}
+
+.flat-footer-bottom {
+  border-top: 1px solid var(--flat-border);
+  padding-top: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--flat-muted);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}

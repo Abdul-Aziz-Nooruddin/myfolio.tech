@@ -192,7 +192,7 @@ app.use((req, res, next) => {
   // Trailing slash normalizer for single-segment page routes only (e.g. /studio/ -> /studio).
   // Static directories (/sites/<id>/, /assets/...) are excluded to avoid redirect loops with express.static.
   if (req.method === 'GET' && /^\/[a-z0-9-]+\/$/i.test(req.path) &&
-      !/^\/(sites|p|assets|web|images|landing-pages|design-preview|secret-pathways-assets|data|api)\/$/i.test(req.path)) {
+      !/^\/(sites|p|assets|web|images|landing-pages|design-preview|demo|secret-pathways-assets|data|api)\/$/i.test(req.path)) {
     return res.redirect(301, req.path.slice(0, -1) + req.url.slice(req.path.length));
   }
   next();
@@ -3972,6 +3972,24 @@ app.get(['/design-preview', '/design-preview/*'], (req, res) => {
     }
   }
   res.sendFile(path.join(webDir, 'design-preview', 'index.html'));
+});
+
+// Dedicated Flat Design Demo Suite (Visual Approval Mode)
+app.get(['/demo', '/demo/*'], (req, res) => {
+  const reqPath = req.params[0] || '';
+  const cleanPath = reqPath.replace(/^\/+|\/+$/g, '');
+  const demoDir = path.join(webDir, 'demo');
+  if (cleanPath) {
+    const directFile = path.join(demoDir, cleanPath);
+    const htmlFile = path.join(demoDir, `${cleanPath}.html`);
+    if (fs.existsSync(directFile) && fs.statSync(directFile).isFile()) {
+      return res.sendFile(directFile);
+    }
+    if (fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile()) {
+      return res.sendFile(htmlFile);
+    }
+  }
+  res.sendFile(path.join(demoDir, 'index.html'));
 });
 
 // ==========================================

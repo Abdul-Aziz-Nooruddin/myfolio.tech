@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings — MyFolio (Flat Design Demo)</title>
+  <link rel="stylesheet" href="/demo/flat-design.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <!-- Flat Nav -->
+  <header class="flat-nav">
+    <div class="flat-container flat-nav-inner">
+      <a href="/demo/index.html" class="flat-brand">
+        <div class="flat-brand-icon">M</div>
+        <span>MyFolio</span>
+      </a>
+      <nav class="flat-nav-links">
+        <a href="/demo/dashboard.html" class="flat-nav-link">Dashboard</a>
+        <a href="/demo/studio.html" class="flat-nav-link">Studio</a>
+        <a href="/demo/pricing.html" class="flat-nav-link">Pricing</a>
+        <a href="/demo/profile.html" class="flat-nav-link active">Settings</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size: 0.85rem; font-weight: 600;">@abdulaziz</span>
+        <div style="width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--flat-gold); color: #06070B; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">A</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Settings Content -->
+  <main class="flat-section" style="padding-top: 48px; padding-bottom: 96px;">
+    <div class="flat-container" style="max-width: 860px;">
+      <div style="margin-bottom: 36px;">
+        <div class="flat-badge flat-badge-gold" style="margin-bottom: 8px;">USER PREFERENCES</div>
+        <h1 class="flat-h2">Profile & Portfolio Identity</h1>
+        <p class="flat-lead" style="font-size: 1rem;">Manage your public developer profile coordinates and sync settings.</p>
+      </div>
+
+      <!-- Settings Cards -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Card 1: Candidate Identity -->
+        <div class="flat-card">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 16px;">Candidate Identity</h3>
+          <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--flat-border);">
+            <div style="width: 64px; height: 64px; border-radius: var(--radius-md); background: #06070B; color: #F5A623; font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; border: 2px solid var(--flat-gold);">
+              AZ
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 1.1rem; color: var(--flat-ink);">Abdul Aziz Nooruddin</div>
+              <div style="font-size: 0.85rem; color: var(--flat-muted);">Primary author of myfolio.tech & pass-a-note</div>
+            </div>
+            <button class="flat-btn flat-btn-outline flat-btn-sm" style="margin-left: auto;">Change Avatar</button>
+          </div>
+
+          <div class="flat-grid-2" style="margin-bottom: 16px;">
+            <div>
+              <label class="flat-label">Full Name</label>
+              <input type="text" class="flat-input" value="Abdul Aziz Nooruddin">
+            </div>
+            <div>
+              <label class="flat-label">Public Portfolio Handle</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" class="flat-input" value="aziz" style="font-family: var(--font-mono);">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label class="flat-label">Professional Headline</label>
+            <input type="text" class="flat-input" value="Systems Architect & High-Craft WebGL Engineer">
+          </div>
+
+          <div>
+            <label class="flat-label">Bio Narrative</label>
+            <textarea class="flat-input" rows="3" style="resize: vertical;">Building resilient distributed web systems, cryptographic peer-to-peer protocols, and real-time 3D spatial user interfaces.</textarea>
+          </div>
+        </div>
+
+        <!-- Card 2: Connected Integrations -->
+        <div class="flat-card">
+          <h3 class="flat-h3" style="font-size: 1.15rem; margin-bottom: 16px;">Connected Integrations</h3>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="padding: 16px; background: var(--flat-surface-alt); border-radius: var(--radius-sm); border: 1px solid var(--flat-border); display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 700; font-size: 0.95rem;">GitHub</span>
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--flat-muted);">@Abdul-Aziz-Nooruddin</span>
+                <span class="flat-badge flat-badge-emerald">CONNECTED</span>
+              </div>
+              <button class="flat-btn flat-btn-outline flat-btn-sm">Re-sync Repos</button>
+            </div>
+
+            <div style="padding: 16px; background: var(--flat-surface-alt); border-radius: var(--radius-sm); border: 1px solid var(--flat-border); display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 700; font-size: 0.95rem;">Email Dispatch</span>
+                <span style="font-size: 0.85rem; color: var(--flat-muted);">support@myfolio.tech</span>
+                <span class="flat-badge flat-badge-emerald">VERIFIED</span>
+              </div>
+              <button class="flat-btn flat-btn-outline flat-btn-sm">Manage</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Save Button -->
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button class="flat-btn flat-btn-outline">Cancel</button>
+          <button class="flat-btn flat-btn-gold" onclick="alert('Settings saved in demo mode!')">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Injected Demo Switcher Bar -->
+  <script src="/demo/demo-bar.js"></script>
+</body>
+</html>
