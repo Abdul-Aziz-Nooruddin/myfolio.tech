@@ -4364,7 +4364,10 @@ app.get('/p/:siteId', async (req, res) => {
   }
 
   // Retrieve site HTML from in-memory draft cache, disk, or Supabase Storage recovery
-  let html = globalDraftsCache.get(siteId)?.html || await hostingProvider.getSiteHtml(siteId);
+  const cachedDraftHtml = globalDraftsCache.get(siteId)?.html;
+  let html = (cachedDraftHtml && cachedDraftHtml.includes('<body') && cachedDraftHtml.includes('</body>'))
+    ? cachedDraftHtml
+    : await hostingProvider.getSiteHtml(siteId);
 
   // VIP Founder Instant Synthesis Fallback: If abdulaziz site is not yet on disk, synthesize on the fly
   if (!html && siteId === 'abdulaziz') {

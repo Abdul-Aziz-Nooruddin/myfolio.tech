@@ -137,7 +137,11 @@ class HostingProvider {
     for (const filePath of candidates) {
       if (fs.existsSync(filePath)) {
         try {
-          return fs.readFileSync(filePath, 'utf8');
+          const content = fs.readFileSync(filePath, 'utf8');
+          // Guard against corrupted or truncated caches missing <body>
+          if (content && content.includes('<body') && content.includes('</body>')) {
+            return content;
+          }
         } catch (e) {}
       }
     }
