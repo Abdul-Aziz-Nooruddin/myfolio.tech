@@ -4614,14 +4614,7 @@ app.get('/p/:siteId', async (req, res) => {
       (isTemplateShowcase && (html.includes('preview-watermark-svg') || html.includes('Buy Build & Remove Watermark')));
 
     if (hasOutdatedWatermark) {
-      html = html.replace(/<!--[\s\S]*?WATERMARK OVERLAY[\s\S]*?-->[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-      html = html.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-      html = html.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>/gi, '');
-      html = html.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>/gi, '');
-      html = html.replace(/<script[^>]*id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<script>[\s\S]*?updateWatermarkLuminance[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<script>[\s\S]*?syncWatermarkTheme[\s\S]*?<\/script>/gi, '');
+      html = siteGenerator.stripPreviewWatermark(html);
     }
 
     if (!html.includes('id="preview-watermark-overlay"')) {

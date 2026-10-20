@@ -635,6 +635,27 @@ class SiteGenerator {
     return html + watermarkHtml;
   }
 
+  static stripPreviewWatermark(html) {
+    if (!html) return html;
+    return html
+      .replace(/<style[^>]*id="preview-watermark-styles"[\s\S]*?<\/style>/gi, '')
+      .replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?(?=(?:<!--\s*(?:FLOATING|ULTRA-THIN|PRE-CHECKOUT)|<div[^>]*id="preview-floating-bar"|<div[^>]*class="[^"]*preview-bar|<script[^>]*id="preview-watermark|<body|<\/body|$))/gi, '')
+      .replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>/gi, '')
+      .replace(/<div[^>]*class="[^"]*preview-bar[^"]*"[\s\S]*?<\/div>/gi, '')
+      .replace(/<div[^>]*id="mf-plan-selection-modal"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+      .replace(/<div[^>]*id="mf-plan-selection-modal"[\s\S]*?<\/div>/gi, '')
+      .replace(/<script[^>]*src="[^"]*youpi\.js"[^>]*><\/script>/gi, '')
+      .replace(/<script[^>]*id="preview-watermark-script"[\s\S]*?<\/script>/gi, '')
+      .replace(/<script[\s\S]*?syncWatermarkTheme[\s\S]*?<\/script>/gi, '')
+      .replace(/<script>[\s\S]*?updateWatermarkLuminance[\s\S]*?<\/script>/gi, '')
+      .replace(/<div[^>]*class="[^"]*watermark-diagonal-strip[^"]*"[\s\S]*?<\/div>/gi, '')
+      .replace(/<!--[^\n>]*?(?:WATERMARK|FLOATING BOTTOM|PORTFOLIO PREVIEW|PRE-CHECKOUT PLAN)[^\n>]*?-->/gi, '');
+  }
+
+  stripPreviewWatermark(html) {
+    return SiteGenerator.stripPreviewWatermark(html);
+  }
+
   injectSiteTelemetry(html, siteId = '') {
     if (!html) return html;
     const hoverCssTag = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">`;

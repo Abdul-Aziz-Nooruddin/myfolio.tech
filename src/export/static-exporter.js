@@ -111,15 +111,8 @@ class StaticExporter {
     let clean = html;
 
     // Remove preview watermark banner, diagonal overlay, and accompanying script
-    clean = clean.replace(/<!--[\s\S]*?WATERMARK OVERLAY[\s\S]*?-->[\s\S]*?<\/script>/gi, '');
-    clean = clean.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-    clean = clean.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-    clean = clean.replace(/<div[^>]*id="preview-floating-bar"[\s\S]*?<\/div>/gi, '');
-    clean = clean.replace(/<div[^>]*id="preview-watermark-overlay"[\s\S]*?<\/div>/gi, '');
-    clean = clean.replace(/<script id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
-    clean = clean.replace(/<script[\s\S]*?syncWatermarkTheme[\s\S]*?<\/script>/gi, '');
-    clean = clean.replace(/<div[^>]*class="[^"]*watermark[^"]*"[\s\S]*?<\/div>/gi, '');
-    clean = clean.replace(/<div[^>]*class="[^"]*preview-bar[^"]*"[\s\S]*?<\/div>/gi, '');
+    const { SiteGenerator } = require('../services/site-generator');
+    clean = SiteGenerator.stripPreviewWatermark(clean);
 
     // Replace localhost or internal preview URLs with relative links
     clean = clean.replace(/http:\/\/localhost:\d+[^\s"'>]*/gi, '#');

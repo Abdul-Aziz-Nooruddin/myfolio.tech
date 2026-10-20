@@ -259,12 +259,8 @@ class HostingProvider {
 
     if (html) {
       // Strip watermark overlay and floating bar
-      html = html.replace(/<!--[\s\S]*?WATERMARK OVERLAY[\s\S]*?-->[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<div id="preview-watermark-overlay"[\s\S]*?<\/div>\s*<\/div>/gi, '');
-      html = html.replace(/<div id="preview-floating-bar"[\s\S]*?<\/div>/gi, '');
-      html = html.replace(/<script id="preview-watermark-script"[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<script[\s\S]*?syncWatermarkTheme[\s\S]*?<\/script>/gi, '');
-      html = html.replace(/<script>[\s\S]*?updateWatermarkLuminance[\s\S]*?<\/script>/gi, '');
+      const { SiteGenerator } = require('./site-generator');
+      html = SiteGenerator.stripPreviewWatermark(html);
 
       try {
         fs.mkdirSync(siteDir, { recursive: true });
