@@ -649,6 +649,20 @@ const razorpayService = youpiService;
 const lifecycleService = new LifecycleService(dbService, emailService, null, hostingProvider);
 if (require.main === module) {
   lifecycleService.startScheduler('0 * * * *'); // Hourly deterministic check
+
+  // Render Anti-Spin-Down Keepalive: Pings /healthz every 10 minutes to prevent Render free-tier cold starts & Cloudflare 524 timeouts
+  if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
+    const keepAliveUrl = (process.env.HOST_URL || 'https://myfolio.tech') + '/healthz';
+    setInterval(async () => {
+      try {
+        if (typeof fetch === 'function') {
+          await fetch(keepAliveUrl, { signal: AbortSignal.timeout(10000) });
+        }
+      } catch (err) {
+        // Silently ignore ping errors
+      }
+    }, 10 * 60 * 1000).unref();
+  }
 }
 
 // Initialize GitHub AI Portfolio Generation Pipeline

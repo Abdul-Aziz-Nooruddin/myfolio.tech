@@ -1,0 +1,15 @@
+name: Render Free-Tier Keep Alive
+
+on:
+  schedule:
+    # Run every 10 minutes to prevent Render free-tier instance from sleeping (15-min idle cutoff)
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-origin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping MyFolio Healthz Endpoint
+        run: |
+          curl -f -s -S -m 30 https://myfolio.tech/healthz || true
