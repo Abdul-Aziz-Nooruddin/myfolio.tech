@@ -855,7 +855,7 @@ const ApogeeSpatialTemplate = {
                   </div>
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">GitHub Profile</div>
-                    <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.githubUrl.replace(/^https?:\/\//i, '')}</a>
+                    <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.githubUrl.replace('https://', '').replace('http://', '')}</a>
                   </div>
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Live Studio</div>
@@ -884,7 +884,7 @@ const ApogeeSpatialTemplate = {
                       </div>
                       <div>
                         <label className="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">Message / Project Scope</label>
-                        <textarea rows={4} required placeholder="Hi " + CANDIDATE.name + ", we would love to discuss..." className="w-full p-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"></textarea>
+                        <textarea rows={4} required placeholder={"Hi " + CANDIDATE.name + ", we would love to discuss..."} className="w-full p-4 rounded-xl bg-black/30 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white"></textarea>
                       </div>
                       <button type="submit" className="w-full h-14 bg-white text-black font-anton uppercase text-xl rounded-xl tracking-wider hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2">
                         <span>Dispatch Direct Message</span>
