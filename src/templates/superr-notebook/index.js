@@ -267,33 +267,30 @@ const SuperrNotebookTemplate = {
   <!-- ======================================================== -->
   <!-- 01. STICKY TOP NOTEBOOK HEADER                           -->
   <!-- ======================================================== -->
-  <header class="fixed top-3 z-50 w-full px-3 sm:px-6 pointer-events-none">
-    <div class="max-w-[1280px] mx-auto flex items-center justify-between py-2 px-3 sm:px-5 bg-superr-paper/95 backdrop-blur-md superr-border rounded-[20px] superr-shadow pointer-events-auto">
+  <!-- ======================================================== -->
+  <!-- 01. STICKY TOP NOTEBOOK HEADER                           -->
+  <!-- ======================================================== -->
+  <header class="fixed top-4 z-50 w-full px-4 sm:px-8 pointer-events-none">
+    <div class="max-w-[1360px] mx-auto flex items-center justify-between py-2.5 px-4 sm:px-6 bg-[#FAF8F5]/90 backdrop-blur-md border-[2px] border-[#2B1A07] rounded-[22px] shadow-sm pointer-events-auto">
       
-      <!-- Brand Logo / Spine Tag -->
+      <!-- Brand Logo: Authentic Superr Hand Icon -->
       <a href="#cover" class="flex items-center gap-2 group">
-        <div class="w-8 h-8 rounded-lg bg-superr-orange flex items-center justify-center superr-border shadow-xs text-white font-fraunces font-bold text-lg">
-          ${firstName.charAt(0)}
-        </div>
-        <div class="flex flex-col">
-          <span class="font-fraunces font-bold text-base sm:text-lg leading-none tracking-tight">${safeName}</span>
-          <span class="font-hand text-xs text-superr-muted font-bold -mt-0.5">superr notebook • vol. ${currentYear}</span>
-        </div>
+        <img src="/assets/templates/superr/superr-logo.svg" alt="Superr" class="h-9 w-auto" />
       </a>
 
       <!-- Desktop Section Tabs -->
-      <nav class="hidden md:flex items-center gap-1 text-sm font-semibold text-superr-ink/90">
-        <a href="#magic-systems" class="px-3 py-1.5 rounded-xl hover:bg-[#2B1A07]/5 transition-colors">I. Systems</a>
-        <a href="#reassurance" class="px-3 py-1.5 rounded-xl hover:bg-[#2B1A07]/5 transition-colors">II. Standards</a>
-        <a href="#doodle-stack" class="px-3 py-1.5 rounded-xl hover:bg-[#2B1A07]/5 transition-colors">III. Tooling</a>
-        <a href="#journal" class="px-3 py-1.5 rounded-xl hover:bg-[#2B1A07]/5 transition-colors">IV. Journal</a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#2B1A07]/90 font-sans">
+        <a href="#magic-systems" class="hover:text-superr-orange transition-colors">I. Systems</a>
+        <a href="#reassurance" class="hover:text-superr-orange transition-colors">II. Standards</a>
+        <a href="#doodle-stack" class="hover:text-superr-orange transition-colors">III. Tooling</a>
+        <a href="#journal" class="hover:text-superr-orange transition-colors">IV. Journal</a>
       </nav>
 
       <!-- Primary CTA: "I Call Dibs!" -->
-      <a href="#contact" class="bg-superr-card p-0.5 rounded-[18px] superr-shadow-btn hover:-translate-y-0.5 transition-all duration-150">
-        <div class="bg-superr-card superr-border rounded-2xl px-3.5 py-1.5 sm:px-4 sm:py-2 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-superr-green animate-pulse"></span>
-          <span class="font-fraunces text-sm sm:text-base font-semibold text-superr-ink">I call dibs!</span>
+      <a href="#contact" class="bg-[#fdfbf9] p-0.5 rounded-[18px] superr-shadow-btn hover:-translate-y-0.5 transition-all duration-150">
+        <div class="bg-[#fdfbf9] border-[2px] border-[#2B1A07] rounded-2xl px-4 py-1.5 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-superr-green animate-pulse"></span>
+          <span class="font-fraunces text-sm sm:text-base font-semibold text-[#2B1A07]">I call dibs!</span>
         </div>
       </a>
 
@@ -303,143 +300,78 @@ const SuperrNotebookTemplate = {
   <!-- ======================================================== -->
   <!-- 02. HERO NOTEBOOK STAGE & COVER                          -->
   <!-- ======================================================== -->
-  <section id="cover" class="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 max-w-[1320px] mx-auto overflow-hidden">
+  <section id="cover" class="relative min-h-[92vh] pt-28 sm:pt-36 pb-16 px-6 sm:px-10 lg:px-16 max-w-[1480px] mx-auto flex items-center overflow-hidden">
     
-    <!-- Subtle Background Dot Grid -->
-    <div class="absolute inset-0 opacity-15 pointer-events-none paper-texture"></div>
-
-    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
       
-      <!-- Left Column: Editorial Headline & Sticky Stickers -->
-      <div class="lg:col-span-7 flex flex-col items-start gap-4 sm:gap-6">
+      <!-- Left Column: Exact Superr Hero Layout -->
+      <div class="lg:col-span-6 xl:col-span-6 flex flex-col items-start z-10 lg:pl-2 xl:pl-6">
         
-        <!-- Dear Recruiters & Grown-Ups Sticky Tape -->
-        <div class="relative inline-block px-4 py-1.5 washi-tape superr-border rounded-sm shadow-xs -rotate-2">
-          <span class="font-hand text-base sm:text-lg text-superr-ink font-bold tracking-wide">
-            ★ Dear grownups &amp; engineering leaders,
-          </span>
+        <!-- Dear grownups, -->
+        <div class="w-[145px] sm:w-[160px] mb-3">
+          <img src="/assets/templates/superr/hero/dear-grownups.png" alt="Dear grownups," class="w-full h-auto object-contain pointer-events-none select-none" />
         </div>
 
-        <!-- Main Editorial Masthead -->
-        <h1 class="font-fraunces font-semibold text-[38px] sm:text-[54px] lg:text-[64px] leading-[1.08] text-superr-ink tracking-tight">
-          An engineer's notebook that 
-          <span class="relative inline-block">
-            <span class="relative z-10 highlight-marker">actually</span>
-            <span class="font-hand text-sm sm:text-base text-superr-orange font-bold absolute -top-5 right-0 rotate-6">no distractions!</span>
-          </span>
-          makes shipping systems fun.
-        </h1>
+        <!-- meet superrbook -->
+        <div class="w-full max-w-[450px] sm:max-w-[490px] mb-6">
+          <img src="/assets/templates/superr/hero/meet-superrbook.png" alt="meet superrbook" class="w-full h-auto object-contain pointer-events-none select-none" />
+        </div>
 
-        <p class="text-base sm:text-xl text-[#3D2C1B] leading-relaxed max-w-xl font-normal">
-          ${bio}
+        <!-- Subtitle: It's an AI notebook that actually! makes learning fun -->
+        <p class="text-[22px] sm:text-[25px] lg:text-[26px] leading-[1.38] text-black font-normal max-w-[430px] mb-8 font-sans">
+          It's an AI notebook that
+          <span class="relative inline-block w-[92px] sm:w-[98px] ml-2 -mt-1.5 align-middle">
+            <img src="/assets/templates/superr/hero/actually.png" alt="actually!" class="w-full h-auto object-contain pointer-events-none select-none" />
+          </span>
+          makes learning fun
         </p>
 
-        <!-- CTA Buttons & Pre-Order / Booking Subtext -->
-        <div class="flex flex-wrap items-center gap-4 pt-2">
-          <a href="#contact" class="bg-superr-card p-1 rounded-[22px] superr-shadow-lg hover:-translate-y-1 transition-all duration-200">
-            <div class="bg-superr-orange superr-border rounded-[18px] px-6 py-3 flex items-center gap-2 text-white">
-              <span class="font-fraunces text-lg sm:text-xl font-semibold">I call dibs on hiring!</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <!-- CTA Button & Pre-order Text -->
+        <div class="flex flex-col items-start">
+          <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
+            <div class="bg-[#fdfbf9] border-[2.3px] border-[#2b1a07] rounded-2xl px-6 py-[11px] flex items-center justify-center gap-2">
+              <span class="text-[20px] text-[#2b1a07] font-fraunces font-semibold">I call dibs!</span>
             </div>
           </a>
-
-          <a href="#magic-systems" class="px-5 py-3 superr-border rounded-[18px] bg-superr-card font-fraunces font-semibold text-base sm:text-lg hover:bg-superr-paper superr-shadow-btn transition-all">
-            Inspect Magic Systems (${projects.length}) ↓
-          </a>
-        </div>
-
-        <p class="font-hand text-base text-superr-muted font-bold ml-1">
-          ✦ Direct line to ${firstName}. Available for full-time &amp; high-impact contracts.
-        </p>
-
-        <!-- Live Telemetry / Verification Pills -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full pt-4">
-          <div class="p-3 rounded-2xl bg-superr-card superr-border superr-shadow flex flex-col">
-            <span class="font-fraunces text-2xl font-bold text-superr-green leading-none">${projects.length}+</span>
-            <span class="font-hand text-xs text-superr-muted font-bold mt-1">Shipped Systems</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-superr-card superr-border superr-shadow flex flex-col">
-            <span class="font-fraunces text-2xl font-bold text-superr-blue leading-none">${skills.length}+</span>
-            <span class="font-hand text-xs text-superr-muted font-bold mt-1">Core Technologies</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-superr-card superr-border superr-shadow flex flex-col">
-            <span class="font-fraunces text-2xl font-bold text-superr-pink leading-none">100%</span>
-            <span class="font-hand text-xs text-superr-muted font-bold mt-1">Test Suite Pass</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-superr-card superr-border superr-shadow flex flex-col">
-            <span class="font-fraunces text-2xl font-bold text-superr-orange leading-none">0s</span>
-            <span class="font-hand text-xs text-superr-muted font-bold mt-1">Distraction Fluff</span>
-          </div>
+          <p class="mt-4 ml-1 text-[16px] font-medium text-[#8a7b6a] font-sans">
+            Pre-order starting soon
+          </p>
         </div>
 
       </div>
 
-      <!-- Right Column: Interactive Notebook Binder Showcase -->
-      <div class="lg:col-span-5 relative flex justify-center">
-        
-        <!-- Background Shadow Card for Tactile Layering -->
-        <div class="absolute inset-0 bg-[#E8DFD8] superr-border rounded-3xl transform rotate-2 translate-x-2 translate-y-3 pointer-events-none"></div>
-
-        <!-- The Notebook Page Card -->
-        <div class="relative w-full max-w-[460px] bg-superr-card superr-border rounded-3xl p-6 sm:p-8 superr-shadow-lg transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+      <!-- Right Column: Exact 3D Brown Notebook with Pencil & Dynamic Personalized Sticker -->
+      <div class="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end">
+        <div class="relative w-full max-w-[700px] lg:max-w-[780px] xl:max-w-[840px] aspect-[16/10] flex items-center justify-center">
           
-          <!-- Spiral Notebook Rings at Top -->
-          <div class="flex justify-between items-center mb-6 px-2">
-            <div class="flex gap-2">
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-            </div>
-            <span class="px-2.5 py-0.5 rounded-full bg-superr-amber/30 text-superr-ink font-hand text-sm font-bold superr-border">
-              PAGE 01 // OVERVIEW
-            </span>
-            <div class="flex gap-2">
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-              <span class="w-3.5 h-3.5 rounded-full bg-superr-paper superr-border"></span>
-            </div>
-          </div>
+          <!-- Authentic 3D Cutout of Brown Notebook with Pencil from Superr.ai -->
+          <img src="/assets/templates/superr/hero/notebook-hero.webp" alt="Superr AI Notebook" class="w-full h-full object-contain pointer-events-none select-none filter drop-shadow-xl" />
 
-          <!-- Handwritten Greeting & Avatar -->
-          <div class="text-center py-2">
-            <span class="font-hand text-2xl text-superr-orange font-bold">Hello! Welcome to</span>
-            <h2 class="font-fraunces text-3xl sm:text-4xl font-bold text-superr-ink mt-1 leading-tight">
-              ${safeName}'s<br/>Production Notebook
-            </h2>
-            <p class="font-sans text-xs text-superr-muted uppercase font-semibold tracking-wider mt-2">
-              ${role} • ${location}
-            </p>
-          </div>
-
-          <!-- Cute Handwritten Stickers -->
-          <div class="relative my-6 p-4 rounded-2xl bg-superr-paper superr-border flex flex-col gap-2">
-            <div class="flex items-center gap-2">
-              <span class="text-superr-green text-lg">✦</span>
-              <span class="text-sm font-semibold text-superr-ink font-sans">Writes like clean architecture.</span>
+          <!-- Dynamic Personalized Sticker Overlay (Directly over the notebook's sticker label) -->
+          <div class="absolute" style="left: 58.8%; top: 20.7%; width: 17.4%; height: 16.3%; transform: rotate(-15.5deg); transform-origin: top left; pointer-events: none;">
+            <div class="w-full h-full relative flex flex-col justify-between py-[4%] px-[8%]">
+              <!-- Name Row (Handwritten) -->
+              <div class="flex items-baseline justify-between mt-[10%]">
+                <span class="text-[9px] sm:text-[11px] text-[#2B1A07]/80 font-sans font-bold">Name</span>
+                <span class="font-hand font-bold text-base sm:text-xl md:text-2xl text-[#1E140A] tracking-wide leading-none -ml-1 flex-1 text-center truncate">
+                  ${safeName}
+                </span>
+              </div>
+              <!-- Class & Roll Row -->
+              <div class="flex items-center justify-between border-t border-[#2B1A07]/60 pt-[2%] mb-[4%]">
+                <div class="flex items-center gap-1">
+                  <span class="text-[8px] sm:text-[9px] text-[#2B1A07]/80 font-sans font-bold">Class</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A]">${(role.split(/\s+/)[0] || 'VIII-A').slice(0, 8)}</span>
+                </div>
+                <div class="flex items-center gap-1 border-l border-[#2B1A07]/60 pl-2">
+                  <span class="text-[8px] sm:text-[9px] text-[#2B1A07]/80 font-sans font-bold">Roll no.</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A]">0${projects.length || 1}</span>
+                </div>
+              </div>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="text-superr-blue text-lg">✦</span>
-              <span class="text-sm font-semibold text-superr-ink font-sans">Understands real production latency.</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-superr-pink text-lg">✦</span>
-              <span class="text-sm font-semibold text-superr-ink font-sans">Resilient code that talks to databases.</span>
-            </div>
-
-            <!-- Tilted Handwritten Stamp -->
-            <div class="absolute -bottom-3 right-4 bg-superr-amber superr-border px-3 py-1 rounded-md transform rotate-6 shadow-xs">
-              <span class="font-hand text-xs font-bold text-superr-ink uppercase">100% DISTRACTION FREE</span>
-            </div>
-          </div>
-
-          <!-- Bottom Coordinates Strip -->
-          <div class="pt-3 border-t-2 border-dashed border-superr-divider flex items-center justify-between font-hand text-sm text-superr-muted font-bold">
-            <span>Direct: ${email}</span>
-            <a href="${github}" target="_blank" rel="noopener noreferrer" class="text-superr-orange hover:underline">GitHub Profile ↗</a>
           </div>
 
         </div>
-
       </div>
 
     </div>
