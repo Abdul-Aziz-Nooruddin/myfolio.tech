@@ -424,7 +424,7 @@ const NadiaBrandTemplate = {
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Instrument+Serif:ital@0;1&family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -457,9 +457,7 @@ const NadiaBrandTemplate = {
       -webkit-font-smoothing: antialiased;
     }
 
-    .font-syne, .font-display { font-family: 'Playfair Display', Georgia, serif; font-feature-settings: 'lnum' 1; }
-    .font-serif { font-family: 'Instrument Serif', Georgia, serif; }
-    .font-mono { font-family: 'Courier Prime', monospace; }
+    .font-syne, .font-display { font-family: 'Syne', sans-serif; }
     .font-inter { font-family: 'Inter', sans-serif; }
 
     ::selection {
@@ -914,7 +912,7 @@ const NadiaBrandTemplate = {
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -930,7 +928,7 @@ const NadiaBrandTemplate = {
       padding: 24px;
     }
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Syne', sans-serif;
       font-size: clamp(80px, 15vw, 180px);
       font-weight: 800;
       color: #FF4D30;

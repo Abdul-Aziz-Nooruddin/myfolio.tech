@@ -263,7 +263,7 @@ const ApogeeSpatialTemplate = {
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -279,21 +279,21 @@ const ApogeeSpatialTemplate = {
     }
 
     body {
-      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
     }
 
     .font-anton, .font-chakra {
-      font-family: 'Chakra Petch', 'Space Grotesk', sans-serif;
-      font-weight: 700;
+      font-family: 'Anton', -apple-system, sans-serif;
+      font-weight: 400;
       letter-spacing: -0.01em;
     }
 
     .font-inter, .font-space {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
     .font-mono {
-      font-family: 'Share Tech Mono', monospace;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .grain-overlay {
