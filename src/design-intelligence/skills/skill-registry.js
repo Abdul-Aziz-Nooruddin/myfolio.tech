@@ -64,7 +64,7 @@ class SkillRegistry {
     try {
       const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
       for (const entry of entries) {
-        if (entry.isDirectory() && !entry.name.startsWith('ponytail')) {
+        if (entry.isDirectory() && !entry.name.startsWith('ponytail') && !entry.name.startsWith('rea-') && !entry.name.startsWith('reverse-engineer')) {
           const skillFile = path.join(skillsDir, entry.name, 'SKILL.md');
           if (fs.existsSync(skillFile) && !this.registry[entry.name]) {
             this.registry[entry.name] = {

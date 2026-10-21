@@ -3,7 +3,7 @@ node_modules/
 **/node_modules/
 apogee/node_modules/
 apogee/dist/
-skills/
+/skills/
 
 # Environment
 .env

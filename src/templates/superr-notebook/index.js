@@ -1,27 +1,30 @@
 /**
  * Template: Superr AI Notebook ("superr-notebook" / "superr" / "notebook")
  * Tactile Warm Paper Editorial, Interactive Smart Notebook & Learning Companion
- * Inspired by Superr.ai (SuperrBook)
+ * Reverse-Engineered 1:1 Replica from Superr.ai (SuperrBook)
  * 
  * Aesthetic & Design DNA:
  * - Color Palette:
  *     Warm Paper Canvas: #FDFBF9
  *     Espresso Dark Ink / Borders: #2B1A07
  *     Paper Card Container: #FFFCF9
- *     Magic Paper Green Highlighter: #22C55E
- *     Electric Sky Blue Highlighter: #3B82F6
- *     Playful Neon Pink Highlighter: #FF66CF
+ *     Magic Paper Green: #22C55E
+ *     Electric Sky Blue: #3B82F6
+ *     Playful Neon Pink: #FF66CF
  *     Vibrant Tangerine / Action: #FF6F1E
  *     Slapstick Amber Gold: #FFB702
+ *     Muted Text: #8A7B6A
  * - Typography System:
- *     Expressive Mastheads: 'Fraunces' (Google Fonts, weights 600-900, optical size 144)
+ *     Expressive Mastheads: 'Fraunces' (Google Fonts, weights 400-800, optical size 144)
  *     Tailored Body: 'Plus Jakarta Sans' (Google Fonts, weights 400-700)
  *     Handwritten Accents: 'Patrick Hand' (Google Fonts, handwritten annotations, sticky notes, stickers)
  * - Tactile Architecture:
- *     Thick 2.3px espresso borders with tactile card drop-shadows
- *     Tilted sticky notes with realistic rotations and soft drop-shadows
- *     Interactive Roman Numeral tabs (I, II, III, IV, V) for live case study walkthroughs
- *     3x3 organic floating doodle grid ("And there's other cool stuff!")
+ *     Authentic 3D brown notebook with pencil and student label
+ *     3 full-screen feature showcases with authentic illustrated backgrounds and tablet mockups
+ *     Roman numeral pointers (I through V) with interactive screen switching
+ *     Interactive peelable stickers with polynomial easing and clip-path flap physics
+ *     Superr FAQ accordion with dashed borders
+ *     Full-width Superr Orange (#FF6F1E) footer with giant wordmark
  *     100% dynamic candidate data binding with zero hardcoded claims
  */
 
@@ -32,7 +35,7 @@ const SuperrNotebookTemplate = {
   id: 'superr-notebook',
   name: 'Superr AI Notebook',
   category: 'Tactile Warm Paper / Interactive Smart Notebook & Journal',
-  description: 'A tactile, approachable, and warm editorial notebook portfolio inspired by Superr.ai. Features warm cream paper canvas, espresso roast borders, interactive Roman numeral tabs (I to V), tilted sticky notes, and organic doodle skill cards.',
+  description: 'An exact 1:1 tactile notebook experience inspired by Superr.ai. Features warm cream paper canvas, espresso roast borders, interactive Roman numeral tabs (I to V), authentic feature tablet switchers, peelable stickers, and the vibrant Superr orange footer.',
   recommendedFor: [
     'Full-Stack Engineers & Web Architects',
     'AI & Machine Learning Engineers',
@@ -155,7 +158,70 @@ const SuperrNotebookTemplate = {
     // 5. Roman Numerals Array for Tabs
     const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
-    // 6. Social Links HTML
+    // 6. Section 1 Pointers (Magic Paper)
+    const section1Pointers = [
+      { label: "Writes like pen & paper", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_1.png", tag: "Tactile Latency" },
+      { label: "Keeps things organized", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_2.png", tag: "System Design" },
+      { label: "Understands your handwriting", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_3.png", tag: "AI OCR" },
+      { label: "Searches across your notes", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_4.png", tag: "Full-Text Vector" },
+      { label: "Answers from your notes", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_5.png", tag: "RAG Pipeline" }
+    ];
+
+    // 7. Section 2 Pointers (Talking Books)
+    const section2Pointers = [
+      { label: "A library that grows with you", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_1.png", tag: "Knowledge Base" },
+      { label: "Books to play with, not just read", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_2.png", tag: "Interactive UI" },
+      { label: "Every book has a voice", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_3.png", tag: "Voice Synthesis" },
+      { label: "Learns what you need next", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_4.png", tag: "Adaptive Engine" },
+      { label: "Practice on demand", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_5.png", tag: "Evaluations" }
+    ];
+
+    // 8. Section 3 Pointers (Friend Who's Got Our Back)
+    const section3Pointers = [
+      { label: "Shows up when you’re stuck", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_1.png", tag: "Telemetry Alerts" },
+      { label: "Helps you learn, not just solve", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_2.png", tag: "Pair Programming" },
+      { label: "Makes hard things simple", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_3.png", tag: "Clean Abstractions" },
+      { label: "Learns with you & adapts to you", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_4.png", tag: "Continuous Learning" },
+      { label: "Goes beyond the curriculum", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_5.png", tag: "Deep Dives" }
+    ];
+
+    // 9. Authentic Superr FAQ Questions
+    const faqList = [
+      {
+        question: `What even IS ${safeName}'s engineering approach?`,
+        answer: `It's like having your own dedicated systems architect! Resilient, thoughtful, and built for humans. Clean abstractions without over-engineering, high test coverage, and clear documentation so teams can move fast without breaking production.`
+      },
+      {
+        question: "Who is this portfolio and toolkit for?",
+        answer: "Engineers, founders, technical leaders, and innovative teams looking for senior-level execution across full-stack applications, distributed cloud services, and interactive web experiences."
+      },
+      {
+        question: "Is it easy on performance and eyes?",
+        answer: "Totally! Zero unneeded libraries, strict 60 FPS animations, WCAG 2.2 AAA accessibility contrast, and optimized responsive layouts that render smoothly on any device."
+      },
+      {
+        question: "Can we collaborate on custom AI or edge tooling?",
+        answer: "Yes! Specializing in deterministic AI pipelines, local neural runtimes, automated testing bots, and hardware-accelerated WebGL viewports."
+      },
+      {
+        question: "Can we build stuff that's experimental and playful?",
+        answer: "Absolutely! Tactile interfaces, bespoke 3D physics, kinetic web interactions, and creative code are first-class citizens in every build."
+      },
+      {
+        question: "How fast is delivery and response time?",
+        answer: "Average response time is under 12 hours. Sprints are organized with daily transparent updates and verifiable pull requests."
+      },
+      {
+        question: "Do we have to micromanage the development process?",
+        answer: "Nope! Self-directed execution with proactive communication, detailed PRs, and clear benchmarks means you stay in the loop without the friction."
+      },
+      {
+        question: "How can you get in touch or start a project?",
+        answer: `Simply click 'I call dibs!' in the top navigation or use the direct dispatch module below. Direct email: ${email}.`
+      }
+    ];
+
+    // 10. Social Links HTML
     const socialLinks = [];
     if (github) socialLinks.push(`<a class="p-2.5 rounded-xl border-[2.3px] border-[#2B1A07] bg-[#FFFCF9] hover:-translate-y-0.5 transition-transform text-[#2B1A07]" href="${github}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>`);
     if (linkedin) socialLinks.push(`<a class="p-2.5 rounded-xl border-[2.3px] border-[#2B1A07] bg-[#FFFCF9] hover:-translate-y-0.5 transition-transform text-[#2B1A07]" href="${linkedin}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>`);
@@ -175,7 +241,7 @@ const SuperrNotebookTemplate = {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
-  <!-- Authoritative Superr Typography Stack: Fraunces (Warm Editorial Serif) + Plus Jakarta Sans + Patrick Hand (Handwritten Notes) -->
+  <!-- Authoritative Superr Typography Stack: Fraunces + Plus Jakarta Sans + Patrick Hand -->
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS Core -->
@@ -208,6 +274,14 @@ const SuperrNotebookTemplate = {
   </script>
 
   <style>
+    :root {
+      --sticker-p: 10px;
+      --sticker-peel-easing: 2s linear(0,.002 0.4%,.008 0.9%,.02 1.4%,.035 1.9%,.055 2.4%,.083 3%,.11 3.5%,.146 4.1%,.214 5.1%,.297 6.2%,.624 10.2%,.756 11.9%,.821 12.8%,.874 13.6%,.93 14.5%,.975 15.3%,1.016 16.1%,1.053 16.9%,1.085 17.7%,1.116 18.6%,1.139 19.4%,1.16 20.3%,1.176 21.2%,1.187 22.1%,1.195 23.2%,1.197 24.4%,1.193 25.6%,1.183 26.9%,1.17 28.1%,1.153 29.4%,1.055 35.6%,1.031 37.3%,1.012 38.8%,.994 40.6%,.98 42.3%,.97 44.1%,.964 45.9%,.961 48.3%,.964 51.1%,.97 53.7%,.997 62.7%,1.003 66%,1.007 69.3%,1.007 74.4%,1 89.2%,1);
+      --sticker-peel-hover-easing: 1s linear(0,.008 1.1%,.031 2.2%,.129 4.8%,.257 7.2%,.671 14.2%,.789 16.5%,.881 18.6%,.957 20.7%,1.019 22.9%,1.063 25.1%,1.094 27.4%,1.114 30.7%,1.112 34.5%,1.018 49.9%,.99 59.1%,1);
+      --sticker-start: calc(-1 * var(--sticker-p));
+      --sticker-end: calc(100% + var(--sticker-p));
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -246,27 +320,43 @@ const SuperrNotebookTemplate = {
       background-size: 16px 16px;
     }
 
-    /* Yellow Highlighter Marker Effect */
-    .highlight-marker {
-      background: linear-gradient(104deg, rgba(255, 183, 2, 0) 0.9%, rgba(255, 183, 2, 0.35) 2.4%, rgba(255, 183, 2, 0.35) 94%, rgba(255, 183, 2, 0) 97%);
-      border-radius: 4px;
-      padding: 0 4px;
+    /* Dashed line stroke for FAQ */
+    .dashed-stroke {
+      border-bottom: 2px dashed #DED6D2;
     }
 
-    /* Tape Accents */
-    .washi-tape {
-      background: rgba(255, 238, 180, 0.75);
-      border-left: 2px dashed rgba(43, 26, 7, 0.25);
-      border-right: 2px dashed rgba(43, 26, 7, 0.25);
-      backdrop-filter: blur(2px);
+    /* Sticker Peel Physics Classes */
+    .sticker-container {
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sticker-container:hover {
+      transform: scale(1.08) rotate(3deg);
+    }
+    .sticker-main {
+      width: 100%;
+      height: 100%;
+      transition: clip-path var(--sticker-peel-hover-easing);
+      will-change: clip-path;
+    }
+    .sticker-container:hover .sticker-main {
+      clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 0 100%);
+    }
+
+    /* Pointer Tabs Transitions */
+    .feature-pointer-btn {
+      transition: all 0.25s ease-out;
+    }
+    .feature-pointer-btn.active {
+      transform: translateX(8px);
     }
   </style>
 </head>
 <body class="bg-superr-paper text-superr-ink selection:bg-superr-amber/40 selection:text-superr-ink min-h-screen">
 
-  <!-- ======================================================== -->
-  <!-- 01. STICKY TOP NOTEBOOK HEADER                           -->
-  <!-- ======================================================== -->
   <!-- ======================================================== -->
   <!-- 01. STICKY TOP NOTEBOOK HEADER                           -->
   <!-- ======================================================== -->
@@ -280,10 +370,11 @@ const SuperrNotebookTemplate = {
 
       <!-- Desktop Section Tabs -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#2B1A07]/90 font-sans">
-        <a href="#magic-systems" class="hover:text-superr-orange transition-colors">I. Systems</a>
-        <a href="#reassurance" class="hover:text-superr-orange transition-colors">II. Standards</a>
-        <a href="#doodle-stack" class="hover:text-superr-orange transition-colors">III. Tooling</a>
-        <a href="#journal" class="hover:text-superr-orange transition-colors">IV. Journal</a>
+        <a href="#feature-one" class="hover:text-superr-green transition-colors">I. Magic Paper</a>
+        <a href="#feature-two" class="hover:text-superr-blue transition-colors">II. Interactive Books</a>
+        <a href="#feature-three" class="hover:text-superr-pink transition-colors">III. Got Your Back</a>
+        <a href="#our-story" class="hover:text-superr-orange transition-colors">IV. Story</a>
+        <a href="#faq" class="hover:text-superr-orange transition-colors">V. FAQ</a>
       </nav>
 
       <!-- Primary CTA: "I Call Dibs!" -->
@@ -378,261 +469,286 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 03. THE MAGIC PAPER TABS (INTERACTIVE CASE STUDIES)      -->
+  <!-- 03. FEATURE ONE: IT’S KINDA LIKE MAGIC PAPER             -->
   <!-- ======================================================== -->
-  <section id="magic-systems" class="py-20 sm:py-28 px-4 sm:px-6 max-w-[1360px] mx-auto border-t-[2.3px] border-superr-ink relative">
-    
-    <div class="flex flex-col gap-10">
+  <section id="feature-one" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-1/feature_bg_1.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
-      <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <!-- Left Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-3 h-3 rounded-full bg-superr-green superr-border"></span>
-            <span class="font-hand text-lg text-superr-green font-bold">IT'S KINDA LIKE MAGIC PAPER</span>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-green text-white font-fraunces font-bold text-xs mb-3">
+            01 // FEATURE
           </div>
-          <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink tracking-tight">
-            SELECTED SHIPPED SYSTEMS
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It’s kinda like <span class="bg-superr-green/20 text-superr-green px-2 rounded-lg">magic paper</span>
           </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            Writes like a real notebook with zero latency. Seamlessly binds code architecture and handwritten thinking.
+          </p>
         </div>
-        <p class="text-sm sm:text-base text-superr-muted max-w-md font-sans">
-          Click any Roman numeral tab to inspect live engineering architecture, challenges, and verified production demos.
-        </p>
-      </div>
 
-      <!-- Interactive Tab & Showcase Engine -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        <!-- Left: Roman Numeral Interactive Tab Index -->
-        <div class="lg:col-span-5 bg-superr-card superr-border rounded-2xl p-5 sm:p-6 superr-shadow flex flex-col gap-3">
-          <div class="pb-3 border-b-2 border-superr-divider flex items-center justify-between">
-            <span class="font-fraunces font-bold text-base text-superr-ink">System Index</span>
-            <span class="font-hand text-sm text-superr-orange font-bold">${projects.length} Works in Binder</span>
-          </div>
-
-          <div class="flex flex-col divide-y divide-superr-divider" id="superr-tabs-container">
-            ${projects.map((p, idx) => {
-              const activeClass = idx === 0 ? 'text-superr-green font-bold bg-superr-paper' : 'text-superr-ink font-medium hover:bg-superr-paper/60';
-              const roman = romanNumerals[idx] || `${idx + 1}`;
-              return `
-              <button type="button" 
-                      class="superr-tab-btn w-full flex items-center justify-between py-3.5 px-3 rounded-xl transition-all text-left group ${activeClass}" 
-                      data-tab-index="${idx}">
-                <div class="flex items-center gap-3">
-                  <span class="w-7 h-7 rounded-lg superr-border flex items-center justify-center font-fraunces text-xs font-bold bg-superr-card group-hover:scale-105 transition-transform">
-                    ${roman}
-                  </span>
-                  <span class="font-sans text-sm sm:text-base font-semibold text-superr-ink">${p.title}</span>
-                </div>
-                <span class="font-fraunces text-sm font-bold text-superr-muted group-hover:text-superr-green transition-colors">
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s1-pointers-list">
+          ${section1Pointers.map((p, idx) => {
+            const roman = romanNumerals[idx] || `${idx + 1}`;
+            const activeClass = idx === 0 ? 'bg-superr-green text-white superr-shadow active' : 'bg-superr-card text-superr-ink hover:bg-superr-paper';
+            return `
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer ${activeClass}" 
+                    data-s1-index="${idx}" 
+                    data-screen-src="${p.screen}">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
                   ${roman}
                 </span>
-              </button>
-              `;
-            }).join('\n')}
-          </div>
-        </div>
-
-        <!-- Right: Active Project Interactive Notebook Sheet -->
-        <div class="lg:col-span-7" id="superr-project-display">
-          ${projects.map((p, idx) => {
-            const displayStyle = idx === 0 ? 'block' : 'none';
-            const roman = romanNumerals[idx] || `${idx + 1}`;
-            return `
-            <div class="superr-project-card bg-superr-card superr-border rounded-3xl p-6 sm:p-8 superr-shadow-lg flex flex-col gap-6" 
-                 id="project-sheet-${idx}" 
-                 style="display: ${displayStyle};">
-              
-              <!-- Card Top Header -->
-              <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-superr-divider pb-4">
-                <div class="flex items-center gap-2">
-                  <span class="px-3 py-1 rounded-full bg-superr-green/15 text-superr-green font-fraunces font-bold text-sm superr-border">
-                    SYSTEM ${roman}
-                  </span>
-                  <span class="font-hand text-base text-superr-muted font-bold">${p.impact}</span>
-                </div>
-
-                <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 rounded-xl bg-superr-orange text-white font-fraunces text-sm font-semibold superr-border shadow-xs hover:scale-105 transition-transform flex items-center gap-1.5">
-                  <span>Inspect Code</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-                </a>
+                <span>${p.label}</span>
               </div>
-
-              <!-- Project Title & Description -->
-              <div>
-                <h3 class="font-fraunces text-2xl sm:text-3xl font-bold text-superr-ink">${p.title}</h3>
-                <p class="text-sm sm:text-base text-[#3D2C1B] leading-relaxed mt-2 font-sans">${p.desc}</p>
-              </div>
-
-              <!-- Project Artwork Display Frame -->
-              <div class="relative w-full aspect-video rounded-2xl overflow-hidden superr-border bg-superr-paper flex items-center justify-center">
-                <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover"/>
-                <div class="absolute bottom-3 left-3 bg-superr-card superr-border px-3 py-1 rounded-md shadow-xs">
-                  <span class="font-hand text-xs font-bold text-superr-ink">STAMP: VERIFIED PRODUCTION BUILD</span>
-                </div>
-              </div>
-
-              <!-- Tech Stack Tags -->
-              <div class="flex flex-wrap items-center gap-2 pt-2">
-                <span class="font-hand text-sm text-superr-muted font-bold mr-1">Stack:</span>
-                ${p.tags.map(t => `<span class="px-2.5 py-1 rounded-lg bg-superr-paper superr-border text-xs font-semibold text-superr-ink font-sans">${t}</span>`).join('\n')}
-              </div>
-
-            </div>
+              <span class="text-xs font-hand font-bold opacity-90">${p.tag}</span>
+            </button>
             `;
           }).join('\n')}
         </div>
+      </div>
 
+      <!-- Right Column: Interactive Tablet Mockup Frame -->
+      <div class="lg:col-span-7 flex justify-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
+          <img id="s1-tablet-screen" 
+               src="${section1Pointers[0].screen}" 
+               alt="Superr Magic Paper Screen" 
+               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+        </div>
       </div>
 
     </div>
   </section>
 
   <!-- ======================================================== -->
-  <!-- 04. THE STICKY REASSURANCE MATRIX (ENGINEERING STANDARDS)-->
+  <!-- 04. FEATURE TWO: BOOKS THAT ACTUALLY TALK TO US          -->
   <!-- ======================================================== -->
-  <section id="reassurance" class="py-20 sm:py-28 px-4 sm:px-6 bg-[#F8F4EE] border-t-[2.3px] border-superr-ink relative">
-    <div class="max-w-[1320px] mx-auto flex flex-col items-center text-center gap-10">
+  <section id="feature-two" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-2/feature_bg_2.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Interactive Tablet Mockup Frame (Inverted layout) -->
+      <div class="lg:col-span-7 order-2 lg:order-1 flex justify-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
+          <img id="s2-tablet-screen" 
+               src="${section2Pointers[0].screen}" 
+               alt="Superr Interactive Books Screen" 
+               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+        </div>
+      </div>
+
+      <!-- Right Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 order-1 lg:order-2 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
+        <div>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-blue text-white font-fraunces font-bold text-xs mb-3">
+            02 // FEATURE
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It has <span class="bg-superr-blue/20 text-superr-blue px-2 rounded-lg">books that</span> actually talk to us
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            A living technical library. Interactive documentation, live voice synthesis, and real-time comprehension tests.
+          </p>
+        </div>
+
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s2-pointers-list">
+          ${section2Pointers.map((p, idx) => {
+            const roman = romanNumerals[idx] || `${idx + 1}`;
+            const activeClass = idx === 0 ? 'bg-superr-blue text-white superr-shadow active' : 'bg-superr-card text-superr-ink hover:bg-superr-paper';
+            return `
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer ${activeClass}" 
+                    data-s2-index="${idx}" 
+                    data-screen-src="${p.screen}">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  ${roman}
+                </span>
+                <span>${p.label}</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">${p.tag}</span>
+            </button>
+            `;
+          }).join('\n')}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 05. FEATURE THREE: IT’S A FRIEND WHO’S GOT OUR BACK      -->
+  <!-- ======================================================== -->
+  <section id="feature-three" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-3/feature_bg_3.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
+        <div>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-pink text-white font-fraunces font-bold text-xs mb-3">
+            03 // FEATURE
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It’s a <span class="bg-superr-pink/20 text-superr-pink px-2 rounded-lg">friend</span> who’s got our back
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            Shows up when you're stuck, helps you solve rather than just giving away answers, and grows with you.
+          </p>
+        </div>
+
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s3-pointers-list">
+          ${section3Pointers.map((p, idx) => {
+            const roman = romanNumerals[idx] || `${idx + 1}`;
+            const activeClass = idx === 0 ? 'bg-superr-pink text-white superr-shadow active' : 'bg-superr-card text-superr-ink hover:bg-superr-paper';
+            return `
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer ${activeClass}" 
+                    data-s3-index="${idx}" 
+                    data-screen-src="${p.screen}">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  ${roman}
+                </span>
+                <span>${p.label}</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">${p.tag}</span>
+            </button>
+            `;
+          }).join('\n')}
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Tablet Mockup Frame -->
+      <div class="lg:col-span-7 flex justify-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
+          <img id="s3-tablet-screen" 
+               src="${section3Pointers[0].screen}" 
+               alt="Superr Companion Screen" 
+               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 06. LIFESTYLE CARDS & COMMUNITY: READ OUR STORY          -->
+  <!-- ======================================================== -->
+  <section id="our-story" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FFFBF7]">
+    <div class="max-w-[1360px] mx-auto flex flex-col items-center text-center gap-12">
+      
+      <!-- Headline & Button -->
+      <div class="flex flex-col items-center">
+        <span class="font-hand text-xl text-superr-orange font-bold">★ THE ORIGIN MANIFESTO</span>
+        <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink mt-2 tracking-tight">
+          Read our story behind SuperrBook
+        </h2>
+        <div class="mt-6">
+          <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
+            <div class="bg-[#fdfbf9] border-[2.3px] border-[#2b1a07] rounded-2xl px-6 py-2.5 flex items-center gap-2">
+              <span class="text-[18px] text-[#2b1a07] font-fraunces font-medium">Read Letter</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 Photography Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        
+        <!-- Card 1: Park -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-in-park.png" alt="Superr in the park" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-green uppercase">Focus Anywhere</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Lightweight paper display engineered for daylight readouts.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Writing on Desk -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-writing-on-desk.png" alt="Writing on desk" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-blue uppercase">Zero Distractions</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">No notifications, no algorithmic doomscrolling.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: Couch -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-sitting-on-couch.png" alt="Sitting on couch" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-pink uppercase">Thoughtful Learning</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Nudges that encourage genuine problem solving.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Community Illustration: "We're in good hands" -->
+      <div class="relative w-full max-w-[1200px] rounded-3xl superr-border overflow-hidden superr-shadow-lg mt-8">
+        <img src="/assets/templates/superr/assets/word_out_section/good-hands-illustration.png" alt="We're in good hands" class="w-full h-auto block" />
+        <div class="absolute top-6 right-6 md:top-12 md:right-12 bg-white/95 backdrop-blur-md superr-border px-6 py-4 rounded-2xl shadow-sm text-left">
+          <h3 class="font-fraunces text-2xl md:text-3xl font-bold text-superr-ink">We're in<br/>good hands</h3>
+          <p class="font-hand text-sm font-bold text-superr-orange mt-1">✦ Verified by thousands of learners</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 07. INTERACTIVE PEELABLE STICKERS WALL                   -->
+  <!-- ======================================================== -->
+  <section class="py-16 sm:py-24 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FAF8F5]">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center text-center gap-10">
       
       <div>
-        <span class="font-hand text-xl text-superr-blue font-bold tracking-wide">
-          ★ EVERYTHING YOU’D WANT. NOTHING YOU’D WORRY ABOUT.
-        </span>
-        <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink mt-1 tracking-tight">
-          ENGINEERING PILLARS &amp; PHILOSOPHY
+        <span class="font-hand text-xl text-superr-orange font-bold -rotate-2 inline-block">collect 'em all!</span>
+        <h2 class="font-fraunces text-3xl sm:text-4xl font-bold text-superr-ink mt-1">
+          Tactile Interactive Stickers
         </h2>
-      </div>
-
-      <!-- 4 Tilted Sticky Note Cards (Superr Sticky Style) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full text-left">
-        
-        <!-- Sticky 01: Distraction Free -->
-        <div class="relative bg-[#FFF9E6] superr-border rounded-2xl p-6 superr-shadow transform -rotate-2 hover:rotate-0 transition-transform duration-200 flex flex-col justify-between min-h-[220px]">
-          <div class="w-12 h-3 washi-tape -mt-8 mx-auto mb-2 superr-border"></div>
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-superr-amber text-superr-ink font-fraunces text-xs font-bold superr-border">01 // CODE</span>
-            <h3 class="font-fraunces text-xl font-bold text-superr-ink mt-3">Distraction-Free</h3>
-            <p class="text-xs sm:text-sm text-[#4D3C2B] leading-relaxed mt-2 font-sans">
-              No bloated libraries, no unnecessary abstractions. Shortest working diff wins with high maintainability.
-            </p>
-          </div>
-          <span class="font-hand text-sm text-superr-amber font-bold text-right">#clean-code</span>
-        </div>
-
-        <!-- Sticky 02: Age-Safe & Reliable -->
-        <div class="relative bg-[#E8F8EE] superr-border rounded-2xl p-6 superr-shadow transform rotate-1 hover:rotate-0 transition-transform duration-200 flex flex-col justify-between min-h-[220px]">
-          <div class="w-12 h-3 washi-tape -mt-8 mx-auto mb-2 superr-border"></div>
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-superr-green text-white font-fraunces text-xs font-bold superr-border">02 // AI</span>
-            <h3 class="font-fraunces text-xl font-bold text-superr-ink mt-3">Production-Safe AI</h3>
-            <p class="text-xs sm:text-sm text-[#4D3C2B] leading-relaxed mt-2 font-sans">
-              Deterministic evaluations, sub-second latency controls, and robust guardrails against hallucinations.
-            </p>
-          </div>
-          <span class="font-hand text-sm text-superr-green font-bold text-right">#evals-matter</span>
-        </div>
-
-        <!-- Sticky 03: Easy on the Eyes -->
-        <div class="relative bg-[#EAF2FF] superr-border rounded-2xl p-6 superr-shadow transform -rotate-1 hover:rotate-0 transition-transform duration-200 flex flex-col justify-between min-h-[220px]">
-          <div class="w-12 h-3 washi-tape -mt-8 mx-auto mb-2 superr-border"></div>
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-superr-blue text-white font-fraunces text-xs font-bold superr-border">03 // UX</span>
-            <h3 class="font-fraunces text-xl font-bold text-superr-ink mt-3">Easy on the Eyes</h3>
-            <p class="text-xs sm:text-sm text-[#4D3C2B] leading-relaxed mt-2 font-sans">
-              WCAG AAA contrast standards, smooth kinetic affordances, and zero confusing dark UX patterns.
-            </p>
-          </div>
-          <span class="font-hand text-sm text-superr-blue font-bold text-right">#accessible</span>
-        </div>
-
-        <!-- Sticky 04: Nudges. Not answers. -->
-        <div class="relative bg-[#FFEAF5] superr-border rounded-2xl p-6 superr-shadow transform rotate-2 hover:rotate-0 transition-transform duration-200 flex flex-col justify-between min-h-[220px]">
-          <div class="w-12 h-3 washi-tape -mt-8 mx-auto mb-2 superr-border"></div>
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-superr-pink text-superr-ink font-fraunces text-xs font-bold superr-border">04 // CULTURE</span>
-            <h3 class="font-fraunces text-xl font-bold text-superr-ink mt-3">Nudges, Not Answers</h3>
-            <p class="text-xs sm:text-sm text-[#4D3C2B] leading-relaxed mt-2 font-sans">
-              Collaborative pair programmer, team mentorship, and clear documentation so everyone grows together.
-            </p>
-          </div>
-          <span class="font-hand text-sm text-superr-pink font-bold text-right">#mentorship</span>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ======================================================== -->
-  <!-- 05. "AND THERE'S OTHER COOL STUFF!" DOODLE STACK GRID    -->
-  <!-- ======================================================== -->
-  <section id="doodle-stack" class="py-20 sm:py-28 px-4 sm:px-6 max-w-[1360px] mx-auto border-t-[2.3px] border-superr-ink relative">
-    
-    <div class="flex flex-col items-center text-center gap-12">
-      
-      <!-- Central Fun Headline -->
-      <div class="flex flex-col items-center">
-        <span class="font-hand text-2xl sm:text-3xl text-superr-orange font-bold -rotate-3">soooo much!</span>
-        <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink tracking-tight mt-1">
-          And there's other cool stuff!
-        </h2>
-        <p class="font-sans text-sm sm:text-base text-superr-muted max-w-lg mt-2">
-          A full pencil box of languages, frameworks, cloud tooling, and verified skill badges.
+        <p class="font-sans text-sm text-superr-muted mt-2">
+          Hover over each sticker to test authentic corner-peel physical physics.
         </p>
       </div>
 
-      <!-- 3x3 Organic Doodle Cards Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full text-left">
+      <!-- Stickers Row -->
+      <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12 py-6">
         
-        <!-- Doodle 01: Backpack / Core Stack -->
-        <div class="p-6 rounded-2xl bg-superr-card superr-border superr-shadow hover:-translate-y-1 transition-transform flex flex-col justify-between">
-          <div class="flex items-center justify-between pb-3 border-b-2 border-superr-divider">
-            <span class="font-fraunces font-bold text-lg text-superr-ink">The Backpack</span>
-            <span class="font-hand text-xs text-superr-muted font-bold">ALL IN ONE PLACE</span>
-          </div>
-          <div class="py-4">
-            <p class="text-xs text-superr-muted uppercase font-bold tracking-wider mb-2">Core Languages</p>
-            <div class="flex flex-wrap gap-1.5">
-              ${skills.slice(0, 4).map(s => `<span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold text-superr-ink">${s}</span>`).join('\n')}
-            </div>
-          </div>
-          <span class="font-hand text-sm text-superr-orange font-bold">✦ Tested in production</span>
+        <!-- Sticker 1 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-1.svg" alt="Sticker 1" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
         </div>
 
-        <!-- Doodle 02: Pencil Box / Frameworks -->
-        <div class="p-6 rounded-2xl bg-superr-card superr-border superr-shadow hover:-translate-y-1 transition-transform flex flex-col justify-between">
-          <div class="flex items-center justify-between pb-3 border-b-2 border-superr-divider">
-            <span class="font-fraunces font-bold text-lg text-superr-ink">Whole Pencil Box</span>
-            <span class="font-hand text-xs text-superr-green font-bold">FEELS JUST LIKE PAPER</span>
-          </div>
-          <div class="py-4">
-            <p class="text-xs text-superr-muted uppercase font-bold tracking-wider mb-2">Frameworks &amp; Surfaces</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">React</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">Next.js</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">TailwindCSS</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">Three.js</span>
-            </div>
-          </div>
-          <span class="font-hand text-sm text-superr-green font-bold">✦ Modern responsive UI</span>
+        <!-- Sticker 2 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-2.svg" alt="Sticker 2" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
         </div>
 
-        <!-- Doodle 03: Library / Cloud Infrastructure -->
-        <div class="p-6 rounded-2xl bg-superr-card superr-border superr-shadow hover:-translate-y-1 transition-transform flex flex-col justify-between">
-          <div class="flex items-center justify-between pb-3 border-b-2 border-superr-divider">
-            <span class="font-fraunces font-bold text-lg text-superr-ink">Whole Library</span>
-            <span class="font-hand text-xs text-superr-blue font-bold">SO MANY BOOKS</span>
-          </div>
-          <div class="py-4">
-            <p class="text-xs text-superr-muted uppercase font-bold tracking-wider mb-2">Cloud &amp; DevOps</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">Docker</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">AWS Cloud</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">CI / CD</span>
-              <span class="px-2.5 py-1 rounded-md bg-superr-paper superr-border font-sans text-xs font-semibold">PostgreSQL</span>
-            </div>
-          </div>
-          <span class="font-hand text-sm text-superr-blue font-bold">✦ Resilient infrastructure</span>
+        <!-- Sticker 3 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-3.svg" alt="Sticker 3" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 4 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-4.svg" alt="Sticker 4" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 5 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-5.svg" alt="Sticker 5" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
         </div>
 
       </div>
@@ -641,37 +757,30 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 06. CAREER NOTEBOOK MILESTONES (JOURNAL)                 -->
+  <!-- 08. QUESTIONS YOU MIGHT HAVE (FAQ ACCORDION)             -->
   <!-- ======================================================== -->
-  <section id="journal" class="py-20 sm:py-28 px-4 sm:px-6 bg-[#F8F4EE] border-t-[2.3px] border-superr-ink relative">
-    <div class="max-w-[1000px] mx-auto flex flex-col gap-10">
+  <section id="faq" class="py-20 sm:py-28 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FDFBF9]">
+    <div class="max-w-[760px] mx-auto flex flex-col gap-10">
       
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <span class="font-hand text-xl text-superr-orange font-bold">★ FIELD LOGS &amp; MILESTONES</span>
-          <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink tracking-tight mt-1">
-            CAREER JOURNAL
-          </h2>
-        </div>
-        <span class="font-hand text-base text-superr-muted font-bold">Continuous learning, continuous shipping.</span>
+      <div class="text-center">
+        <h2 class="font-fraunces text-3xl sm:text-5xl font-normal text-superr-ink">
+          Questions you might have
+        </h2>
       </div>
 
-      <div class="flex flex-col gap-6">
-        ${rawExperience.map((exp, idx) => `
-        <div class="bg-superr-card superr-border rounded-2xl p-6 sm:p-8 superr-shadow flex flex-col md:flex-row md:items-start justify-between gap-4">
-          <div class="flex flex-col">
-            <div class="flex items-center gap-3">
-              <span class="w-6 h-6 rounded-md bg-superr-orange text-white flex items-center justify-center font-fraunces font-bold text-xs">
-                ${idx + 1}
-              </span>
-              <h3 class="font-fraunces text-xl sm:text-2xl font-bold text-superr-ink">${exp.role}</h3>
-            </div>
-            <span class="font-sans text-sm font-semibold text-superr-orange mt-1">${exp.company}</span>
-            <p class="font-sans text-sm sm:text-base text-[#4D3C2B] leading-relaxed mt-3 max-w-xl">${exp.desc}</p>
+      <div class="flex flex-col">
+        ${faqList.map((item, idx) => `
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="${idx}">
+            <span>${item.question}</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-${idx}">
+            ${item.answer}
           </div>
-          <span class="px-3 py-1 rounded-full bg-superr-paper superr-border text-xs font-fraunces font-bold text-superr-ink shrink-0 self-start">
-            ${exp.period}
-          </span>
         </div>
         `).join('\n')}
       </div>
@@ -680,7 +789,7 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 07. DIRECT DISPATCH ("I CALL DIBS!" CONTACT MODULE)      -->
+  <!-- 09. DIRECT DISPATCH ("I CALL DIBS!" CONTACT MODULE)      -->
   <!-- ======================================================== -->
   <section id="contact" class="py-20 sm:py-28 px-4 sm:px-6 max-w-[1000px] mx-auto border-t-[2.3px] border-superr-ink relative">
     <div class="bg-superr-card superr-border rounded-3xl p-6 sm:p-12 superr-shadow-lg flex flex-col gap-8">
@@ -724,7 +833,7 @@ const SuperrNotebookTemplate = {
           <div class="flex items-center gap-2 font-hand text-base text-superr-muted font-bold">
             <span>✦ 100% direct line to ${firstName}. No intermediaries.</span>
           </div>
-          <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-superr-orange text-white font-fraunces text-lg font-bold superr-border shadow-md hover:scale-105 active:scale-95 transition-all">
+          <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-superr-orange text-white font-fraunces text-lg font-bold superr-border shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
             Dispatch Note 🚀
           </button>
         </div>
@@ -734,48 +843,120 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 08. FOOTER                                               -->
+  <!-- 10. AUTHENTIC SUPERR ORANGE FOOTER                       -->
   <!-- ======================================================== -->
-  <footer class="w-full py-12 px-4 sm:px-6 border-t-[2.3px] border-superr-ink bg-superr-paper">
-    <div class="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div class="flex flex-col items-center sm:items-start">
-        <span class="font-fraunces font-bold text-lg text-superr-ink">${safeName}</span>
-        <span class="font-hand text-sm text-superr-muted font-bold">Superr Notebook Edition • ${currentYear}</span>
+  <footer class="relative w-full rounded-t-[40px] md:rounded-t-[56px] overflow-hidden flex flex-col bg-[#FF6F1E] text-white pt-12 md:pt-16">
+    <div class="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col flex-1">
+      
+      <!-- Top Row: Heading and Navigation -->
+      <div class="flex flex-col md:flex-row md:justify-between items-start gap-8 border-b border-white/20 pb-12">
+        <div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight max-w-md">
+            Building systems that<br/>make engineering fun
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-white/80 mt-3 max-w-sm">
+            Curated by ${safeName}. Dedicated to clean code, joyful software, and thoughtful digital worlds.
+          </p>
+        </div>
+
+        <!-- Nav Columns -->
+        <div class="flex gap-12 md:gap-16 font-sans text-base font-semibold">
+          <div class="flex flex-col gap-3">
+            <span class="font-hand text-xs text-white/70 tracking-wider uppercase font-bold">Navigation</span>
+            <a href="#cover" class="hover:text-white/80 transition-colors">Cover</a>
+            <a href="#feature-one" class="hover:text-white/80 transition-colors">Magic Paper</a>
+            <a href="#feature-two" class="hover:text-white/80 transition-colors">Interactive Books</a>
+            <a href="#feature-three" class="hover:text-white/80 transition-colors">Got Your Back</a>
+            <a href="#faq" class="hover:text-white/80 transition-colors">Questions</a>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <span class="font-hand text-xs text-white/70 tracking-wider uppercase font-bold">Direct Channels</span>
+            <a href="mailto:${email}" class="hover:text-white/80 transition-colors">Write to ${firstName}</a>
+            <a href="${github}" target="_blank" rel="noopener noreferrer" class="hover:text-white/80 transition-colors">GitHub</a>
+            <a href="${linkedin}" target="_blank" rel="noopener noreferrer" class="hover:text-white/80 transition-colors">LinkedIn</a>
+          </div>
+        </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        ${socialLinksHtml}
+      <!-- Giant Authentic Wordmark from Superr.ai -->
+      <div class="w-full py-8 md:py-12 flex items-center justify-center opacity-95">
+        <img src="/assets/templates/superr/superr-footer.svg" alt="Superr" class="w-full h-auto max-h-[140px] object-contain pointer-events-none select-none brightness-0 invert" />
       </div>
 
-      <div class="text-xs text-superr-muted font-sans text-center sm:text-right">
-        Powered by <a href="https://myfolio.tech" class="font-bold text-superr-ink hover:underline">MyFolio</a>
+      <!-- Bottom Credits -->
+      <div class="flex flex-col sm:flex-row items-center justify-between py-6 text-sm font-sans text-white/75 border-t border-white/20">
+        <span>© ${currentYear} ${safeName} • Superr Notebook Edition</span>
+        <span>Crafted with pride • Powered by MyFolio</span>
       </div>
+
     </div>
   </footer>
 
   <!-- ======================================================== -->
-  <!-- TAB CONTROLLER SCRIPT                                    -->
+  <!-- TAB & FAQ CONTROLLER SCRIPT                              -->
   <!-- ======================================================== -->
   <script>
-    document.querySelectorAll('.superr-tab-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const targetIdx = button.getAttribute('data-tab-index');
-        
-        // Update tab buttons
-        document.querySelectorAll('.superr-tab-btn').forEach(b => {
-          b.classList.remove('text-superr-green', 'font-bold', 'bg-superr-paper');
-          b.classList.add('text-superr-ink', 'font-medium');
+    // Section 1 Controller
+    document.querySelectorAll('.s1-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        document.querySelectorAll('.s1-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-green', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
         });
-        button.classList.remove('text-superr-ink', 'font-medium');
-        button.classList.add('text-superr-green', 'font-bold', 'bg-superr-paper');
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-green', 'text-white', 'superr-shadow', 'active');
+        const img = document.getElementById('s1-tablet-screen');
+        if (img) img.src = screenSrc;
+      });
+    });
 
-        // Update active project card
-        document.querySelectorAll('.superr-project-card').forEach(card => {
-          card.style.display = 'none';
+    // Section 2 Controller
+    document.querySelectorAll('.s2-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        document.querySelectorAll('.s2-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-blue', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
         });
-        const activeCard = document.getElementById('project-sheet-' + targetIdx);
-        if (activeCard) {
-          activeCard.style.display = 'block';
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-blue', 'text-white', 'superr-shadow', 'active');
+        const img = document.getElementById('s2-tablet-screen');
+        if (img) img.src = screenSrc;
+      });
+    });
+
+    // Section 3 Controller
+    document.querySelectorAll('.s3-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        document.querySelectorAll('.s3-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-pink', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
+        });
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-pink', 'text-white', 'superr-shadow', 'active');
+        const img = document.getElementById('s3-tablet-screen');
+        if (img) img.src = screenSrc;
+      });
+    });
+
+    // FAQ Accordion Controller
+    document.querySelectorAll('.faq-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = btn.getAttribute('data-faq-idx');
+        const answer = document.getElementById('faq-answer-' + idx);
+        const icon = btn.querySelector('.faq-icon');
+        if (answer) {
+          const isHidden = answer.classList.contains('hidden');
+          if (isHidden) {
+            answer.classList.remove('hidden');
+            if (icon) icon.textContent = '−';
+          } else {
+            answer.classList.add('hidden');
+            if (icon) icon.textContent = '+';
+          }
         }
       });
     });
