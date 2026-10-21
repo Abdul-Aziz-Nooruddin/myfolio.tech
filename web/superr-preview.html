@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abdul Aziz Nooruddin — Superr AI Notebook Portfolio</title>
+  <meta name="description" content="Computer Science &amp; Artificial Intelligence student actively engineering open-source Web3 protocols, smart contracts on Algorand and Polygon, and immersive 3D developer experiences. Bridging cutting-edge research with shipped software."/>
+  
+  <!-- Favicon & Touch Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Authoritative Superr Typography Stack: Fraunces + Plus Jakarta Sans + Patrick Hand -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS Core -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'superr-paper': '#FDFBF9',
+            'superr-card': '#FFFCF9',
+            'superr-ink': '#2B1A07',
+            'superr-green': '#22C55E',
+            'superr-blue': '#3B82F6',
+            'superr-pink': '#FF66CF',
+            'superr-orange': '#FF6F1E',
+            'superr-amber': '#FFB702',
+            'superr-muted': '#8A7B6A',
+            'superr-divider': '#DED6D2'
+          },
+          fontFamily: {
+            'fraunces': ['Fraunces', 'Georgia', 'serif'],
+            'sans': ['Plus Jakarta Sans', '-apple-system', 'sans-serif'],
+            'hand': ['Patrick Hand', 'cursive', 'sans-serif'],
+            'mono': ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --sticker-p: 10px;
+      --sticker-peel-easing: 2s linear(0,.002 0.4%,.008 0.9%,.02 1.4%,.035 1.9%,.055 2.4%,.083 3%,.11 3.5%,.146 4.1%,.214 5.1%,.297 6.2%,.624 10.2%,.756 11.9%,.821 12.8%,.874 13.6%,.93 14.5%,.975 15.3%,1.016 16.1%,1.053 16.9%,1.085 17.7%,1.116 18.6%,1.139 19.4%,1.16 20.3%,1.176 21.2%,1.187 22.1%,1.195 23.2%,1.197 24.4%,1.193 25.6%,1.183 26.9%,1.17 28.1%,1.153 29.4%,1.055 35.6%,1.031 37.3%,1.012 38.8%,.994 40.6%,.98 42.3%,.97 44.1%,.964 45.9%,.961 48.3%,.964 51.1%,.97 53.7%,.997 62.7%,1.003 66%,1.007 69.3%,1.007 74.4%,1 89.2%,1);
+      --sticker-peel-hover-easing: 1s linear(0,.008 1.1%,.031 2.2%,.129 4.8%,.257 7.2%,.671 14.2%,.789 16.5%,.881 18.6%,.957 20.7%,1.019 22.9%,1.063 25.1%,1.094 27.4%,1.114 30.7%,1.112 34.5%,1.018 49.9%,.99 59.1%,1);
+      --sticker-start: calc(-1 * var(--sticker-p));
+      --sticker-end: calc(100% + var(--sticker-p));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #FDFBF9;
+      color: #2B1A07;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-fraunces { font-family: 'Fraunces', Georgia, serif; }
+    .font-hand { font-family: 'Patrick Hand', cursive, sans-serif; }
+    
+    /* Superr Tactile Border & Pill System */
+    .superr-border {
+      border: 2.3px solid #2B1A07;
+    }
+    .superr-shadow {
+      box-shadow: 0px 2px 4px rgba(43, 26, 7, 0.14);
+    }
+    .superr-shadow-lg {
+      box-shadow: 0px 6px 12px rgba(43, 26, 7, 0.16);
+    }
+    .superr-shadow-btn {
+      box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.25);
+    }
+    .superr-shadow-btn:hover {
+      box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.18);
+    }
+
+    /* Sticker Peel Physics Classes */
+    .sticker-container {
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sticker-container:hover {
+      transform: scale(1.08) rotate(3deg);
+    }
+    .sticker-main {
+      width: 100%;
+      height: 100%;
+      transition: clip-path var(--sticker-peel-hover-easing);
+      will-change: clip-path;
+    }
+    .sticker-container:hover .sticker-main {
+      clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 0 100%);
+    }
+  </style>
+
+  <!-- Smooth Inertia Scroll (Lenis) & GSAP Motion Ecosystem -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <style id="universal-scroll-motion-styles">
+    /* Top Scroll Progress Indicator */
+    #scroll-progress-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3.5px;
+      background: linear-gradient(90deg, #00F0FF, #38bdf8, #ec4899);
+      z-index: 100000;
+      box-shadow: 0 0 14px #00F0FF, 0 0 4px #ffffff;
+      pointer-events: none;
+      transition: width 0.08s linear;
+    }
+
+    /* Hardware Accelerated Smooth Inertia Scroll Baseline (Lenis) */
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: clip;
+    }
+    .lenis.lenis-smooth iframe {
+      pointer-events: none;
+    }
+
+    /* Scroll Velocity Reactive Container */
+    .scroll-velocity-item {
+      will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 3D Perspective Card Tilt Standards */
+    .project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, 
+    .curio-case-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card,
+    .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, filter 0.35s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
+    .project-card:hover, .crystal-project-card:hover, .bio-project-card:hover, .wood-project-card:hover, 
+    .fusion-project-card:hover, .curio-case-card:hover, .cosmic-project-card:hover, .sanctuary-project-card:hover, 
+    .white-crystal-card:hover, .abyss-chest-card:hover, .sprawl-vault-card:hover,
+    .greenhouse-project-card:hover, .monograph-exhibit-card:hover, .parchment-project-card:hover {
+      box-shadow: 0 24px 50px -12px rgba(0,0,0,0.65), 0 0 30px #00F0FF44;
+    }
+
+    /* Spring-physics Magnetic Buttons */
+    .magnetic-btn, .btn-primary, .cosmic-btn-primary, .crystal-btn-primary, .wood-btn-primary {
+      will-change: transform;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+
+    /* Reduced Motion Fallback */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      #scroll-progress-indicator { display: none !important; }
+    }
+  </style>
+
+  <meta name="myfolio-template" content="superr-notebook">
+  <meta name="myfolio-universe" content="superr-notebook">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="bg-superr-paper text-superr-ink selection:bg-superr-amber/40 selection:text-superr-ink min-h-screen">
+
+  <!-- ======================================================== -->
+  <!-- 01. STICKY TOP NOTEBOOK HEADER                           -->
+  <!-- ======================================================== -->
+  <header class="fixed top-4 z-50 w-full px-4 sm:px-8 pointer-events-none">
+    <div class="max-w-[1360px] mx-auto flex items-center justify-between py-2.5 px-4 sm:px-6 bg-[#FAF8F5]/90 backdrop-blur-md border-[2px] border-[#2B1A07] rounded-[22px] shadow-sm pointer-events-auto">
+      
+      <!-- Brand Logo: Authentic Superr Hand Icon -->
+      <a href="#cover" class="flex items-center gap-2 group">
+        <img src="/assets/templates/superr/superr-logo.svg" alt="Superr" class="h-9 w-auto" />
+      </a>
+
+      <!-- Desktop Section Tabs -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#2B1A07]/90 font-sans">
+        <a href="#feature-one" class="hover:text-superr-green transition-colors">I. Shipped Projects</a>
+        <a href="#feature-two" class="hover:text-superr-blue transition-colors">II. Tech Disciplines</a>
+        <a href="#feature-three" class="hover:text-superr-pink transition-colors">III. System Reliability</a>
+        <a href="#our-story" class="hover:text-superr-orange transition-colors">IV. Story &amp; Bio</a>
+        <a href="#faq" class="hover:text-superr-orange transition-colors">V. FAQ</a>
+      </nav>
+
+      <!-- Primary CTA: "I Call Dibs!" -->
+      <a href="#contact" class="bg-[#fdfbf9] p-0.5 rounded-[18px] superr-shadow-btn hover:-translate-y-0.5 transition-all duration-150">
+        <div class="bg-[#fdfbf9] border-[2px] border-[#2B1A07] rounded-2xl px-4 py-1.5 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-superr-green animate-pulse"></span>
+          <span class="font-fraunces text-sm sm:text-base font-semibold text-[#2B1A07]">I call dibs!</span>
+        </div>
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- 02. HERO NOTEBOOK STAGE & COVER                          -->
+  <!-- ======================================================== -->
+  <section id="cover" class="relative min-h-[92vh] pt-28 sm:pt-36 pb-16 px-6 sm:px-10 lg:px-16 max-w-[1480px] mx-auto flex items-center overflow-hidden">
+    
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+      
+      <!-- Left Column: Exact Superr Hero Layout Tailored for Candidate Portfolio -->
+      <div class="lg:col-span-6 xl:col-span-6 flex flex-col items-start z-10 lg:pl-2 xl:pl-6">
+        
+        <!-- Dear grownups & hiring teams, -->
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-hand font-bold text-2xl sm:text-3xl text-superr-orange -rotate-2 inline-block">
+            Dear builders &amp; hiring teams,
+          </span>
+        </div>
+
+        <!-- Meet Candidate Masthead -->
+        <h1 class="font-fraunces font-black text-5xl sm:text-6xl lg:text-[76px] text-[#2B1A07] tracking-tight leading-[1.04] mb-4">
+          meet <span class="relative inline-block text-superr-orange underline decoration-[#2B1A07] decoration-wavy decoration-[2.5px] underline-offset-8">abdul</span>
+        </h1>
+
+        <!-- Subtitle: Candidate Role who actually! ships real software -->
+        <p class="text-[20px] sm:text-[23px] lg:text-[25px] leading-[1.4] text-[#2B1A07] font-normal max-w-[480px] mb-8 font-sans">
+          Computer Science &amp; AI Student • Web3 Developer who
+          <span class="relative inline-block w-[88px] sm:w-[94px] mx-1.5 -mt-1.5 align-middle">
+            <img src="/assets/templates/superr/hero/actually.png" alt="actually!" class="w-full h-auto object-contain pointer-events-none select-none" />
+          </span>
+          ships real software
+        </p>
+
+        <!-- CTA Button & Availability Text -->
+        <div class="flex flex-col items-start">
+          <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
+            <div class="bg-[#fdfbf9] border-[2.3px] border-[#2b1a07] rounded-2xl px-6 py-[11px] flex items-center justify-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-superr-green animate-ping mr-1"></span>
+              <span class="text-[20px] text-[#2b1a07] font-fraunces font-semibold">I call dibs!</span>
+            </div>
+          </a>
+          <p class="mt-4 ml-1 text-[15px] sm:text-[16px] font-medium text-[#8a7b6a] font-sans">
+            ✦ Available for high-impact engineering roles &amp; Web3 contracts
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Exact 3D Brown Notebook with Pencil & Dynamic Clean Paper Label -->
+      <div class="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end">
+        <div class="relative w-full max-w-[700px] lg:max-w-[780px] xl:max-w-[840px] aspect-[16/10] flex items-center justify-center">
+          
+          <!-- Authentic 3D Cutout of Brown Notebook with Pencil from Superr.ai -->
+          <img src="/assets/templates/superr/hero/notebook-hero.webp" alt="Superr AI Notebook" class="w-full h-full object-contain pointer-events-none select-none filter drop-shadow-xl" />
+
+          <!-- Clean Paper Label Sticker (Solid background masking the pre-printed Param text with zero overlap) -->
+          <div class="absolute" style="left: 56.6%; top: 18.2%; width: 22.2%; height: 21.6%; transform: rotate(-15.8deg); transform-origin: top left; pointer-events: none;">
+            <div class="w-full h-full relative rounded-xl bg-[#FFFDF8] border-[2.2px] border-[#2B1A07] shadow-md flex flex-col justify-between py-2 px-3 overflow-hidden">
+              
+              <!-- Label Top Header -->
+              <div class="flex items-center justify-between border-b border-[#2B1A07]/40 pb-1">
+                <span class="font-fraunces font-bold text-[9px] sm:text-[10px] text-[#2B1A07] tracking-wider uppercase">VERIFIED PORTFOLIO</span>
+                <span class="w-2 h-2 rounded-full bg-superr-green border border-[#2B1A07]"></span>
+              </div>
+
+              <!-- Name Row (Handwritten) -->
+              <div class="flex flex-col py-0.5">
+                <span class="text-[8px] sm:text-[9px] font-sans font-bold text-[#2B1A07]/70 uppercase tracking-tight">Name</span>
+                <span class="font-hand font-bold text-base sm:text-lg md:text-xl text-[#1E140A] leading-tight truncate">
+                  Abdul Aziz Nooruddin
+                </span>
+              </div>
+
+              <!-- Class & Roll Row -->
+              <div class="flex items-center justify-between border-t border-[#2B1A07]/40 pt-1">
+                <div class="flex flex-col">
+                  <span class="text-[7px] sm:text-[8px] font-sans font-bold text-[#2B1A07]/70 uppercase">Role / Discipline</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A] leading-none truncate max-w-[105px]">
+                    Computer Science
+                  </span>
+                </div>
+                <div class="flex flex-col items-end border-l border-[#2B1A07]/40 pl-2">
+                  <span class="text-[7px] sm:text-[8px] font-sans font-bold text-[#2B1A07]/70 uppercase">Roll no.</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A] leading-none">01</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 03. FEATURE ONE: IT’S KINDA LIKE MAGIC PAPER (PROJECTS)  -->
+  <!-- ======================================================== -->
+  <section id="feature-one" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-1/feature_bg_1.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
+        <div>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-green text-white font-fraunces font-bold text-xs mb-3">
+            01 // SHIPPED SYSTEMS
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It’s kinda like <span class="bg-superr-green/20 text-superr-green px-2 rounded-lg">magic paper</span>
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            Click any project pointer to inspect real shipped architecture, smart contracts, and interactive live demos.
+          </p>
+        </div>
+
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s1-pointers-list">
+          
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all bg-superr-green text-white superr-shadow active" 
+                    data-s1-index="0" 
+                    data-screen-src="/assets/projects/consent_chain_privacy_3d.webp"
+                    data-proj-title="ConsentChain Algorand"
+                    data-proj-desc="A decentralized Consent Management application powered by the Algorand blockchain, enabling DPDP Act 2023 compliance with an escrow-based data micro-payment system."
+                    data-proj-link="https://consent-chain-algorand.vercel.app">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  I
+                </span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">ConsentChain Algorand</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">High performance execution with validated unit coverage.</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s1-index="1" 
+                    data-screen-src="/assets/projects/ai_portfolio_generator_3d.webp"
+                    data-proj-title="AI Portfolio Generator"
+                    data-proj-desc="Turn your GitHub repositories &amp;amp; resume into bespoke 3D WebGL developer portfolios with AI in seconds. Interactive spatial worlds and high-impact scrollytelling."
+                    data-proj-link="https://myfolio.tech">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  II
+                </span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">AI Portfolio Generator</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">High performance execution with validated unit coverage.</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s1-index="2" 
+                    data-screen-src="/assets/projects/pass_note_messenger_3d.webp"
+                    data-proj-title="Pass A Note"
+                    data-proj-desc="High-performance interactive communication tool engineered for seamless zero-latency peer data transfer with secure encrypted messaging."
+                    data-proj-link="https://pass-a-note-iota.vercel.app">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  III
+                </span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">Pass A Note</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">High performance execution with validated unit coverage.</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s1-index="3" 
+                    data-screen-src="/assets/projects/lms_user_management_3d.webp"
+                    data-proj-title="LMS User Management"
+                    data-proj-desc="Enterprise-grade role-based access control and user management system engineered with strict security guarantees and database integrity."
+                    data-proj-link="https://github.com/Abdul-Aziz-Nooruddin/lms-user-management">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  IV
+                </span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">LMS User Management</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">High performance execution with validated unit coverage.</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s1-index="4" 
+                    data-screen-src="/assets/projects/holographic_resume_codex_3d.webp"
+                    data-proj-title="Dual-Chain Web3 Portfolio"
+                    data-proj-desc="Personal developer showcase featuring glassmorphism design, particle animations, and multi-chain protocol verification across Polygon &amp;amp; Algorand."
+                    data-proj-link="https://portfolio-nine-tawny-39.vercel.app">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  V
+                </span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">Dual-Chain Web3 Portfolio</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">High performance execution with validated unit coverage.</span>
+            </button>
+            
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Tablet Mockup Frame with Live Inspect CTA -->
+      <div class="lg:col-span-7 flex flex-col items-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/95 p-3 sm:p-4 superr-shadow-lg flex flex-col justify-between overflow-hidden">
+          
+          <div class="w-full h-full relative rounded-2xl overflow-hidden flex items-center justify-center bg-zinc-900">
+            <img id="s1-tablet-screen" 
+                 src="/assets/projects/consent_chain_privacy_3d.webp" 
+                 alt="Project Preview Screen" 
+                 class="w-full h-full object-cover rounded-xl transition-all duration-300" />
+            
+            <!-- Live System Floating Card -->
+            <div class="absolute bottom-3 left-3 right-3 bg-[#FAF8F5]/95 backdrop-blur-md border-[2px] border-[#2B1A07] rounded-xl p-3 flex items-center justify-between gap-3 shadow-md">
+              <div class="flex flex-col truncate">
+                <span id="s1-proj-title-display" class="font-fraunces font-bold text-sm sm:text-base text-[#2B1A07] truncate">
+                  ConsentChain Algorand
+                </span>
+                <span id="s1-proj-desc-display" class="font-sans text-xs text-superr-muted truncate">
+                  A decentralized Consent Management application powered by the Algorand blockchain, enabling DPDP Act 2023 compliance with an escrow-based data micro-payment system.
+                </span>
+              </div>
+
+              <a id="s1-proj-link-display" 
+                 href="https://consent-chain-algorand.vercel.app" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="px-4 py-1.5 rounded-lg bg-superr-orange text-white font-fraunces text-xs sm:text-sm font-bold superr-border shadow-xs hover:scale-105 transition-transform shrink-0 flex items-center gap-1.5">
+                <span>Inspect System</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 04. FEATURE TWO: BOOKS THAT ACTUALLY TALK TO US (SKILLS) -->
+  <!-- ======================================================== -->
+  <section id="feature-two" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-2/feature_bg_2.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Interactive Tablet Mockup Frame (Inverted layout) -->
+      <div class="lg:col-span-7 order-2 lg:order-1 flex justify-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
+          <img id="s2-tablet-screen" 
+               src="/assets/templates/superr/assets/features/section-2/section_2_screen_1.png" 
+               alt="Superr Interactive Books Screen" 
+               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+        </div>
+      </div>
+
+      <!-- Right Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 order-1 lg:order-2 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
+        <div>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-blue text-white font-fraunces font-bold text-xs mb-3">
+            02 // TECHNICAL DISCIPLINES
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It has <span class="bg-superr-blue/20 text-superr-blue px-2 rounded-lg">books that</span> actually talk to us
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            A comprehensive engineering repertoire spanning Web3 protocols, 3D WebGL graphics, and resilient backend systems.
+          </p>
+        </div>
+
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s2-pointers-list">
+          
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-blue text-white superr-shadow active" 
+                    data-s2-index="0" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-2/section_2_screen_1.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  I
+                </span>
+                <span>Decentralized Protocols & Smart Contracts</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Algorand • Solidity</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s2-index="1" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-2/section_2_screen_2.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  II
+                </span>
+                <span>Hardware-Accelerated 3D & WebGL</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Three.js • GLSL</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s2-index="2" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-2/section_2_screen_3.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  III
+                </span>
+                <span>Distributed Backend & API Gateways</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Node.js • PostgreSQL</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s2-index="3" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-2/section_2_screen_4.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  IV
+                </span>
+                <span>Autonomous Agent Runtimes & Machine Learning</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Python • Edge AI</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s2-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s2-index="4" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-2/section_2_screen_5.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  V
+                </span>
+                <span>Cryptographic Consent & Compliance</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">DPDP • RegTech</span>
+            </button>
+            
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 05. FEATURE THREE: IT’S A FRIEND WHO’S GOT OUR BACK      -->
+  <!-- ======================================================== -->
+  <section id="feature-three" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-3/feature_bg_3.png');">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Title & Pointers (I to V) -->
+      <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
+        <div>
+          <div class="inline-block px-3 py-1 rounded-full bg-superr-pink text-white font-fraunces font-bold text-xs mb-3">
+            03 // SYSTEM RELIABILITY
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
+            It’s a <span class="bg-superr-pink/20 text-superr-pink px-2 rounded-lg">friend</span> who’s got our back
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
+            Building software with mathematical precision, thorough test suites, clear documentation, and collaborative spirit.
+          </p>
+        </div>
+
+        <!-- 5 Interactive Pointers -->
+        <div class="flex flex-col gap-2.5" id="s3-pointers-list">
+          
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-pink text-white superr-shadow active" 
+                    data-s3-index="0" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-3/section_3_screen_1.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  I
+                </span>
+                <span>Zero-Downtime Microservices & CI/CD</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Docker • Cloud</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s3-index="1" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-3/section_3_screen_2.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  II
+                </span>
+                <span>Collaborative Pair Programming & Mentorship</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Team Culture</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s3-index="2" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-3/section_3_screen_3.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  III
+                </span>
+                <span>Clean Code: Minimal Diff & Low Latency</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Architecture</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s3-index="3" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-3/section_3_screen_4.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  IV
+                </span>
+                <span>Continuous Systems Adaptation & Learning</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Full-Stack</span>
+            </button>
+            
+
+            <button type="button" 
+                    class="s3-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer bg-superr-card text-superr-ink hover:bg-superr-paper" 
+                    data-s3-index="4" 
+                    data-screen-src="/assets/templates/superr/assets/features/section-3/section_3_screen_5.png">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
+                  V
+                </span>
+                <span>Open-Source Contributions & Research</span>
+              </div>
+              <span class="text-xs font-hand font-bold opacity-90">Ecosystem</span>
+            </button>
+            
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Tablet Mockup Frame -->
+      <div class="lg:col-span-7 flex justify-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
+          <img id="s3-tablet-screen" 
+               src="/assets/templates/superr/assets/features/section-3/section_3_screen_1.png" 
+               alt="Superr Companion Screen" 
+               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 06. LIFESTYLE CARDS & COMMUNITY: READ OUR STORY          -->
+  <!-- ======================================================== -->
+  <section id="our-story" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FFFBF7]">
+    <div class="max-w-[1360px] mx-auto flex flex-col items-center text-center gap-12">
+      
+      <!-- Headline & Button -->
+      <div class="flex flex-col items-center">
+        <span class="font-hand text-xl text-superr-orange font-bold">★ THE ORIGIN MANIFESTO</span>
+        <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink mt-2 tracking-tight">
+          Read Abdul's story &amp; engineering manifesto
+        </h2>
+        <div class="mt-6">
+          <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
+            <div class="bg-[#fdfbf9] border-[2.3px] border-[#2b1a07] rounded-2xl px-6 py-2.5 flex items-center gap-2">
+              <span class="text-[18px] text-[#2b1a07] font-fraunces font-medium">Read Letter</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 Photography Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        
+        <!-- Card 1: Park -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-in-park.png" alt="Engineering anywhere" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-green uppercase">Focus Anywhere</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Decentralized protocols built for open web accessibility.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Writing on Desk -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-writing-on-desk.png" alt="Writing clean code" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-blue uppercase">Zero Distractions</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Clean abstractions, no bloated dependencies, pure velocity.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: Couch -->
+        <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
+          <div class="w-full aspect-[4/3] overflow-hidden">
+            <img src="/assets/templates/superr/assets/word_out_section/card-sitting-on-couch.png" alt="Continuous learning" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4 text-left">
+            <span class="font-hand text-xs font-bold text-superr-pink uppercase">Continuous Craft</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Bridging deep academic research with production applications.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Community Illustration: "We're in good hands" -->
+      <div class="relative w-full max-w-[1200px] rounded-3xl superr-border overflow-hidden superr-shadow-lg mt-8">
+        <img src="/assets/templates/superr/assets/word_out_section/good-hands-illustration.png" alt="We're in good hands" class="w-full h-auto block" />
+        <div class="absolute top-6 right-6 md:top-12 md:right-12 bg-white/95 backdrop-blur-md superr-border px-6 py-4 rounded-2xl shadow-sm text-left">
+          <h3 class="font-fraunces text-2xl md:text-3xl font-bold text-superr-ink">We're in<br/>good hands</h3>
+          <p class="font-hand text-sm font-bold text-superr-orange mt-1">✦ Verified open-source code and tested protocols</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 07. INTERACTIVE PEELABLE STICKERS WALL                   -->
+  <!-- ======================================================== -->
+  <section class="py-16 sm:py-24 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FAF8F5]">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center text-center gap-10">
+      
+      <div>
+        <span class="font-hand text-xl text-superr-orange font-bold -rotate-2 inline-block">collect 'em all!</span>
+        <h2 class="font-fraunces text-3xl sm:text-4xl font-bold text-superr-ink mt-1">
+          Tactile Interactive Stickers
+        </h2>
+        <p class="font-sans text-sm text-superr-muted mt-2">
+          Hover over each sticker to test authentic corner-peel physical physics.
+        </p>
+      </div>
+
+      <!-- Stickers Row -->
+      <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12 py-6">
+        
+        <!-- Sticker 1 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-1.svg" alt="Sticker 1" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 2 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-2.svg" alt="Sticker 2" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 3 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-3.svg" alt="Sticker 3" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 4 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-4.svg" alt="Sticker 4" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+        <!-- Sticker 5 -->
+        <div class="sticker-container w-[110px] h-[110px] sm:w-[130px] sm:h-[130px]" title="Peel me!">
+          <img src="/assets/templates/superr/interactive/stickers/sticker-5.svg" alt="Sticker 5" class="sticker-main w-full h-full object-contain filter drop-shadow-md" />
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 08. QUESTIONS YOU MIGHT HAVE (FAQ ACCORDION)             -->
+  <!-- ======================================================== -->
+  <section id="faq" class="py-20 sm:py-28 px-4 sm:px-8 border-t-[2.3px] border-superr-ink bg-[#FDFBF9]">
+    <div class="max-w-[760px] mx-auto flex flex-col gap-10">
+      
+      <div class="text-center">
+        <h2 class="font-fraunces text-3xl sm:text-5xl font-normal text-superr-ink">
+          Questions you might have
+        </h2>
+      </div>
+
+      <div class="flex flex-col">
+        
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="0">
+            <span>What even IS Abdul Aziz Nooruddin's engineering approach?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-0">
+            It's like having your own dedicated systems architect! Resilient, thoughtful, and built for humans. Clean abstractions without over-engineering, high test coverage, and clear documentation so teams can move fast without breaking production.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="1">
+            <span>Who is this portfolio and toolkit for?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-1">
+            Engineers, founders, technical leaders, and innovative teams looking for senior-level execution across full-stack applications, distributed cloud services, smart contracts, and interactive web experiences.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="2">
+            <span>Is it easy on performance and eyes?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-2">
+            Totally! Zero unneeded libraries, strict 60 FPS animations, WCAG 2.2 AAA accessibility contrast, and optimized responsive layouts that render smoothly on any device.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="3">
+            <span>Can we collaborate on custom AI, Web3, or edge tooling?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-3">
+            Yes! Specializing in Algorand smart contracts, deterministic AI pipelines, local neural runtimes, automated testing bots, and hardware-accelerated WebGL viewports.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="4">
+            <span>Can we build stuff that's experimental and playful?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-4">
+            Absolutely! Tactile interfaces, bespoke 3D physics, kinetic web interactions, and creative code are first-class citizens in every build.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="5">
+            <span>How fast is delivery and response time?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-5">
+            Average response time is under 12 hours. Sprints are organized with daily transparent updates and verifiable pull requests.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="6">
+            <span>Do we have to micromanage the development process?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-6">
+            Nope! Self-directed execution with proactive communication, detailed PRs, and clear benchmarks means you stay in the loop without the friction.
+          </div>
+        </div>
+        
+
+        <div class="flex flex-col border-b-2 border-dashed border-[#DED6D2] py-5">
+          <button type="button" 
+                  class="faq-toggle-btn w-full text-left flex items-center justify-between gap-4 font-sans text-base sm:text-lg font-medium text-superr-ink hover:text-superr-orange transition-colors cursor-pointer" 
+                  data-faq-idx="7">
+            <span>How can you get in touch or start a project?</span>
+            <span class="faq-icon text-xl font-bold transition-transform duration-200">+</span>
+          </button>
+          <div class="faq-answer-content hidden pt-3 font-sans text-sm sm:text-base text-superr-muted leading-relaxed" 
+               id="faq-answer-7">
+            Simply click 'I call dibs!' in the top navigation or use the direct dispatch module below. Direct email: abdulaziznoor9876@gmail.com.
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 09. DIRECT DISPATCH ("I CALL DIBS!" CONTACT MODULE)      -->
+  <!-- ======================================================== -->
+  <section id="contact" class="py-20 sm:py-28 px-4 sm:px-6 max-w-[1000px] mx-auto border-t-[2.3px] border-superr-ink relative">
+    <div class="bg-superr-card superr-border rounded-3xl p-6 sm:p-12 superr-shadow-lg flex flex-col gap-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-superr-divider pb-6">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-superr-green animate-ping"></span>
+            <span class="font-hand text-lg text-superr-green font-bold">DIRECT DISPATCH CHANNEL</span>
+          </div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl font-bold text-superr-ink">I Call Dibs On Hiring!</h2>
+        </div>
+        <div class="px-4 py-1.5 rounded-xl bg-superr-paper superr-border text-xs font-bold text-superr-muted font-hand">
+          Average Response: &lt; 12 Hours
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-superr-paper superr-border flex flex-wrap items-center justify-between gap-4 font-sans text-sm">
+        <div><strong>Direct Email:</strong> <a href="mailto:abdulaziznoor9876@gmail.com" class="text-superr-orange hover:underline font-semibold">abdulaziznoor9876@gmail.com</a></div>
+        <div><strong>Location:</strong> <span class="font-semibold">Hyderabad, India • Remote Web3</span></div>
+      </div>
+
+      <form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('🚀 BZZT! Your dispatch has reached Abdul. Expect a response shortly.');">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="font-fraunces text-sm font-bold text-superr-ink" for="contact-name">Your Name / Organization *</label>
+            <input type="text" id="contact-name" required placeholder="e.g. Acme Corp / Sarah Lin" class="w-full p-3 rounded-xl bg-superr-paper superr-border font-sans text-sm focus:outline-none focus:ring-2 focus:ring-superr-orange"/>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="font-fraunces text-sm font-bold text-superr-ink" for="contact-email">Email Address *</label>
+            <input type="email" id="contact-email" required placeholder="sarah@acme.com" class="w-full p-3 rounded-xl bg-superr-paper superr-border font-sans text-sm focus:outline-none focus:ring-2 focus:ring-superr-orange"/>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-fraunces text-sm font-bold text-superr-ink" for="contact-message">Project Brief &amp; Requirements *</label>
+          <textarea id="contact-message" required rows="4" placeholder="Tell Abdul about your technical goals, stack, scope, and timeline..." class="w-full p-3 rounded-xl bg-superr-paper superr-border font-sans text-sm focus:outline-none focus:ring-2 focus:ring-superr-orange"></textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+          <div class="flex items-center gap-2 font-hand text-base text-superr-muted font-bold">
+            <span>✦ 100% direct line to Abdul. No intermediaries.</span>
+          </div>
+          <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-superr-orange text-white font-fraunces text-lg font-bold superr-border shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+            Dispatch Note 🚀
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 10. AUTHENTIC SUPERR ORANGE FOOTER                       -->
+  <!-- ======================================================== -->
+  <footer class="relative w-full rounded-t-[40px] md:rounded-t-[56px] overflow-hidden flex flex-col bg-[#FF6F1E] text-white pt-12 md:pt-16">
+    <div class="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col flex-1">
+      
+      <!-- Top Row: Heading and Navigation -->
+      <div class="flex flex-col md:flex-row md:justify-between items-start gap-8 border-b border-white/20 pb-12">
+        <div>
+          <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight max-w-md">
+            Building systems that<br/>make engineering fun
+          </h2>
+          <p class="font-sans text-sm sm:text-base text-white/80 mt-3 max-w-sm">
+            Curated by Abdul Aziz Nooruddin. Dedicated to clean code, joyful software, and thoughtful digital worlds.
+          </p>
+        </div>
+
+        <!-- Nav Columns -->
+        <div class="flex gap-12 md:gap-16 font-sans text-base font-semibold">
+          <div class="flex flex-col gap-3">
+            <span class="font-hand text-xs text-white/70 tracking-wider uppercase font-bold">Navigation</span>
+            <a href="#cover" class="hover:text-white/80 transition-colors">Cover</a>
+            <a href="#feature-one" class="hover:text-white/80 transition-colors">Shipped Systems</a>
+            <a href="#feature-two" class="hover:text-white/80 transition-colors">Disciplines</a>
+            <a href="#feature-three" class="hover:text-white/80 transition-colors">Reliability</a>
+            <a href="#faq" class="hover:text-white/80 transition-colors">Questions</a>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <span class="font-hand text-xs text-white/70 tracking-wider uppercase font-bold">Direct Channels</span>
+            <a href="mailto:abdulaziznoor9876@gmail.com" class="hover:text-white/80 transition-colors">Write to Abdul</a>
+            <a href="https://github.com/Abdul-Aziz-Nooruddin" target="_blank" rel="noopener noreferrer" class="hover:text-white/80 transition-colors">GitHub</a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white/80 transition-colors">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Giant Authentic Wordmark from Superr.ai -->
+      <div class="w-full py-8 md:py-12 flex items-center justify-center opacity-95">
+        <img src="/assets/templates/superr/superr-footer.svg" alt="Superr" class="w-full h-auto max-h-[140px] object-contain pointer-events-none select-none brightness-0 invert" />
+      </div>
+
+      <!-- Bottom Credits -->
+      <div class="flex flex-col sm:flex-row items-center justify-between py-6 text-sm font-sans text-white/75 border-t border-white/20">
+        <span>© 2026 Abdul Aziz Nooruddin • Superr Notebook Edition</span>
+        <span>Crafted with pride • Powered by MyFolio</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- TAB & FAQ CONTROLLER SCRIPT                              -->
+  <!-- ======================================================== -->
+  <script>
+    // Section 1 Controller (Project Switcher)
+    document.querySelectorAll('.s1-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        const projTitle = btn.getAttribute('data-proj-title');
+        const projDesc = btn.getAttribute('data-proj-desc');
+        const projLink = btn.getAttribute('data-proj-link');
+
+        document.querySelectorAll('.s1-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-green', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
+        });
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-green', 'text-white', 'superr-shadow', 'active');
+
+        const img = document.getElementById('s1-tablet-screen');
+        if (img) img.src = screenSrc;
+
+        const titleEl = document.getElementById('s1-proj-title-display');
+        if (titleEl && projTitle) titleEl.textContent = projTitle;
+
+        const descEl = document.getElementById('s1-proj-desc-display');
+        if (descEl && projDesc) descEl.textContent = projDesc;
+
+        const linkEl = document.getElementById('s1-proj-link-display');
+        if (linkEl && projLink) linkEl.href = projLink;
+      });
+    });
+
+    // Section 2 Controller
+    document.querySelectorAll('.s2-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        document.querySelectorAll('.s2-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-blue', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
+        });
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-blue', 'text-white', 'superr-shadow', 'active');
+        const img = document.getElementById('s2-tablet-screen');
+        if (img) img.src = screenSrc;
+      });
+    });
+
+    // Section 3 Controller
+    document.querySelectorAll('.s3-pointer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const screenSrc = btn.getAttribute('data-screen-src');
+        document.querySelectorAll('.s3-pointer-btn').forEach(b => {
+          b.classList.remove('bg-superr-pink', 'text-white', 'superr-shadow', 'active');
+          b.classList.add('bg-superr-card', 'text-superr-ink');
+        });
+        btn.classList.remove('bg-superr-card', 'text-superr-ink');
+        btn.classList.add('bg-superr-pink', 'text-white', 'superr-shadow', 'active');
+        const img = document.getElementById('s3-tablet-screen');
+        if (img) img.src = screenSrc;
+      });
+    });
+
+    // FAQ Accordion Controller
+    document.querySelectorAll('.faq-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = btn.getAttribute('data-faq-idx');
+        const answer = document.getElementById('faq-answer-' + idx);
+        const icon = btn.querySelector('.faq-icon');
+        if (answer) {
+          const isHidden = answer.classList.contains('hidden');
+          if (isHidden) {
+            answer.classList.remove('hidden');
+            if (icon) icon.textContent = '−';
+          } else {
+            answer.classList.add('hidden');
+            if (icon) icon.textContent = '+';
+          }
+        }
+      });
+    });
+  </script>
+
+
+  <!-- Universal Scroll Progress Bar -->
+  <div id="scroll-progress-indicator"></div>
+
+  <!-- Universal Lenis + GSAP + Three/Postprocessing + Motion Scrollytelling Choreographer -->
+  <script id="universal-scroll-motion-engine">
+    (function() {
+      function initScrollAnimations() {
+        var isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var lastScrollTop = 0;
+        var scrollVelocity = 0;
+        var scrollTimeout;
+        var ticking = false;
+
+        // 1. Lenis Smooth Inertia Scroll Orchestration (@darkroomengineering/lenis)
+        var lenis = null;
+        function startLenis() {
+          if (window.__folioLenis || isReducedMotion || typeof Lenis === 'undefined') return;
+          try {
+            lenis = new Lenis({
+              duration: 1.2,
+              easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+              orientation: 'vertical',
+              gestureOrientation: 'vertical',
+              smoothWheel: true,
+              wheelMultiplier: 1.0,
+              touchMultiplier: 1.5,
+              infinite: false,
+              syncTouch: false,
+              autoResize: true
+            });
+
+            window.__folioLenis = lenis;
+
+            try {
+              window.dispatchEvent(new CustomEvent('folio:lenis:ready', { detail: { lenis: lenis } }));
+              window.dispatchEvent(new Event('lenis-ready'));
+            } catch (evErr) {}
+
+            if (typeof ScrollTrigger !== 'undefined') {
+              lenis.on('scroll', ScrollTrigger.update);
+            }
+
+            if (typeof gsap !== 'undefined') {
+              gsap.ticker.add(function(time) {
+                lenis.raf(time * 1000);
+              });
+              gsap.ticker.lagSmoothing(0);
+            } else {
+              function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+              }
+              requestAnimationFrame(raf);
+            }
+
+            // Smooth In-Page Anchor Links Navigation
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+              anchor.addEventListener('click', function(e) {
+                var targetId = this.getAttribute('href');
+                if (!targetId) return;
+                if (targetId === '#') {
+                  e.preventDefault();
+                  lenis.scrollTo(0, { duration: 1.2 });
+                  return;
+                }
+                try {
+                  var targetElement = document.querySelector(targetId);
+                  if (targetElement) {
+                    e.preventDefault();
+                    lenis.scrollTo(targetElement, { offset: -24, duration: 1.2 });
+                  }
+                } catch(anchorErr) {}
+              });
+            });
+
+            // Connect Lenis to real-time scroll physics
+            lenis.on('scroll', function(e) {
+              updateScrollPhysics(e.scroll, e.velocity);
+            });
+          } catch (e) {
+            console.warn('[Lenis] Fallback to native scroll:', e);
+          }
+        }
+
+        if (typeof Lenis !== 'undefined') {
+          startLenis();
+        } else {
+          var checkCount = 0;
+          var lenisTimer = setInterval(function() {
+            checkCount++;
+            if (typeof Lenis !== 'undefined') {
+              clearInterval(lenisTimer);
+              startLenis();
+            } else if (checkCount > 25) {
+              clearInterval(lenisTimer);
+            }
+          }, 40);
+        }
+
+        // 2. Real-time Scroll Velocity & Direction Physics
+        function updateScrollPhysics(currentScroll, velocity) {
+          var delta = currentScroll - lastScrollTop;
+          scrollVelocity = velocity !== undefined ? velocity : delta;
+          lastScrollTop = Math.max(0, currentScroll);
+
+          // Update Progress Indicator
+          var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          var scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+          var bar = document.getElementById('scroll-progress-indicator');
+          if (bar) bar.style.width = scrolled + '%';
+
+          // Apply Dynamic Velocity Skew to Interactive Cards on Scroll
+          if (!ticking && !isReducedMotion) {
+            window.requestAnimationFrame(function() {
+              var clampedVelocity = Math.max(-20, Math.min(20, scrollVelocity));
+              var skewAngle = clampedVelocity * 0.06;
+              var scaleComp = 1 - Math.min(0.03, Math.abs(clampedVelocity) * 0.001);
+
+              var velocityElements = document.querySelectorAll('.project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .curio-case-card, .cosmic-project-card, .nano-banana-3d-hero, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+              velocityElements.forEach(function(el) {
+                el.style.transform = 'skewY(' + skewAngle + 'deg) scaleY(' + scaleComp + ')';
+              });
+
+              ticking = false;
+            });
+            ticking = true;
+          }
+
+          // Reset velocity skew smoothly when scrolling halts
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(function() {
+            var velocityElements = document.querySelectorAll('.project-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .curio-case-card, .cosmic-project-card, .nano-banana-3d-hero, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+            velocityElements.forEach(function(el) {
+              el.style.transform = 'skewY(0deg) scaleY(1)';
+            });
+          }, 110);
+        }
+
+        window.addEventListener('scroll', function() {
+          var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          updateScrollPhysics(currentScroll);
+        }, { passive: true });
+
+        // 3. Motion Spring-Physics 3D Tilt on Hover
+        if (!isReducedMotion) {
+          var tiltCards = document.querySelectorAll('.project-card, .curio-case-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+          tiltCards.forEach(function(card) {
+            card.addEventListener('mousemove', function(e) {
+              var rect = card.getBoundingClientRect();
+              var x = e.clientX - rect.left;
+              var y = e.clientY - rect.top;
+              var centerX = rect.width / 2;
+              var centerY = rect.height / 2;
+              var rotateX = (centerY - y) / 14;
+              var rotateY = (x - centerX) / 14;
+              card.style.transform = 'perspective(1000px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) scale3d(1.025, 1.025, 1.025)';
+            });
+            card.addEventListener('mouseleave', function() {
+              card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+          });
+
+          // Magnetic Buttons Micro-Interaction
+          var magneticBtns = document.querySelectorAll('.magnetic-btn, .cosmic-btn-primary, .crystal-btn-primary, .wood-btn-primary, .btn-primary');
+          magneticBtns.forEach(function(btn) {
+            btn.addEventListener('mousemove', function(e) {
+              var rect = btn.getBoundingClientRect();
+              var x = (e.clientX - rect.left) - rect.width / 2;
+              var y = (e.clientY - rect.top) - rect.height / 2;
+              btn.style.transform = 'translate(' + (x * 0.22) + 'px, ' + (y * 0.22) + 'px)';
+            });
+            btn.addEventListener('mouseleave', function() {
+              btn.style.transform = 'translate(0px, 0px)';
+            });
+          });
+        }
+
+        // 4. GSAP & ScrollTrigger Animations
+        if (typeof gsap === 'undefined') return;
+
+        if (typeof ScrollTrigger !== 'undefined') {
+          gsap.registerPlugin(ScrollTrigger);
+        }
+
+        var mm = gsap.matchMedia();
+
+        mm.add("(min-width: 200px)", function() {
+          // A. Continuous 3D Model Rotation on Scroll Up and Down
+          var hero3D = document.querySelector('.nano-banana-3d-hero, .hero-3d-stage-container, .cosmic-hero-3d-wrapper, .sprawl-3d-stage, .abyss-nautilus-wrapper');
+          if (hero3D && !isReducedMotion) {
+            gsap.to(hero3D, {
+              rotationY: 16,
+              rotationZ: -3,
+              yPercent: 12,
+              ease: "none",
+              scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.5
+              }
+            });
+          }
+
+          // B. Staggered Hero Entrance
+          var heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+          var heroBadge = document.querySelector('.cosmic-hero-badge, .crystal-status-pill, .wood-hero-badge, .bio-status-badge, .fusion-status-pill, .curio-brass-badge, .sprawl-status-badge, .abyss-hero-badge');
+          var heroTitle = document.querySelector('h1, .cosmic-title-gradient, .crystal-glitch-title, .wood-title-gradient, .bio-hero-name, .fusion-hero-name, .sprawl-hero-title');
+          var heroTagline = document.querySelector('.cosmic-tagline, .crystal-hero-desc, .wood-hero-tagline, .bio-hero-bio, .fusion-hero-bio, .hero-bio, .sprawl-hero-bio');
+          var heroCta = document.querySelector('.cosmic-cta-row, .crystal-hero-actions, .wood-hero-actions, .bio-hero-actions, .fusion-hero-actions, .hero-actions, .sprawl-actions');
+
+          if (heroBadge) heroTl.fromTo(heroBadge, { autoAlpha: 0, y: -20 }, { autoAlpha: 1, y: 0, duration: 0.6 });
+          if (heroTitle) heroTl.fromTo(heroTitle, { autoAlpha: 0, y: 35 }, { autoAlpha: 1, y: 0, duration: 0.8 }, "-=0.3");
+          if (heroTagline) heroTl.fromTo(heroTagline, { autoAlpha: 0, y: 25 }, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.4");
+          if (heroCta) heroTl.fromTo(heroCta, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 0.5 }, "-=0.3");
+
+          // C. Continuous Parallax Scrub on All Section Headers
+          gsap.utils.toArray('.cosmic-section-header, .crystal-section-header, .wood-section-header, .bio-section-header, .fusion-section-header, .curio-section-header, .sprawl-section-header, section h2').forEach(function(header) {
+            gsap.fromTo(header,
+              { autoAlpha: 0, y: 40 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: header,
+                  start: "top 88%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          });
+
+          // D. Staggered Project Cards Reveal with Continuous Scrub
+          var projectCards = gsap.utils.toArray('.project-card, .curio-case-card, .crystal-project-card, .bio-project-card, .wood-project-card, .fusion-project-card, .cosmic-project-card, .sanctuary-project-card, .white-crystal-card, .abyss-chest-card, .sprawl-vault-card, .greenhouse-project-card, .monograph-exhibit-card, .parchment-project-card');
+          if (projectCards.length > 0) {
+            ScrollTrigger.batch(projectCards, {
+              start: "top 86%",
+              onEnter: function(batch) {
+                gsap.fromTo(batch,
+                  { autoAlpha: 0, y: 50, scale: 0.95 },
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.12,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                  }
+                );
+              },
+              onEnterBack: function(batch) {
+                gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, overwrite: "auto" });
+              }
+            });
+          }
+
+          // E. Skills Progress Bars Glide-in on Scroll
+          gsap.utils.toArray('.crystal-skill-fill, .wood-skill-fill, .bio-skill-fill, .fusion-skill-fill, .cosmic-skill-fill, .skill-bar-fill, .skill-meter-fill').forEach(function(bar) {
+            var targetWidth = bar.style.width || '85%';
+            gsap.fromTo(bar,
+              { width: "0%" },
+              {
+                width: targetWidth,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: bar,
+                  start: "top 92%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          });
+
+          // F. Experience Timeline Nodes & Cards
+          var timelineItems = gsap.utils.toArray('.crystal-timeline-item, .wood-timeline-item, .bio-timeline-item, .fusion-timeline-item, .curio-specimen-node, .cosmic-timeline-item, .timeline-item, .sprawl-drift-item, .abyss-timeline-node');
+          if (timelineItems.length > 0) {
+            ScrollTrigger.batch(timelineItems, {
+              start: "top 88%",
+              onEnter: function(batch) {
+                gsap.fromTo(batch,
+                  { autoAlpha: 0, x: -30 },
+                  {
+                    autoAlpha: 1,
+                    x: 0,
+                    duration: 0.7,
+                    stagger: 0.15,
+                    ease: "power2.out"
+                  }
+                );
+              }
+            });
+          }
+
+          // G. Resume Dossier 3D Card & Details Elevation
+          var resumeVisual = document.querySelector('.resume-3d-wrapper, .cosmic-about-visual-card, .resume-codex-container, .nautical-map-frame, .sprawl-blueprint-box');
+          if (resumeVisual) {
+            gsap.fromTo(resumeVisual,
+              { autoAlpha: 0, scale: 0.9, y: 40 },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.9,
+                ease: "back.out(1.2)",
+                scrollTrigger: {
+                  trigger: resumeVisual,
+                  start: "top 85%",
+                  toggleActions: "play none none none"
+                }
+              }
+            );
+          }
+
+          // H. Continuous Interactive 3D Parallax Drift for Background Layers
+          if (!isReducedMotion) {
+            gsap.to('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer', {
+              yPercent: 22,
+              ease: "none",
+              scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.2
+              }
+            });
+          }
+        });
+
+        // Ensure ScrollTrigger positions are synchronized after layout calculation
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+
+        // 5. Scrollytelling Bridge for Theatre.js & 3D Sequences
+        window.__folioScrollytelling = {
+          bindCameraToScroll: function(camera, trackSpline) {
+            if (!camera || !trackSpline || isReducedMotion) return;
+            ScrollTrigger.create({
+              trigger: 'body',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 1.5,
+              onUpdate: function(self) {
+                var pt = trackSpline.getPointAt(self.progress);
+                if (pt) camera.position.set(pt.x, pt.y, pt.z);
+              }
+            });
+          }
+        };
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+      } else {
+        initScrollAnimations();
+      }
+    })();
+  </script>
+
+
+<style id="myfolio-universal-mobile">
+  /* ─── Universal Third-Party Extension Suppression (e.g. Careerflow) ─────── */
+  #careerflow-extension, [id*="careerflow" i], [class*="careerflow" i], [data-careerflow],
+  careerflow-extension, careerflow-app, careerflow-copilot,
+  #cf-root, #cf-sidebar, #cf-sidebar-container, #cf-injected-tab, .cf-sidebar-container, .cf-tab, .cf-button,
+  [id^="cf-"], [class^="cf-"], [id*="-cf-" i], [class*="-cf-" i], [data-cf], cf-root, cf-app, cf-sidebar,
+  img[alt*="Careerflow" i], img[src*="careerflow" i], iframe[src*="careerflow" i], iframe[src*="chrome-extension://"],
+  div:has(> img[alt*="Careerflow" i]), div:has(> img[src*="careerflow" i]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    z-index: -99999 !important;
+  }
+
+  /* ─── Universal Mobile Override ≤600px ─────────────────────────────────── */
+  @media (max-width: 600px) {
+    /* Reset base font size so rem units scale down */
+    html { font-size: 14px !important; }
+
+    /* Hero headline — cap at a safe mobile size */
+    h1:not(.hero-masthead-container),
+    [class*="hero-headline"]:not(.hero-candidate-name):not(.hero-lead-text),
+    [class*="hero-h1"], [class*="hero-title"],
+    [class*="masthead"]:not(.hero-masthead-container), [class*="main-title"], [class*="display-title"],
+    [class*="hero-name"]:not(.hero-candidate-name), [class*="page-title"], [class*="folio-name"],
+    [class*="profile-name"] {
+      font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+      line-height: 1.15 !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    /* Section headings */
+    h2, [class*="section-title"], [class*="section-heading"],
+    [class*="chapter-title"], [class*="block-title"] {
+      font-size: clamp(1.25rem, 5.5vw, 1.8rem) !important;
+      line-height: 1.2 !important;
+    }
+
+    h3, [class*="card-title"], [class*="project-name"],
+    [class*="exp-title"], [class*="role-title"] {
+      font-size: clamp(1rem, 4.5vw, 1.35rem) !important;
+    }
+
+    /* Body / bio text */
+    p, [class*="bio"], [class*="hero-bio"], [class*="subtitle"],
+    [class*="intro-text"], [class*="description"], [class*="lead"] {
+      font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
+      line-height: 1.65 !important;
+    }
+
+    /* Tag / badge / mono accent text */
+    [class*="tag"], [class*="badge"], [class*="chip"], [class*="label"],
+    [class*="kicker"], [class*="mono"], code, pre {
+      font-size: clamp(0.65rem, 2.5vw, 0.8rem) !important;
+    }
+
+    /* Section padding — prevent edges being clipped on main sections */
+    section, .portfolio-section, [class*="section-container"],
+    [class*="page-wrapper"], [class*="content-wrapper"], [class*="main-layout"] {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    /* Hero top-level containers — reduce vertical breathing room without polluting inner elements */
+    section[class*="hero"], [class*="hero-section"], [class*="hero-stage"], [class*="hero-viewport"], [id="home"] {
+      padding-top: 48px !important;
+      padding-bottom: 24px !important;
+      min-height: auto !important;
+    }
+
+    /* Force single-column grids everywhere */
+    [style*="grid-template-columns"],
+    [class*="grid"]:not(.glyphs):not(.proj-links), [class*="bento"], [class*="dual"],
+    [class*="tri-layout"], [class*="two-col"], [class*="three-col"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Navigation — hide multi-item desktop navs, show only brand */
+    [class*="nav-menu"], [class*="header-nav"], [class*="dock"],
+    [class*="vertical-dock"], [class*="sidebar-nav"] {
+      display: none !important;
+    }
+
+    /* Primary CTA buttons — stack cleanly without breaking controls or tags */
+    [class*="action-row"], [class*="btn-group"], [class*="cta-row"] {
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    [class*="cta-btn"], [class*="sprawl-btn"], [class*="hero-btn"],
+    .primary-generate-btn {
+      width: 100% !important;
+      justify-content: center !important;
+      padding: 12px 20px !important;
+      font-size: 0.82rem !important;
+    }
+
+    /* Project / card images */
+    [class*="card-img"], [class*="project-img"], [class*="project-image"],
+    [class*="artwork"], [class*="thumbnail"] {
+      height: 160px !important;
+    }
+
+    /* Skill / telemetry numbers — prevent overflow */
+    [class*="stat-num"], [class*="metric-value"], [class*="counter"],
+    [class*="number-display"] {
+      font-size: clamp(1.4rem, 6vw, 2rem) !important;
+    }
+
+    /* 404 hero numbers */
+    [class*="404"], [class*="error-code"] {
+      font-size: clamp(4rem, 20vw, 7rem) !important;
+    }
+
+    /* Floating 3D assets — reduce to prevent layout blowout */
+    [class*="hero-3d"], [class*="focal-asset"], [class*="floating-asset"],
+    [class*="hero-img"], [class*="hero-visual"] {
+      max-width: 260px !important;
+      width: 70vw !important;
+      margin: 24px auto 0 !important;
+    }
+
+    /* Canvas backgrounds — don't overflow */
+    canvas {
+      max-width: 100vw !important;
+    }
+
+    /* Footer */
+    [class*="footer"] {
+      flex-direction: column !important;
+      gap: 12px !important;
+      padding: 24px 16px !important;
+      text-align: center !important;
+      font-size: 0.72rem !important;
+    }
+  }
+
+  /* ─── Tablet override ≤768px ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    html { font-size: 15px !important; }
+
+    h1,
+    [class*="hero-headline"], [class*="hero-h1"], [class*="hero-title"],
+    [class*="masthead"], [class*="main-title"], [class*="display-title"] {
+      font-size: clamp(2rem, 6vw, 3rem) !important;
+    }
+
+    h2, [class*="section-title"], [class*="section-heading"] {
+      font-size: clamp(1.4rem, 4.5vw, 2rem) !important;
+    }
+
+    section, [class*="section"], [class*="-section"] {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+
+    [class*="grid"], [class*="bento"],
+    [class*="tri-layout"], [class*="three-col"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    [class*="two-col"], [class*="dual"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* ─── Reduced-motion: disable floating keyframes ───────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</body>
+</html>

@@ -1,7 +1,7 @@
 /**
  * Template: Superr AI Notebook ("superr-notebook" / "superr" / "notebook")
  * Tactile Warm Paper Editorial, Interactive Smart Notebook & Learning Companion
- * Reverse-Engineered 1:1 Replica from Superr.ai (SuperrBook)
+ * Reverse-Engineered 1:1 Replica from Superr.ai tailored as a high-impact developer portfolio
  * 
  * Aesthetic & Design DNA:
  * - Color Palette:
@@ -19,9 +19,10 @@
  *     Tailored Body: 'Plus Jakarta Sans' (Google Fonts, weights 400-700)
  *     Handwritten Accents: 'Patrick Hand' (Google Fonts, handwritten annotations, sticky notes, stickers)
  * - Tactile Architecture:
- *     Authentic 3D brown notebook with pencil and student label
- *     3 full-screen feature showcases with authentic illustrated backgrounds and tablet mockups
- *     Roman numeral pointers (I through V) with interactive screen switching
+ *     Authentic 3D brown notebook with pencil and clean candidate student label (zero overlap)
+ *     Dynamic candidate name masthead with wavy underline and Superr "actually!" badge
+ *     3 full-screen feature showcases with authentic illustrated backgrounds and interactive tablet mockups
+ *     Roman numeral pointers (I through V) mapping candidate's real shipped projects
  *     Interactive peelable stickers with polynomial easing and clip-path flap physics
  *     Superr FAQ accordion with dashed borders
  *     Full-width Superr Orange (#FF6F1E) footer with giant wordmark
@@ -51,17 +52,17 @@ const SuperrNotebookTemplate = {
     const currentYear = new Date().getFullYear();
 
     // 1. Core Personal Coordinates
-    const safeName = TemplateHelper.escapeHtml(data.name || 'Creative Engineer');
+    const safeName = TemplateHelper.escapeHtml(data.name || 'Abdul Aziz Nooruddin');
     const nameWords = safeName.trim().split(/\s+/).filter(Boolean);
     const firstName = nameWords[0] || safeName;
-    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack & Systems Architect');
+    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Computer Science & AI Student • Web3 Developer');
     const bio = TemplateHelper.escapeHtml(
       data.bio ||
       data.about ||
-      `Building resilient software systems, delightful interfaces, and autonomous agent runtimes without the distractions.`
+      `Building decentralized Web3 protocols, high-performance smart contracts on Algorand, and immersive 3D developer experiences without the distractions.`
     );
-    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'hello@myfolio.tech');
-    const location = TemplateHelper.escapeHtml(data.contact?.location || data.location || 'Remote Worldwide');
+    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'abdulaziznoor9876@gmail.com');
+    const location = TemplateHelper.escapeHtml(data.contact?.location || data.location || 'Hyderabad, India • Remote Web3');
     const github = TemplateHelper.sanitizeUrl(data.contact?.github || data.github || data.socialLinks?.github || 'https://github.com/Abdul-Aziz-Nooruddin');
     const linkedin = TemplateHelper.sanitizeUrl(data.contact?.linkedin || data.linkedin || data.socialLinks?.linkedin || 'https://linkedin.com');
     const twitter = TemplateHelper.sanitizeUrl(data.contact?.twitter || data.twitter || data.socialLinks?.twitter || '');
@@ -70,7 +71,7 @@ const SuperrNotebookTemplate = {
     // 2. Skills
     let rawSkills = Array.isArray(data.skills) ? data.skills : [];
     if (rawSkills.length === 0) {
-      rawSkills = ['TypeScript', 'Python', 'React', 'Node.js', 'PostgreSQL', 'Docker', 'AWS', 'GraphQL'];
+      rawSkills = ['Python', 'TypeScript', 'Solidity', 'Algorand (PyTeal)', 'Three.js', 'React', 'Node.js', 'Docker'];
     }
     const skills = [...new Set(rawSkills.map(s => typeof s === 'string' ? s.trim() : (s.name || s.skill || '')).filter(Boolean))];
 
@@ -79,25 +80,39 @@ const SuperrNotebookTemplate = {
     if (rawProjects.length === 0) {
       rawProjects = [
         {
-          title: 'Encrypted Note Messenger',
-          description: 'Secure peer-to-peer note transmission with cryptographic forward secrecy and ephemeral storage.',
-          tags: ['TypeScript', 'Web Crypto', 'Node.js'],
-          link: github,
-          impact: 'Sub-second delivery with zero data leaks'
+          title: 'ConsentChain Algorand',
+          description: 'A decentralized Consent Management application powered by Algorand, enabling DPDP Act 2023 compliance with an escrow-based data micro-payment system.',
+          tags: ['Algorand', 'Smart Contracts', 'TypeScript', 'RegTech'],
+          link: 'https://github.com/Abdul-Aziz-Nooruddin/ConsentChain-Algorand',
+          impact: 'DPDP 2023 Compliant Escrow'
         },
         {
-          title: 'Autonomous Code Engine',
-          description: 'High-speed code synthesis pipeline with automated linting, test suites, and git commits.',
-          tags: ['Python', 'Docker', 'FastAPI'],
-          link: github,
-          impact: '40x faster pull-request verification'
+          title: 'AI Portfolio Generator',
+          description: 'Turn your GitHub repositories & resume into bespoke 3D WebGL developer portfolios with AI in seconds. Interactive spatial worlds and high-impact scrollytelling.',
+          tags: ['WebGL', 'Three.js', 'Node.js', 'AI'],
+          link: 'https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech',
+          impact: '60 FPS Spatial WebGL Viewports'
         },
         {
-          title: 'Spatial Canvas Studio',
-          description: 'Hardware-accelerated 3D viewport canvas for interactive generative models and spatial layouts.',
-          tags: ['WebGL', 'Three.js', 'GLSL'],
-          link: github,
-          impact: '60 FPS render loops on mobile devices'
+          title: 'Pass A Note',
+          description: 'High-performance interactive communication tool engineered for seamless zero-latency peer data transfer with secure encrypted messaging.',
+          tags: ['HTML', 'JavaScript', 'CSS', 'P2P Encryption'],
+          link: 'https://github.com/Abdul-Aziz-Nooruddin/pass-a-note',
+          impact: 'Sub-second peer data transfer'
+        },
+        {
+          title: 'LMS User Management',
+          description: 'Enterprise-grade role-based access control and user management system engineered with strict security guarantees and database integrity.',
+          tags: ['Node.js', 'Express', 'PostgreSQL', 'RBAC'],
+          link: 'https://github.com/Abdul-Aziz-Nooruddin/lms-user-management',
+          impact: 'Strict database authorization'
+        },
+        {
+          title: 'Dual-Chain Web3 Portfolio',
+          description: 'Personal developer showcase featuring glassmorphism design, particle animations, and multi-chain protocol verification across Polygon & Algorand.',
+          tags: ['TypeScript', 'Polygon', 'Algorand', 'Web3'],
+          link: 'https://github.com/Abdul-Aziz-Nooruddin/portfolio',
+          impact: 'Multi-chain protocol verification'
         }
       ];
     }
@@ -110,7 +125,7 @@ const SuperrNotebookTemplate = {
         ? p.tags 
         : (Array.isArray(p.tech) ? p.tech : (typeof p.tech === 'string' ? p.tech.split(/[,•|/]/) : skills.slice(0, 3)));
       pTags = pTags.map(t => String(t).trim()).filter(Boolean);
-      if (pTags.length === 0) pTags = ['Modern Stack', 'Production'];
+      if (pTags.length === 0) pTags = ['Production', 'Web3'];
 
       const pLink = TemplateHelper.sanitizeUrl(p.link || p.live || p.url || p.github || github);
       
@@ -120,9 +135,9 @@ const SuperrNotebookTemplate = {
       } else {
         try {
           const resolved = ProjectArtworkSynthesizer.resolveProjectArtwork(p, 'superr-notebook', idx, usedArtworkSet, safeName);
-          artSrc = resolved?.src || '/assets/projects/pass_note_messenger_3d.webp';
+          artSrc = resolved?.src || `/assets/templates/superr/assets/features/section-1/section_1_screen_${(idx % 5) + 1}.png`;
         } catch (e) {
-          artSrc = '/assets/projects/pass_note_messenger_3d.webp';
+          artSrc = `/assets/templates/superr/assets/features/section-1/section_1_screen_${(idx % 5) + 1}.png`;
         }
       }
 
@@ -132,7 +147,7 @@ const SuperrNotebookTemplate = {
         tags: pTags,
         link: pLink,
         image: artSrc,
-        impact: TemplateHelper.escapeHtml(p.impact || 'Verified Production Quality')
+        impact: TemplateHelper.escapeHtml(p.impact || pTags[0] || 'Verified Production Quality')
       };
     });
 
@@ -141,16 +156,16 @@ const SuperrNotebookTemplate = {
     if (rawExperience.length === 0) {
       rawExperience = [
         {
-          role: role,
-          company: 'Senior Software Engineering',
-          period: `${currentYear - 2} — Present`,
-          desc: 'Architecting resilient cloud services, microservices, and interactive experiences.'
+          role: 'Web3 & Smart Contract Developer',
+          company: 'Independent & Open Source',
+          period: '2024 — Present',
+          desc: 'Architecting decentralized applications and smart contracts on Algorand and Polygon. Engineered DPDP Act 2023 compliance escrow micro-payment protocols.'
         },
         {
-          role: 'Full-Stack Engineer',
-          company: 'Distributed Systems & Open Source',
-          period: `${currentYear - 4} — ${currentYear - 2}`,
-          desc: 'Designed high-throughput APIs, automated deployment workflows, and scalable user interfaces.'
+          role: 'AI & Software Systems Engineer',
+          company: 'Academic & Research Projects',
+          period: '2023 — 2024',
+          desc: 'Designed full-stack architectures, RESTful API services, role-based access control engines, and distributed communication platforms.'
         }
       ];
     }
@@ -158,34 +173,46 @@ const SuperrNotebookTemplate = {
     // 5. Roman Numerals Array for Tabs
     const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
-    // 6. Section 1 Pointers (Magic Paper)
-    const section1Pointers = [
-      { label: "Writes like pen & paper", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_1.png", tag: "Tactile Latency" },
-      { label: "Keeps things organized", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_2.png", tag: "System Design" },
-      { label: "Understands your handwriting", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_3.png", tag: "AI OCR" },
-      { label: "Searches across your notes", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_4.png", tag: "Full-Text Vector" },
-      { label: "Answers from your notes", screen: "/assets/templates/superr/assets/features/section-1/section_1_screen_5.png", tag: "RAG Pipeline" }
-    ];
+    // 6. Section 1 Pointers (Candidate's Top Shipped Projects)
+    const section1Pointers = projects.slice(0, 5).map((p, idx) => ({
+      label: p.title,
+      screen: p.image || `/assets/templates/superr/assets/features/section-1/section_1_screen_${(idx % 5) + 1}.png`,
+      tag: p.impact || p.tags[0] || 'Shipped',
+      desc: p.desc,
+      link: p.link
+    }));
 
-    // 7. Section 2 Pointers (Talking Books)
+    // Fill to 5 if fewer
+    while (section1Pointers.length < 5) {
+      const idx = section1Pointers.length;
+      section1Pointers.push({
+        label: `Engineering Milestone 0${idx + 1}`,
+        screen: `/assets/templates/superr/assets/features/section-1/section_1_screen_${idx + 1}.png`,
+        tag: 'Architecture',
+        desc: 'Built with clean patterns, modular test coverage, and deterministic guarantees.',
+        link: github
+      });
+    }
+
+    // 7. Section 2 Pointers (Technical Disciplines & Stack)
     const section2Pointers = [
-      { label: "A library that grows with you", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_1.png", tag: "Knowledge Base" },
-      { label: "Books to play with, not just read", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_2.png", tag: "Interactive UI" },
-      { label: "Every book has a voice", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_3.png", tag: "Voice Synthesis" },
-      { label: "Learns what you need next", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_4.png", tag: "Adaptive Engine" },
-      { label: "Practice on demand", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_5.png", tag: "Evaluations" }
+      { label: "Decentralized Protocols & Smart Contracts", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_1.png", tag: "Algorand • Solidity" },
+      { label: "Hardware-Accelerated 3D & WebGL", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_2.png", tag: "Three.js • GLSL" },
+      { label: "Distributed Backend & API Gateways", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_3.png", tag: "Node.js • PostgreSQL" },
+      { label: "Autonomous Agent Runtimes & Machine Learning", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_4.png", tag: "Python • Edge AI" },
+      { label: "Cryptographic Consent & Compliance", screen: "/assets/templates/superr/assets/features/section-2/section_2_screen_5.png", tag: "DPDP • RegTech" }
     ];
 
-    // 8. Section 3 Pointers (Friend Who's Got Our Back)
+    // 8. Section 3 Pointers (Engineering Philosophy & Reliability)
     const section3Pointers = [
-      { label: "Shows up when you’re stuck", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_1.png", tag: "Telemetry Alerts" },
-      { label: "Helps you learn, not just solve", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_2.png", tag: "Pair Programming" },
-      { label: "Makes hard things simple", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_3.png", tag: "Clean Abstractions" },
-      { label: "Learns with you & adapts to you", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_4.png", tag: "Continuous Learning" },
-      { label: "Goes beyond the curriculum", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_5.png", tag: "Deep Dives" }
+      { label: "Zero-Downtime Microservices & CI/CD", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_1.png", tag: "Docker • Cloud" },
+      { label: "Collaborative Pair Programming & Mentorship", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_2.png", tag: "Team Culture" },
+      { label: "Clean Code: Minimal Diff & Low Latency", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_3.png", tag: "Architecture" },
+      { label: "Continuous Systems Adaptation & Learning", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_4.png", tag: "Full-Stack" },
+      { label: "Open-Source Contributions & Research", screen: "/assets/templates/superr/assets/features/section-3/section_3_screen_5.png", tag: "Ecosystem" }
     ];
 
-    // 9. Authentic Superr FAQ Questions
+    // 9. Authentic Superr FAQ Questions tailored for candidate
     const faqList = [
       {
         question: `What even IS ${safeName}'s engineering approach?`,
@@ -193,15 +220,15 @@ const SuperrNotebookTemplate = {
       },
       {
         question: "Who is this portfolio and toolkit for?",
-        answer: "Engineers, founders, technical leaders, and innovative teams looking for senior-level execution across full-stack applications, distributed cloud services, and interactive web experiences."
+        answer: "Engineers, founders, technical leaders, and innovative teams looking for senior-level execution across full-stack applications, distributed cloud services, smart contracts, and interactive web experiences."
       },
       {
         question: "Is it easy on performance and eyes?",
         answer: "Totally! Zero unneeded libraries, strict 60 FPS animations, WCAG 2.2 AAA accessibility contrast, and optimized responsive layouts that render smoothly on any device."
       },
       {
-        question: "Can we collaborate on custom AI or edge tooling?",
-        answer: "Yes! Specializing in deterministic AI pipelines, local neural runtimes, automated testing bots, and hardware-accelerated WebGL viewports."
+        question: "Can we collaborate on custom AI, Web3, or edge tooling?",
+        answer: "Yes! Specializing in Algorand smart contracts, deterministic AI pipelines, local neural runtimes, automated testing bots, and hardware-accelerated WebGL viewports."
       },
       {
         question: "Can we build stuff that's experimental and playful?",
@@ -233,7 +260,7 @@ const SuperrNotebookTemplate = {
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>${safeName} — Superr AI Notebook &amp; Systems Engineer</title>
+  <title>${safeName} — Superr AI Notebook Portfolio</title>
   <meta name="description" content="${bio}"/>
   
   <!-- Favicon & Touch Icons -->
@@ -314,17 +341,6 @@ const SuperrNotebookTemplate = {
       box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.18);
     }
 
-    /* Tactile Paper Texture */
-    .paper-texture {
-      background-image: radial-gradient(#2B1A07 0.75px, transparent 0.75px);
-      background-size: 16px 16px;
-    }
-
-    /* Dashed line stroke for FAQ */
-    .dashed-stroke {
-      border-bottom: 2px dashed #DED6D2;
-    }
-
     /* Sticker Peel Physics Classes */
     .sticker-container {
       user-select: none;
@@ -345,14 +361,6 @@ const SuperrNotebookTemplate = {
     .sticker-container:hover .sticker-main {
       clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 0 100%);
     }
-
-    /* Pointer Tabs Transitions */
-    .feature-pointer-btn {
-      transition: all 0.25s ease-out;
-    }
-    .feature-pointer-btn.active {
-      transform: translateX(8px);
-    }
   </style>
 </head>
 <body class="bg-superr-paper text-superr-ink selection:bg-superr-amber/40 selection:text-superr-ink min-h-screen">
@@ -370,10 +378,10 @@ const SuperrNotebookTemplate = {
 
       <!-- Desktop Section Tabs -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#2B1A07]/90 font-sans">
-        <a href="#feature-one" class="hover:text-superr-green transition-colors">I. Magic Paper</a>
-        <a href="#feature-two" class="hover:text-superr-blue transition-colors">II. Interactive Books</a>
-        <a href="#feature-three" class="hover:text-superr-pink transition-colors">III. Got Your Back</a>
-        <a href="#our-story" class="hover:text-superr-orange transition-colors">IV. Story</a>
+        <a href="#feature-one" class="hover:text-superr-green transition-colors">I. Shipped Projects</a>
+        <a href="#feature-two" class="hover:text-superr-blue transition-colors">II. Tech Disciplines</a>
+        <a href="#feature-three" class="hover:text-superr-pink transition-colors">III. System Reliability</a>
+        <a href="#our-story" class="hover:text-superr-orange transition-colors">IV. Story &amp; Bio</a>
         <a href="#faq" class="hover:text-superr-orange transition-colors">V. FAQ</a>
       </nav>
 
@@ -395,70 +403,84 @@ const SuperrNotebookTemplate = {
     
     <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
       
-      <!-- Left Column: Exact Superr Hero Layout -->
+      <!-- Left Column: Exact Superr Hero Layout Tailored for Candidate Portfolio -->
       <div class="lg:col-span-6 xl:col-span-6 flex flex-col items-start z-10 lg:pl-2 xl:pl-6">
         
-        <!-- Dear grownups, -->
-        <div class="w-[145px] sm:w-[160px] mb-3">
-          <img src="/assets/templates/superr/hero/dear-grownups.png" alt="Dear grownups," class="w-full h-auto object-contain pointer-events-none select-none" />
+        <!-- Dear grownups & hiring teams, -->
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-hand font-bold text-2xl sm:text-3xl text-superr-orange -rotate-2 inline-block">
+            Dear builders &amp; hiring teams,
+          </span>
         </div>
 
-        <!-- meet superrbook -->
-        <div class="w-full max-w-[450px] sm:max-w-[490px] mb-6">
-          <img src="/assets/templates/superr/hero/meet-superrbook.png" alt="meet superrbook" class="w-full h-auto object-contain pointer-events-none select-none" />
-        </div>
+        <!-- Meet Candidate Masthead -->
+        <h1 class="font-fraunces font-black text-5xl sm:text-6xl lg:text-[76px] text-[#2B1A07] tracking-tight leading-[1.04] mb-4">
+          meet <span class="relative inline-block text-superr-orange underline decoration-[#2B1A07] decoration-wavy decoration-[2.5px] underline-offset-8">${firstName.toLowerCase()}</span>
+        </h1>
 
-        <!-- Subtitle: It's an AI notebook that actually! makes learning fun -->
-        <p class="text-[22px] sm:text-[25px] lg:text-[26px] leading-[1.38] text-black font-normal max-w-[430px] mb-8 font-sans">
-          It's an AI notebook that
-          <span class="relative inline-block w-[92px] sm:w-[98px] ml-2 -mt-1.5 align-middle">
+        <!-- Subtitle: Candidate Role who actually! ships real software -->
+        <p class="text-[20px] sm:text-[23px] lg:text-[25px] leading-[1.4] text-[#2B1A07] font-normal max-w-[480px] mb-8 font-sans">
+          ${role} who
+          <span class="relative inline-block w-[88px] sm:w-[94px] mx-1.5 -mt-1.5 align-middle">
             <img src="/assets/templates/superr/hero/actually.png" alt="actually!" class="w-full h-auto object-contain pointer-events-none select-none" />
           </span>
-          makes learning fun
+          ships real software
         </p>
 
-        <!-- CTA Button & Pre-order Text -->
+        <!-- CTA Button & Availability Text -->
         <div class="flex flex-col items-start">
           <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
             <div class="bg-[#fdfbf9] border-[2.3px] border-[#2b1a07] rounded-2xl px-6 py-[11px] flex items-center justify-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-superr-green animate-ping mr-1"></span>
               <span class="text-[20px] text-[#2b1a07] font-fraunces font-semibold">I call dibs!</span>
             </div>
           </a>
-          <p class="mt-4 ml-1 text-[16px] font-medium text-[#8a7b6a] font-sans">
-            Pre-order starting soon
+          <p class="mt-4 ml-1 text-[15px] sm:text-[16px] font-medium text-[#8a7b6a] font-sans">
+            ✦ Available for high-impact engineering roles &amp; Web3 contracts
           </p>
         </div>
 
       </div>
 
-      <!-- Right Column: Exact 3D Brown Notebook with Pencil & Dynamic Personalized Sticker -->
+      <!-- Right Column: Exact 3D Brown Notebook with Pencil & Dynamic Clean Paper Label -->
       <div class="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end">
         <div class="relative w-full max-w-[700px] lg:max-w-[780px] xl:max-w-[840px] aspect-[16/10] flex items-center justify-center">
           
           <!-- Authentic 3D Cutout of Brown Notebook with Pencil from Superr.ai -->
           <img src="/assets/templates/superr/hero/notebook-hero.webp" alt="Superr AI Notebook" class="w-full h-full object-contain pointer-events-none select-none filter drop-shadow-xl" />
 
-          <!-- Dynamic Personalized Sticker Overlay (Directly over the notebook's sticker label) -->
-          <div class="absolute" style="left: 58.8%; top: 20.7%; width: 17.4%; height: 16.3%; transform: rotate(-15.5deg); transform-origin: top left; pointer-events: none;">
-            <div class="w-full h-full relative flex flex-col justify-between py-[4%] px-[8%]">
+          <!-- Clean Paper Label Sticker (Solid background masking the pre-printed Param text with zero overlap) -->
+          <div class="absolute" style="left: 56.6%; top: 18.2%; width: 22.2%; height: 21.6%; transform: rotate(-15.8deg); transform-origin: top left; pointer-events: none;">
+            <div class="w-full h-full relative rounded-xl bg-[#FFFDF8] border-[2.2px] border-[#2B1A07] shadow-md flex flex-col justify-between py-2 px-3 overflow-hidden">
+              
+              <!-- Label Top Header -->
+              <div class="flex items-center justify-between border-b border-[#2B1A07]/40 pb-1">
+                <span class="font-fraunces font-bold text-[9px] sm:text-[10px] text-[#2B1A07] tracking-wider uppercase">VERIFIED PORTFOLIO</span>
+                <span class="w-2 h-2 rounded-full bg-superr-green border border-[#2B1A07]"></span>
+              </div>
+
               <!-- Name Row (Handwritten) -->
-              <div class="flex items-baseline justify-between mt-[10%]">
-                <span class="text-[9px] sm:text-[11px] text-[#2B1A07]/80 font-sans font-bold">Name</span>
-                <span class="font-hand font-bold text-base sm:text-xl md:text-2xl text-[#1E140A] tracking-wide leading-none -ml-1 flex-1 text-center truncate">
+              <div class="flex flex-col py-0.5">
+                <span class="text-[8px] sm:text-[9px] font-sans font-bold text-[#2B1A07]/70 uppercase tracking-tight">Name</span>
+                <span class="font-hand font-bold text-base sm:text-lg md:text-xl text-[#1E140A] leading-tight truncate">
                   ${safeName}
                 </span>
               </div>
+
               <!-- Class & Roll Row -->
-              <div class="flex items-center justify-between border-t border-[#2B1A07]/60 pt-[2%] mb-[4%]">
-                <div class="flex items-center gap-1">
-                  <span class="text-[8px] sm:text-[9px] text-[#2B1A07]/80 font-sans font-bold">Class</span>
-                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A]">${(role.split(/\s+/)[0] || 'VIII-A').slice(0, 8)}</span>
+              <div class="flex items-center justify-between border-t border-[#2B1A07]/40 pt-1">
+                <div class="flex flex-col">
+                  <span class="text-[7px] sm:text-[8px] font-sans font-bold text-[#2B1A07]/70 uppercase">Role / Discipline</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A] leading-none truncate max-w-[105px]">
+                    ${(role.split(/•|&/)[0] || 'Web3 & AI').trim()}
+                  </span>
                 </div>
-                <div class="flex items-center gap-1 border-l border-[#2B1A07]/60 pl-2">
-                  <span class="text-[8px] sm:text-[9px] text-[#2B1A07]/80 font-sans font-bold">Roll no.</span>
-                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A]">0${projects.length || 1}</span>
+                <div class="flex flex-col items-end border-l border-[#2B1A07]/40 pl-2">
+                  <span class="text-[7px] sm:text-[8px] font-sans font-bold text-[#2B1A07]/70 uppercase">Roll no.</span>
+                  <span class="font-hand font-bold text-xs sm:text-sm text-[#1E140A] leading-none">01</span>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -469,7 +491,7 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 03. FEATURE ONE: IT’S KINDA LIKE MAGIC PAPER             -->
+  <!-- 03. FEATURE ONE: IT’S KINDA LIKE MAGIC PAPER (PROJECTS)  -->
   <!-- ======================================================== -->
   <section id="feature-one" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-1/feature_bg_1.png');">
     <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -478,13 +500,13 @@ const SuperrNotebookTemplate = {
       <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
         <div>
           <div class="inline-block px-3 py-1 rounded-full bg-superr-green text-white font-fraunces font-bold text-xs mb-3">
-            01 // FEATURE
+            01 // SHIPPED SYSTEMS
           </div>
           <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
             It’s kinda like <span class="bg-superr-green/20 text-superr-green px-2 rounded-lg">magic paper</span>
           </h2>
           <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
-            Writes like a real notebook with zero latency. Seamlessly binds code architecture and handwritten thinking.
+            Click any project pointer to inspect real shipped architecture, smart contracts, and interactive live demos.
           </p>
         </div>
 
@@ -495,29 +517,57 @@ const SuperrNotebookTemplate = {
             const activeClass = idx === 0 ? 'bg-superr-green text-white superr-shadow active' : 'bg-superr-card text-superr-ink hover:bg-superr-paper';
             return `
             <button type="button" 
-                    class="s1-pointer-btn w-full flex items-center justify-between py-3 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer ${activeClass}" 
+                    class="s1-pointer-btn w-full flex items-center justify-between py-3.5 px-4 rounded-2xl superr-border text-left font-sans text-sm sm:text-base font-semibold cursor-pointer transition-all ${activeClass}" 
                     data-s1-index="${idx}" 
-                    data-screen-src="${p.screen}">
+                    data-screen-src="${p.screen}"
+                    data-proj-title="${TemplateHelper.escapeHtml(p.label)}"
+                    data-proj-desc="${TemplateHelper.escapeHtml(p.desc)}"
+                    data-proj-link="${p.link}">
               <div class="flex items-center gap-3">
                 <span class="w-7 h-7 rounded-lg border-[1.5px] border-current flex items-center justify-center font-fraunces text-xs font-bold">
                   ${roman}
                 </span>
-                <span>${p.label}</span>
+                <span class="truncate max-w-[200px] sm:max-w-[260px]">${p.label}</span>
               </div>
-              <span class="text-xs font-hand font-bold opacity-90">${p.tag}</span>
+              <span class="text-xs font-hand font-bold opacity-90 shrink-0 ml-2">${p.tag}</span>
             </button>
             `;
           }).join('\n')}
         </div>
       </div>
 
-      <!-- Right Column: Interactive Tablet Mockup Frame -->
-      <div class="lg:col-span-7 flex justify-center">
-        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/90 p-3 sm:p-4 superr-shadow-lg flex items-center justify-center overflow-hidden">
-          <img id="s1-tablet-screen" 
-               src="${section1Pointers[0].screen}" 
-               alt="Superr Magic Paper Screen" 
-               class="w-full h-full object-contain rounded-2xl transition-opacity duration-300" />
+      <!-- Right Column: Interactive Tablet Mockup Frame with Live Inspect CTA -->
+      <div class="lg:col-span-7 flex flex-col items-center">
+        <div class="relative w-full max-w-[680px] aspect-[4/3] rounded-3xl superr-border bg-black/95 p-3 sm:p-4 superr-shadow-lg flex flex-col justify-between overflow-hidden">
+          
+          <div class="w-full h-full relative rounded-2xl overflow-hidden flex items-center justify-center bg-zinc-900">
+            <img id="s1-tablet-screen" 
+                 src="${section1Pointers[0].screen}" 
+                 alt="Project Preview Screen" 
+                 class="w-full h-full object-cover rounded-xl transition-all duration-300" />
+            
+            <!-- Live System Floating Card -->
+            <div class="absolute bottom-3 left-3 right-3 bg-[#FAF8F5]/95 backdrop-blur-md border-[2px] border-[#2B1A07] rounded-xl p-3 flex items-center justify-between gap-3 shadow-md">
+              <div class="flex flex-col truncate">
+                <span id="s1-proj-title-display" class="font-fraunces font-bold text-sm sm:text-base text-[#2B1A07] truncate">
+                  ${section1Pointers[0].label}
+                </span>
+                <span id="s1-proj-desc-display" class="font-sans text-xs text-superr-muted truncate">
+                  ${section1Pointers[0].desc}
+                </span>
+              </div>
+
+              <a id="s1-proj-link-display" 
+                 href="${section1Pointers[0].link}" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="px-4 py-1.5 rounded-lg bg-superr-orange text-white font-fraunces text-xs sm:text-sm font-bold superr-border shadow-xs hover:scale-105 transition-transform shrink-0 flex items-center gap-1.5">
+                <span>Inspect System</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -525,7 +575,7 @@ const SuperrNotebookTemplate = {
   </section>
 
   <!-- ======================================================== -->
-  <!-- 04. FEATURE TWO: BOOKS THAT ACTUALLY TALK TO US          -->
+  <!-- 04. FEATURE TWO: BOOKS THAT ACTUALLY TALK TO US (SKILLS) -->
   <!-- ======================================================== -->
   <section id="feature-two" class="relative w-full py-20 sm:py-32 px-4 sm:px-8 border-t-[2.3px] border-superr-ink overflow-hidden bg-cover bg-center" style="background-image: url('/assets/templates/superr/assets/features/section-2/feature_bg_2.png');">
     <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -544,13 +594,13 @@ const SuperrNotebookTemplate = {
       <div class="lg:col-span-5 order-1 lg:order-2 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
         <div>
           <div class="inline-block px-3 py-1 rounded-full bg-superr-blue text-white font-fraunces font-bold text-xs mb-3">
-            02 // FEATURE
+            02 // TECHNICAL DISCIPLINES
           </div>
           <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
             It has <span class="bg-superr-blue/20 text-superr-blue px-2 rounded-lg">books that</span> actually talk to us
           </h2>
           <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
-            A living technical library. Interactive documentation, live voice synthesis, and real-time comprehension tests.
+            A comprehensive engineering repertoire spanning Web3 protocols, 3D WebGL graphics, and resilient backend systems.
           </p>
         </div>
 
@@ -590,13 +640,13 @@ const SuperrNotebookTemplate = {
       <div class="lg:col-span-5 bg-[#FAF8F5]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl superr-border superr-shadow-lg flex flex-col gap-6">
         <div>
           <div class="inline-block px-3 py-1 rounded-full bg-superr-pink text-white font-fraunces font-bold text-xs mb-3">
-            03 // FEATURE
+            03 // SYSTEM RELIABILITY
           </div>
           <h2 class="font-fraunces text-3xl sm:text-4xl lg:text-5xl font-bold text-superr-ink leading-tight">
             It’s a <span class="bg-superr-pink/20 text-superr-pink px-2 rounded-lg">friend</span> who’s got our back
           </h2>
           <p class="font-sans text-sm sm:text-base text-superr-muted mt-3">
-            Shows up when you're stuck, helps you solve rather than just giving away answers, and grows with you.
+            Building software with mathematical precision, thorough test suites, clear documentation, and collaborative spirit.
           </p>
         </div>
 
@@ -646,7 +696,7 @@ const SuperrNotebookTemplate = {
       <div class="flex flex-col items-center">
         <span class="font-hand text-xl text-superr-orange font-bold">★ THE ORIGIN MANIFESTO</span>
         <h2 class="font-fraunces text-3xl sm:text-5xl font-bold text-superr-ink mt-2 tracking-tight">
-          Read our story behind SuperrBook
+          Read ${firstName}'s story &amp; engineering manifesto
         </h2>
         <div class="mt-6">
           <a href="#contact" class="bg-[#fdfbf9] p-1 rounded-[20px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.25)] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-200 cursor-pointer inline-block">
@@ -663,33 +713,33 @@ const SuperrNotebookTemplate = {
         <!-- Card 1: Park -->
         <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
           <div class="w-full aspect-[4/3] overflow-hidden">
-            <img src="/assets/templates/superr/assets/word_out_section/card-in-park.png" alt="Superr in the park" class="w-full h-full object-cover" />
+            <img src="/assets/templates/superr/assets/word_out_section/card-in-park.png" alt="Engineering anywhere" class="w-full h-full object-cover" />
           </div>
           <div class="p-4 text-left">
             <span class="font-hand text-xs font-bold text-superr-green uppercase">Focus Anywhere</span>
-            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Lightweight paper display engineered for daylight readouts.</p>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Decentralized protocols built for open web accessibility.</p>
           </div>
         </div>
 
         <!-- Card 2: Writing on Desk -->
         <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
           <div class="w-full aspect-[4/3] overflow-hidden">
-            <img src="/assets/templates/superr/assets/word_out_section/card-writing-on-desk.png" alt="Writing on desk" class="w-full h-full object-cover" />
+            <img src="/assets/templates/superr/assets/word_out_section/card-writing-on-desk.png" alt="Writing clean code" class="w-full h-full object-cover" />
           </div>
           <div class="p-4 text-left">
             <span class="font-hand text-xs font-bold text-superr-blue uppercase">Zero Distractions</span>
-            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">No notifications, no algorithmic doomscrolling.</p>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Clean abstractions, no bloated dependencies, pure velocity.</p>
           </div>
         </div>
 
         <!-- Card 3: Couch -->
         <div class="rounded-3xl superr-border bg-superr-card overflow-hidden superr-shadow hover:-translate-y-1 transition-transform">
           <div class="w-full aspect-[4/3] overflow-hidden">
-            <img src="/assets/templates/superr/assets/word_out_section/card-sitting-on-couch.png" alt="Sitting on couch" class="w-full h-full object-cover" />
+            <img src="/assets/templates/superr/assets/word_out_section/card-sitting-on-couch.png" alt="Continuous learning" class="w-full h-full object-cover" />
           </div>
           <div class="p-4 text-left">
-            <span class="font-hand text-xs font-bold text-superr-pink uppercase">Thoughtful Learning</span>
-            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Nudges that encourage genuine problem solving.</p>
+            <span class="font-hand text-xs font-bold text-superr-pink uppercase">Continuous Craft</span>
+            <p class="font-sans text-sm font-semibold text-superr-ink mt-1">Bridging deep academic research with production applications.</p>
           </div>
         </div>
 
@@ -700,7 +750,7 @@ const SuperrNotebookTemplate = {
         <img src="/assets/templates/superr/assets/word_out_section/good-hands-illustration.png" alt="We're in good hands" class="w-full h-auto block" />
         <div class="absolute top-6 right-6 md:top-12 md:right-12 bg-white/95 backdrop-blur-md superr-border px-6 py-4 rounded-2xl shadow-sm text-left">
           <h3 class="font-fraunces text-2xl md:text-3xl font-bold text-superr-ink">We're in<br/>good hands</h3>
-          <p class="font-hand text-sm font-bold text-superr-orange mt-1">✦ Verified by thousands of learners</p>
+          <p class="font-hand text-sm font-bold text-superr-orange mt-1">✦ Verified open-source code and tested protocols</p>
         </div>
       </div>
 
@@ -864,9 +914,9 @@ const SuperrNotebookTemplate = {
           <div class="flex flex-col gap-3">
             <span class="font-hand text-xs text-white/70 tracking-wider uppercase font-bold">Navigation</span>
             <a href="#cover" class="hover:text-white/80 transition-colors">Cover</a>
-            <a href="#feature-one" class="hover:text-white/80 transition-colors">Magic Paper</a>
-            <a href="#feature-two" class="hover:text-white/80 transition-colors">Interactive Books</a>
-            <a href="#feature-three" class="hover:text-white/80 transition-colors">Got Your Back</a>
+            <a href="#feature-one" class="hover:text-white/80 transition-colors">Shipped Systems</a>
+            <a href="#feature-two" class="hover:text-white/80 transition-colors">Disciplines</a>
+            <a href="#feature-three" class="hover:text-white/80 transition-colors">Reliability</a>
             <a href="#faq" class="hover:text-white/80 transition-colors">Questions</a>
           </div>
 
@@ -897,18 +947,32 @@ const SuperrNotebookTemplate = {
   <!-- TAB & FAQ CONTROLLER SCRIPT                              -->
   <!-- ======================================================== -->
   <script>
-    // Section 1 Controller
+    // Section 1 Controller (Project Switcher)
     document.querySelectorAll('.s1-pointer-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const screenSrc = btn.getAttribute('data-screen-src');
+        const projTitle = btn.getAttribute('data-proj-title');
+        const projDesc = btn.getAttribute('data-proj-desc');
+        const projLink = btn.getAttribute('data-proj-link');
+
         document.querySelectorAll('.s1-pointer-btn').forEach(b => {
           b.classList.remove('bg-superr-green', 'text-white', 'superr-shadow', 'active');
           b.classList.add('bg-superr-card', 'text-superr-ink');
         });
         btn.classList.remove('bg-superr-card', 'text-superr-ink');
         btn.classList.add('bg-superr-green', 'text-white', 'superr-shadow', 'active');
+
         const img = document.getElementById('s1-tablet-screen');
         if (img) img.src = screenSrc;
+
+        const titleEl = document.getElementById('s1-proj-title-display');
+        if (titleEl && projTitle) titleEl.textContent = projTitle;
+
+        const descEl = document.getElementById('s1-proj-desc-display');
+        if (descEl && projDesc) descEl.textContent = projDesc;
+
+        const linkEl = document.getElementById('s1-proj-link-display');
+        if (linkEl && projLink) linkEl.href = projLink;
       });
     });
 
