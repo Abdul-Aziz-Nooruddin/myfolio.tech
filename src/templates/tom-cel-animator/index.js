@@ -119,7 +119,7 @@ const TomCelAnimatorTemplate = {
         artSrc = p.image;
       } else {
         try {
-          const resolved = ProjectArtworkSynthesizer.resolveProjectArtwork(p, 'jack-3d-creator', idx, usedArtworkSet, safeName);
+          const resolved = ProjectArtworkSynthesizer.resolveProjectArtwork(p, 'tom-cel-animator', idx, usedArtworkSet, safeName);
           artSrc = resolved?.src || `/assets/templates/tom/images/tom-asset-${(idx % 4) + 1}.jpg`;
         } catch (e) {
           artSrc = `/assets/templates/tom/images/tom-asset-${(idx % 4) + 1}.jpg`;
@@ -624,19 +624,16 @@ const TomCelAnimatorTemplate = {
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md relative z-10">
               <div>
                 <span class="font-caption text-caption uppercase tracking-widest text-secondary-fixed font-bold flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">terminal</span>
-                  PRODUCTION DEEP DIVE • SYSTEM TELEMETRY
+                  <span class="material-symbols-outlined text-[16px]">code</span>
+                  ARCHITECTURE DEEP DIVE • SYSTEM DESIGN
                 </span>
                 <h2 class="font-headline-lg text-headline-lg uppercase tracking-tight leading-none mt-1">
-                  FEATURED ARCHITECTURE // ${featuredProject.title}
+                  FEATURED WORK // ${featuredProject.title}
                 </h2>
               </div>
               <div class="flex items-center gap-space-sm">
                 <span class="px-3 py-1 bg-surface text-on-surface font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b]">
-                  STATUS: OPERATIONAL
-                </span>
-                <span class="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-badge text-caption uppercase border-2 border-inverse-surface shadow-[3px_3px_0px_#31302b]">
-                  HIGH AVAILABILITY
+                  ${featuredProject.category || 'Production'}
                 </span>
               </div>
             </div>

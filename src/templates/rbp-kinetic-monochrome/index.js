@@ -63,7 +63,7 @@ function resolveSingleProjectImage(project, index = 0, usedSet = new Set(), user
 
   if (candidate) return candidate;
 
-  const art = ProjectArtworkSynthesizer.resolveProjectArtwork(project, 'jack-3d-creator', index, usedSet, userSeed);
+  const art = ProjectArtworkSynthesizer.resolveProjectArtwork(project, 'rbp-kinetic-monochrome', index, usedSet, userSeed);
   return art.src;
 }
 

@@ -116,10 +116,10 @@ const SuperrNotebookTemplate = {
         artSrc = p.image;
       } else {
         try {
-          const resolved = ProjectArtworkSynthesizer.resolveProjectArtwork(p, 'jack-3d-creator', idx, usedArtworkSet, safeName);
-          artSrc = resolved?.src || `/assets/designs/cyber/origami_bird_nobg.png`;
+          const resolved = ProjectArtworkSynthesizer.resolveProjectArtwork(p, 'superr-notebook', idx, usedArtworkSet, safeName);
+          artSrc = resolved?.src || '/assets/projects/pass_note_messenger_3d.webp';
         } catch (e) {
-          artSrc = `/assets/designs/cyber/origami_bird_nobg.png`;
+          artSrc = '/assets/projects/pass_note_messenger_3d.webp';
         }
       }
 
