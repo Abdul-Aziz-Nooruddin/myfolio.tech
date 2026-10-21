@@ -3054,6 +3054,9 @@
 
     function selectCuratedWorld(key, el) {
       selectedUniverseKey = key || 'jack-3d-creator';
+      if (!el && key) {
+        el = document.querySelector(`#curatedWorldsGrid .world-cat-card[onclick*="'${key}'"]`);
+      }
       document.querySelectorAll('#curatedWorldsGrid .world-cat-card').forEach(c => {
         c.classList.remove('selected');
         c.style.border = '1px solid rgba(255,255,255,0.12)';
@@ -4425,13 +4428,21 @@
 
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Connect iframe to same-origin portfolio route on load
+      // Connect iframe to same-origin portfolio route on load (with query param support)
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialTemplate = urlParams.get('template') || urlParams.get('universe') || urlParams.get('t') || 'jack-3d-creator';
+      
       const iframe = document.getElementById('studioLiveIframe');
       if (iframe) {
-        iframe.src = '/jack-3d?embed=1';
         iframe.addEventListener('load', () => {
           applyViewportScaling();
         });
+      }
+
+      if (initialTemplate && initialTemplate !== 'jack-3d-creator') {
+        selectCuratedWorld(initialTemplate);
+      } else if (iframe) {
+        iframe.src = '/jack-3d?embed=1';
       }
       applyViewportScaling();
 

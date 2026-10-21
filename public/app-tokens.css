@@ -43,20 +43,20 @@ html[data-theme="dark"] {
   --mf-warning: #F59E0B;
   --mf-error: #EF4444;
 
-  /* Geometry & Radius */
-  --mf-radius-xs: 6px;
+  /* Geometry & Radius (Soft Edges) */
+  --mf-radius-xs: 4px;
   --mf-radius-sm: 8px;
-  --mf-radius-md: 12px;
-  --mf-radius-lg: 16px;
-  --mf-radius-xl: 20px;
+  --mf-radius-md: 10px;
+  --mf-radius-lg: 14px;
+  --mf-radius-xl: 16px;
   --mf-radius-full: 9999px;
 
-  /* Shadows & Depth */
-  --mf-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
-  --mf-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --mf-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.65);
-  --mf-shadow-glow-blue: 0 0 30px rgba(95, 165, 249, 0.15);
-  --mf-shadow-glow-violet: 0 0 30px rgba(95, 165, 249, 0.15);
+  /* Shadows & Depth (Flat 2D: Zero Blurry Shadows or Faux 3D Glows) */
+  --mf-shadow-sm: none;
+  --mf-shadow-md: none;
+  --mf-shadow-lg: none;
+  --mf-shadow-glow-blue: none;
+  --mf-shadow-glow-violet: none;
 
   /* Motion Standards */
   --mf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -68,41 +68,41 @@ html[data-theme="dark"] {
 
 [data-theme="light"],
 html[data-theme="light"] {
-  /* Light Theme Surface Physics & Backgrounds */
-  --mf-bg-primary: #F8FAFC;
-  --mf-bg-secondary: #F1F5F9;
+  /* Light Theme Surface Physics & Backgrounds (Crisp Solid Flat) */
+  --mf-bg-primary: #FFFFFF;
+  --mf-bg-secondary: #F8FAFC;
   --mf-surface: #FFFFFF;
   --mf-surface-deep: #F8FAFC;
-  --mf-surface-glass: rgba(255, 255, 255, 0.90);
-  --mf-surface-glass-subtle: rgba(248, 250, 252, 0.85);
+  --mf-surface-glass: #FFFFFF;
+  --mf-surface-glass-subtle: #F8FAFC;
   --mf-surface-glass-elevated: #FFFFFF;
 
   /* Text Colors */
   --mf-text-primary: #0F172A;
-  --mf-text-secondary: #475569;
-  --mf-text-muted: #94A3B8;
+  --mf-text-secondary: #334155;
+  --mf-text-muted: #64748B;
   --mf-text-inverse: #FFFFFF;
 
-  /* Borders & Dividers */
+  /* Borders & Dividers (Crisp 1px 2D Dividers) */
   --mf-border: #E2E8F0;
   --mf-border-strong: #CBD5E1;
-  --mf-border-glow: rgba(59, 130, 246, 0.35);
-  --mf-border-violet: rgba(99, 102, 241, 0.25);
+  --mf-border-glow: transparent;
+  --mf-border-violet: transparent;
 
-  /* Curated Accents */
+  /* Curated Accents (Solid Colors Matching Landing Page) */
   --mf-accent-blue: #2563EB;
-  --mf-accent-violet: #6366F1;
+  --mf-accent-violet: #4F46E5;
   --mf-accent-cyan: #0284C7;
-  --mf-success: #059669;
-  --mf-warning: #D97706;
-  --mf-error: #DC2626;
+  --mf-success: #10B981;
+  --mf-warning: #F5A623;
+  --mf-error: #EF4444;
 
-  /* Shadows & Depth */
-  --mf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-  --mf-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --mf-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-  --mf-shadow-glow-blue: 0 0 25px rgba(37, 99, 235, 0.12);
-  --mf-shadow-glow-violet: 0 0 25px rgba(99, 102, 241, 0.12);
+  /* Shadows & Depth (Flat 2D) */
+  --mf-shadow-sm: none;
+  --mf-shadow-md: none;
+  --mf-shadow-lg: none;
+  --mf-shadow-glow-blue: none;
+  --mf-shadow-glow-violet: none;
 }
 
 /* Global Reset & Base Setup */

@@ -3,7 +3,7 @@
  * Provides Cache-First for static assets and Network-First with offline fallback for HTML pages.
  */
 
-const CACHE_NAME = 'myfolio-cache-v2';
+const CACHE_NAME = 'myfolio-cache-v3';
 const STATIC_ASSETS = [
   '/',
   '/app-tokens.css',
@@ -47,15 +47,28 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   if (url.pathname.startsWith('/api/')) return;
 
+  // Never intercept localhost or 127.0.0.1 requests — always direct to network
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return;
+
+  // Never intercept iframe embeds or live template preview routes
+  if (
+    req.destination === 'iframe' ||
+    url.searchParams.has('embed') ||
+    url.pathname.startsWith('/p/') ||
+    ['/jack-3d', '/nadia', '/kage', '/rbp', '/tom', '/apogee'].includes(url.pathname)
+  ) {
+    return;
+  }
+
   // 1. Static Assets (CSS, JS, Images, Fonts) -> Cache-First with background revalidation
   if (/\.(css|js|webp|png|jpg|jpeg|gif|svg|ico|woff2?|ttf|eot)$/i.test(url.pathname)) {
     event.respondWith(
       caches.match(req).then((cached) => {
         if (cached) {
-          // Revalidate in background
           fetch(req).then((netRes) => {
             if (netRes.ok) {
-              caches.open(CACHE_NAME).then((c) => c.put(req, netRes));
+              const clone = netRes.clone();
+              caches.open(CACHE_NAME).then((c) => c.put(req, clone));
             }
           }).catch(() => {});
           return cached;
@@ -72,7 +85,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. HTML Navigation Pages -> Network-First with Cache Fallback for instant speed & offline support
+  // 2. HTML Navigation Pages -> Network-First with Cache Fallback for offline support (NEVER hijack with /dashboard)
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(req).then((netRes) => {
@@ -84,7 +97,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         return caches.match(req).then((cached) => {
           if (cached) return cached;
-          return caches.match('/dashboard') || caches.match('/');
+          return caches.match('/') || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
         });
       })
     );

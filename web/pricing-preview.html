@@ -45,18 +45,9 @@
       padding-bottom: 4rem;
     }
 
-    /* Ambient background gradient glow */
+    /* Flat 2D: Zero ambient background blur glow */
     .ambient-glow {
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(56, 189, 248, 0.06) 40%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(80px);
+      display: none !important;
     }
 
     /* Top Lab Controller Bar */
@@ -64,8 +55,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(14, 16, 15, 0.92);
-      backdrop-filter: blur(20px);
+      background: #0E100F;
       border-bottom: 1px solid var(--border-subtle);
       padding: 0.85rem 1.5rem;
       display: flex;

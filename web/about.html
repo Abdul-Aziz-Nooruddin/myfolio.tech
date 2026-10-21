@@ -216,11 +216,12 @@
       .pillars-grid { grid-template-columns: repeat(3, 1fr); }
     }
     .pillar-card {
-      background: #ffffff; border: 1px solid var(--border); border-radius: 16px;
+      background: #ffffff; border: 1px solid var(--border); border-radius: 10px;
       padding: 36px 32px; display: flex; flex-direction: column; justify-content: space-between;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: border-color 0.15s ease;
+      box-shadow: none !important;
     }
-    .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+    .pillar-card:hover { transform: none; border-color: var(--ink); box-shadow: none !important; }
     .pillar-num { font-size: 12px; font-family: monospace; color: #13708e; margin-bottom: 16px; display: block; }
     .pillar-card h3, .pillar-card h4 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--ink); }
     .pillar-card p { font-size: 14px; line-height: 1.6; color: var(--muted); }

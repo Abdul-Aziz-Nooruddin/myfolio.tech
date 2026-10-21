@@ -146,22 +146,23 @@
     .auth-tab-btn.active {
       background: #ffffff !important;
       color: var(--ink) !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important;
+      box-shadow: none !important;
+      border: 1px solid var(--border) !important;
       font-weight: 600 !important;
     }
 
     /* Google OAuth Button */
     .btn-google {
       width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-      padding: 13px 20px; border-radius: 12px; background: #ffffff;
+      padding: 13px 20px; border-radius: 10px; background: #ffffff;
       border: 1px solid var(--border); font-size: 14px; font-weight: 600; color: var(--ink);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: all 0.15s ease;
+      box-shadow: none !important;
       text-decoration: none; cursor: pointer;
     }
     .btn-google:hover {
-      background: #faf9f6; border-color: rgba(23, 24, 23, 0.25); transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      background: #faf9f6; border-color: var(--ink); transform: none;
+      box-shadow: none !important;
     }
     .divider {
       display: flex; align-items: center; gap: 14px; color: var(--muted);

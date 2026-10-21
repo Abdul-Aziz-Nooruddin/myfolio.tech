@@ -192,10 +192,11 @@
     /* Left Direct Channels */
     .channel-cards { display: flex; flex-direction: column; gap: 32px; }
     .channel-box {
-      background: #ffffff; border: 1px solid var(--border); border-radius: 16px;
-      padding: 32px; transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: #ffffff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 32px; transition: border-color 0.15s ease;
+      box-shadow: none !important;
     }
-    .channel-box:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+    .channel-box:hover { transform: none; border-color: var(--ink); box-shadow: none !important; }
     .channel-kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: block; margin-bottom: 12px; }
     .channel-email {
       font-size: 24px; font-weight: 600; letter-spacing: -0.03em; color: var(--ink);
@@ -205,7 +206,7 @@
     .channel-box p { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
     .faq-callout {
-      background: #EDECE8; border-radius: 16px; padding: 32px;
+      background: #EDECE8; border-radius: 10px; padding: 32px;
       display: flex; flex-direction: column; gap: 12px;
     }
     .faq-callout h3, .faq-callout h4 { font-size: 18px; font-weight: 600; margin: 0; color: var(--ink); }
@@ -214,9 +215,9 @@
 
     /* Right Form Card */
     .form-card {
-      background: #ffffff; border: 1px solid var(--border); border-radius: 20px;
+      background: #ffffff; border: 1px solid var(--border); border-radius: 10px;
       padding: 44px; display: flex; flex-direction: column; gap: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      box-shadow: none !important;
     }
     .form-header h2, .form-header h3 { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; color: var(--ink); }
     .form-header p { font-size: 14px; color: var(--muted); }
