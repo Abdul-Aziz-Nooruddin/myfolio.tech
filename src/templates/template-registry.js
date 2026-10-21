@@ -11,7 +11,6 @@ const { KageTempleTemplate } = require('./kage-temple');
 const { RBPKineticMonochromeTemplate } = require('./rbp-kinetic-monochrome');
 const { TomCelAnimatorTemplate } = require('./tom-cel-animator');
 const { ApogeeSpatialTemplate } = require('./apogee-spatial');
-const { SuperrNotebookTemplate } = require('./superr-notebook');
 
 class TemplateRegistry {
   static _templates = {
@@ -39,12 +38,7 @@ class TemplateRegistry {
     'apogee-spatial': ApogeeSpatialTemplate,
     'apogee': ApogeeSpatialTemplate,
     'apogee-hero': ApogeeSpatialTemplate,
-    'spatial-3d': ApogeeSpatialTemplate,
-    'superr-notebook': SuperrNotebookTemplate,
-    'superr': SuperrNotebookTemplate,
-    'superr-ai': SuperrNotebookTemplate,
-    'notebook': SuperrNotebookTemplate,
-    'ai-notebook': SuperrNotebookTemplate
+    'spatial-3d': ApogeeSpatialTemplate
   };
 
   static templates = new Proxy(TemplateRegistry._templates, {
@@ -92,8 +86,7 @@ class TemplateRegistry {
     'kage-temple',
     'rbp-kinetic-monochrome',
     'tom-cel-animator',
-    'apogee-spatial',
-    'superr-notebook'
+    'apogee-spatial'
   ];
 
   /**
@@ -147,9 +140,6 @@ class TemplateRegistry {
       if (this._templates[cleanId]) {
         return this._templates[cleanId];
       }
-      if (cleanId.includes('superr') || cleanId.includes('notebook')) {
-        return this._templates['superr-notebook'];
-      }
       if (cleanId.includes('tom') || cleanId.includes('comic') || cleanId.includes('cel-anim')) {
         return this._templates['tom-cel-animator'];
       }
@@ -167,9 +157,6 @@ class TemplateRegistry {
       }
     }
     const role = (candidateProfile?.role || candidateProfile?.title || '').toLowerCase();
-    if (role.includes('notebook') || role.includes('edtech')) {
-      return this._templates['superr-notebook'];
-    }
     if (role.includes('animat') || role.includes('cartoon') || role.includes('comic') || role.includes('illustrat') || role.includes('storyboard') || role.includes('2d') || role.includes('cel') || role.includes('motion')) {
       return this._templates['tom-cel-animator'];
     }

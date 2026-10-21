@@ -3122,14 +3122,6 @@ app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res
   res.type('html').send(content);
 });
 
-app.get(['/superr', '/superr-notebook', '/superr-ai', '/notebook', '/ai-notebook', '/abdulaziz-superr', '/superr-portfolio'], (req, res) => {
-  const { TemplateRegistry } = require('./templates/template-registry');
-  const { DEFAULT_FOUNDER_PROFILE } = require('./data/default-founder-profile');
-  const rendered = TemplateRegistry.render('superr-notebook', DEFAULT_FOUNDER_PROFILE);
-  let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'superr-notebook');
-  res.type('html').send(content);
-});
-
 app.get(['/slush', '/slush-portfolio', '/slush-sticker'], (req, res) => {
   res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; frame-ancestors *;");
   res.sendFile(getPagePath('slush.html'));
