@@ -3122,6 +3122,44 @@ app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res
   res.type('html').send(content);
 });
 
+app.get(['/superr', '/superr-notebook', '/superr-ai', '/notebook', '/ai-notebook'], (req, res) => {
+  const { TemplateRegistry } = require('./templates/template-registry');
+  const demoData = {
+    name: 'Alex Vance',
+    role: 'Full-Stack & Systems Architect',
+    bio: 'Building resilient software systems, delightful interfaces, and autonomous agent runtimes without the distractions.',
+    email: 'alex.vance@myfolio.tech',
+    location: 'San Francisco & Remote Worldwide',
+    github: 'https://github.com/Abdul-Aziz-Nooruddin',
+    projects: [
+      {
+        title: 'Encrypted Note Messenger',
+        description: 'Secure peer-to-peer note transmission with cryptographic forward secrecy and ephemeral storage.',
+        tags: ['TypeScript', 'Web Crypto', 'Node.js'],
+        link: 'https://github.com/Abdul-Aziz-Nooruddin',
+        impact: 'Sub-second delivery with zero data leaks'
+      },
+      {
+        title: 'Autonomous Code Engine',
+        description: 'High-speed code synthesis pipeline with automated linting, test suites, and git commits.',
+        tags: ['Python', 'Docker', 'FastAPI'],
+        link: 'https://github.com/Abdul-Aziz-Nooruddin',
+        impact: '40x faster pull-request verification'
+      },
+      {
+        title: 'Spatial Canvas Studio',
+        description: 'Hardware-accelerated 3D viewport canvas for interactive generative models and spatial layouts.',
+        tags: ['WebGL', 'Three.js', 'GLSL'],
+        link: 'https://github.com/Abdul-Aziz-Nooruddin',
+        impact: '60 FPS render loops on mobile devices'
+      }
+    ]
+  };
+  const rendered = TemplateRegistry.render('superr-notebook', demoData);
+  let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'superr-notebook');
+  res.type('html').send(content);
+});
+
 app.get(['/slush', '/slush-portfolio', '/slush-sticker'], (req, res) => {
   res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; frame-ancestors *;");
   res.sendFile(getPagePath('slush.html'));
