@@ -681,7 +681,6 @@
                 <p className="text-sm sm:text-base text-white/85 leading-relaxed mb-8">
                   Available for full-time engineering roles, smart contract development, WebGL 3D web applications, and technical partnerships.
                 </p>
-
                 <div className="space-y-4 text-xs font-semibold uppercase tracking-wider text-white/90">
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Direct Email</div>
@@ -693,11 +692,10 @@
                   </div>
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Live Studio</div>
-                    <a href="https://myfolio.tech" target="_blank" rel="noreferrer" className="hover:underline">myfolio.tech</a>
+                    <a href="https://myfolio.tech" target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.email ? 'myfolio.tech' : 'myfolio.tech'}</a>
                   </div>
                 </div>
               </div>
-
               <div className="lg:col-span-7">
                 <div className="p-8 sm:p-12 rounded-3xl bg-black/25 backdrop-blur-md border border-white/20">
                   {formSent ? (

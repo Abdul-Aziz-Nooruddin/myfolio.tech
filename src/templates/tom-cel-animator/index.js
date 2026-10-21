@@ -507,11 +507,11 @@ const TomCelAnimatorTemplate = {
         </div>
       </section>
 
-      <!-- Hero Section with Apple Canvas Scrollytelling Paper Breakthrough -->
-      <section class="hero-sequence-section relative min-h-[220vh] w-full overflow-hidden bg-surface" style="min-height: 220vh;">
+      <!-- Hero Section with Kinetic Cel Paper Breakthrough -->
+      <section class="hero-sequence-section relative w-full overflow-hidden bg-surface py-space-xl lg:py-space-2xl">
         <!-- Halftone Dot Decorative Layer -->
         <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#1c1c17 1px, transparent 1px); background-size: 14px 14px;"></div>
-        <div class="sticky top-20 z-10 mx-auto min-h-[calc(100vh-5rem)] max-w-[1360px] px-gutter py-space-xl lg:py-space-2xl">
+        <div class="relative z-10 mx-auto max-w-[1360px] px-gutter">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
             
             <!-- Left Hero Copy -->
@@ -1120,7 +1120,7 @@ const TomCelAnimatorTemplate = {
         const updateFromScroll = () => {
           scrollFrame = 0;
           const bounds = heroSection.getBoundingClientRect();
-          const travel = Math.max(bounds.height - window.innerHeight, 1);
+          const travel = Math.max(bounds.height, window.innerHeight * 0.8);
           const progress = Math.min(Math.max(-bounds.top / travel, 0), 1);
           sequenceCanvas.dataset.progress = progress.toFixed(3);
           pendingFrame = Math.round(progress * (frameCount - 1));
