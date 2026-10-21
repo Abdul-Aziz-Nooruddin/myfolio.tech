@@ -41,6 +41,13 @@
 
   <link rel="stylesheet" href="/app-tokens.css">
   <script src="/theme-toggle.js"></script>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('myfolio-theme') || localStorage.getItem('myfolio_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      if (document.body) document.body.setAttribute('data-theme', theme);
+    })();
+  </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
@@ -57,35 +64,277 @@
     :root,
     [data-theme="dark"],
     html[data-theme="dark"] {
-      --studio-bg: #0A0A0B;
-      --studio-topbar-bg: rgba(14, 15, 17, 0.95);
-      --studio-col-bg: rgba(18, 20, 23, 0.96);
-      --studio-viewport-bg: radial-gradient(ellipse at 50% 30%, rgba(56, 189, 248, 0.05) 0%, #0A0B0D 100%);
-      --studio-card-bg: rgba(24, 26, 30, 0.75);
-      --studio-card-inner: rgba(18, 20, 24, 0.65);
-      --studio-border: rgba(255, 255, 255, 0.08);
-      --studio-border-hover: rgba(56, 189, 248, 0.35);
+      --studio-bg: #06070B;
+      --studio-topbar-bg: #0B0E14;
+      --studio-col-bg: #0E121A;
+      --studio-viewport-bg: #06070B;
+      --studio-card-bg: #111827;
+      --studio-card-inner: #0F172A;
+      --studio-border: #1E293B;
+      --studio-border-hover: #F5A623;
       --studio-text-primary: #F8FAFC;
       --studio-text-secondary: #94A3B8;
       --studio-text-muted: #64748B;
-      --studio-screen-bg: #0A0B0D;
+      --studio-screen-bg: #06070B;
     }
 
     [data-theme="light"],
     html[data-theme="light"],
     body[data-theme="light"] {
       --studio-bg: #F8FAFC;
-      --studio-topbar-bg: rgba(255, 255, 255, 0.95);
+      --studio-topbar-bg: #FFFFFF;
       --studio-col-bg: #FFFFFF;
-      --studio-viewport-bg: radial-gradient(ellipse at 50% 30%, rgba(37, 99, 235, 0.04) 0%, #F1F5F9 100%);
-      --studio-card-bg: #F8FAFC;
-      --studio-card-inner: #FFFFFF;
+      --studio-viewport-bg: #F1F5F9;
+      --studio-card-bg: #FFFFFF;
+      --studio-card-inner: #F8FAFC;
       --studio-border: #E2E8F0;
-      --studio-border-hover: #3B82F6;
+      --studio-border-hover: #CBD5E1;
       --studio-text-primary: #0F172A;
       --studio-text-secondary: #475569;
-      --studio-text-muted: #94A3B8;
+      --studio-text-muted: #64748B;
       --studio-screen-bg: #FFFFFF;
+      --mf-text-primary: #0F172A;
+      --mf-text-secondary: #475569;
+      --mf-text-muted: #64748B;
+      --mf-border: #E2E8F0;
+    }
+
+    /* Flat Design Light Mode Architectural Overrides */
+    [data-theme="light"] .studio-topbar {
+      background: #FFFFFF !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    [data-theme="light"] .studio-col-left,
+    [data-theme="light"] .studio-col-right {
+      background: #FFFFFF !important;
+      border-color: #E2E8F0 !important;
+    }
+
+    [data-theme="light"] .center-viewport-toolbar {
+      background: #FFFFFF !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+    }
+
+    [data-theme="light"] .studio-workflow-stepper {
+      background: #FFFFFF !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+    }
+
+    [data-theme="light"] .stepper-item {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .stepper-item.active {
+      color: #2563EB !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .stepper-num {
+      background: #F1F5F9 !important;
+      color: #64748B !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    [data-theme="light"] .stepper-item.active .stepper-num {
+      background: #2563EB !important;
+      color: #FFFFFF !important;
+      border-color: #2563EB !important;
+    }
+
+    [data-theme="light"] .studio-mode-tabs {
+      background: #F1F5F9 !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 10px !important;
+      padding: 4px !important;
+    }
+    [data-theme="light"] .studio-mode-tab {
+      color: #64748B !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+    }
+    [data-theme="light"] .studio-mode-tab.active {
+      color: #0F172A !important;
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    [data-theme="light"] .readiness-box {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      color: #0F172A !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    [data-theme="light"] .readiness-box div {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .readiness-circle {
+      background: #FFFFFF !important;
+      border: 2px solid #2563EB !important;
+      color: #2563EB !important;
+    }
+
+    [data-theme="light"] .workflow-card,
+    [data-theme="light"] .universe-picker-card,
+    [data-theme="light"] .universe-selection-card {
+      background: #FFFFFF !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 12px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .workflow-card-title {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .workflow-card-desc {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .workflow-step-badge {
+      color: #2563EB !important;
+    }
+
+    [data-theme="light"] .mf-input,
+    [data-theme="light"] input[type="text"],
+    [data-theme="light"] textarea,
+    [data-theme="light"] select {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 8px !important;
+    }
+    [data-theme="light"] .mf-input:focus,
+    [data-theme="light"] input[type="text"]:focus,
+    [data-theme="light"] textarea:focus {
+      border-color: #2563EB !important;
+      outline: none !important;
+    }
+    [data-theme="light"] .mf-label {
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] #studioResumeDropZone {
+      background: #F8FAFC !important;
+      border: 1px dashed #CBD5E1 !important;
+      border-radius: 12px !important;
+    }
+    [data-theme="light"] #resumeUploadLabel {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] #resumeUploadHelp {
+      color: #64748B !important;
+    }
+
+    /* Right AI Assistant in Flat Design */
+    [data-theme="light"] .studio-col-right div,
+    [data-theme="light"] .studio-col-right span {
+      color: #0F172A;
+    }
+    [data-theme="light"] .ai-insight-card {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    [data-theme="light"] .ai-insight-title {
+      color: #2563EB !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .ai-insight-body {
+      color: #475569 !important;
+    }
+    [data-theme="light"] .ai-quick-btn {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+    }
+    [data-theme="light"] .ai-quick-btn:hover {
+      background: #E2E8F0 !important;
+      border-color: #94A3B8 !important;
+    }
+    [data-theme="light"] .ai-command-wrap {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    [data-theme="light"] .ai-command-input {
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+      background: #FFFFFF !important;
+      border-radius: 8px !important;
+    }
+    [data-theme="light"] .ai-command-wrap .mf-btn-primary {
+      background: #2563EB !important;
+      border: 1px solid #1D4ED8 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .ai-command-wrap .mf-btn-primary:hover {
+      background: #1D4ED8 !important;
+    }
+
+    /* Viewport Frame in Flat Design */
+    [data-theme="light"] .spatial-viewport-screen {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .spatial-viewport-scaler {
+      background: #FFFFFF !important;
+    }
+    [data-theme="light"] .device-switcher-dock {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 8px !important;
+    }
+    [data-theme="light"] .device-btn {
+      color: #64748B !important;
+      border-radius: 6px !important;
+    }
+    [data-theme="light"] .device-btn.active {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+
+    /* Flat Publish Live CTA Button (Universal Flat Solid Design) */
+    .fluid-publish-btn {
+      background: #2563EB !important;
+      border: 1px solid #1D4ED8 !important;
+      color: #FFFFFF !important;
+      border-radius: 10px !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+      animation: none !important;
+      min-width: 150px !important;
+      height: 36px !important;
+      cursor: pointer;
+    }
+    .fluid-publish-btn:hover:not(:disabled) {
+      background: #1D4ED8 !important;
+      border-color: #1E40AF !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+      transform: none !important;
+    }
+    .fluid-publish-btn.ready-to-publish {
+      background: #10B981 !important;
+      border-color: #059669 !important;
+      animation: none !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    }
+    .fluid-wave-container {
+      display: none !important;
+    }
+    .fluid-btn-content {
+      color: #FFFFFF !important;
+      text-shadow: none !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+    }
+    .fluid-btn-content span {
+      color: #FFFFFF !important;
     }
 
     *, *::before, *::after {

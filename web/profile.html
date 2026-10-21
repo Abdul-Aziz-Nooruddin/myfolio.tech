@@ -168,31 +168,31 @@
       line-height: 1.5;
     }
 
-    /* Action Buttons */
     .mf-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       padding: 10px 20px;
-      border-radius: 9999px;
+      border-radius: 10px;
       font-family: var(--mf-font-sans, 'Inter', sans-serif);
       font-size: 13.5px;
       font-weight: 600;
       text-decoration: none;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s ease;
+      box-shadow: none !important;
     }
     .mf-btn-primary {
       background: #FFFFFF;
       color: #0A0A0A !important;
-      border: none;
-      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.12);
+      border: 1px solid #FFFFFF;
+      box-shadow: none !important;
     }
     .mf-btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(255, 255, 255, 0.25);
+      transform: none;
+      box-shadow: none !important;
     }
     .mf-btn-secondary {
       background: #181818;
@@ -1082,7 +1082,7 @@
       preview.innerHTML = `<span>A</span>`;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    function initProfilePage() {
       if (typeof initUniversalSidebar === 'function') {
         initUniversalSidebar('profile');
       }
@@ -1092,7 +1092,14 @@
       if (window.location.hash === '#security') {
         switchProfileTab('account');
       }
-    });
+    }
+    window.initProfile = initProfilePage;
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initProfilePage);
+    } else {
+      initProfilePage();
+    }
   </script>
   <script src="/button-engine.js" defer></script>
 

@@ -6,6 +6,9 @@
   const STORAGE_KEY = 'myfolio_cookie_consent';
 
   function initCookieBanner() {
+    // Avoid blocking UI inspection in local dev / localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) return; // User already made a choice
 
@@ -121,24 +124,33 @@
         background: rgba(74, 63, 122, 0.55);
       }
       [data-theme="light"] #myfolioCookieBanner,
-      html[data-theme="light"] #myfolioCookieBanner {
-        background: rgba(255, 255, 255, 0.96) !important;
+      html[data-theme="light"] #myfolioCookieBanner,
+      body[data-theme="light"] #myfolioCookieBanner {
+        background: rgba(255, 255, 255, 0.98) !important;
         border: 1px solid #E2E8F0 !important;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         color: #0F172A !important;
       }
-      [data-theme="light"] .cookie-title {
+      [data-theme="light"] .cookie-title,
+      html[data-theme="light"] .cookie-title,
+      body[data-theme="light"] .cookie-title {
         color: #0F172A !important;
       }
-      [data-theme="light"] .cookie-desc {
+      [data-theme="light"] .cookie-desc,
+      html[data-theme="light"] .cookie-desc,
+      body[data-theme="light"] .cookie-desc {
         color: #475569 !important;
       }
-      [data-theme="light"] .cookie-btn-secondary {
+      [data-theme="light"] .cookie-btn-secondary,
+      html[data-theme="light"] .cookie-btn-secondary,
+      body[data-theme="light"] .cookie-btn-secondary {
         background: #F1F5F9 !important;
         border: 1px solid #CBD5E1 !important;
         color: #0F172A !important;
       }
-      [data-theme="light"] .cookie-btn-secondary:hover {
+      [data-theme="light"] .cookie-btn-secondary:hover,
+      html[data-theme="light"] .cookie-btn-secondary:hover,
+      body[data-theme="light"] .cookie-btn-secondary:hover {
         background: #E2E8F0 !important;
       }
       @media (max-width: 600px) {

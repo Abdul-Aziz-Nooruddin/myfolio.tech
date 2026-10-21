@@ -59,8 +59,8 @@
       --dash-text-primary: #F8FAFC;
       --dash-text-secondary: #94A3B8;
       --dash-text-muted: #64748B;
-      --dash-canvas-bg: radial-gradient(circle 800px at 50% -120px, rgba(56, 189, 248, 0.06), transparent 70%), linear-gradient(180deg, #09090B 0%, #0D0E11 100%);
-      --dash-card-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+      --dash-canvas-bg: #09090B;
+      --dash-card-shadow: none;
       --dash-mockup-bg: #121316;
       --dash-mockup-header: #18191E;
       --dash-kpi-bg: #111215;
@@ -84,8 +84,8 @@
       --dash-text-primary: #0F172A;
       --dash-text-secondary: #475569;
       --dash-text-muted: #94A3B8;
-      --dash-canvas-bg: radial-gradient(circle 800px at 50% -120px, rgba(2, 132, 199, 0.04), transparent 70%), linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
-      --dash-card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+      --dash-canvas-bg: #F8FAFC;
+      --dash-card-shadow: none;
       --dash-mockup-bg: #F8FAFC;
       --dash-mockup-header: #EDF2F7;
       --dash-kpi-bg: #F8FAFC;
@@ -759,6 +759,42 @@
       background: rgba(239, 68, 68, 0.2);
       border-color: rgba(239, 68, 68, 0.45);
       color: #F87171;
+    }
+
+    [data-theme="light"] .mf-btn-secondary,
+    html[data-theme="light"] .mf-btn-secondary,
+    body[data-theme="light"] .mf-btn-secondary {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    [data-theme="light"] .mf-btn-secondary:hover,
+    html[data-theme="light"] .mf-btn-secondary:hover,
+    body[data-theme="light"] .mf-btn-secondary:hover {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+      border-color: #94A3B8 !important;
+    }
+    [data-theme="light"] .mf-btn-ghost,
+    html[data-theme="light"] .mf-btn-ghost,
+    body[data-theme="light"] .mf-btn-ghost {
+      color: #475569 !important;
+      border: 1px solid #E2E8F0 !important;
+      background: transparent !important;
+    }
+    [data-theme="light"] .mf-btn-ghost:hover,
+    html[data-theme="light"] .mf-btn-ghost:hover,
+    body[data-theme="light"] .mf-btn-ghost:hover {
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+      border-color: #CBD5E1 !important;
+    }
+    [data-theme="light"] .theme-toggle-btn,
+    html[data-theme="light"] .theme-toggle-btn,
+    body[data-theme="light"] .theme-toggle-btn {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1 !important;
     }
 
     .mf-btn-sm {
@@ -2105,10 +2141,10 @@
 
       if (!portfolios || portfolios.length === 0) {
         grid.innerHTML = `
-          <div style="padding:3rem 1.5rem; text-align:center; background:rgba(18,20,18,0.6); border:1px dashed rgba(255,255,255,0.1); border-radius:16px; grid-column:1 / -1;">
-            <div style="width:40px; height:40px; border-radius:50%; background:rgba(117,197,222,0.1); border:1px solid rgba(117,197,222,0.25); color:#75C5DE; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:18px;">✦</div>
-            <h3 style="font-size:1.1rem; font-weight:600; color:#F4F1E8; margin-bottom:4px;">No Versions Yet</h3>
-            <p style="color:var(--dash-text-secondary); font-size:13px; max-width:380px; margin:0 auto 16px; line-height:1.5;">
+          <div style="padding:3rem 1.5rem; text-align:center; background:var(--dash-surface-inner, #F8FAFC); border:1px dashed var(--dash-border, #CBD5E1); border-radius:16px; grid-column:1 / -1;">
+            <div style="width:40px; height:40px; border-radius:50%; background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2); color:var(--dash-accent-sky, #0284C7); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:18px;">✦</div>
+            <h3 style="font-size:1.1rem; font-weight:600; color:var(--dash-text-primary, #0F172A); margin-bottom:4px;">No Versions Yet</h3>
+            <p style="color:var(--dash-text-secondary, #475569); font-size:13px; max-width:380px; margin:0 auto 16px; line-height:1.5;">
               Launch the Studio to ingest your repositories and generate your first interactive 3D WebGL developer portfolio.
             </p>
             <a href="/studio" class="mf-btn mf-btn-primary mf-btn-sm">Launch Web Studio &rarr;</a>

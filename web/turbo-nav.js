@@ -147,6 +147,7 @@
   }
 
   // Core Page Swapper
+  // Core Page Navigation Engine
   async function navigateTo(url, isPopState = false) {
     const path = cleanPath(url);
     const targetUrl = new URL(url, window.location.origin).href;
@@ -162,106 +163,9 @@
 
     startProgress();
 
-    let html = null;
-    const cached = pageCache.get(path);
-    if (cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
-      html = cached.html;
-    } else {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000);
-        const res = await fetch(targetUrl, {
-          credentials: 'include',
-          headers: { 'X-Requested-With': 'TurboNav' },
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-        if (res.ok) {
-          html = await res.text();
-          pageCache.set(path, { html, timestamp: Date.now() });
-        } else {
-          // Fallback to standard navigation on non-200
-          window.location.href = targetUrl;
-          return;
-        }
-      } catch (err) {
-        // Fallback to native browser navigation if fetch fails
-        window.location.href = targetUrl;
-        return;
-      }
-    }
-
-    try {
-      const parser = new DOMParser();
-      const newDoc = parser.parseFromString(html, 'text/html');
-
-      // Update Title
-      if (newDoc.title) {
-        document.title = newDoc.title;
-      }
-
-      const currentMain = document.querySelector('.app-main-content');
-      const newMain = newDoc.querySelector('.app-main-content');
-
-      // CASE 1: Both pages share .app-main-content (e.g. Dashboard <-> Profile)
-      if (currentMain && newMain) {
-        currentMain.style.opacity = '0.5';
-        currentMain.style.transition = 'opacity 0.08s ease-out';
-        
-        requestAnimationFrame(() => {
-          currentMain.innerHTML = newMain.innerHTML;
-          currentMain.style.opacity = '1';
-          
-          if (!isPopState) {
-            history.pushState({ turbo: true, url: targetUrl }, '', targetUrl);
-          }
-
-          updateSidebarActiveStates(path);
-          window.scrollTo({ top: 0, behavior: 'instant' });
-          runScripts(currentMain);
-
-          // Trigger page-specific initializers if defined
-          if (typeof window.initDashboard === 'function' && path.includes('dashboard')) {
-            window.initDashboard();
-          } else if (typeof window.initProfile === 'function' && path.includes('profile')) {
-            window.initProfile();
-          }
-
-          document.dispatchEvent(new CustomEvent('turbo:load', { detail: { url: targetUrl, path } }));
-          finishProgress();
-        });
-        return;
-      }
-
-      // CASE 2: Different layout shell (e.g. Dashboard -> Studio full bleed canvas)
-      // Morph document body smoothly
-      if (!isPopState) {
-        history.pushState({ turbo: true, url: targetUrl }, '', targetUrl);
-      }
-      
-      document.body.innerHTML = newDoc.body.innerHTML;
-      Array.from(newDoc.body.attributes).forEach(attr => {
-        document.body.setAttribute(attr.name, attr.value);
-      });
-
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      runScripts(document.body);
-
-      // Re-initialize universal components
-      if (typeof window.renderSidebar === 'function') {
-        window.renderSidebar();
-      }
-      if (typeof window.initThemeToggle === 'function') {
-        window.initThemeToggle();
-      }
-
-      document.dispatchEvent(new CustomEvent('turbo:load', { detail: { url: targetUrl, path } }));
-      finishProgress();
-
-    } catch (parseErr) {
-      console.warn('[TurboNav] Seamless swap error, using fallback:', parseErr);
-      window.location.href = targetUrl;
-    }
+    // Direct clean navigation ensures complete <head> stylesheet updates,
+    // authentic script lifecycle execution, and prevents unstyled layout state
+    window.location.href = targetUrl;
   }
 
   // Hover & Touchstart Intent Prefetching
