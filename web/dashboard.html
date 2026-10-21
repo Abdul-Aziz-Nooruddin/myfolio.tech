@@ -30,15 +30,15 @@
   <script src="/assets/youpi.js" defer></script>
   <script src="/assets/payment-maintenance.js" defer></script>
   
-  <link rel="stylesheet" href="/app-tokens.css">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/button-system.css">
+  <link rel="stylesheet" href="/app-tokens.css?v=3.5.0">
+  <link rel="stylesheet" href="/style.css?v=3.5.0">
+  <link rel="stylesheet" href="/button-system.css?v=3.5.0">
 
-  <script src="/theme-toggle.js"></script>
-  <script src="/turbo-nav.js" defer></script>
-  <script src="/sidebar.js" defer></script>
-  <script src="/cookie-banner.js" defer></script>
-  <script src="/analytics.js" defer></script>
+  <script src="/theme-toggle.js?v=3.5.0"></script>
+  <script src="/turbo-nav.js?v=3.5.0" defer></script>
+  <script src="/sidebar.js?v=3.5.0" defer></script>
+  <script src="/cookie-banner.js?v=3.5.0" defer></script>
+  <script src="/analytics.js?v=3.5.0" defer></script>
 
   <style>
     :root,
@@ -856,18 +856,18 @@
     }
 
     /* Modals & Drawers */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(12px);
-      z-index: 10000;
+    .modal-backdrop, .pro-modal-backdrop {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.8) !important;
+      backdrop-filter: blur(12px) !important;
+      z-index: 10000 !important;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
     }
-    .modal-backdrop.open { display: flex; }
+    .modal-backdrop.open, .pro-modal-backdrop.open { display: flex !important; }
 
     .modal-card {
       background: #121412;
@@ -991,15 +991,15 @@
 
     /* Live Preview Drawer */
     .preview-drawer-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      z-index: 10001;
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+      backdrop-filter: blur(8px) !important;
+      z-index: 10001 !important;
       display: none;
       justify-content: flex-end;
     }
-    .preview-drawer-backdrop.open { display: flex; }
+    .preview-drawer-backdrop.open { display: flex !important; }
 
     .preview-drawer {
       width: 85vw;
@@ -1312,8 +1312,8 @@
                 <div class="browser-address-pill" id="cockpitAddressPill">portfolio.myfolio.tech</div>
                 <span class="mf-badge mf-badge-vip" id="cockpitUniverseLabel" style="font-size:10px; padding:2px 7px;">Jack 3D Space</span>
               </div>
-              <div class="viewport-preview-wrap">
-                <img src="/assets/templates/jack-3d-creator-hero.webp" alt="Portfolio Preview" id="cockpitHeroImg" class="viewport-preview-img" onerror="this.src='/images/hero-base.webp'">
+              <div class="viewport-preview-wrap" style="position:relative; width:100%; aspect-ratio:16/10; max-height:220px; overflow:hidden;">
+                <img src="/assets/templates/jack-3d-creator-hero.webp" alt="Portfolio Preview" id="cockpitHeroImg" class="viewport-preview-img" style="width:100%; height:100%; max-height:100%; object-fit:cover; display:block;" onerror="this.src='/images/hero-base.webp'">
               </div>
             </div>
             <div class="viewport-bottom-bar">
@@ -1439,7 +1439,7 @@
   </div>
 
   <!-- QR Code Modal -->
-  <div class="modal-backdrop" id="qrModalBackdrop" onclick="closeQrModal(event)">
+  <div class="modal-backdrop" id="qrModalBackdrop" style="display:none;" onclick="closeQrModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <h3 style="font-size:1.25rem; font-weight:600; color:#F4F1E8;">Scan on Mobile</h3>
       <p style="font-size:13px; color:var(--dash-text-secondary); margin-top:4px;">
@@ -1466,7 +1466,7 @@
   </div>
 
   <!-- Publish Permanent Live Site Modal -->
-  <div class="modal-backdrop" id="proUpgradeModal">
+  <div class="modal-backdrop pro-modal-backdrop" id="proUpgradeModal" style="display:none;">
     <div class="modal-card" style="max-width: 620px; position: relative;" onclick="event.stopPropagation()">
       <button type="button" onclick="closeProModal()" style="position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: #9ca3af; font-size: 24px; cursor: pointer; padding: 2px 8px; border-radius: 6px; line-height: 1;" aria-label="Close">&times;</button>
       <div style="width:44px; height:44px; border-radius:12px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#10B981; display:flex; align-items:center; justify-content:center; margin-bottom:12px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
@@ -1586,7 +1586,7 @@
   </div>
 
   <!-- Live Viewport Inspector Drawer -->
-  <div class="preview-drawer-backdrop" id="previewDrawerBackdrop" onclick="closeLiveDrawer(event)">
+  <div class="preview-drawer-backdrop" id="previewDrawerBackdrop" style="display:none;" onclick="closeLiveDrawer(event)">
     <div class="preview-drawer" onclick="event.stopPropagation()">
       <div class="drawer-header">
         <div style="display:flex; align-items:center; gap:12px;">

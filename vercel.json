@@ -15,7 +15,20 @@
       ]
     },
     {
-      "source": "/(.*)\\.(ico|png|jpg|jpeg|webp|svg|gif|css|js|woff|woff2|ttf|eot|glb|gltf|bin|wasm|txt|xml)",
+      "source": "/(app-tokens\\.css|style\\.css|button-system\\.css|turbo-nav\\.js|sidebar\\.js|theme-toggle\\.js|cookie-banner\\.js|analytics\\.js|service-worker\\.js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)\\.(ico|png|jpg|jpeg|webp|svg|gif|css|js|woff|woff2|ttf|eot|glb|gltf|bin|wasm|txt|xml)",
       "headers": [
         {
           "key": "Cache-Control",

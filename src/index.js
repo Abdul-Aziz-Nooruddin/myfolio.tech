@@ -408,7 +408,7 @@ app.get('/turbo-nav.js', (req, res) => {
     ? path.join(process.cwd(), 'web', 'turbo-nav.js')
     : path.join(process.cwd(), 'public', 'turbo-nav.js');
   res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-  res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   res.sendFile(tnPath);
 });
 
@@ -3950,6 +3950,9 @@ app.use(express.static(webDir, {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
       res.setHeader('Service-Worker-Allowed', '/');
     } else if (filePath.endsWith('.html') || filePath.includes('spatial-realtime-engine')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (/\.(css|js)$/i.test(filePath) && !filePath.includes(path.sep + 'assets' + path.sep)) {
+      // Root CSS and JS must revalidate so clients immediately receive styling and navigation updates
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     } else if (/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?|ttf|eot|webp|glb|gltf|bin|wasm)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable');
