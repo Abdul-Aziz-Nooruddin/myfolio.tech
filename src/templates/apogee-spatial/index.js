@@ -8,9 +8,9 @@
  *     Smooth 650ms cubic-bezier transition as carousel projects rotate
  *     Subtle procedural film-grain texture overlay
  * - Typography System:
- *     Expressive Mastheads: 'Anton' (Google Fonts)
- *     Body Typeface: 'Inter' (Google Fonts, weights 400-800)
- *     Precision Monospace Accents: 'JetBrains Mono', 'Fira Code'
+ *     Expressive Mastheads: 'Chakra Petch' (Google Fonts, weights 600, 700)
+ *     Body Typeface: 'Space Grotesk' (Google Fonts, weights 400-700)
+ *     Precision Monospace Accents: 'Share Tech Mono', 'JetBrains Mono'
  * - 3D Spatial Depth Carousel:
  *     Center 16:9 widescreen card (scale 1.0, crisp, elevated depth)
  *     Flanking Left & Right cards (scale 0.60, blur 2.5px, opacity 0.55)
@@ -38,7 +38,7 @@ const ApogeeSpatialTemplate = {
   name: 'Apogee Spatial 3D',
   category: 'Vibrant Color Space / 3D Spatial Depth Carousel',
   description:
-    'Dynamic color-switching portfolio featuring bold Anton masthead typography, subtle film grain, and an interactive 3D depth spatial repository carousel.',
+    'Dynamic color-switching portfolio featuring technical Chakra Petch masthead typography, subtle film grain, and an interactive 3D depth spatial repository carousel.',
   recommendedFor: [
     'Full-Stack Engineers',
     'Smart Contract & Web3 Developers',
@@ -263,7 +263,7 @@ const ApogeeSpatialTemplate = {
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -279,19 +279,21 @@ const ApogeeSpatialTemplate = {
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
     }
 
-    .font-anton {
-      font-family: 'Anton', sans-serif;
+    .font-anton, .font-chakra {
+      font-family: 'Chakra Petch', 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
-    .font-inter {
-      font-family: 'Inter', sans-serif;
+    .font-inter, .font-space {
+      font-family: 'Space Grotesk', sans-serif;
     }
 
     .font-mono {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .grain-overlay {
@@ -995,10 +997,10 @@ const ApogeeSpatialTemplate = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 // Spatial Vector Not Found</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .font-anton { font-family: 'Anton', sans-serif; }
-    .font-inter { font-family: 'Inter', sans-serif; }
+    .font-anton, .font-chakra { font-family: 'Chakra Petch', sans-serif; font-weight: 700; }
+    .font-inter, body { font-family: 'Space Grotesk', sans-serif; }
     .grain-overlay {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
       opacity: 0.4;
