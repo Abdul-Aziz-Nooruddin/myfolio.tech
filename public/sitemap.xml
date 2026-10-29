@@ -9,7 +9,7 @@
   <!-- Homepage — 3D AI Portfolio Studio & Developer Maker -->
   <url>
     <loc>https://www.myfolio.tech/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -22,10 +22,34 @@
     </image:image>
   </url>
 
+  <!-- MyFolio Studio — Real-Time 3D Customizer & Editor -->
+  <url>
+    <loc>https://www.myfolio.tech/studio</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>MyFolio 3D Creator Studio</image:title>
+    </image:image>
+  </url>
+
+  <!-- Pricing & Subscription Plans -->
+  <url>
+    <loc>https://www.myfolio.tech/pricing</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>MyFolio Transparent Developer Pricing Plans</image:title>
+    </image:image>
+  </url>
+
   <!-- Live Template Demo: RBP Kinetic Monochrome (Design Engineer) -->
   <url>
     <loc>https://www.myfolio.tech/rbp</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <image:image>
@@ -41,7 +65,7 @@
   <!-- Live Template Demo: Jack 3D Creator & Engineer -->
   <url>
     <loc>https://www.myfolio.tech/jack-3d</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <image:image>
@@ -57,7 +81,7 @@
   <!-- Live Template Demo: Nadia Personal Brand (Speaker & Advisor) -->
   <url>
     <loc>https://www.myfolio.tech/nadia</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
@@ -73,7 +97,7 @@
   <!-- Live Template Demo: Kage Kyoto Temple (ThreeUI Shinto Mountain Sanctuary) -->
   <url>
     <loc>https://www.myfolio.tech/kage</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
@@ -82,10 +106,34 @@
     </image:image>
   </url>
 
+  <!-- Live Template Demo: Tom Cel Animator (Stylized 3D Animator Portfolio) -->
+  <url>
+    <loc>https://www.myfolio.tech/tom</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/templates/tom-cel-animator-hero.webp</image:loc>
+      <image:title>Tom Cel Animator Spatial Portfolio Template</image:title>
+    </image:image>
+  </url>
+
+  <!-- Live Template Demo: Slush Nordic Venture (Nordic Design Venture Studio) -->
+  <url>
+    <loc>https://www.myfolio.tech/slush</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://www.myfolio.tech/assets/templates/slush-nordic-venture-hero.webp</image:loc>
+      <image:title>Slush Nordic Venture Spatial Portfolio Template</image:title>
+    </image:image>
+  </url>
+
   <!-- About Page — Mission, Engineering Ethos & Human-In-The-Loop -->
   <url>
     <loc>https://www.myfolio.tech/about</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
@@ -97,7 +145,7 @@
   <!-- Contact Page — Direct Support, Partnerships & Feedback -->
   <url>
     <loc>https://www.myfolio.tech/contact</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -105,7 +153,7 @@
   <!-- FAQ & Takedown Rules -->
   <url>
     <loc>https://www.myfolio.tech/faq</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
@@ -113,7 +161,7 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://www.myfolio.tech/terms</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.40</priority>
   </url>
@@ -121,7 +169,7 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://www.myfolio.tech/privacy</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.40</priority>
   </url>
@@ -129,7 +177,7 @@
   <!-- Refund & Cancellation Policy -->
   <url>
     <loc>https://www.myfolio.tech/refund</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.40</priority>
   </url>

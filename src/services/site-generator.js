@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { TemplateRegistry } = require('../templates/template-registry');
 const { UnifiedProfileNormalizer } = require('./unified-profile-normalizer');
+const { SeoMetadataSynthesizer } = require('./seo-metadata-synthesizer');
 
 class SiteGenerator {
   constructor() {}
@@ -28,7 +29,14 @@ class SiteGenerator {
     // 3. Authoritative 3D Template Render
     const templateOutput = TemplateRegistry.render(templateId, data);
     const isPaid = Boolean((conversation?.isPaid === true) || (conversation?.status === 'paid'));
-    let finalHtml = this.injectSiteTelemetry(templateOutput.html, conversation?.id || '');
+    
+    // Inject SEO, Schema.org JSON-LD and GEO / AI Search tags
+    const seoEnrichedHtml = SeoMetadataSynthesizer.inject(templateOutput.html, data, {
+      siteId: conversation?.id || '',
+      subdomain: data.subdomain || conversation?.subdomain || ''
+    });
+
+    let finalHtml = this.injectSiteTelemetry(seoEnrichedHtml, conversation?.id || '');
     finalHtml = this.injectPreviewWatermark(finalHtml, isPaid, conversation?.id || '');
 
     // 4. Quality & Fidelity Gate: UI alignment, CSS integrity & Zero Fabrication verification
@@ -39,7 +47,7 @@ class SiteGenerator {
       universeKey: templateId,
       theme: templateId,
       html: finalHtml,
-      cleanHtml: this.injectSiteTelemetry(templateOutput.html, conversation?.id || ''),
+      cleanHtml: this.injectSiteTelemetry(seoEnrichedHtml, conversation?.id || ''),
       css: templateOutput.css || '',
       js: templateOutput.js || '',
       designBlueprint: {

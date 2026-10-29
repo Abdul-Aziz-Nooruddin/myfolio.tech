@@ -17,7 +17,8 @@
     "test:web": "node --test src/test-web-api.js",
     "test:export": "node --test src/test-static-export.js",
     "test:customizer": "node --test src/test-customizer-stress.js",
-    "audit:security": "node src/security-audit.js"
+    "audit:security": "node src/security-audit.js",
+    "audit:seo": "node scripts/audit-seo.js"
   },
   "dependencies": {
     "@designcodeio/threeui": "^1.2.0",

@@ -12,7 +12,66 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unlock Your Portfolio — myfolio.tech</title>
+  <title>Pricing &amp; Plans — MyFolio 3D Portfolio Studio</title>
+  <meta name="description" content="Transparent, accessible developer pricing for MyFolio. Full source code ZIP export, lifetime hosting, and branded custom subdomains at ₹149. Zero vendor lock-in.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://www.myfolio.tech/pricing">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.myfolio.tech/pricing">
+  <meta property="og:title" content="Pricing &amp; Plans — MyFolio 3D Portfolio Studio">
+  <meta property="og:description" content="Accessible developer pricing. Standalone source code ZIP export, lifetime hosting, and branded custom subdomains at ₹149. Zero vendor lock-in.">
+  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:site_name" content="MyFolio">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pricing &amp; Plans — MyFolio 3D Portfolio Studio">
+  <meta name="twitter:description" content="Transparent developer pricing. Standalone source code ZIP export and custom domains at ₹149.">
+  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "MyFolio 3D Developer Portfolio",
+    "image": "https://www.myfolio.tech/assets/og/og-default.jpg",
+    "description": "Interactive 3D WebGL developer portfolios with standalone source code ZIP export, live GitHub sync, and custom subdomains.",
+    "brand": {
+      "@type": "Brand",
+      "name": "MyFolio"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Free Starter",
+        "price": "0",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.myfolio.tech/pricing"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lifetime Starter",
+        "price": "149",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.myfolio.tech/pricing"
+      },
+      {
+        "@type": "Offer",
+        "name": "Pro Creator",
+        "price": "149",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.myfolio.tech/pricing"
+      }
+    ]
+  }
+  </script>
+
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
