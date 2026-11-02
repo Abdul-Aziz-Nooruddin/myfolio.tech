@@ -231,14 +231,14 @@ const RBPKineticMonochromeTemplate = {
   <meta property="og:type" content="profile">
   <meta property="og:title" content="${safeName} — Portfolio">
   <meta property="og:description" content="${safeBio.slice(0, 160)}">
-  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-rbp.jpg">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-rbp.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${safeName} Portfolio">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${safeName} — Portfolio">
   <meta name="twitter:description" content="${safeBio.slice(0, 160)}">
-  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-rbp.jpg">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-rbp.jpg">
 
   <!-- Favicon Suite -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">

@@ -773,16 +773,27 @@ class DatabaseService {
     }
   }
 
-  async hasEmailBeenSent(userId, triggerName) {
-    const { data, error } = await this.client
-      .from('email_logs')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('trigger_name', triggerName)
-      .limit(1);
+  async hasEmailBeenSent(identifier, triggerName) {
+    if (!identifier || !this.client) return false;
+    try {
+      const isEmail = typeof identifier === 'string' && identifier.includes('@');
+      let query = this.client
+        .from('email_logs')
+        .select('id')
+        .eq('trigger_name', triggerName);
 
-    if (error && error.code !== 'PGRST116') return false;
-    return Array.isArray(data) && data.length > 0;
+      if (isEmail) {
+        query = query.eq('email', identifier.toLowerCase().trim());
+      } else {
+        query = query.eq('user_id', identifier);
+      }
+
+      const { data, error } = await query.limit(1);
+      if (error && error.code !== 'PGRST116') return false;
+      return Array.isArray(data) && data.length > 0;
+    } catch (e) {
+      return false;
+    }
   }
 
   async recordAuditLog(auditData) {
@@ -1030,7 +1041,9 @@ class DatabaseService {
           const ageMs = createdAt ? (Date.now() - new Date(createdAt).getTime()) : 0;
           const isPast24Hours = ageMs > (24 * 60 * 60 * 1000);
 
-          if (isVipFounder || u.plan === 'pro' || u.plan === 'starter' || u.is_vip || latestClientSite?.status === 'live' || latestClientSite?.status === 'paid' || conv.status === 'live' || conv.lifecycle_state === 'live') {
+          if (latestClientSite?.status === 'deleted' || conv.status === 'deleted' || conv.lifecycle_state === 'deleted') {
+            status = 'deleted';
+          } else if (isVipFounder || u.plan === 'pro' || u.plan === 'starter' || u.is_vip || latestClientSite?.status === 'live' || latestClientSite?.status === 'paid' || conv.status === 'live' || conv.lifecycle_state === 'live') {
             status = 'live';
           } else if (latestClientSite?.status === 'preview_lapsed' || conv.lifecycle_state === 'preview_lapsed' || conv.status === 'preview_lapsed' || isPast24Hours) {
             status = 'expired';

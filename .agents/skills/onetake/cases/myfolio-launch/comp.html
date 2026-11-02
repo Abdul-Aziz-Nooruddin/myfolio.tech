@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<!-- onetake · MyFolio Launch Film · 15s · lineage otk-7f3e1c -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MyFolio · Launch Film (onetake)</title>
+<style>
+:root {
+  --bg: #0b0d11;
+  --deep: #040507;
+  --card: #121620;
+  --line: #202836;
+  --mute: #7d8b9e;
+  --ink: #f1f5f9;
+  --accent: #00f0ff;
+  --accent2: #6366f1;
+  --green: #10b981;
+}
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+#stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #141b29 0%, #08090d 70%, #030406 100%);
+}
+.abs {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform, opacity;
+}
+
+/* Background Grid Lattice */
+#grid {
+  position: absolute;
+  inset: -200px;
+  background-image: 
+    linear-gradient(to right, rgba(32, 40, 54, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 40, 54, 0.35) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(800px) rotateX(60deg) translateY(200px);
+  transform-origin: 50% 100%;
+  opacity: 0.45;
+  mask-image: radial-gradient(ellipse at 50% 60%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 60%, black 20%, transparent 75%);
+}
+
+/* Central glowing seed dot */
+#seed {
+  position: absolute;
+  left: 960px;
+  top: 540px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 28px var(--accent), 0 0 60px rgba(0, 240, 255, 0.45);
+  will-change: transform, opacity;
+}
+
+/* Scene 1 Hook Words */
+#w1 {
+  font-size: 68px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  left: 0;
+  right: 0;
+  top: 420px;
+  text-align: center;
+}
+#w1 span {
+  display: inline-block;
+  margin: 0 0.16em;
+}
+#w1 .cyan {
+  color: var(--accent);
+  text-shadow: 0 0 35px rgba(0, 240, 255, 0.5);
+}
+
+/* Prompt Card */
+.card {
+  position: absolute;
+  background: rgba(18, 22, 32, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 40px rgba(0, 240, 255, 0.08);
+  backdrop-filter: blur(20px);
+  will-change: transform, opacity, filter;
+  transform-origin: 50% 50%;
+}
+#prompt {
+  width: 880px;
+  height: 180px;
+  left: 520px;
+  top: 450px;
+}
+#prompt .header-tag {
+  position: absolute;
+  left: 28px;
+  top: 20px;
+  font-family: 'Geist Mono', 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#prompt .header-tag::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+#prompt .txt {
+  position: absolute;
+  left: 28px;
+  top: 54px;
+  font-size: 26px;
+  color: var(--ink);
+  font-family: 'Geist Mono', monospace;
+  white-space: pre;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+#prompt .txt i {
+  display: inline-block;
+  width: 2.5px;
+  height: 28px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  vertical-align: -4px;
+  margin-left: 4px;
+}
+#prompt .row {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 20px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#prompt .pill {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--mute);
+  font-family: 'Geist Mono', monospace;
+  background: rgba(255, 255, 255, 0.02);
+}
+#prompt .send {
+  height: 42px;
+  padding: 0 24px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #040507;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+  will-change: transform, background;
+}
+
+/* Synthesis Dashboard Panel */
+#panel {
+  width: 860px;
+  left: 530px;
+  top: 290px;
+  padding: 28px 34px 26px;
+  box-sizing: border-box;
+}
+#panel h4 {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#panel h4 small {
+  color: var(--accent);
+  font-family: 'Geist Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+}
+#panel .ln {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 52px;
+  font-size: 20px;
+  font-weight: 450;
+  border-top: 1px solid var(--line);
+}
+#panel .ln .bx {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid #2f3a4c;
+  position: relative;
+  flex: none;
+  will-change: transform, background;
+}
+#panel .ln .bx:after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 11px;
+  border-right: 2.2px solid #040507;
+  border-bottom: 2.2px solid #040507;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+#panel .ln.on .bx {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+}
+#panel .ln.on .bx:after {
+  opacity: 1;
+}
+#panel .ln .t {
+  font-family: 'Geist Mono', monospace;
+  font-size: 18px;
+  color: var(--mute);
+}
+#panel .ln.on .t {
+  color: var(--ink);
+}
+#panel .ln.on.pass .t {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Flying 3D Showcase Screens */
+.screen {
+  position: absolute;
+  width: 1040px;
+  height: 640px;
+  left: 440px;
+  top: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #080a0f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 45px 120px -30px rgba(0, 0, 0, 0.9), 0 0 60px rgba(0, 240, 255, 0.15);
+  will-change: transform, filter, opacity;
+  transform-origin: 50% 50%;
+}
+.screen img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1040px;
+  height: 640px;
+  object-fit: cover;
+  display: block;
+}
+.screen .badge {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(8, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: 'Geist Mono', monospace;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.screen .badge i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Browser Window (Hold Beat) */
+#win {
+  position: absolute;
+  left: 240px;
+  top: 110px;
+  width: 1440px;
+  height: 860px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #080a0f;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 60px 140px -40px rgba(0, 0, 0, 0.95), 0 0 80px rgba(0, 240, 255, 0.12);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+#win .bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 48px;
+  background: #11151f;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+}
+#win .bar .dots {
+  position: absolute;
+  left: 18px;
+  display: flex;
+  gap: 8px;
+}
+#win .bar .dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #252d3d;
+}
+#win .bar .url {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 28px;
+  border-radius: 8px;
+  background: #0a0d14;
+  border: 1px solid var(--line);
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+#win img {
+  position: absolute;
+  left: 0;
+  top: 48px;
+  width: 1440px;
+  height: 812px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Staccato Text Bursts */
+#stac {
+  left: 0;
+  right: 0;
+  top: 450px;
+  text-align: center;
+  font-size: 96px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 60px rgba(0, 240, 255, 0.5);
+}
+
+/* End Card & Monolith Lockup */
+#end {
+  position: absolute;
+  inset: 0;
+  background: #050608;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: opacity;
+}
+#end .logo {
+  font-size: 120px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+#end .logo span {
+  color: var(--accent);
+  text-shadow: 0 0 35px var(--accent);
+}
+#end .sub {
+  font-size: 28px;
+  color: var(--mute);
+  font-weight: 450;
+  margin-top: 10px;
+  letter-spacing: -0.01em;
+}
+#end .cta {
+  margin-top: 46px;
+  padding: 14px 34px;
+  border-radius: 999px;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--accent);
+  font-family: 'Geist Mono', monospace;
+  font-size: 20px;
+  color: var(--accent);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.35);
+}
+
+/* Interactive Cursor */
+#cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 40px;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+  z-index: 1000;
+}
+#hud {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  display: none;
+  z-index: 2000;
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div>
+  <div id="seed"></div>
+
+  <!-- Beat 1: Hook Words -->
+  <div id="w1" class="abs"><span>Your code</span><span>is not</span><span class="cyan">a PDF.</span></div>
+
+  <!-- Beat 2: Prompt Card -->
+  <div id="prompt" class="card">
+    <div class="header-tag">Autonomous Portfolio Engine</div>
+    <div class="txt"><span id="ptxt"></span><i id="caret"></i></div>
+    <div class="row">
+      <div class="pill">git commit --all</div>
+      <div class="send" id="send">Compile Universe ✦</div>
+    </div>
+  </div>
+
+  <!-- Beat 3: Synthesis Dashboard Panel -->
+  <div id="panel" class="card">
+    <h4><span>Portfolio Synthesis</span><small>Neural Evidence · Zero Slop</small></h4>
+    <div id="lines"></div>
+  </div>
+
+  <!-- Beat 4: Flying Showcase Screens -->
+  <div id="screens"></div>
+
+  <!-- Beat 5: Browser Window (Hold Beat) -->
+  <div id="win">
+    <div class="bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="url">🔒 https://myfolio.tech/@abdulaziz</div>
+    </div>
+    <img id="winimg" src="assets/nadia-brand-hero.webp" alt="MyFolio Spatial Viewport">
+  </div>
+
+  <!-- Beat 6: Staccato Hits -->
+  <div id="stac" class="abs"></div>
+
+  <!-- Beat 7: Final End Card -->
+  <div id="end">
+    <div class="logo">MyFolio<span>.</span></div>
+    <div class="sub">Turn Your Code Into A Living 3D World</div>
+    <div class="cta">myfolio.tech ✦ Claim Your Handle</div>
+  </div>
+
+  <!-- Cursor -->
+  <svg id="cursor" viewBox="0 0 34 44">
+    <path d="M4 3 L30 22 L18 24 L26 40 L20 43 L12 27 L4 36 Z" fill="#00f0ff" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round"/>
+  </svg>
+  <div id="hud"></div>
+</div>
+
+<script src="look.js"></script>
+<script src="motion.js"></script>
+<script>
+// ────────────────────────────────────────── timeline & config ──────────────────────────────────────────
+const FPS = 30, DUR = 15;
+window.__meta = { dur: DUR, fps: FPS, w: 1920, h: 1080 };
+
+// Beats (seconds)
+const W1 = [0.15, 0.55, 0.95], W1_OUT = 1.60;
+const PROMPT_IN = 1.70, TYPE0 = 1.85, TYPE_CPS = 36, CLICK = 3.00, PROMPT_OUT = 3.40;
+const PANEL_IN = 3.45, LINE0 = 3.65, LINE_DT = 0.28, PANEL_OUT = 5.20;
+
+const SCREENS = [
+  { name: 'rbp-kinetic-monochrome-hero.webp', label: 'RBP Kinetic Monochrome · High Speed Typographic Grid', t: 5.35 },
+  { name: 'jack-3d-creator-hero.webp',        label: 'Jack 3D Spatial Studio · Procedural WebGL Materials',  t: 6.45 },
+  { name: 'kage-temple-hero.webp',            label: 'Kage Temple · Atmospheric Volumetric Horizon',         t: 7.55 }
+];
+const SCREEN_HOLD = 0.85;
+
+const WIN_IN = 8.70, WIN_OUT = 11.50; // generous calm hold (~2.8s) for depth and contemplation
+const STAC = [
+  [11.50, 'ZERO TEMPLATES'],
+  [11.95, 'PURE EVIDENCE'],
+  [12.40, 'SPATIAL 3D'],
+  [12.85, 'YOUR WORLD']
+];
+const STAC_END = 13.40;
+const END_T = 13.40;
+
+const PROMPT_TEXT = 'myfolio compile --profile github.com/abdulaziz';
+const LINES = [
+  ['Synthesizing git commits & architecture'],
+  ['Extracting authentic candidate evidence'],
+  ['Building WebGL 3D procedural stages'],
+  ['Generating custom typographic hierarchy'],
+  ['Verification: 100% PASS · Zero Template Slop', 'pass']
+];
+
+// ────────────────────────────────────────── math helpers from motion.js ──────────────────────────────────────────
+const { clamp, lerp, sstep, ssstep, spring: spr, spline } = OM;
+
+// ────────────────────────────────────────── DOM setup ──────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const lineEls = LINES.map(([html, cls]) => {
+  const d = document.createElement('div');
+  d.className = 'ln' + (cls ? ' ' + cls : '');
+  d.innerHTML = `<div class="bx"></div><div class="t">${html}</div>`;
+  $('lines').appendChild(d);
+  return d;
+});
+
+const screenEls = SCREENS.map(s => {
+  const d = document.createElement('div');
+  d.className = 'screen';
+  d.innerHTML = `<img src="assets/${s.name}" alt=""><div class="badge"><i></i>${s.label}</div>`;
+  $('screens').appendChild(d);
+  s.el = d;
+  s.img = d.querySelector('img');
+  return d;
+});
+
+// Cursor path (one continuous spline causing events)
+const SEND_BTN = { x: 520 + 880 - 28 - 90, y: 450 + 180 - 20 - 21 };
+const HAND = [
+  { t: 0.00, x: 1600, y: 1100 },
+  { t: 1.80, x: 1200, y: 800 },
+  { t: 2.70, x: SEND_BTN.x + 20, y: SEND_BTN.y + 15 },
+  { t: 3.00, x: SEND_BTN.x, y: SEND_BTN.y },
+  { t: 3.25, x: SEND_BTN.x, y: SEND_BTN.y },
+  { t: 3.70, x: 1400, y: 920 },
+  { t: 8.80, x: 1100, y: 650 },
+  { t: 10.20, x: 960, y: 520 },
+  { t: 11.40, x: 1300, y: 850 },
+  { t: 15.00, x: 1500, y: 1100 }
+];
+const CLICKS = [CLICK];
+
+function place(el, x, y, s = 1, op = 1, blur = 0, extra = '') {
+  el.style.opacity = op;
+  el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s.toFixed(4)}) ${extra}`;
+  el.style.filter = blur > 0.2 ? `blur(${blur.toFixed(1)}px)` : 'none';
+}
+
+// ────────────────────────────────────────── Pure seek(t) ──────────────────────────────────────────
+async function seek(t) {
+  const pending = [];
+
+  // Central seed dot / carrier
+  const seed = $('seed');
+  if (t < PROMPT_IN) {
+    const seedRise = OM.wordRise(t, 0.95);
+    const pulse = Math.sin(t * 8) * 0.15;
+    place(seed, 0, seedRise.y, (1 + pulse) * seedRise.s, t >= 0.95 ? 1 : 0);
+  } else if (t < PANEL_IN) {
+    // Hidden while prompt card is active
+    seed.style.opacity = 0;
+  } else if (t < SCREENS[0].t) {
+    seed.style.opacity = 0;
+  } else {
+    seed.style.opacity = 0;
+  }
+
+  // 1 · Hook Words
+  const w1 = $('w1');
+  const out1 = sstep(W1_OUT, W1_OUT + 0.22, t);
+  w1.style.opacity = 1 - out1;
+  w1.style.transform = `translateY(${(-out1 * 40).toFixed(1)}px)`;
+  [...w1.children].forEach((s, i) => {
+    const w = OM.wordRise(t, W1[i]);
+    s.style.opacity = w.op;
+    s.style.transform = `translateY(${w.y.toFixed(1)}px) scale(${w.s.toFixed(4)})`;
+  });
+
+  // 2 · Prompt Card
+  {
+    const el = $('prompt');
+    const ei = OM.popIn(t, PROMPT_IN, { zeta: 0.65, omega: 20 });
+    const eo = OM.liftOut(t, PROMPT_OUT);
+    const vis = t >= PROMPT_IN - 0.05 && t < PROMPT_OUT + 0.25;
+    place(el, 0, ei.dy + eo.dy, ei.s * eo.s, vis ? ei.op * eo.op : 0, eo.blur);
+
+    const ty = OM.typeOn(t, TYPE0, PROMPT_TEXT, { cps: TYPE_CPS });
+    $('ptxt').textContent = ty.str;
+    $('caret').style.opacity = ty.caret;
+
+    const p = OM.press(t, CLICK, { depth: 0.12 });
+    $('send').style.transform = `scale(${p.s.toFixed(3)})`;
+    $('send').style.background = p.active ? '#10b981' : 'var(--accent)';
+  }
+
+  // 3 · Synthesis Dashboard Panel
+  {
+    const el = $('panel');
+    const ei = OM.popIn(t, PANEL_IN, { zeta: 0.68, omega: 18 });
+    const eo = OM.liftOut(t, PANEL_OUT);
+    const vis = t >= PANEL_IN - 0.05 && t < PANEL_OUT + 0.25;
+    place(el, 0, ei.dy + eo.dy, ei.s * eo.s, vis ? ei.op * eo.op : 0, eo.blur);
+
+    lineEls.forEach((ln, i) => {
+      const tk = OM.tick(t, LINE0 + i * LINE_DT);
+      ln.classList.toggle('on', tk.on);
+      ln.querySelector('.bx').style.transform = `scale(${tk.s.toFixed(3)})`;
+      const reveal = sstep(PANEL_IN + 0.04 + i * 0.06, PANEL_IN + 0.22 + i * 0.06, t);
+      ln.style.opacity = reveal;
+    });
+  }
+
+  // 4 · Flying Showcase Screens
+  SCREENS.forEach(s => {
+    const fly = OM.flyThrough(t, s.t, SCREEN_HOLD);
+    if (!fly.visible) {
+      s.el.style.opacity = 0;
+      return;
+    }
+    s.el.style.opacity = fly.op;
+    s.el.style.filter = fly.blur > 0.3 ? `blur(${fly.blur.toFixed(1)}px)` : 'none';
+    s.el.style.transform = `translate(${fly.x.toFixed(1)}px,0px) perspective(2000px) rotateY(${fly.rotY.toFixed(2)}deg) rotateX(${fly.rotX}deg) scale(${fly.s.toFixed(4)})`;
+  });
+
+  // 5 · Browser Window (Hold Beat: Nadia Brand / Spatial Viewport)
+  {
+    const el = $('win');
+    const vis = t >= WIN_IN && t < WIN_OUT;
+    const w = OM.popIn(t, WIN_IN, { zeta: 0.72, omega: 16, rise: 40, s0: 0.94, ds: 0.06 });
+    const drift = OM.drift(t, WIN_IN, WIN_OUT, 0.06);
+    place(el, 0, w.dy, w.s * drift, vis ? w.op : 0);
+  }
+
+  // 6 · Staccato Hits
+  {
+    const stac = OM.staccato(t, STAC);
+    const on = t >= STAC[0][0] && t < STAC_END;
+    $('stac').textContent = stac.word;
+    $('stac').style.opacity = on ? 1 : 0;
+  }
+
+  // 7 · End Card Monolith
+  {
+    const el = $('end');
+    const endOp = sstep(END_T, END_T + 0.28, t);
+    el.style.opacity = endOp;
+    if (endOp > 0) {
+      const zoom = lerp(0.94, 1.0, endOp);
+      el.style.transform = `scale(${zoom.toFixed(4)})`;
+    }
+  }
+
+  // Cursor
+  {
+    const vis = t >= 1.60 && t < 11.50;
+    const cu = OM.cursor(t, HAND, CLICKS);
+    $('cursor').style.opacity = vis ? 1 : 0;
+    $('cursor').style.transform = `translate(${(cu.x - 4).toFixed(1)}px,${(cu.y - 3).toFixed(1)}px) scale(${cu.s})`;
+  }
+
+  $('hud').textContent = `t=${t.toFixed(3)}s · myfolio`;
+  return Promise.all(pending);
+}
+
+// ────────────────────────────────────────── Motion measurement for shutter blur ──────────────────────────────────────────
+window.__motion = function(t0, t1) {
+  // Returns maximum on-screen speed (px) across t0..t1 for shutter sampling
+  if ((t0 >= 5.0 && t0 <= 8.5) || (t1 >= 5.0 && t1 <= 8.5)) return 450; // flying screens
+  if ((t0 >= 11.4 && t0 <= 13.5) || (t1 >= 11.4 && t1 <= 13.5)) return 600; // staccato burst
+  if ((t0 >= 1.6 && t0 <= 2.2) || (t1 >= 1.6 && t1 <= 2.2)) return 240; // card pop
+  return 80;
+};
+
+// ────────────────────────────────────────── Sound events for score.py ──────────────────────────────────────────
+window.__events = function() {
+  return [
+    { t: 0.15, kind: 'wood', gain: 0.35, f: 180 },
+    { t: 0.55, kind: 'wood', gain: 0.35, f: 220 },
+    { t: 0.95, kind: 'glass', gain: 0.45, f: 520 },
+    { t: 1.70, kind: 'air', gain: 0.40, dur: 0.3 },
+    { t: 3.00, kind: 'wood', gain: 0.60, f: 150 }, // click
+    { t: 3.45, kind: 'air', gain: 0.45, dur: 0.35 },
+    { t: 3.65, kind: 'glass', gain: 0.25, f: 660 },
+    { t: 3.93, kind: 'glass', gain: 0.25, f: 740 },
+    { t: 4.21, kind: 'glass', gain: 0.25, f: 880 },
+    { t: 4.49, kind: 'glass', gain: 0.30, f: 980 },
+    { t: 4.77, kind: 'glass', gain: 0.45, f: 1100 },
+    { t: 5.35, kind: 'air', gain: 0.55, dur: 0.45 },
+    { t: 6.45, kind: 'air', gain: 0.55, dur: 0.45 },
+    { t: 7.55, kind: 'air', gain: 0.55, dur: 0.45 },
+    { t: 8.70, kind: 'sub', gain: 0.60, f: 55 },
+    { t: 11.50, kind: 'sub', gain: 0.70, f: 65 },
+    { t: 11.95, kind: 'sub', gain: 0.70, f: 65 },
+    { t: 12.40, kind: 'sub', gain: 0.70, f: 65 },
+    { t: 12.85, kind: 'sub', gain: 0.75, f: 65 },
+    { t: 13.40, kind: 'glass', gain: 0.60, f: 880 }
+  ];
+};
+
+window.__seek = async t => { await seek(t); return true; };
+window.__ready = Promise.all([
+  window.LOOK ? LOOK.ready : document.fonts.ready,
+  ...[...document.querySelectorAll('img')].map(img => img.complete ? Promise.resolve() : new Promise(r => { img.onload = r; img.onerror = r; }))
+]).then(() => seek(0));
+
+const q = new URLSearchParams(location.search);
+if (q.has('t')) window.__ready.then(() => seek(parseFloat(q.get('t'))));
+if (q.has('hud')) $('hud').style.display = 'block';
+if (q.has('play')) {
+  window.__ready.then(() => {
+    const t0 = performance.now();
+    (function loop() {
+      seek(((performance.now() - t0) / 1000) % DUR);
+      requestAnimationFrame(loop);
+    })();
+  });
+}
+</script>
+</body>
+</html>

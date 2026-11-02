@@ -104,7 +104,10 @@ class LifecycleService {
       previewsExpired: 0,
       lapsedRemindersSent: 0,
       lapsedPurged: 0,
-      conversionEmailsSent: 0
+      conversionEmailsSent: 0,
+      noSiteEmailsSent: 0,
+      expiringSoonEmailsSent: 0,
+      liveWelcomeEmailsSent: 0
     };
 
     const now = Date.now();
@@ -124,6 +127,29 @@ class LifecycleService {
         console.log(`[LIFECYCLE] Preview ${item.id} exceeded 24-hour active window. Marking lapsed.`);
         await this.transitionToLapsed(item, 'unpaid_preview_24hr_timeout');
         results.previewsExpired++;
+      } else if (elapsed >= 18 * 60 * 60 * 1000) {
+        // Between 18h and 24h: ~4-6 hours remaining on free clock
+        if (this.email && item.user_id && typeof this.db.hasEmailBeenSent === 'function') {
+          const sent = await this.db.hasEmailBeenSent(item.user_id, 'preview_expiring_soon');
+          if (!sent && typeof this.email.sendPreviewExpiringSoonEmail === 'function') {
+            const user = item.users || (typeof this.db.getUserById === 'function' ? await this.db.getUserById(item.user_id) : null);
+            const userEmail = user?.email || item.extracted_data?.email;
+            const userName = user?.name || item.extracted_data?.name || 'there';
+            if (userEmail) {
+              const hoursLeft = Math.max(1, Math.round((TWENTY_FOUR_HOURS_MS - elapsed) / (60 * 60 * 1000)));
+              const previewUrl = item.live_url || `${process.env.HOST_URL || 'https://myfolio.tech'}/p/${item.id}`;
+              const subscribeUrl = `${process.env.HOST_URL || 'https://myfolio.tech'}/subscribe?userId=${item.user_id}`;
+              await this.email.sendPreviewExpiringSoonEmail(userEmail, {
+                userId: item.user_id,
+                name: userName,
+                hoursLeft,
+                previewUrl,
+                subscribeUrl
+              });
+              results.expiringSoonEmailsSent++;
+            }
+          }
+        }
       }
     }
 
@@ -145,7 +171,14 @@ class LifecycleService {
         console.log(`[LIFECYCLE] Lapsed account ${item.id} exceeded 5-day grace period. Permanently purging.`);
         await this.transitionToDeleted(item, 'lapsed_5day_timeout');
         if (this.email && userEmail) {
-          await this.email.sendDeletionConfirmation(userEmail, { userId: item.user_id, name: userName });
+          if (typeof this.email.sendPurgedFreshStartEmail === 'function') {
+            const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(item.user_id, 'purged_fresh_start') : false;
+            if (!sent) {
+              await this.email.sendPurgedFreshStartEmail(userEmail, { userId: item.user_id, name: userName });
+            }
+          } else if (typeof this.email.sendDeletionConfirmation === 'function') {
+            await this.email.sendDeletionConfirmation(userEmail, { userId: item.user_id, name: userName });
+          }
         }
         results.lapsedPurged++;
         continue;
@@ -196,40 +229,98 @@ class LifecycleService {
       }
     }
 
-    // 3. Process Conversion Sequence for Opted-in Users (Days 3, 6, 9)
-    const unconvertedUsers = await this.db.getOptedInUnconvertedUsers();
-    for (const user of unconvertedUsers) {
-      const createdAt = new Date(user.created_at).getTime();
-      const elapsedDays = (now - createdAt) / (24 * 60 * 60 * 1000);
-      const userEmail = user.email;
-      const userName = user.name || 'there';
-      const subscribeUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/subscribe?userId=${user.id}`;
+    // 3. Process Dynamic Lifecycle Sequences for Registered Users (NO SITE YET & LIVE)
+    if (typeof this.db.getAllAdminUsers === 'function') {
+      try {
+        const allUsers = await this.db.getAllAdminUsers(500);
+        for (const u of (allUsers || [])) {
+          const userEmail = u.email || u.normalized_email;
+          if (!userEmail) continue;
+          const userName = u.name || 'there';
+          const userId = u.id;
+          const status = u.computedStatus || (u.siteId ? 'preview' : 'no_site_yet');
+          const createdAt = u.created_at ? new Date(u.created_at).getTime() : now;
+          const elapsedDays = (now - createdAt) / (24 * 60 * 60 * 1000);
 
-      if (!userEmail) continue;
+          // Track 3a: NO SITE YET users (Funny re-engagement sequences)
+          if (status === 'no_site_yet' && this.email && typeof this.email.sendNoSiteYetEmail === 'function') {
+            if (elapsedDays >= 7.0) {
+              const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_3') : false;
+              if (!sent) {
+                await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 3 });
+                results.noSiteEmailsSent++;
+              }
+            } else if (elapsedDays >= 3.0) {
+              const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_2') : false;
+              if (!sent) {
+                await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 2 });
+                results.noSiteEmailsSent++;
+              }
+            } else if (elapsedDays >= 1.0) {
+              const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_1') : false;
+              if (!sent) {
+                await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 1 });
+                results.noSiteEmailsSent++;
+              }
+            }
+          }
 
-      if (elapsedDays >= 30.0) {
-        const sentMonthly = await this.db.hasEmailBeenSent(user.id, 'conversion_email_monthly');
-        if (!sentMonthly) {
-          await this.email.sendMonthlyReengagementEmail(userEmail, { userId: user.id, name: userName });
-          results.conversionEmailsSent++;
+          // Track 3b: LIVE (Paid) users welcome & tips milestone
+          if (status === 'live' && this.email && typeof this.email.sendLiveWelcomeEmail === 'function') {
+            const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'live_welcome_milestone') : false;
+            if (!sent) {
+              const siteUrl = u.siteUrl ? `${process.env.HOST_URL || 'https://myfolio.tech'}${u.siteUrl}` : `${process.env.HOST_URL || 'https://myfolio.tech'}/dashboard.html`;
+              await this.email.sendLiveWelcomeEmail(userEmail, {
+                userId,
+                name: userName,
+                siteUrl,
+                plan: u.plan === 'starter' ? 'Starter' : 'Pro'
+              });
+              results.liveWelcomeEmailsSent++;
+            }
+          }
         }
-      } else if (elapsedDays >= 9.0) {
-        const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_4_day_9');
-        if (!sent) {
-          await this.email.sendConversionEmail4(userEmail, { userId: user.id, name: userName, subscribeUrl });
-          results.conversionEmailsSent++;
-        }
-      } else if (elapsedDays >= 6.0) {
-        const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_3_day_6');
-        if (!sent) {
-          await this.email.sendConversionEmail3(userEmail, { userId: user.id, name: userName, subscribeUrl });
-          results.conversionEmailsSent++;
-        }
-      } else if (elapsedDays >= 3.0) {
-        const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_2_day_3');
-        if (!sent) {
-          await this.email.sendConversionEmail2(userEmail, { userId: user.id, name: userName, subscribeUrl });
-          results.conversionEmailsSent++;
+      } catch (userLoopErr) {
+        console.warn('[LIFECYCLE] User lifecycle sequence warning:', userLoopErr.message);
+      }
+    }
+
+    // 4. Process Conversion Sequence for Opted-in Users (Days 3, 6, 9)
+    if (typeof this.db.getOptedInUnconvertedUsers === 'function') {
+      const unconvertedUsers = await this.db.getOptedInUnconvertedUsers();
+      for (const user of (unconvertedUsers || [])) {
+        const createdAt = new Date(user.created_at).getTime();
+        const elapsedDays = (now - createdAt) / (24 * 60 * 60 * 1000);
+        const userEmail = user.email;
+        const userName = user.name || 'there';
+        const subscribeUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/subscribe?userId=${user.id}`;
+
+        if (!userEmail) continue;
+
+        if (elapsedDays >= 30.0) {
+          const sentMonthly = await this.db.hasEmailBeenSent(user.id, 'conversion_email_monthly');
+          if (!sentMonthly) {
+            await this.email.sendMonthlyReengagementEmail(userEmail, { userId: user.id, name: userName });
+            results.conversionEmailsSent++;
+          }
+        } else if (elapsedDays >= 9.0) {
+          const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_4_day_9');
+          if (!sent) {
+            await this.email.sendConversionEmail4(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            results.conversionEmailsSent++;
+          }
+        } else if (elapsedDays >= 6.0) {
+          const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_3_day_6');
+          if (!sent) {
+            await this.email.sendConversionEmail3(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            results.conversionEmailsSent++;
+          }
+        } else if (elapsedDays >= 3.0) {
+          const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_2_day_3');
+          if (!sent) {
+            await this.email.sendConversionEmail2(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            results.conversionEmailsSent++;
+          }
         }
       }
     }
@@ -276,6 +367,31 @@ class LifecycleService {
       reason,
       details: { siteId, previous_state: item.lifecycle_state || item.status }
     });
+
+    // Notify user immediately that their preview entered cryogenic sleep (5-day grace active)
+    if (this.email && item.user_id) {
+      try {
+        const user = item.users || (typeof this.db.getUserById === 'function' ? await this.db.getUserById(item.user_id) : null);
+        const userEmail = user?.email || item.extracted_data?.email;
+        const userName = user?.name || item.extracted_data?.name || 'there';
+        const previewUrl = item.live_url || `${process.env.HOST_URL || 'https://myfolio.tech'}/p/${siteId}`;
+        const retryUrl = `${process.env.HOST_URL || 'https://myfolio.tech'}/payment/retry?userId=${item.user_id}`;
+
+        if (userEmail && typeof this.db.hasEmailBeenSent === 'function') {
+          const sent = await this.db.hasEmailBeenSent(item.user_id, 'preview_expired_cryo');
+          if (!sent && typeof this.email.sendPreviewExpiredCryoEmail === 'function') {
+            await this.email.sendPreviewExpiredCryoEmail(userEmail, {
+              userId: item.user_id,
+              name: userName,
+              previewUrl,
+              retryUrl
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('[LIFECYCLE] Error sending preview expired cryo email:', err.message);
+      }
+    }
   }
 
   /**

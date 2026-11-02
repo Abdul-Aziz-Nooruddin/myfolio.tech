@@ -547,6 +547,221 @@ Subscribe here: ${subscribeUrl}
       meta: { sequence_type: 'transactional', trigger_name: 'security_account_deleted' }
     });
   }
+
+  // =========================================================================
+  // Track 5c: Dynamic User Lifecycle Automation (Tailored by User State)
+  // =========================================================================
+
+  /**
+   * Funny & playful re-engagement sequence for users who signed up but haven't created a site yet
+   */
+  async sendNoSiteYetEmail(toEmail, { userId, name = 'there', step = 1, studioUrl = '' }) {
+    const targetStudioUrl = studioUrl || `${process.env.HOST_URL || 'https://myfolio.tech'}/studio`;
+    
+    let subject = "Did you get lost on the way to the Studio? 🧭";
+    let badgeText = "GET STARTED IN 60 SECONDS";
+    let headline = "Did you get lost on the way to the Studio?";
+    let bodyHtml = "";
+
+    if (step === 2) {
+      subject = "Your unfinished portfolio is giving us abandonment issues 🥺";
+      badgeText = "DON'T LEAVE YOUR SKILLS IN THE DARK";
+      headline = "Your unfinished portfolio misses you";
+      bodyHtml = `
+        <p>Hey ${name},</p>
+        <p>We don't mean to be dramatic, but there is an empty 3D portfolio workspace sitting here with your name on it, wondering why nobody's claimed it yet.</p>
+        <p>Recruiters spend an average of <strong>6 seconds</strong> skimming a boring PDF resume before discarding it. A living 3D portfolio gets <strong>3.2x more interview callbacks</strong> and keeps hiring managers engaged for minutes.</p>
+        <p>One upload, 60 seconds, zero coding required.</p>
+      `;
+    } else if (step === 3) {
+      subject = "Is your PDF resume still doing all the heavy lifting? 🏋️";
+      badgeText = "STAND OUT FROM 500+ APPLICANTS";
+      headline = "Is your PDF resume still doing all the heavy lifting?";
+      bodyHtml = `
+        <p>Hey ${name},</p>
+        <p>Real talk: when was the last time a hiring manager said, <em>"Wow, that Times New Roman bullet point on page 2 moved me to tears"</em>?</p>
+        <p>Never.</p>
+        <p>Modern tech hiring is visual, spatial, and proof-driven. MyFolio turns your raw skills and project work into interactive 3D viewports, live architecture schematics, and verifiable credentials.</p>
+        <p>Give it 60 seconds today. If you don't love it, you can delete it with a single click.</p>
+      `;
+    } else {
+      // Step 1: 24 hours after signup
+      bodyHtml = `
+        <p>Hey ${name},</p>
+        <p>We noticed you created your MyFolio account... and then vanished like a ninja into the night. 🥷</p>
+        <p>Did your Wi-Fi drop? Did your cat fall asleep on the keyboard? Or are you trapped in the dreaded <em>"let me just polish my resume for the 47th time"</em> loop?</p>
+        <p>Here's a secret: <strong>You don't need a finished resume.</strong> Just drop a LinkedIn profile link, upload a rough PDF, or tell our AI what you build. We generate a full 3D interactive portfolio in under 60 seconds (we timed it: less than boiling Maggi noodles 🍜).</p>
+        <p>Your blank canvas is waiting.</p>
+      `;
+    }
+
+    const html = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #171817; background: #ffffff; border-radius: 16px; border: 1px solid rgba(23, 24, 23, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); line-height: 1.6;">
+        <div style="margin-bottom: 20px;">
+          <span style="display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">${badgeText}</span>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 16px;">${headline}</h2>
+        ${bodyHtml}
+        <div style="margin: 28px 0;">
+          <a href="${targetStudioUrl}" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; display: inline-block; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">🚀 Build My 3D Portfolio in 60s &rarr;</a>
+        </div>
+        <p style="color: #64748b; font-size: 13px; margin-top: 24px;">Zero design skills needed. Just click and see your work come to life.</p>
+        <hr style="border: 0; border-top: 1px solid rgba(23, 24, 23, 0.08); margin: 28px 0 20px;" />
+        <p style="color: #94a3b8; font-size: 11px; margin: 0;">— The MyFolio Team • <a href="https://myfolio.tech" style="color: #64748b; text-decoration: none;">myfolio.tech</a></p>
+      </div>
+    `;
+
+    return this.sendMail({
+      to: toEmail,
+      subject,
+      html,
+      meta: { user_id: userId, sequence_type: 'lifecycle_no_site', email_index: step, trigger_name: `no_site_yet_step_${step}` }
+    });
+  }
+
+  /**
+   * Urgency notification sent 4-6 hours before free 24-hour preview expires
+   */
+  async sendPreviewExpiringSoonEmail(toEmail, { userId, name = 'there', hoursLeft = 4, previewUrl = '', subscribeUrl = '' }) {
+    const targetSubscribeUrl = subscribeUrl || `${process.env.HOST_URL || 'https://myfolio.tech'}/dashboard.html`;
+    const subject = `⏳ ${hoursLeft} hours left: Your 3D portfolio preview is about to freeze`;
+    const html = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #171817; background: #ffffff; border-radius: 16px; border: 1px solid rgba(23, 24, 23, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); line-height: 1.6;">
+        <div style="margin-bottom: 20px;">
+          <span style="display: inline-block; background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">PREVIEW EXPIRING SOON</span>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 16px;">Your 3D portfolio freezes in ${hoursLeft} hours ⏳</h2>
+        <p>Hey ${name},</p>
+        <p>Quick heads-up! Your 24-hour free preview window is counting down fast.</p>
+        <p>In <strong>${hoursLeft} hours</strong>, your live portfolio link (<a href="${previewUrl}" style="color: #2563eb; font-weight: 600;">${previewUrl}</a>) will automatically freeze and enter standby mode.</p>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 20px 0;">
+          <strong style="color: #0f172a; display: block; margin-bottom: 6px;">Lock it in now to keep:</strong>
+          <span style="color: #475569; font-size: 14px; display: block;">✓ 24/7 permanent high-speed hosting</span>
+          <span style="color: #475569; font-size: 14px; display: block;">✓ Custom domain connection (yourname.com)</span>
+          <span style="color: #475569; font-size: 14px; display: block;">✓ Interactive 3D viewports & project vaults</span>
+        </div>
+        <div style="margin: 28px 0;">
+          <a href="${targetSubscribeUrl}" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; display: inline-block; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">Keep My Portfolio Live (from ₹149/mo) &rarr;</a>
+        </div>
+        <hr style="border: 0; border-top: 1px solid rgba(23, 24, 23, 0.08); margin: 28px 0 20px;" />
+        <p style="color: #94a3b8; font-size: 11px; margin: 0;">— The MyFolio Team • <a href="https://myfolio.tech" style="color: #64748b; text-decoration: none;">myfolio.tech</a></p>
+      </div>
+    `;
+
+    return this.sendMail({
+      to: toEmail,
+      subject,
+      html,
+      meta: { user_id: userId, sequence_type: 'lifecycle_preview', trigger_name: 'preview_expiring_soon' }
+    });
+  }
+
+  /**
+   * Humorous & reassuring notification sent right when preview expires and enters 5-day grace
+   */
+  async sendPreviewExpiredCryoEmail(toEmail, { userId, name = 'there', previewUrl = '', retryUrl = '' }) {
+    const targetRetryUrl = retryUrl || `${process.env.HOST_URL || 'https://myfolio.tech'}/dashboard.html`;
+    const subject = "Your portfolio just entered cryogenic sleep 🧊";
+    const html = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #171817; background: #ffffff; border-radius: 16px; border: 1px solid rgba(23, 24, 23, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); line-height: 1.6;">
+        <div style="margin-bottom: 20px;">
+          <span style="display: inline-block; background: #e0f2fe; color: #0284c7; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">CRYOGENIC STANDBY • 5-DAY GRACE</span>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 16px;">Your portfolio just went to sleep 🧊</h2>
+        <p>Hey ${name},</p>
+        <p>The 24-hour preview timer just struck zero. Your portfolio site has officially entered cryogenic standby mode.</p>
+        <p><strong>Don't panic — your work is NOT deleted!</strong> We've safely preserved all your custom data, projects, and 3D visual settings in our 5-day grace vault.</p>
+        <p>During these 5 days, you can reawaken your site with 1 click. After 5 days, our automated server sweeper permanently purges unpaid preview files to make room for incoming builds.</p>
+        <div style="margin: 28px 0;">
+          <a href="${targetRetryUrl}" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; display: inline-block; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">⚡ Reawaken My Portfolio Site &rarr;</a>
+        </div>
+        <p style="color: #64748b; font-size: 13px;">Lock in your link now so recruiters and clients can always reach you.</p>
+        <hr style="border: 0; border-top: 1px solid rgba(23, 24, 23, 0.08); margin: 28px 0 20px;" />
+        <p style="color: #94a3b8; font-size: 11px; margin: 0;">— The MyFolio Team • <a href="https://myfolio.tech" style="color: #64748b; text-decoration: none;">myfolio.tech</a></p>
+      </div>
+    `;
+
+    return this.sendMail({
+      to: toEmail,
+      subject,
+      html,
+      meta: { user_id: userId, sequence_type: 'lifecycle_preview', trigger_name: 'preview_expired_cryo' }
+    });
+  }
+
+  /**
+   * VIP onboarding and distribution tips for LIVE paid subscribers
+   */
+  async sendLiveWelcomeEmail(toEmail, { userId, name = 'there', siteUrl = '', plan = 'Pro', domainSettingsUrl = '' }) {
+    const targetDomainUrl = domainSettingsUrl || `${process.env.HOST_URL || 'https://myfolio.tech'}/dashboard.html`;
+    const subject = "🎉 You're officially LIVE! (Plus 3 ways to show it off)";
+    const html = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #171817; background: #ffffff; border-radius: 16px; border: 1px solid rgba(23, 24, 23, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); line-height: 1.6;">
+        <div style="margin-bottom: 20px;">
+          <span style="display: inline-block; background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">PORTFOLIO PERMANENTLY LIVE</span>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 16px;">Congratulations! You are officially LIVE 🎉</h2>
+        <p>Hey ${name},</p>
+        <p>Your ${plan} portfolio is officially live and permanently hosted on MyFolio high-speed CDN servers.</p>
+        <p>Your live address: <a href="${siteUrl}" style="color: #16a34a; font-weight: 700; text-decoration: none;">${siteUrl} ↗</a></p>
+        
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px; margin: 24px 0;">
+          <strong style="color: #166534; font-size: 15px; display: block; margin-bottom: 12px;">3 Power Moves to do right now:</strong>
+          <ol style="margin: 0; padding-left: 20px; color: #14532d; font-size: 14px;">
+            <li style="margin-bottom: 8px;"><strong>Add to LinkedIn:</strong> Put your live link in your LinkedIn Headline & Featured section.</li>
+            <li style="margin-bottom: 8px;"><strong>Connect a Custom Domain:</strong> Link your own domain (e.g. <code>yourname.com</code>) with 1 click in dashboard.</li>
+            <li style="margin-bottom: 4px;"><strong>Email Signature:</strong> Add <em>"Explore my interactive work: ${siteUrl}"</em> to your outbound emails.</li>
+          </ol>
+        </div>
+
+        <div style="margin: 28px 0;">
+          <a href="${targetDomainUrl}" style="background: linear-gradient(135deg, #16a34a, #15803d); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; display: inline-block; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);">Manage Portfolio & Custom Domain &rarr;</a>
+        </div>
+        <hr style="border: 0; border-top: 1px solid rgba(23, 24, 23, 0.08); margin: 28px 0 20px;" />
+        <p style="color: #94a3b8; font-size: 11px; margin: 0;">— The MyFolio Team • <a href="https://myfolio.tech" style="color: #64748b; text-decoration: none;">myfolio.tech</a></p>
+      </div>
+    `;
+
+    return this.sendMail({
+      to: toEmail,
+      subject,
+      html,
+      meta: { user_id: userId, sequence_type: 'lifecycle_live', trigger_name: 'live_welcome_milestone' }
+    });
+  }
+
+  /**
+   * Clean win-back email for purged users inviting them to start fresh in 60s
+   */
+  async sendPurgedFreshStartEmail(toEmail, { userId, name = 'there', studioUrl = '' }) {
+    const targetStudioUrl = studioUrl || `${process.env.HOST_URL || 'https://myfolio.tech'}/studio`;
+    const subject = "Slate wiped clean — but you can rise again in 60s 🚀";
+    const html = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #171817; background: #ffffff; border-radius: 16px; border: 1px solid rgba(23, 24, 23, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); line-height: 1.6;">
+        <div style="margin-bottom: 20px;">
+          <span style="display: inline-block; background: #f1f5f9; color: #475569; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">FRESH START</span>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin: 0 0 16px;">Slate wiped clean — ready for a fresh start? 🚀</h2>
+        <p>Hey ${name},</p>
+        <p>As your 5-day grace window elapsed, your previous temporary preview files have been cleared from disk in accordance with our server policy.</p>
+        <p>No hard feelings! In fact, fresh starts are the best part of tech.</p>
+        <p>We've just released brand new 2026 spatial themes in Web Studio — including <strong>Chrono-Obsidian Sanctuary</strong>, <strong>Cyber-Architect Sprawl</strong>, and <strong>Swiss Editorial Monograph</strong>.</p>
+        <p>Whenever you're ready for your next interview or project launch, you can spin up a brand new 3D portfolio in 60 seconds.</p>
+        <div style="margin: 28px 0;">
+          <a href="${targetStudioUrl}" style="background: #0f172a; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; display: inline-block;">✨ Generate Fresh Portfolio in 60s &rarr;</a>
+        </div>
+        <hr style="border: 0; border-top: 1px solid rgba(23, 24, 23, 0.08); margin: 28px 0 20px;" />
+        <p style="color: #94a3b8; font-size: 11px; margin: 0;">— The MyFolio Team • <a href="https://myfolio.tech" style="color: #64748b; text-decoration: none;">myfolio.tech</a></p>
+      </div>
+    `;
+
+    return this.sendMail({
+      to: toEmail,
+      subject,
+      html,
+      meta: { user_id: userId, sequence_type: 'lifecycle_purged', trigger_name: 'purged_fresh_start' }
+    });
+  }
 }
 
 module.exports = { EmailService };

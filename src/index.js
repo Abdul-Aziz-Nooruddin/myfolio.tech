@@ -88,6 +88,15 @@ const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
+// Canonical Hostname Enforcer: 301 Permanent Redirect www.myfolio.tech -> https://myfolio.tech
+app.use((req, res, next) => {
+  const host = (req.hostname || req.get('host') || '').toLowerCase().split(':')[0];
+  if (host === 'www.myfolio.tech') {
+    return res.redirect(301, `https://myfolio.tech${req.originalUrl}`);
+  }
+  next();
+});
+
 // Instant 0ms Health Check for probes (Bypasses all heavy middleware, DB & auth)
 app.all(['/health', '/healthz', '/api/health', '/healthcheck', '/ping', '/ready'], (req, res) => {
   const smtpHost = Boolean(process.env.SMTP_HOST || process.env.SMTP_SERVER || process.env.MAIL_HOST || process.env.EMAIL_HOST || process.env.TITAN_HOST);
@@ -126,6 +135,18 @@ app.use(compression({
     return compression.filter(req, res);
   }
 }));
+
+// Slow Request Telemetry & Profiler (>500ms threshold)
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    if (duration > 500 && !req.path.startsWith('/assets') && !req.path.startsWith('/web/')) {
+      console.warn(`[SLOW REQUEST TELEMETRY] ${req.method} ${req.originalUrl || req.url} took ${duration}ms (status: ${res.statusCode})`);
+    }
+  });
+  next();
+});
 
 const securityService = new SecurityService();
 const figmaService = new FigmaService();
@@ -3446,6 +3467,23 @@ app.get('/api/admin/violations', AuthMiddleware.requireAdmin, async (req, res) =
     const violations = await dbService.getTosViolations(50);
     res.json({ success: true, violations });
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/lifecycle/trigger-email-cycle', AuthMiddleware.requireAdmin, async (req, res) => {
+  try {
+    console.log('[ADMIN] Manual trigger of lifecycle & email automation cycle requested by admin');
+    const results = await lifecycleService.runLifecycleCycle();
+    await dbService.recordAuditLog({
+      admin_identifier: req.user?.email || req.adminIdentifier || 'admin',
+      action: 'manual_email_automation_cycle',
+      reason: 'Admin triggered lifecycle email sequence run',
+      details: results
+    });
+    res.json({ success: true, results });
+  } catch (err) {
+    console.error('[ADMIN] Error running manual email cycle:', err);
     res.status(500).json({ error: err.message });
   }
 });

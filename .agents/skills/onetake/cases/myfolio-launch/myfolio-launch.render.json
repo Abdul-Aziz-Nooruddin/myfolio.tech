@@ -1,0 +1,24 @@
+{
+ "comp": "/Users/abdulaziz/Desktop/myfolio-platform/.agents/skills/onetake/cases/myfolio-launch/comp.html",
+ "fps": 30,
+ "scale": 1,
+ "size": [
+  1920,
+  1080
+ ],
+ "shutter": 180.0,
+ "samples": "adaptive",
+ "gap_px": 24.0,
+ "samples_per_moving_frame": {
+  "4": 211,
+  "10": 19,
+  "12": 115
+ },
+ "workers": 4,
+ "frames": 450,
+ "still_frames": 105,
+ "cut_frames": 43,
+ "captures": 2624,
+ "seconds": 165.3,
+ "final": false
+}

@@ -22,22 +22,22 @@
   <meta name="description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time. Connect your GitHub profile, upload your resume, and preview your living world.">
   <meta name="keywords" content="3D portfolio builder, AI portfolio customizer, developer portfolio studio, GitHub portfolio editor, WebGL website builder, MyFolio Studio">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://www.myfolio.tech/studio">
+  <link rel="canonical" href="https://myfolio.tech/studio">
 
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.myfolio.tech/studio">
+  <meta property="og:url" content="https://myfolio.tech/studio">
   <meta property="og:title" content="MyFolio Studio — AI 3D Portfolio Builder &amp; Customizer">
   <meta property="og:description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time. Connect your GitHub profile, upload your resume, and preview your living world.">
-  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-default.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="MyFolio Creator Studio">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MyFolio Studio — AI 3D Portfolio Builder &amp; Customizer">
   <meta name="twitter:description" content="Build, customize, and deploy your 3D WebGL developer portfolio in real time with live GitHub sync.">
-  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-default.jpg">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -45,7 +45,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "MyFolio Studio",
-    "url": "https://www.myfolio.tech/studio",
+    "url": "https://myfolio.tech/studio",
     "applicationCategory": "DesignApplication",
     "operatingSystem": "All",
     "description": "Interactive WebGL 3D developer portfolio studio and real-time customizer with live GitHub sync and source code export.",
@@ -53,7 +53,7 @@
     "isPartOf": {
       "@type": "WebSite",
       "name": "MyFolio",
-      "url": "https://www.myfolio.tech"
+      "url": "https://myfolio.tech"
     }
   }
   </script>
@@ -2558,7 +2558,7 @@
 
         <div style="display:flex; align-items:center; gap:8px;">
           <span style="font-size:11.5px; font-family:var(--mf-font-mono); color:var(--mf-text-muted);" id="generatedUrlText">
-            https://www.myfolio.tech/jack-3d
+            https://myfolio.tech/jack-3d
           </span>
           <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="reloadStudioCanvas()" title="Reload Canvas">
             ↻
@@ -2697,7 +2697,7 @@
           Your bespoke 3D WebGL universe is live and deployed on your verified custom domain.
         </p>
         <div class="toast-url-preview">
-          <span id="modalToastUrl">https://www.myfolio.tech/jack-3d</span>
+          <span id="modalToastUrl">https://myfolio.tech/jack-3d</span>
           <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="copyToastUrl()" title="Copy Link" style="font-size:11.5px; padding:4px 8px;">
             Copy
           </button>
@@ -3671,7 +3671,7 @@
     }
 
     function copyToastUrl() {
-      const url = document.getElementById('modalToastUrl')?.textContent || 'https://www.myfolio.tech/jack-3d';
+      const url = document.getElementById('modalToastUrl')?.textContent || 'https://myfolio.tech/jack-3d';
       navigator.clipboard.writeText(url);
       showToast('Copied: ' + url, 'success');
     }
@@ -3902,7 +3902,7 @@
         payload.publish = false; // Always generate preview draft first
 
         const apiEndpoint = (window.location.hostname === 'myfolio.tech' || window.location.hostname === 'www.myfolio.tech')
-          ? 'https://www.myfolio.tech/api/generate/unified'
+          ? 'https://myfolio.tech/api/generate/unified'
           : '/api/generate/unified';
 
         const abortCtrl = new AbortController();

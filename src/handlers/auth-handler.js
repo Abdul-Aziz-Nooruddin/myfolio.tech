@@ -667,6 +667,7 @@ class AuthHandler {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
+        signal: AbortSignal.timeout(8000),
         body: JSON.stringify({
           client_id: process.env.GITHUB_CLIENT_ID,
           client_secret: process.env.GITHUB_CLIENT_SECRET,
@@ -685,7 +686,8 @@ class AuthHandler {
         headers: {
           'Authorization': `Bearer ${tokenData.access_token}`,
           'User-Agent': 'myfolio-portfolio-studio'
-        }
+        },
+        signal: AbortSignal.timeout(8000)
       });
       const ghUser = await userRes.json();
 
@@ -696,7 +698,8 @@ class AuthHandler {
           headers: {
             'Authorization': `Bearer ${tokenData.access_token}`,
             'User-Agent': 'myfolio-portfolio-studio'
-          }
+          },
+          signal: AbortSignal.timeout(8000)
         });
         const emails = await emailsRes.json();
         const primary = Array.isArray(emails) ? emails.find(e => e.primary && e.verified) || emails[0] : null;

@@ -168,3 +168,138 @@ test('LifecycleService admin manual overrides work and record audit trail', asyn
   assert.equal(auditRecord.action, 'override_grace_period');
   assert.equal(auditRecord.admin_identifier, 'admin-abdulaziz');
 });
+
+test('LifecycleService sends funny No Site Yet emails at Day 1, 3, 7 and deduplicates', async () => {
+  const sentEmails = [];
+  const recordedLogs = new Set();
+
+  const mockDb = {
+    getUnpaidPreviews: async () => [],
+    getLapsedAccounts: async () => [],
+    getOptedInUnconvertedUsers: async () => [],
+    getAllAdminUsers: async () => [
+      {
+        id: 'u-nosite-1',
+        email: 'lazy1@example.com',
+        name: 'Alex',
+        computedStatus: 'no_site_yet',
+        created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days old (Day 1 trigger)
+      },
+      {
+        id: 'u-nosite-2',
+        email: 'lazy2@example.com',
+        name: 'Sarah',
+        computedStatus: 'no_site_yet',
+        created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString() // 4 days old (Day 3 trigger)
+      },
+      {
+        id: 'u-nosite-3',
+        email: 'lazy3@example.com',
+        name: 'Dave',
+        computedStatus: 'no_site_yet',
+        created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString() // 8 days old (Day 7 trigger)
+      }
+    ],
+    hasEmailBeenSent: async (userId, triggerName) => recordedLogs.has(`${userId}:${triggerName}`),
+    recordAuditLog: async () => {}
+  };
+
+  const mockEmail = {
+    sendNoSiteYetEmail: async (to, data) => {
+      sentEmails.push({ to, step: data.step, userId: data.userId });
+      recordedLogs.add(`${data.userId}:no_site_yet_step_${data.step}`);
+    }
+  };
+
+  const lifecycle = new LifecycleService(mockDb, mockEmail);
+  const results1 = await lifecycle.runLifecycleCycle();
+
+  assert.equal(results1.noSiteEmailsSent, 3);
+  assert.equal(sentEmails.some(e => e.to === 'lazy1@example.com' && e.step === 1), true);
+  assert.equal(sentEmails.some(e => e.to === 'lazy2@example.com' && e.step === 2), true);
+  assert.equal(sentEmails.some(e => e.to === 'lazy3@example.com' && e.step === 3), true);
+
+  // Second run: MUST NOT send duplicates
+  const results2 = await lifecycle.runLifecycleCycle();
+  assert.equal(results2.noSiteEmailsSent, 0, 'Zero duplicate emails sent');
+});
+
+test('LifecycleService sends preview expiring soon warning within 18-24h window', async () => {
+  const sentEmails = [];
+  const recordedLogs = new Set();
+
+  const mockDb = {
+    getUnpaidPreviews: async () => [
+      {
+        id: 'preview-expiring-site',
+        user_id: 'user-preview-002',
+        state_entered_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(), // 20 hours old (4 hours left)
+        status: 'preview_live',
+        lifecycle_state: 'preview_unpaid',
+        extracted_data: { email: 'previewer@example.com', name: 'Jordan' }
+      }
+    ],
+    getLapsedAccounts: async () => [],
+    getOptedInUnconvertedUsers: async () => [],
+    getAllAdminUsers: async () => [],
+    hasEmailBeenSent: async (userId, triggerName) => recordedLogs.has(`${userId}:${triggerName}`),
+    recordAuditLog: async () => {}
+  };
+
+  const mockEmail = {
+    sendPreviewExpiringSoonEmail: async (to, data) => {
+      sentEmails.push({ to, hoursLeft: data.hoursLeft });
+      recordedLogs.add(`${data.userId}:preview_expiring_soon`);
+    }
+  };
+
+  const lifecycle = new LifecycleService(mockDb, mockEmail);
+  const results = await lifecycle.runLifecycleCycle();
+
+  assert.equal(results.expiringSoonEmailsSent, 1);
+  assert.equal(sentEmails[0].to, 'previewer@example.com');
+  assert.equal(sentEmails[0].hoursLeft, 4);
+});
+
+test('LifecycleService sends cryogenic sleep email when preview expires', async () => {
+  const testSiteId = 'test-unpaid-cryo-site';
+  const siteDir = path.join(process.cwd(), 'public', 'sites', testSiteId);
+  fs.mkdirSync(siteDir, { recursive: true });
+  fs.writeFileSync(path.join(siteDir, 'index.html'), '<html>cryo</html>');
+
+  const sentEmails = [];
+  const mockDb = {
+    getUnpaidPreviews: async () => [
+      {
+        id: testSiteId,
+        user_id: 'user-cryo-001',
+        state_entered_at: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(), // 25h (>24h)
+        status: 'preview_live',
+        lifecycle_state: 'preview_unpaid',
+        extracted_data: { email: 'sleeping@example.com', name: 'Robin' }
+      }
+    ],
+    getLapsedAccounts: async () => [],
+    getOptedInUnconvertedUsers: async () => [],
+    getAllAdminUsers: async () => [],
+    hasEmailBeenSent: async () => false,
+    updateConversation: async () => {},
+    updateSiteByProviderId: async () => {},
+    recordAuditLog: async () => {}
+  };
+
+  const mockEmail = {
+    sendPreviewExpiredCryoEmail: async (to, data) => {
+      sentEmails.push({ to, name: data.name });
+    }
+  };
+
+  const lifecycle = new LifecycleService(mockDb, mockEmail);
+  const results = await lifecycle.runLifecycleCycle();
+
+  assert.equal(results.previewsExpired, 1);
+  assert.equal(sentEmails.length, 1);
+  assert.equal(sentEmails[0].to, 'sleeping@example.com');
+  assert.equal(sentEmails[0].name, 'Robin');
+});
+

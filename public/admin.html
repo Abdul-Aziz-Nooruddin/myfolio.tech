@@ -303,6 +303,23 @@
     .status-deleted { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
     .status-nosite { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
 
+    /* Performance Shimmer Skeleton Loaders */
+    @keyframes skeleton-shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton-box {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.5s infinite linear;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .skeleton-line { height: 13px; width: 85%; margin-bottom: 5px; }
+    .skeleton-line.short { width: 45%; }
+    .skeleton-pill { height: 22px; width: 90px; border-radius: 9999px; }
+    .skeleton-btn { height: 26px; width: 55px; border-radius: 6px; }
+
     /* Action Buttons */
     .action-btn-group {
       display: flex;
@@ -426,7 +443,8 @@
       <div class="panel-header">
         <h2 class="panel-title">User Accounts & Site Management</h2>
         <div class="filter-bar">
-          <input type="text" id="userSearch" class="search-input" placeholder="Search by email, phone, or ID..." oninput="renderUsersTable()">
+          <button id="btnRunEmailCycle" class="btn-action" onclick="handleTriggerEmailCycle()" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; font-weight: 700; border: none; padding: 0.45rem 0.9rem; border-radius: 8px; cursor: pointer; white-space: nowrap;">⚡ Run Email Automation</button>
+          <input type="text" id="userSearch" class="search-input" placeholder="Search by email, phone, or ID..." oninput="debouncedSearch()">
           <button class="filter-pill active" onclick="setFilter('all', this)">All</button>
           <button class="filter-pill" onclick="setFilter('live', this)">Live</button>
           <button class="filter-pill" onclick="setFilter('preview_lapsed', this)">Lapsed</button>
@@ -502,7 +520,40 @@
     let allViolations = [];
     let currentFilter = 'all';
 
+    function renderSkeletonRows() {
+      const tbody = document.getElementById('userTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = Array.from({ length: 7 }).map(() => `
+        <tr>
+          <td>
+            <div class="skeleton-box skeleton-line" style="width: 130px;"></div>
+            <div class="skeleton-box skeleton-line short" style="width: 190px;"></div>
+          </td>
+          <td><div class="skeleton-box skeleton-pill"></div></td>
+          <td><div class="skeleton-box skeleton-line" style="width: 100px;"></div></td>
+          <td><div class="skeleton-box skeleton-line" style="width: 75px;"></div></td>
+          <td>
+            <div class="action-btn-group">
+              <div class="skeleton-box skeleton-btn"></div>
+              <div class="skeleton-box skeleton-btn"></div>
+              <div class="skeleton-box skeleton-btn"></div>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function debounce(fn, wait = 200) {
+      let t;
+      return function(...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+    const debouncedSearch = debounce(() => renderUsersTable(), 200);
+
     async function fetchData() {
+      renderSkeletonRows();
       try {
         const [overviewRes, usersRes, violRes] = await Promise.all([
           fetch('/api/admin/overview').then(r => r.json()),
@@ -752,6 +803,47 @@
         }
       } catch (err) {
         showToast('Error: ' + err.message);
+      }
+    }
+
+    async function handleTriggerEmailCycle() {
+      const btn = document.getElementById('btnRunEmailCycle');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Processing Automations...';
+      }
+      try {
+        const res = await fetch('/api/admin/lifecycle/trigger-email-cycle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        }).then(r => r.json());
+
+        if (res.success && res.results) {
+          const r = res.results;
+          const parts = [];
+          if (r.noSiteEmailsSent) parts.push(`${r.noSiteEmailsSent} No-Site`);
+          if (r.expiringSoonEmailsSent) parts.push(`${r.expiringSoonEmailsSent} Expiring Soon`);
+          if (r.previewsExpired) parts.push(`${r.previewsExpired} Expired (Cryo)`);
+          if (r.lapsedRemindersSent) parts.push(`${r.lapsedRemindersSent} Grace Reminders`);
+          if (r.liveWelcomeEmailsSent) parts.push(`${r.liveWelcomeEmailsSent} Live Welcomes`);
+          if (r.conversionEmailsSent) parts.push(`${r.conversionEmailsSent} Conversion`);
+          if (r.lapsedPurged) parts.push(`${r.lapsedPurged} Purged`);
+
+          const summary = parts.length > 0 
+            ? `Cycle complete! Dispatched: ${parts.join(', ')}` 
+            : 'Cycle complete! All user states are up to date (no new emails due).';
+          showToast(summary);
+          fetchData();
+        } else {
+          showToast('Failed: ' + (res.error || 'Unknown error'));
+        }
+      } catch (err) {
+        showToast('Error: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '⚡ Run Email Automation';
+        }
       }
     }
 

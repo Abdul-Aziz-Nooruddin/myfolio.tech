@@ -1323,7 +1323,7 @@ const TomCelAnimatorTemplate = {
     <span class="badge">SYNDICATE TRANSMISSION ERROR</span>
     <h1>EXTRA! EXTRA! 404 // ISSUE NOT FOUND</h1>
     <p>The newspaper edition for portfolio <strong>${TemplateHelper.escapeHtml(siteId)}</strong> has not rolled off the printing press yet or was recalled by the ink editors.</p>
-    <a href="https://www.myfolio.tech" class="btn">&larr; Return to Studio Headquarters</a>
+    <a href="https://myfolio.tech" class="btn">&larr; Return to Studio Headquarters</a>
   </div>
 </body>
 </html>`;

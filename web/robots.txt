@@ -205,4 +205,4 @@ User-agent: MJ12bot
 Disallow: /
 
 # Canonical Sitemaps
-Sitemap: https://www.myfolio.tech/sitemap.xml
+Sitemap: https://myfolio.tech/sitemap.xml

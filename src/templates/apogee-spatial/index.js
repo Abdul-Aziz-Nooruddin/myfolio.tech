@@ -110,7 +110,7 @@ const ApogeeSpatialTemplate = {
           bg: '#4EA4F0',
           src: '/assets/projects/ai_portfolio_generator_3d.webp',
           githubUrl: 'https://github.com/Abdul-Aziz-Nooruddin/myfolio',
-          liveUrl: 'https://www.myfolio.tech',
+          liveUrl: 'https://myfolio.tech',
           tech: ['Three.js', 'WebGL', 'React', 'Node.js', 'Tailwind CSS', 'Vite'],
           problem: 'Engineers struggle to stand out with standard flat resume templates that fail to convey spatial depth and high-craft UI mastery.',
           solution: 'Engineered an AI-assisted 3D WebGL studio generating personalized portfolio environments with organic camera splines and custom shaders.',

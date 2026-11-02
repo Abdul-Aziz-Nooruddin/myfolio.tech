@@ -31,15 +31,15 @@ class SeoMetadataSynthesizer {
     // Canonical URL
     const subdomain = options.subdomain || data.subdomain || '';
     const siteId = options.siteId || data.siteId || data.id || '';
-    let canonicalUrl = 'https://www.myfolio.tech';
+    let canonicalUrl = 'https://myfolio.tech';
     if (subdomain) {
       canonicalUrl = `https://${subdomain}.myfolio.tech`;
     } else if (siteId) {
-      canonicalUrl = `https://www.myfolio.tech/p/${encodeURIComponent(siteId)}`;
+      canonicalUrl = `https://myfolio.tech/p/${encodeURIComponent(siteId)}`;
     }
 
     // Social image (candidate photo, or default 3D emblem)
-    const ogImage = data.photoUrl || data.avatarUrl || data.avatar || 'https://www.myfolio.tech/assets/og/og-default.jpg';
+    const ogImage = data.photoUrl || data.avatarUrl || data.avatar || 'https://myfolio.tech/assets/og/og-default.jpg';
 
     // Skills for knowsAbout schema
     const skills = Array.isArray(data.skills) 
@@ -96,7 +96,7 @@ class SeoMetadataSynthesizer {
   <!-- MyFolio Canonical & Social Meta -->
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="${canonicalUrl}">
-  <link rel="help" href="https://www.myfolio.tech/llms.txt" type="text/plain" title="LLM Knowledge File">
+  <link rel="help" href="https://myfolio.tech/llms.txt" type="text/plain" title="LLM Knowledge File">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">

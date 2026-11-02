@@ -11,16 +11,16 @@ const ROOT = path.join(__dirname, '..');
 
 // Route configurations
 const PUBLIC_INDEXABLE_PAGES = [
-  { file: 'web/index.html', canonical: 'https://www.myfolio.tech/' },
-  { file: 'web/about.html', canonical: 'https://www.myfolio.tech/about' },
-  { file: 'web/contact.html', canonical: 'https://www.myfolio.tech/contact' },
-  { file: 'web/faq.html', canonical: 'https://www.myfolio.tech/faq' },
-  { file: 'web/terms.html', canonical: 'https://www.myfolio.tech/terms' },
-  { file: 'web/privacy.html', canonical: 'https://www.myfolio.tech/privacy' },
-  { file: 'web/refund.html', canonical: 'https://www.myfolio.tech/refund' },
-  { file: 'web/studio.html', canonical: 'https://www.myfolio.tech/studio' },
-  { file: 'web/tom.html', canonical: 'https://www.myfolio.tech/tom' },
-  { file: 'web/slush.html', canonical: 'https://www.myfolio.tech/slush' }
+  { file: 'web/index.html', canonical: 'https://myfolio.tech/' },
+  { file: 'web/about.html', canonical: 'https://myfolio.tech/about' },
+  { file: 'web/contact.html', canonical: 'https://myfolio.tech/contact' },
+  { file: 'web/faq.html', canonical: 'https://myfolio.tech/faq' },
+  { file: 'web/terms.html', canonical: 'https://myfolio.tech/terms' },
+  { file: 'web/privacy.html', canonical: 'https://myfolio.tech/privacy' },
+  { file: 'web/refund.html', canonical: 'https://myfolio.tech/refund' },
+  { file: 'web/studio.html', canonical: 'https://myfolio.tech/studio' },
+  { file: 'web/tom.html', canonical: 'https://myfolio.tech/tom' },
+  { file: 'web/slush.html', canonical: 'https://myfolio.tech/slush' }
 ];
 
 const NON_INDEXABLE_PAGES = [
@@ -65,13 +65,13 @@ function runSeoAudit() {
   check(sitemapExists, 'sitemap.xml exists in web/');
 
   const sitemap = sitemapExists ? fs.readFileSync(path.join(ROOT, 'web/sitemap.xml'), 'utf8') : '';
-  check(sitemap.includes('<urlset') && sitemap.includes('https://www.myfolio.tech/'), 'sitemap.xml is valid XML and contains homepage');
-  check(sitemap.includes('https://www.myfolio.tech/studio') && sitemap.includes('https://www.myfolio.tech/pricing'), 'sitemap.xml includes /studio and /pricing');
+  check(sitemap.includes('<urlset') && sitemap.includes('https://myfolio.tech/'), 'sitemap.xml is valid XML and contains homepage');
+  check(sitemap.includes('https://myfolio.tech/studio') && sitemap.includes('https://myfolio.tech/pricing'), 'sitemap.xml includes /studio and /pricing');
 
   const llmsExists = fs.existsSync(path.join(ROOT, 'web/llms.txt'));
   check(llmsExists, 'llms.txt exists in web/ for AI search engines (GEO)');
   const llms = llmsExists ? fs.readFileSync(path.join(ROOT, 'web/llms.txt'), 'utf8') : '';
-  check(llms.includes('SOURCE CODE EXPORT') && llms.includes('https://www.myfolio.tech'), 'llms.txt contains authoritative facts and canonical URL');
+  check(llms.includes('SOURCE CODE EXPORT') && llms.includes('https://myfolio.tech'), 'llms.txt contains authoritative facts and canonical URL');
 
   // 2. Public Indexable Pages
   console.log('\n2. Public Marketing & Showcase Pages:');

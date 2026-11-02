@@ -15,21 +15,21 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
   <title>Pricing &amp; Plans — MyFolio 3D Portfolio Studio</title>
   <meta name="description" content="Transparent, accessible developer pricing for MyFolio. Full source code ZIP export, lifetime hosting, and branded custom subdomains at ₹149. Zero vendor lock-in.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <link rel="canonical" href="https://www.myfolio.tech/pricing">
+  <link rel="canonical" href="https://myfolio.tech/pricing">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.myfolio.tech/pricing">
+  <meta property="og:url" content="https://myfolio.tech/pricing">
   <meta property="og:title" content="Pricing &amp; Plans — MyFolio 3D Portfolio Studio">
   <meta property="og:description" content="Accessible developer pricing. Standalone source code ZIP export, lifetime hosting, and branded custom subdomains at ₹149. Zero vendor lock-in.">
-  <meta property="og:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-default.jpg">
   <meta property="og:site_name" content="MyFolio">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Pricing &amp; Plans — MyFolio 3D Portfolio Studio">
   <meta name="twitter:description" content="Transparent developer pricing. Standalone source code ZIP export and custom domains at ₹149.">
-  <meta name="twitter:image" content="https://www.myfolio.tech/assets/og/og-default.jpg">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-default.jpg">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -37,7 +37,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "MyFolio 3D Developer Portfolio",
-    "image": "https://www.myfolio.tech/assets/og/og-default.jpg",
+    "image": "https://myfolio.tech/assets/og/og-default.jpg",
     "description": "Interactive 3D WebGL developer portfolios with standalone source code ZIP export, live GitHub sync, and custom subdomains.",
     "brand": {
       "@type": "Brand",
@@ -50,7 +50,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
         "price": "0",
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock",
-        "url": "https://www.myfolio.tech/pricing"
+        "url": "https://myfolio.tech/pricing"
       },
       {
         "@type": "Offer",
@@ -58,7 +58,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
         "price": "149",
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock",
-        "url": "https://www.myfolio.tech/pricing"
+        "url": "https://myfolio.tech/pricing"
       },
       {
         "@type": "Offer",
@@ -66,7 +66,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
         "price": "149",
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock",
-        "url": "https://www.myfolio.tech/pricing"
+        "url": "https://myfolio.tech/pricing"
       }
     ]
   }
