@@ -435,6 +435,16 @@ app.get('/turbo-nav.js', (req, res) => {
   res.sendFile(tnPath);
 });
 
+// Dedicated Auth JS Route: Zero-cache to prevent stale client signup logic
+app.get(['/auth.js', '/web/auth.js'], (req, res) => {
+  const authPath = fs.existsSync(path.join(process.cwd(), 'web', 'auth.js'))
+    ? path.join(process.cwd(), 'web', 'auth.js')
+    : path.join(process.cwd(), 'public', 'auth.js');
+  res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.sendFile(authPath);
+});
+
 // Serve assets directly from web/assets and public/assets before domain rewrites
 app.use('/assets', express.static(path.join(process.cwd(), 'web', 'assets'), {
   setHeaders: (res, filePath) => {
