@@ -176,10 +176,13 @@ if (loginForm) {
         } catch (e) {}
       }
 
-      showAlert('Signed in successfully! Redirecting...', 'success');
+      showAlert('Signed in successfully! Redirecting to dashboard...', 'success');
       setTimeout(() => {
         const params = new URLSearchParams(window.location.search);
-        const redirect = params.get('redirect') || '/dashboard';
+        let redirect = params.get('redirect');
+        if (!redirect || redirect === '/studio' || redirect.startsWith('/studio')) {
+          redirect = '/dashboard';
+        }
         window.location.href = redirect.startsWith('/') ? redirect : '/dashboard';
       }, 600);
     } catch (err) {
@@ -431,9 +434,9 @@ if (otpForm) {
         } catch (e) {}
       }
 
-      showAlert('✅ Account verified and created successfully! Redirecting...', 'success');
+      showAlert('✅ Account verified and created successfully! Redirecting to dashboard...', 'success');
       setTimeout(() => {
-        window.location.href = data.redirectUrl || '/dashboard';
+        window.location.href = '/dashboard';
       }, 700);
     } catch (err) {
       showAlert(err.message, 'error');

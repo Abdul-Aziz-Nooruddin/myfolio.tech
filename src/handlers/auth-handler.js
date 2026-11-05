@@ -307,7 +307,7 @@ class AuthHandler {
         success: true,
         message: 'Account verified and created successfully.',
         user: sanitizedUser,
-        redirectUrl: '/studio'
+        redirectUrl: '/dashboard'
       });
     } catch (err) {
       console.error('[VERIFY SIGNUP OTP ERROR]', err);
