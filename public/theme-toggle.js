@@ -8,9 +8,8 @@
   function getPreferredTheme() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'light' || saved === 'dark') return saved;
-    // Default to dark for studio/dashboard/profile, light for slush
-    if (window.location.pathname.includes('slush')) return 'light';
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    // Default to dark obsidian luxury for dashboard, studio, and auth
+    return 'dark';
   }
 
   function applyTheme(theme) {

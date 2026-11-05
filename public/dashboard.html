@@ -1184,8 +1184,24 @@
     #toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
     @media (max-width: 900px) {
-      .active-portfolio-card { grid-template-columns: 1fr; }
-      .portfolio-side-viewport { border-left: none; border-top: 1px solid var(--dash-border); padding: 1.25rem; }
+      .active-portfolio-card {
+        display: flex !important;
+        flex-direction: column !important;
+        border-radius: 20px !important;
+        overflow: hidden !important;
+      }
+      .portfolio-side-viewport {
+        order: -1 !important;
+        border-left: none !important;
+        border-bottom: 1px solid var(--dash-border) !important;
+        border-top: none !important;
+        padding: 1rem !important;
+        background: var(--dash-surface-inner) !important;
+      }
+      .portfolio-main-pane {
+        order: 1 !important;
+        padding: 1.25rem 1rem !important;
+      }
       .real-kpi-grid { grid-template-columns: 1fr; }
     }
 
@@ -1196,23 +1212,45 @@
         max-width: 100vw !important;
       }
       .dash-container {
-        padding: 1rem 0.75rem !important;
+        padding: 1rem 0.85rem !important;
         width: 100% !important;
         max-width: 100vw !important;
         box-sizing: border-box;
       }
       .dash-topbar {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 12px !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
         padding-bottom: 0.5rem;
       }
       .topbar-actions {
-        width: 100% !important;
+        width: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
       }
-      .topbar-actions .mf-btn {
-        width: 100% !important;
+      .topbar-actions .theme-toggle-btn {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
         justify-content: center !important;
+        flex-shrink: 0 !important;
+      }
+      .topbar-actions .mf-btn-primary {
+        padding: 7px 12px !important;
+        font-size: 12px !important;
+        white-space: nowrap !important;
+      }
+      .portfolio-hero-text h1 {
+        font-size: 1.4rem !important;
+        letter-spacing: -0.02em !important;
+      }
+      .portfolio-hero-text p {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
       }
       .subdomain-display-box {
         flex-direction: column !important;
@@ -1228,6 +1266,7 @@
       .subdomain-button-group .mf-btn {
         flex: 1;
         justify-content: center;
+        min-height: 42px !important;
       }
       .portfolio-actions-dock {
         flex-direction: column !important;
@@ -1240,7 +1279,9 @@
         width: 100% !important;
         justify-content: center !important;
         text-align: center !important;
-        min-height: 42px;
+        min-height: 44px !important;
+        border-radius: 12px !important;
+        font-size: 13px !important;
       }
       .preview-drawer {
         width: 100vw !important;
@@ -1897,30 +1938,30 @@
 
       if (!target) {
         currentSiteId = null;
-        currentSiteUrl = '/studio';
-        if (heroHead) heroHead.textContent = 'Build Your Portfolio';
-        if (heroSub) heroSub.textContent = 'Launch the Web Studio to generate your personalized 3D WebGL developer portfolio from GitHub or resume.';
-        if (urlTextEl) { urlTextEl.textContent = 'Launch Studio to create your URL'; urlTextEl.href = '/studio'; }
-        if (openBtn) { openBtn.href = '/studio'; openBtn.innerHTML = '<span>Open Studio</span> &rarr;'; }
+        currentSiteUrl = '/jack-3d';
+        if (heroHead) heroHead.textContent = 'Build Your 3D Portfolio';
+        if (heroSub) heroSub.textContent = 'Launch Web Studio to generate your personalized 3D WebGL developer portfolio from GitHub or resume in 30 seconds.';
+        if (urlTextEl) { urlTextEl.textContent = 'Launch Studio to create your live URL'; urlTextEl.href = '/studio'; }
+        if (openBtn) { openBtn.href = '/studio'; openBtn.innerHTML = '<span>✦ Launch Studio & Generate (Free)</span> &rarr;'; }
         if (deleteBtn) deleteBtn.style.display = 'none';
         if (liveBadge) liveBadge.style.display = 'none';
         if (btnPublishPermanent) btnPublishPermanent.style.display = 'none';
-        if (addressPill) addressPill.textContent = 'studio.myfolio.tech';
+        if (addressPill) addressPill.textContent = 'myfolio.tech/jack-3d';
         if (cockpitUniverse) cockpitUniverse.textContent = '3D Creator Template';
         if (cockpitThumb) cockpitThumb.src = '/assets/templates/jack-3d-creator-hero.webp';
-        if (activeTimestamp) activeTimestamp.textContent = 'Ready to launch';
+        if (activeTimestamp) activeTimestamp.textContent = 'Template Ready to Build';
         if (previewExtLink) {
-          previewExtLink.href = '/studio';
-          previewExtLink.innerHTML = '<span>Open in Studio</span> &nearr;';
+          previewExtLink.href = '/jack-3d';
+          previewExtLink.innerHTML = '<span>Live Template</span> &nearr;';
         }
-        if (planBadge) { planBadge.textContent = 'NO BUILD YET'; planBadge.className = 'mf-badge mf-badge-secondary'; }
-        if (planStatusNote) planStatusNote.textContent = 'Awaiting generation in Studio';
+        if (planBadge) { planBadge.textContent = 'STARTER FREE'; planBadge.className = 'mf-badge mf-badge-accent'; }
+        if (planStatusNote) planStatusNote.textContent = '3 Free builds remaining';
         if (featuresGrid) {
           featuresGrid.innerHTML = `
-            <div class="cap-chip"><div class="cap-chip-label">Watermark</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Not Generated</div></div>
-            <div class="cap-chip"><div class="cap-chip-label">Hosting</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
-            <div class="cap-chip"><div class="cap-chip-label">Source Code</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
-            <div class="cap-chip"><div class="cap-chip-label">Studio Sync</div><div class="cap-chip-val" style="color:var(--dash-text-muted);">Standby</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Generation</div><div class="cap-chip-val" style="color:#38BDF8;">⚡ 30s Instant</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">3D WebGL</div><div class="cap-chip-val status-active">✓ 60-120 FPS</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Builds</div><div class="cap-chip-val status-active">3 Free Left</div></div>
+            <div class="cap-chip"><div class="cap-chip-label">Hosting</div><div class="cap-chip-val status-active">Global Edge</div></div>
           `;
         }
         return;
