@@ -304,7 +304,11 @@ async function executeSignup() {
       if (otpEmailEl) otpEmailEl.value = email;
       const instruction = document.getElementById('otpInstructionText');
       if (instruction) {
-        instruction.innerHTML = `We sent a 6-character code (letters and numbers) to <strong>${email}</strong>. Enter it below to create your account.`;
+        if (data.devOtp) {
+          instruction.innerHTML = `Your 6-character verification code is <strong style="font-size:16px; color:#13708e; background:#e0f2fe; padding:2px 8px; border-radius:4px; letter-spacing:2px;">${data.devOtp}</strong>. It has been filled below:`;
+        } else {
+          instruction.innerHTML = `We sent a 6-character code (letters and numbers) to <strong>${email}</strong>. Enter it below to create your account.`;
+        }
       }
       if (typeof window.switchAuthTab === 'function') {
         window.switchAuthTab('otp');
@@ -469,7 +473,11 @@ if (btnResendOtp) {
       }
 
       const otpInput = document.getElementById('otpInput');
+      const instruction = document.getElementById('otpInstructionText');
       if (data.devOtp) {
+        if (instruction) {
+          instruction.innerHTML = `Your fresh verification code is <strong style="font-size:16px; color:#13708e; background:#e0f2fe; padding:2px 8px; border-radius:4px; letter-spacing:2px;">${data.devOtp}</strong>. It has been filled below:`;
+        }
         showAlert(`Fresh verification code: <strong>${data.devOtp}</strong> (entered automatically below)`, 'success');
         if (otpInput) {
           otpInput.value = data.devOtp;

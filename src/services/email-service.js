@@ -67,9 +67,9 @@ class EmailService {
       pool: true,
       maxConnections: 3,
       maxMessages: 100,
-      connectionTimeout: 6000,
-      greetingTimeout: 6000,
-      socketTimeout: 8000,
+      connectionTimeout: 2500,
+      greetingTimeout: 2500,
+      socketTimeout: 3000,
       tls: {
         rejectUnauthorized: false
       }
@@ -267,8 +267,9 @@ class EmailService {
         providerUsed = 'smtp';
       } catch (smtpErr) {
         console.warn(`[EMAIL SMTP WARN] Port ${this.smtpPort} failed: ${smtpErr.message}`);
-        // Try fallback port (e.g. 587 if 465 failed)
-        if (this.fallbackTransporter) {
+        const isTimeout = /timeout/i.test(smtpErr.message) || smtpErr.code === 'ETIMEDOUT';
+        // Only attempt fallback port if it was NOT a timeout (if cloud firewall drops SMTP, all ports time out)
+        if (!isTimeout && this.fallbackTransporter) {
           try {
             await this.fallbackTransporter.sendMail({
               from: this.fromEmail,
