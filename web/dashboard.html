@@ -989,66 +989,78 @@
       font-weight: 700;
     }
 
-    /* Live Preview Drawer */
+    /* Live Preview Floating Device Simulator Modal */
     .preview-drawer-backdrop {
       position: fixed !important;
       inset: 0 !important;
-      background: rgba(0, 0, 0, 0.6) !important;
-      backdrop-filter: blur(8px) !important;
+      background: rgba(0, 0, 0, 0.78) !important;
+      backdrop-filter: blur(14px) !important;
       z-index: 10001 !important;
       display: none;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
     }
     .preview-drawer-backdrop.open { display: flex !important; }
 
     .preview-drawer {
-      width: 85vw;
+      width: 100%;
       max-width: 1100px;
-      height: 100%;
+      height: min(920px, calc(100vh - 40px));
       background: #0E0F0E;
-      border-left: 1px solid var(--dash-border);
+      border: 1px solid var(--dash-border);
+      border-radius: 24px;
       display: flex;
       flex-direction: column;
-      box-shadow: -16px 0 50px rgba(0, 0, 0, 0.8);
-      animation: drawerSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      animation: modalFadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
 
-    @keyframes drawerSlide {
-      from { transform: translateX(100%); }
-      to { transform: translateX(0); }
+    @keyframes modalFadeScale {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     .drawer-header {
-      padding: 14px 20px;
+      padding: 12px 20px;
       border-bottom: 1px solid var(--dash-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
       background: #141614;
+      flex-shrink: 0;
     }
 
     .device-switcher-dock {
       display: flex;
       align-items: center;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 9999px;
-      padding: 2px;
+      padding: 3px;
     }
 
     .device-btn {
       background: transparent;
       border: none;
       color: var(--dash-text-secondary);
-      font-size: 11.5px;
-      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
       border-radius: 9999px;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .device-btn:hover {
+      color: #F4F1E8;
     }
     .device-btn.active {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.16);
       color: #F4F1E8;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
     .drawer-iframe-wrap {
@@ -1056,27 +1068,97 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #070707;
-      padding: 20px;
+      background: radial-gradient(circle at center, #141714 0%, #070807 100%);
+      padding: 24px;
       overflow: hidden;
+      position: relative;
     }
 
     .device-viewport-frame {
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Desktop Viewport */
+    .device-viewport-frame.desktop {
       width: 100%;
       height: 100%;
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: width 0.3s ease, height 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
     }
-    .device-viewport-frame.tablet { width: 768px; height: 92%; border-radius: 20px; }
-    .device-viewport-frame.mobile { width: 390px; height: 844px; max-height: 95%; border-radius: 36px; border: 4px solid #242624; }
+
+    /* Tablet Viewport */
+    .device-viewport-frame.tablet {
+      width: 768px;
+      height: min(840px, 94%);
+      max-width: 95%;
+      border: 12px solid #1c1d1c;
+      border-radius: 32px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    /* Floating Authentic Smartphone Viewport */
+    .device-viewport-frame.mobile {
+      width: 390px;
+      height: min(844px, 96%);
+      max-width: 95%;
+      border: 11px solid #1a1b1a;
+      border-radius: 48px;
+      box-shadow:
+        0 30px 90px -10px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    /* Dynamic Island pill on mobile */
+    .device-viewport-frame.mobile::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 22px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    /* Camera lens dot inside dynamic island */
+    .device-viewport-frame.mobile::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: calc(50% + 30px);
+      width: 8px;
+      height: 8px;
+      background: #0a0a16;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      z-index: 11;
+      pointer-events: none;
+    }
+
+    .device-viewport-frame.desktop::before,
+    .device-viewport-frame.desktop::after,
+    .device-viewport-frame.tablet::before,
+    .device-viewport-frame.tablet::after {
+      display: none;
+    }
 
     .drawer-iframe {
       width: 100%;
       height: 100%;
       border: none;
+      background: #000;
+      display: block;
     }
 
     /* Toast Notification */
@@ -1286,7 +1368,8 @@
               <a href="/studio" class="mf-btn mf-btn-secondary mf-btn-sm" id="btnEditStudio">
                 <span>Edit in Studio</span> &rarr;
               </a>
-              <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="openLiveDrawer(currentSiteUrl)">
+              <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="openLiveDrawer(currentSiteUrl, 'mobile')" title="Preview portfolio inside authentic mobile phone simulator">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
                 <span>Inspect on Mobile</span>
               </button>
               <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="handleExportZipClick()" title="Download offline source code">
@@ -1590,24 +1673,24 @@
     <div class="preview-drawer" onclick="event.stopPropagation()">
       <div class="drawer-header">
         <div style="display:flex; align-items:center; gap:12px;">
-          <strong style="font-size:14px; color:#F4F1E8;">Device Inspector</strong>
-          <span class="mf-badge mf-badge-success">LIVE</span>
+          <strong style="font-size:14px; color:#F4F1E8;">Mobile Device Inspector</strong>
+          <span class="mf-badge mf-badge-success" id="deviceDimensionsBadge">390 × 844 px • iPhone / Mobile</span>
         </div>
 
         <div class="device-switcher-dock">
-          <button type="button" class="device-btn active" onclick="setDrawerDevice('desktop', this)">Desktop</button>
-          <button type="button" class="device-btn" onclick="setDrawerDevice('tablet', this)">Tablet</button>
-          <button type="button" class="device-btn" onclick="setDrawerDevice('mobile', this)">Mobile</button>
+          <button type="button" class="device-btn active" data-device="mobile" onclick="setDrawerDevice('mobile', this)">📱 Mobile</button>
+          <button type="button" class="device-btn" data-device="tablet" onclick="setDrawerDevice('tablet', this)">📟 Tablet</button>
+          <button type="button" class="device-btn" data-device="desktop" onclick="setDrawerDevice('desktop', this)">💻 Desktop</button>
         </div>
 
         <div style="display:flex; gap:8px;">
           <a href="#" target="_blank" id="drawerOpenExternal" class="mf-btn mf-btn-ghost mf-btn-sm">&nearr; Open Tab</a>
-          <button type="button" class="mf-btn mf-btn-secondary mf-btn-sm" onclick="closeLiveDrawer()">Close</button>
+          <button type="button" class="mf-btn mf-btn-secondary mf-btn-sm" onclick="closeLiveDrawer()">✕ Close</button>
         </div>
       </div>
 
       <div class="drawer-iframe-wrap">
-        <div class="device-viewport-frame" id="deviceViewportFrame">
+        <div class="device-viewport-frame mobile" id="deviceViewportFrame">
           <iframe id="drawerIframe" class="drawer-iframe" src="about:blank"></iframe>
         </div>
       </div>
@@ -1657,7 +1740,23 @@
         }
 
         if (meResult.status === 'fulfilled' && meResult.value) {
-          currentUser = meResult.value.user || meResult.value;
+          const freshUser = meResult.value.user || meResult.value;
+          const freshEmail = (freshUser?.email || '').toLowerCase().trim();
+          const oldEmail = (currentUser?.email || '').toLowerCase().trim();
+
+          // Account mismatch check: If different account logged in, purge stale cache immediately
+          if (freshEmail && oldEmail && freshEmail !== oldEmail) {
+            console.log('[DASHBOARD] Account switch detected. Purging previous account cache.');
+            localStorage.removeItem('myfolio_portfolios_cache');
+            localStorage.removeItem('myfolio_selected_portfolio_id');
+            localStorage.removeItem('myfolio_active_vip_site');
+            localStorage.removeItem('myfolio_dash_data');
+            localStorage.removeItem('myfolio_generated_projects_v1');
+            cachedDashData = null;
+            selectedSiteId = null;
+          }
+
+          currentUser = freshUser;
           try { localStorage.setItem('myfolio_user', JSON.stringify(currentUser)); } catch (e) {}
         }
 
@@ -1810,6 +1909,10 @@
         if (cockpitUniverse) cockpitUniverse.textContent = '3D Creator Template';
         if (cockpitThumb) cockpitThumb.src = '/assets/templates/jack-3d-creator-hero.webp';
         if (activeTimestamp) activeTimestamp.textContent = 'Ready to launch';
+        if (previewExtLink) {
+          previewExtLink.href = '/studio';
+          previewExtLink.innerHTML = '<span>Open in Studio</span> &nearr;';
+        }
         if (planBadge) { planBadge.textContent = 'NO BUILD YET'; planBadge.className = 'mf-badge mf-badge-secondary'; }
         if (planStatusNote) planStatusNote.textContent = 'Awaiting generation in Studio';
         if (featuresGrid) {
@@ -1963,7 +2066,7 @@
     }
 
     function handlePreviewFrameClick() {
-      if (currentSiteUrl) {
+      if (currentSiteId && currentSiteUrl && currentSiteUrl !== '/studio') {
         window.open(currentSiteUrl, '_blank');
       } else {
         window.location.href = '/studio';
@@ -2344,14 +2447,24 @@
       }
     }
 
-    // Viewport Drawer
-    function openLiveDrawer(url) {
+    // Viewport Drawer & Mobile Phone Simulator
+    function openLiveDrawer(url, preferredDevice = 'mobile') {
       const drawer = document.getElementById('previewDrawerBackdrop');
       const iframe = document.getElementById('drawerIframe');
       const ext = document.getElementById('drawerOpenExternal');
-      if (iframe) iframe.src = url || currentSiteUrl;
-      if (ext) ext.href = url || currentSiteUrl;
+      
+      let targetUrl = url || currentSiteUrl;
+      // If user hasn't generated a site yet, don't load the Studio builder inside a phone mockup!
+      // Load the authentic 3D mobile template preview so they see how it looks on mobile!
+      if (!targetUrl || targetUrl === '/studio' || targetUrl.includes('/studio')) {
+        targetUrl = '/jack-3d';
+      }
+
+      if (iframe) iframe.src = targetUrl;
+      if (ext) ext.href = targetUrl;
       if (drawer) drawer.classList.add('open');
+
+      setDrawerDevice(preferredDevice || 'mobile');
     }
 
     function closeLiveDrawer(e) {
@@ -2363,10 +2476,18 @@
 
     function setDrawerDevice(device, btn) {
       const frame = document.getElementById('deviceViewportFrame');
+      const badge = document.getElementById('deviceDimensionsBadge');
       if (!frame) return;
       frame.className = `device-viewport-frame ${device}`;
-      document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+      document.querySelectorAll('.device-btn').forEach(b => {
+        const isTarget = btn ? b === btn : b.getAttribute('data-device') === device;
+        b.classList.toggle('active', isTarget);
+      });
+      if (badge) {
+        if (device === 'mobile') badge.textContent = '390 × 844 px • iPhone / Mobile';
+        else if (device === 'tablet') badge.textContent = '768 × 1024 px • iPad / Tablet';
+        else badge.textContent = 'Full Desktop Viewport';
+      }
     }
 
     window.addEventListener('keydown', (e) => {

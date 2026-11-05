@@ -920,6 +920,11 @@ async function sidebarSignOut() {
     localStorage.removeItem('myfolio_user');
     localStorage.removeItem('myfolio_vip_admin');
     localStorage.removeItem('myfolio_active_vip_site');
+    localStorage.removeItem('myfolio_portfolios_cache');
+    localStorage.removeItem('myfolio_selected_portfolio_id');
+    localStorage.removeItem('myfolio_dash_data');
+    localStorage.removeItem('myfolio_generated_projects_v1');
+    localStorage.removeItem('myfolio_weekly_allowance_v1');
   } catch (e) {}
   window.location.href = '/auth';
 }

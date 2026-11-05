@@ -164,9 +164,19 @@ if (loginForm) {
 
       if (data.user) {
         try {
+          const prevRaw = localStorage.getItem('myfolio_user');
+          const prevEmail = prevRaw ? (JSON.parse(prevRaw)?.email || '').toLowerCase() : '';
+          const newEmail = (data.user.email || '').toLowerCase().trim();
+          if (prevEmail && prevEmail !== newEmail) {
+            localStorage.removeItem('myfolio_portfolios_cache');
+            localStorage.removeItem('myfolio_selected_portfolio_id');
+            localStorage.removeItem('myfolio_active_vip_site');
+            localStorage.removeItem('myfolio_dash_data');
+            localStorage.removeItem('myfolio_generated_projects_v1');
+            localStorage.removeItem('myfolio_weekly_allowance_v1');
+          }
           localStorage.setItem('myfolio_user', JSON.stringify(data.user));
-          const uEmail = (data.user.email || '').toLowerCase().trim();
-          if (uEmail === 'abdulaziznoor9876@gmail.com') {
+          if (newEmail === 'abdulaziznoor9876@gmail.com') {
             localStorage.setItem('myfolio_vip_admin', 'true');
           } else {
             localStorage.removeItem('myfolio_vip_admin');
@@ -426,10 +436,24 @@ if (otpForm) {
 
       if (data.user) {
         try {
+          const prevRaw = localStorage.getItem('myfolio_user');
+          const prevEmail = prevRaw ? (JSON.parse(prevRaw)?.email || '').toLowerCase() : '';
+          const newEmail = (data.user.email || '').toLowerCase().trim();
+          if (prevEmail && prevEmail !== newEmail) {
+            localStorage.removeItem('myfolio_portfolios_cache');
+            localStorage.removeItem('myfolio_selected_portfolio_id');
+            localStorage.removeItem('myfolio_active_vip_site');
+            localStorage.removeItem('myfolio_dash_data');
+            localStorage.removeItem('myfolio_generated_projects_v1');
+            localStorage.removeItem('myfolio_weekly_allowance_v1');
+          }
           localStorage.setItem('myfolio_user', JSON.stringify(data.user));
-          const uEmail = (data.user.email || '').toLowerCase().trim();
-          if (uEmail === 'abdulaziznoor9876@gmail.com') {
+          if (newEmail === 'abdulaziznoor9876@gmail.com') {
             localStorage.setItem('myfolio_vip_admin', 'true');
+          } else {
+            localStorage.removeItem('myfolio_vip_admin');
+            localStorage.removeItem('myfolio_active_vip_site');
+            localStorage.removeItem('myfolio_weekly_allowance_v1');
           }
         } catch (e) {}
       }
