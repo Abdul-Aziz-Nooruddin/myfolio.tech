@@ -102,25 +102,51 @@ class EmailService {
 
   async sendMailViaHttp({ to, subject, html, text, replyTo }) {
     const fromParsed = EmailService.parseFrom(this.fromEmail);
+    const cleanKey = (this.resendApiKey || '').trim().replace(/^["']|["']$/g, '');
 
     if (this.resendApiKey) {
-      const response = await fetch('https://api.resend.com/emails', {
+      let fromAddress = process.env.RESEND_FROM_EMAIL || this.fromEmail;
+
+      const payload = {
+        from: fromAddress,
+        to: [to],
+        subject,
+        html,
+        text: text || html.replace(/<[^>]+>/g, ' '),
+        reply_to: replyTo || undefined
+      };
+
+      let response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.resendApiKey}`,
+          'Authorization': `Bearer ${cleanKey}`,
+          'User-Agent': 'myfolio-platform/1.0',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          from: this.fromEmail,
-          to: [to],
-          subject,
-          html,
-          text: text || html.replace(/<[^>]+>/g, ' '),
-          reply_to: replyTo || undefined
-        }),
+        body: JSON.stringify(payload),
         signal: AbortSignal.timeout(8000)
       });
-      const data = await response.json().catch(() => ({}));
+      let data = await response.json().catch(() => ({}));
+
+      // If custom domain is not yet verified in Resend, retry with onboarding@resend.dev
+      if (!response.ok && /domain.*not.*verified|validation_error|forbidden/i.test(data.message || data.error?.message || '')) {
+        console.warn(`[RESEND DOMAIN UNVERIFIED] ${fromAddress} not verified in Resend. Retrying with onboarding@resend.dev...`);
+        response = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${cleanKey}`,
+            'User-Agent': 'myfolio-platform/1.0',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...payload,
+            from: 'MyFolio <onboarding@resend.dev>'
+          }),
+          signal: AbortSignal.timeout(8000)
+        });
+        data = await response.json().catch(() => ({}));
+      }
+
       if (!response.ok) {
         throw new Error(data.message || data.error?.message || `Resend error (${response.status})`);
       }
@@ -128,10 +154,12 @@ class EmailService {
     }
 
     if (this.brevoApiKey) {
+      const cleanBrevoKey = (this.brevoApiKey || '').trim().replace(/^["']|["']$/g, '');
       const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
-          'api-key': this.brevoApiKey,
+          'api-key': cleanBrevoKey,
+          'User-Agent': 'myfolio-platform/1.0',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -152,10 +180,12 @@ class EmailService {
     }
 
     if (this.sendgridApiKey) {
+      const cleanSendgridKey = (this.sendgridApiKey || '').trim().replace(/^["']|["']$/g, '');
       const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.sendgridApiKey}`,
+          'Authorization': `Bearer ${cleanSendgridKey}`,
+          'User-Agent': 'myfolio-platform/1.0',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -182,14 +212,33 @@ class EmailService {
   async verifyConnection() {
     if (this.resendApiKey) {
       try {
-        const res = await fetch('https://api.resend.com/api-keys', {
-          headers: { 'Authorization': `Bearer ${this.resendApiKey}` },
+        const cleanKey = (this.resendApiKey || '').trim().replace(/^["']|["']$/g, '');
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${cleanKey}`,
+            'User-Agent': 'myfolio-platform/1.0',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'onboarding@resend.dev',
+            to: ['delivered@resend.dev'],
+            subject: 'Verification probe',
+            html: '<p>probe</p>'
+          }),
           signal: AbortSignal.timeout(5000)
         });
+        const data = await res.json().catch(() => ({}));
         if (res.ok) {
-          return { success: true, provider: 'resend', transport: 'https' };
+          return { success: true, provider: 'resend', transport: 'https', id: data.id };
         }
-        return { success: false, provider: 'resend', transport: 'https', error: `Resend auth failed (${res.status})` };
+        return {
+          success: false,
+          provider: 'resend',
+          transport: 'https',
+          status: res.status,
+          error: data.message || data.error?.message || `Resend auth error (${res.status})`
+        };
       } catch (e) {
         return { success: false, provider: 'resend', transport: 'https', error: e.message };
       }
