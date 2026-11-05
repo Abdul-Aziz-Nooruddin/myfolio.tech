@@ -302,7 +302,9 @@ class EmailService {
     }
 
     // 2. Fall back to / try SMTP if not yet sent and transporter is configured
-    if (!sendSuccess && this.hasSmtp && this.transporter) {
+    // On Render free tier, outbound SMTP is blocked at the firewall level. If an HTTP provider was configured,
+    // skip SMTP fallback to avoid wasting seconds waiting on blocked sockets.
+    if (!sendSuccess && this.hasSmtp && this.transporter && (!process.env.RENDER || !this.hasHttpProvider)) {
       try {
         await this.transporter.sendMail({
           from: this.fromEmail,
