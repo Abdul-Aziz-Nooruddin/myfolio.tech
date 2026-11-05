@@ -9,35 +9,30 @@ const nodemailer = require('nodemailer');
 class EmailService {
   constructor(dbService = null) {
     this.db = dbService;
-    this.fromEmail = process.env.FROM_EMAIL || 'MyFolio <aziz@myfolio.tech>';
-    
-    // Support full SMTP settings, Titan Email, or direct Gmail credentials
-    const smtpHost = process.env.SMTP_HOST || process.env.SMTP_SERVER || process.env.MAIL_HOST || process.env.EMAIL_HOST || process.env.TITAN_HOST;
-    const smtpUser = process.env.SMTP_USER || process.env.SMTP_USERNAME || process.env.MAIL_USER || process.env.EMAIL_USER || process.env.TITAN_USER || process.env.SUPPORT_EMAIL;
-    const smtpPass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.MAIL_PASS || process.env.MAIL_PASSWORD || process.env.EMAIL_PASS || process.env.TITAN_PASS;
-    const smtpPort = parseInt(process.env.SMTP_PORT || process.env.MAIL_PORT || process.env.EMAIL_PORT || '465', 10);
-    const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+
+    // 1. HTTP-based Email APIs (Port 443 HTTPS - immune to cloud host SMTP port blocking)
+    this.resendApiKey = process.env.RESEND_API_KEY || null;
+    this.brevoApiKey = process.env.BREVO_API_KEY || null;
+    this.sendgridApiKey = process.env.SENDGRID_API_KEY || null;
+    this.hasHttpProvider = Boolean(this.resendApiKey || this.brevoApiKey || this.sendgridApiKey);
+
+    // 2. SMTP Settings (Titan Email, Gmail, or Custom SMTP)
+    this.smtpHost = process.env.SMTP_HOST || process.env.SMTP_SERVER || process.env.MAIL_HOST || process.env.EMAIL_HOST || process.env.TITAN_HOST;
+    this.smtpUser = process.env.SMTP_USER || process.env.SMTP_USERNAME || process.env.MAIL_USER || process.env.EMAIL_USER || process.env.TITAN_USER || process.env.SUPPORT_EMAIL;
+    this.smtpPass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.MAIL_PASS || process.env.MAIL_PASSWORD || process.env.EMAIL_PASS || process.env.TITAN_PASS;
+    this.smtpPort = parseInt(process.env.SMTP_PORT || process.env.MAIL_PORT || process.env.EMAIL_PORT || '465', 10);
+    this.smtpSecure = process.env.SMTP_SECURE === 'true' || this.smtpPort === 465;
 
     // Sender MUST match authenticated mailbox in Titan Email / SMTP providers
-    this.fromEmail = process.env.FROM_EMAIL || (smtpUser ? `MyFolio <${smtpUser}>` : 'MyFolio <support@myfolio.tech>');
+    this.fromEmail = process.env.FROM_EMAIL || (this.smtpUser ? `MyFolio <${this.smtpUser}>` : 'MyFolio <support@myfolio.tech>');
 
-    if (smtpHost && smtpUser && smtpPass) {
-      this.transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpSecure,
-        auth: {
-          user: smtpUser,
-          pass: smtpPass
-        },
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 15000,
-        tls: {
-          rejectUnauthorized: false
-        }
-      });
-      this.isConfigured = true;
+    if (this.smtpHost && this.smtpUser && this.smtpPass) {
+      this.transporter = this._createSmtpTransport(this.smtpHost, this.smtpPort, this.smtpSecure);
+      // Secondary fallback transport on alternate port (587 if 465, or 465 if 587)
+      const altPort = this.smtpPort === 465 ? 587 : 465;
+      const altSecure = altPort === 465;
+      this.fallbackTransporter = this._createSmtpTransport(this.smtpHost, altPort, altSecure);
+      this.hasSmtp = true;
     } else if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -45,26 +40,187 @@ class EmailService {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD
         },
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 15000
+        connectionTimeout: 6000,
+        greetingTimeout: 6000,
+        socketTimeout: 8000
       });
-      this.isConfigured = true;
+      this.fallbackTransporter = null;
+      this.hasSmtp = true;
     } else {
       this.transporter = null;
-      this.isConfigured = false;
+      this.fallbackTransporter = null;
+      this.hasSmtp = false;
     }
+
+    this.isConfigured = this.hasHttpProvider || this.hasSmtp;
+  }
+
+  _createSmtpTransport(host, port, secure) {
+    return nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth: {
+        user: this.smtpUser,
+        pass: this.smtpPass
+      },
+      pool: true,
+      maxConnections: 3,
+      maxMessages: 100,
+      connectionTimeout: 6000,
+      greetingTimeout: 6000,
+      socketTimeout: 8000,
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+  }
+
+  static parseFrom(fromStr) {
+    if (!fromStr || typeof fromStr !== 'string') return { name: 'MyFolio', email: 'support@myfolio.tech' };
+    const match = fromStr.match(/^\s*(?:"?([^"<]+)"?\s*)?<([^>]+)>\s*$/);
+    if (match) {
+      return {
+        name: (match[1] || 'MyFolio').trim(),
+        email: match[2].trim()
+      };
+    }
+    return { name: 'MyFolio', email: fromStr.trim() };
+  }
+
+  static formatDeliveryError(err) {
+    if (!err) return 'Email delivery failed';
+    const msg = err.message || String(err);
+    const isTimeout = /timeout/i.test(msg) || err.code === 'ETIMEDOUT' || err.code === 'ESOCKETTIMEDOUT';
+    const isConnRefused = err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND';
+
+    if ((isTimeout || isConnRefused) && (process.env.RENDER || process.env.NODE_ENV === 'production')) {
+      return `Connection timeout (Outbound SMTP ports 465/587 blocked by cloud host. Add RESEND_API_KEY to Render environment variables or upgrade instance plan)`;
+    }
+    return msg;
+  }
+
+  async sendMailViaHttp({ to, subject, html, text, replyTo }) {
+    const fromParsed = EmailService.parseFrom(this.fromEmail);
+
+    if (this.resendApiKey) {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: this.fromEmail,
+          to: [to],
+          subject,
+          html,
+          text: text || html.replace(/<[^>]+>/g, ' '),
+          reply_to: replyTo || undefined
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.message || data.error?.message || `Resend error (${response.status})`);
+      }
+      return { success: true, id: data.id, provider: 'resend' };
+    }
+
+    if (this.brevoApiKey) {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': this.brevoApiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: fromParsed.name, email: fromParsed.email },
+          to: [{ email: to }],
+          subject,
+          htmlContent: html,
+          textContent: text || html.replace(/<[^>]+>/g, ' '),
+          replyTo: replyTo ? { email: replyTo } : undefined
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.message || `Brevo error (${response.status})`);
+      }
+      return { success: true, id: data.messageId, provider: 'brevo' };
+    }
+
+    if (this.sendgridApiKey) {
+      const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.sendgridApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          personalizations: [{ to: [{ email: to }] }],
+          from: { email: fromParsed.email, name: fromParsed.name },
+          subject,
+          content: [
+            { type: 'text/html', value: html },
+            ...(text ? [{ type: 'text/plain', value: text }] : [])
+          ]
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.errors?.[0]?.message || `SendGrid error (${response.status})`);
+      }
+      return { success: true, provider: 'sendgrid' };
+    }
+
+    throw new Error('No HTTP email provider configured');
   }
 
   async verifyConnection() {
+    if (this.resendApiKey) {
+      try {
+        const res = await fetch('https://api.resend.com/api-keys', {
+          headers: { 'Authorization': `Bearer ${this.resendApiKey}` },
+          signal: AbortSignal.timeout(5000)
+        });
+        if (res.ok) {
+          return { success: true, provider: 'resend', transport: 'https' };
+        }
+        return { success: false, provider: 'resend', transport: 'https', error: `Resend auth failed (${res.status})` };
+      } catch (e) {
+        return { success: false, provider: 'resend', transport: 'https', error: e.message };
+      }
+    }
+
+    if (this.brevoApiKey) {
+      return { success: true, provider: 'brevo', transport: 'https' };
+    }
+
+    if (this.sendgridApiKey) {
+      return { success: true, provider: 'sendgrid', transport: 'https' };
+    }
+
     if (!this.transporter) {
       return { success: false, error: 'Transporter not configured' };
     }
+
     try {
-      await this.transporter.verify();
-      return { success: true };
+      await Promise.race([
+        this.transporter.verify(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 5000))
+      ]);
+      return { success: true, provider: 'smtp', port: this.smtpPort };
     } catch (err) {
-      return { success: false, error: err.message };
+      const formatted = EmailService.formatDeliveryError(err);
+      return {
+        success: false,
+        provider: 'smtp',
+        error: formatted,
+        isRenderBlocked: Boolean(process.env.RENDER || process.env.NODE_ENV === 'production')
+      };
     }
   }
 
@@ -80,10 +236,24 @@ class EmailService {
 
     console.log(`[EMAIL DISPATCH] To: ${to} | Subject: "${subject}" | Type: ${meta.sequence_type || 'system'}`);
 
-    let sendSuccess = true;
+    let sendSuccess = false;
     let errorMessage = null;
+    let providerUsed = null;
 
-    if (this.isConfigured && this.transporter) {
+    // 1. Prioritize HTTP Email API if configured (HTTPS Port 443 - zero block on Render / cloud)
+    if (this.hasHttpProvider) {
+      try {
+        const httpRes = await this.sendMailViaHttp({ to, subject, html, text, replyTo });
+        sendSuccess = true;
+        providerUsed = httpRes.provider;
+      } catch (httpErr) {
+        console.warn('[EMAIL HTTP ERROR] Failed via HTTP API:', httpErr.message);
+        errorMessage = httpErr.message;
+      }
+    }
+
+    // 2. Fall back to / try SMTP if not yet sent and transporter is configured
+    if (!sendSuccess && this.hasSmtp && this.transporter) {
       try {
         await this.transporter.sendMail({
           from: this.fromEmail,
@@ -93,15 +263,36 @@ class EmailService {
           text: text || html.replace(/<[^>]+>/g, ' '),
           replyTo: replyTo || undefined
         });
-      } catch (err) {
-        console.error(`[EMAIL ERROR] Failed to send email to ${to}:`, err.message);
-        sendSuccess = false;
-        errorMessage = err.message;
+        sendSuccess = true;
+        providerUsed = 'smtp';
+      } catch (smtpErr) {
+        console.warn(`[EMAIL SMTP WARN] Port ${this.smtpPort} failed: ${smtpErr.message}`);
+        // Try fallback port (e.g. 587 if 465 failed)
+        if (this.fallbackTransporter) {
+          try {
+            await this.fallbackTransporter.sendMail({
+              from: this.fromEmail,
+              to,
+              subject,
+              html,
+              text: text || html.replace(/<[^>]+>/g, ' '),
+              replyTo: replyTo || undefined
+            });
+            sendSuccess = true;
+            providerUsed = 'smtp_fallback';
+          } catch (altErr) {
+            console.error(`[EMAIL ERROR] Fallback SMTP also failed: ${altErr.message}`);
+            errorMessage = EmailService.formatDeliveryError(smtpErr);
+          }
+        } else {
+          errorMessage = EmailService.formatDeliveryError(smtpErr);
+        }
       }
-    } else {
-      console.warn(`[EMAIL WARNING] Cannot send email to ${to}: SMTP credentials are not configured in process.env!`);
-      sendSuccess = false;
-      errorMessage = 'SMTP credentials not configured in production environment variables';
+    }
+
+    if (!this.isConfigured) {
+      console.warn(`[EMAIL WARNING] Cannot send email to ${to}: No email provider configured!`);
+      errorMessage = 'No email credentials (RESEND_API_KEY, BREVO_API_KEY, or SMTP) configured in environment';
     }
 
     if (this.db && meta.user_id) {
@@ -120,7 +311,7 @@ class EmailService {
       }
     }
 
-    return { success: sendSuccess, error: errorMessage };
+    return { success: sendSuccess, error: errorMessage, provider: providerUsed };
   }
 
   // =========================================================================

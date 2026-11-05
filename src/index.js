@@ -103,16 +103,17 @@ app.all(['/health', '/healthz', '/api/health', '/healthcheck', '/ping', '/ready'
   const smtpUser = Boolean(process.env.SMTP_USER || process.env.SMTP_USERNAME || process.env.MAIL_USER || process.env.EMAIL_USER || process.env.TITAN_USER || process.env.SUPPORT_EMAIL);
   const smtpPass = Boolean(process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.MAIL_PASS || process.env.MAIL_PASSWORD || process.env.EMAIL_PASS || process.env.TITAN_PASS);
   const gmailConfigured = Boolean(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD);
-  const emailConfigured = (smtpHost && smtpUser && smtpPass) || gmailConfigured;
+  const httpEmailConfigured = Boolean(process.env.RESEND_API_KEY || process.env.BREVO_API_KEY || process.env.SENDGRID_API_KEY);
+  const emailConfigured = (smtpHost && smtpUser && smtpPass) || gmailConfigured || httpEmailConfigured;
 
   // Safe list of configured key names (names only, no secrets or values)
   const detectedEmailKeys = Object.keys(process.env).filter(k => 
-    /^(SMTP|MAIL|TITAN|EMAIL|GMAIL)/i.test(k)
+    /^(SMTP|MAIL|TITAN|EMAIL|GMAIL|RESEND|BREVO|SENDGRID)/i.test(k)
   );
 
   res.status(200).json({
     status: 'healthy',
-    version: 'v1.6.2-tdz-verified',
+    version: 'v1.6.3-email-resilience',
     ok: true,
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
@@ -121,6 +122,7 @@ app.all(['/health', '/healthz', '/api/health', '/healthcheck', '/ping', '/ready'
       has_host: smtpHost,
       has_user: smtpUser,
       has_pass: smtpPass,
+      has_http_provider: httpEmailConfigured,
       detectedKeys: detectedEmailKeys
     }
   });
