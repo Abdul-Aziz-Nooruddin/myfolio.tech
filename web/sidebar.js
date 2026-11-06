@@ -148,6 +148,26 @@ function injectSidebarStyles() {
       transform: scale(1.05);
     }
 
+    .mobile-sidebar-toggle-btn {
+      background: #181818;
+      border: 1px solid #282828;
+      border-radius: 8px;
+      color: #F4F1E8;
+      padding: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .mobile-sidebar-toggle-btn {
+      background: #F1F5F9 !important;
+      border-color: #E2E8F0 !important;
+      color: #0F172A !important;
+    }
+
     [data-theme="light"] .theme-toggle-btn {
       background: #F1F5F9 !important;
       border-color: #E2E8F0 !important;
@@ -494,18 +514,22 @@ function injectSidebarStyles() {
       .app-shell-layout {
         flex-direction: column !important;
         width: 100% !important;
+        max-width: 100vw !important;
         min-width: 0 !important;
         overflow-x: hidden !important;
       }
 
       #sidebarMount {
         width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
         display: block !important;
         flex: 0 0 auto !important;
       }
 
       .app-main-content {
         width: 100% !important;
+        max-width: 100vw !important;
         min-width: 0 !important;
         flex: 1 1 auto !important;
         overflow-x: hidden !important;
@@ -522,11 +546,12 @@ function injectSidebarStyles() {
         z-index: 1000 !important;
         transform: translateX(-100%) !important;
         transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: none !important;
       }
 
       .app-sidebar.mobile-open {
         transform: translateX(0) !important;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6) !important;
       }
 
       .mobile-top-bar {
@@ -536,6 +561,8 @@ function injectSidebarStyles() {
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
         height: 56px !important;
         z-index: 990 !important;
         align-items: center !important;
@@ -957,7 +984,7 @@ function initUniversalSidebar(activePage) {
           ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>'
           : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'}
       </button>
-      <button id="sidebarToggleBtn" style="background:#181818; border:1px solid #282828; border-radius:8px; color:#F4F1E8; padding:7px; cursor:pointer;" onclick="toggleAppSidebar()" aria-label="Toggle Navigation">
+      <button id="sidebarToggleBtn" class="mobile-sidebar-toggle-btn" onclick="toggleAppSidebar()" aria-label="Toggle Navigation">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
     </div>
