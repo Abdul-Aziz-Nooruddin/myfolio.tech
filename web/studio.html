@@ -3404,6 +3404,7 @@
             syncManualToAdvancedEditor();
             updateConfirmationChecks();
             showToast(`GitHub synchronized: @${data.resolvedUsername} (${data.publicRepositories} repos)`, 'sparkle');
+            window.dispatchEvent(new CustomEvent('github-resolved', { detail: data }));
           }
         } catch (err) {
           if (statusEl) statusEl.style.display = 'none';
@@ -4464,6 +4465,31 @@
         iframe.src = '/jack-3d?embed=1';
       }
       applyViewportScaling();
+
+      // Check for incoming GitHub username parameter from Hero Instant Input
+      const githubParam = urlParams.get('github') || urlParams.get('gh');
+      if (githubParam) {
+        const cleanUser = githubParam.trim().replace(/^@+/, '');
+        const ghInput = document.getElementById('ghUsername');
+        if (ghInput) {
+          ghInput.value = cleanUser;
+
+          if (urlParams.get('autobuild') === '1' || urlParams.get('auto') === '1') {
+            const onResolved = () => {
+              window.removeEventListener('github-resolved', onResolved);
+              showToast(`Auto-synthesizing 3D Portfolio for @${cleanUser}...`, 'sparkle');
+              setTimeout(() => {
+                const form = document.getElementById('portfolioGenerationForm');
+                if (form) handleStudioGenerate({ preventDefault: () => {} });
+              }, 400);
+            };
+            window.addEventListener('github-resolved', onResolved);
+          }
+
+          onGhUsernameInput();
+          showToast(`Ingesting GitHub profile @${cleanUser}...`, 'sparkle');
+        }
+      }
 
       // Initialize weekly allowance meter
       updateAllowanceUI();

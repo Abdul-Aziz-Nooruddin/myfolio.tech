@@ -1,0 +1,246 @@
+/* ==========================================================================
+   MyFolio Instant Hero GitHub Username Input Dock
+   High-converting conversion engine: Zero signup friction, instant 3D WebGL preview
+   ========================================================================== */
+
+.hero-cta {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  margin-top: 22px !important;
+}
+
+.hero-github-dock {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.hero-github-form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero-github-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #171817;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 4px 5px 4px 14px;
+  box-shadow: 0 14px 34px rgba(23, 24, 23, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden; /* Ensures nothing ever leaks outside the capsule */
+  height: 52px;
+}
+
+.hero-github-input-wrapper:focus-within {
+  border-color: #207b96;
+  box-shadow: 0 14px 36px rgba(32, 123, 150, 0.28), 0 0 0 3px rgba(32, 123, 150, 0.18);
+  transform: translateY(-1px);
+}
+
+.hero-github-icon-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  color: #9ba098;
+  flex-shrink: 0;
+}
+
+.hero-github-prefix {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #7b8077;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hero-github-input {
+  flex: 1 1 0%;
+  min-width: 0; /* Crucial: allows flex child to shrink properly */
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f4f1e8;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 0 6px;
+  margin: 0;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.hero-github-input::placeholder {
+  color: #555a52;
+  font-weight: 400;
+}
+
+.hero-github-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #f4f1e8;
+  color: #171817;
+  border: none;
+  border-radius: 9999px;
+  height: 42px;
+  padding: 0 18px;
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  box-sizing: border-box;
+}
+
+.hero-github-btn:hover {
+  background: #ffffff;
+  color: #111311;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.28);
+}
+
+.hero-github-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.hero-github-btn .btn-sparkle {
+  color: #207b96;
+  font-size: 13px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.hero-github-btn:hover .btn-sparkle {
+  transform: rotate(45deg) scale(1.2);
+}
+
+/* Loading State for Button */
+.hero-github-btn.is-loading {
+  pointer-events: none;
+  background: #207b96;
+  color: #ffffff;
+  padding: 0 16px;
+}
+
+.hero-github-btn.is-loading .btn-sparkle {
+  animation: hero-spin 0.8s linear infinite;
+}
+
+@keyframes hero-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Shake Animation for Invalid / Empty Input */
+.shake {
+  animation: hero-shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes hero-shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+  40%, 60% { transform: translate3d(3px, 0, 0); }
+}
+
+/* Sample Quick-Pills */
+.hero-github-samples {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hero-github-samples .samples-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #5e615b;
+}
+
+.hero-github-samples .sample-chip {
+  background: rgba(23, 24, 23, 0.05);
+  border: 1px solid rgba(23, 24, 23, 0.14);
+  border-radius: 9999px;
+  padding: 2px 9px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #282a26;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.hero-github-samples .sample-chip:hover {
+  background: #171817;
+  color: #f4f1e8;
+  border-color: #171817;
+  transform: translateY(-1px);
+}
+
+/* Reassurance Row */
+.hero-github-reassurance {
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #5e615b;
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.4;
+}
+
+.hero-github-reassurance .reassurance-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hero-github-reassurance .reassurance-tag svg {
+  color: #207b96;
+  flex-shrink: 0;
+}
+
+.hero-github-reassurance .reassurance-divider {
+  color: #8e928a;
+  opacity: 0.5;
+}
+
+/* Responsive Stacking for Small Mobile Viewports (<420px) */
+@media (max-width: 420px) {
+  .hero-github-input-wrapper {
+    height: auto;
+    flex-wrap: wrap;
+    border-radius: 18px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .hero-github-input {
+    width: 100%;
+    flex: 1 1 100%;
+    padding: 4px 0;
+  }
+  .hero-github-btn {
+    width: 100%;
+    height: 42px;
+    border-radius: 12px;
+  }
+}
