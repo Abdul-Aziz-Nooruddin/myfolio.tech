@@ -7,3 +7,4 @@
   "token_endpoint_auth_methods_supported": ["client_secret_basic", "none"],
   "service_documentation": "https://myfolio.tech/.well-known/auth.json"
 }
+

@@ -1,0 +1,15 @@
+{
+  "resource": "https://myfolio.tech/api",
+  "authorization_servers": [
+    "https://myfolio.tech"
+  ],
+  "scopes_supported": [
+    "read:profile",
+    "write:portfolio",
+    "download:export"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "resource_documentation": "https://myfolio.tech/auth.md"
+}

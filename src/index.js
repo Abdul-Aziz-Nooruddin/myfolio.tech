@@ -281,7 +281,7 @@ app.use((req, res, next) => {
   }
   // 2. Unblock Search Engine Crawlers & Meta Indexing files (Googlebot, Bingbot, sitemap, robots, llms, .well-known)
   const isSearchFile = [
-    '/sitemap.xml', '/sitemap', '/robots.txt', '/llms.txt', '/llms-full.txt', '/ads.txt', '/manifest.json', '/openapi.json', '/api-catalog', '/agent.json'
+    '/sitemap.xml', '/sitemap', '/robots.txt', '/llms.txt', '/llms-full.txt', '/ads.txt', '/manifest.json', '/openapi.json', '/api-catalog', '/agent.json', '/auth.md', '/skills.json', '/agent-card.json'
   ].includes(req.path) || req.path.startsWith('/google001961baa3b6a214') || req.path.startsWith('/.well-known/');
   if (isSearchFile) {
     return next();
@@ -3008,8 +3008,17 @@ const acceptsMarkdown = (req) => {
   return false;
 };
 
+// RFC 8288 Link Headers for AI Agent Discovery & Structured Data
+const agentLinkHeader = [
+  '<https://myfolio.tech/llms.txt>; rel="describedby"; type="text/markdown"',
+  '<https://myfolio.tech/.well-known/api-catalog>; rel="service-desc"; type="application/linkset+json"',
+  '<https://myfolio.tech/.well-known/agent-card.json>; rel="agent-card"; type="application/json"',
+  '<https://myfolio.tech/sitemap.xml>; rel="sitemap"; type="application/xml"'
+].join(', ');
+
 // Root homepage early route with AI-Optimized Markdown Negotiation (O(1) instant delivery)
 app.get(['/', '/index', '/home'], (req, res) => {
+  res.setHeader('Link', agentLinkHeader);
   if (acceptsMarkdown(req)) {
     res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
     res.setHeader('Vary', 'Accept');
@@ -3022,6 +3031,7 @@ app.get(['/', '/index', '/home'], (req, res) => {
 // Canonical llms.txt and llms-full.txt for Answer Engines & AI Agents
 app.get(['/llms.txt', '/.well-known/llms.txt'], (req, res) => {
   res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Link', agentLinkHeader);
   res.setHeader('Vary', 'Accept');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
   res.sendFile(getPagePath('llms.txt'));
@@ -3059,18 +3069,45 @@ app.get('/.well-known/rag-pointers.json', (req, res) => {
   res.sendFile(getPagePath('.well-known/rag-pointers.json'));
 });
 
-// Bot & Agent Authentication Instructions
+// Bot & Agent Authentication Instructions (JSON & Markdown formats)
 app.get('/.well-known/auth.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
   res.sendFile(getPagePath('.well-known/auth.json'));
 });
 
-// OAuth 2.0 Authorization Server Metadata
+app.get(['/auth.md', '/.well-known/auth.md'], (req, res) => {
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Link', agentLinkHeader);
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('auth.md'));
+});
+
+// OAuth 2.0 Authorization Server & Protected Resource Metadata (RFC 8414 & RFC 9207)
 app.get(['/.well-known/oauth-authorization-server', '/.well-known/openid-configuration'], (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
   res.sendFile(getPagePath('.well-known/oauth-authorization-server'));
+});
+
+app.get('/.well-known/oauth-protected-resource', (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/oauth-protected-resource'));
+});
+
+// A2A Agent Card Discovery (Agent-to-Agent Protocol)
+app.get(['/.well-known/agent-card.json', '/agent-card.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/agent-card.json'));
+});
+
+// Agent Skills Catalog & Capabilities Index
+app.get(['/.well-known/skills.json', '/.well-known/skills/index.json', '/skills.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/skills.json'));
 });
 
 // Emerging Agent Profile & Discovery (A2A)

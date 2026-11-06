@@ -46,7 +46,7 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     assert.match(text, /# MyFolio/);
   });
 
-  await t.test('3. Root / with standard browser Accept returns HTML', async () => {
+  await t.test('3. Root / with standard browser Accept returns HTML and Link headers', async () => {
     const res = await fetch(`${baseUrl}/`, {
       headers: {
         Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9'
@@ -55,6 +55,9 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
 
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type') || '', /text\/html/);
+    const linkHeader = res.headers.get('link') || '';
+    assert.match(linkHeader, /rel="describedby"/);
+    assert.match(linkHeader, /rel="service-desc"/);
   });
 
   await t.test('4. Canonical /llms.txt returns 200 and markdown knowledge file', async () => {
@@ -133,5 +136,37 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     assert.ok(robotsTxt.includes('LLMs: https://myfolio.tech/llms.txt'));
     assert.ok(robotsTxt.includes('OpenAPI: https://myfolio.tech/.well-known/openapi.json'));
     assert.ok(robotsTxt.includes('API-Catalog: https://myfolio.tech/.well-known/api-catalog'));
+  });
+
+  await t.test('13. Bot auth guide /auth.md returns 200 and text/markdown', async () => {
+    const res = await fetch(`${baseUrl}/auth.md`);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type') || '', /text\/markdown/);
+    const text = await res.text();
+    assert.match(text, /Authentication Guide/i);
+  });
+
+  await t.test('14. A2A Agent Card /.well-known/agent-card.json returns 200 and card schema', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/agent-card.json`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.name, 'MyFolio AI Portfolio Agent');
+    assert.ok(body.capabilities);
+  });
+
+  await t.test('15. Skills Index /.well-known/skills.json returns 200 and skills', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/skills.json`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.ok(Array.isArray(body.skills));
+    assert.ok(body.skills.some((s) => s.id === 'generate_portfolio'));
+  });
+
+  await t.test('16. OAuth Protected Resource metadata returns 200 and scopes', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/oauth-protected-resource`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.resource, 'https://myfolio.tech/api');
+    assert.ok(Array.isArray(body.scopes_supported));
   });
 });

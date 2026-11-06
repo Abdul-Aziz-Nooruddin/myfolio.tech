@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "name": "MyFolio Agent Skills Index",
+  "description": "Index of skills and tools available for autonomous agents communicating with MyFolio.",
+  "skills": [
+    {
+      "id": "generate_portfolio",
+      "name": "3D Portfolio Synthesis",
+      "description": "Transforms GitHub code repositories, commit activity, and credentials into an interactive 3D WebGL developer portfolio in under 60 seconds.",
+      "endpoint": "https://myfolio.tech/api/web/generate",
+      "method": "POST",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "templateId": { "type": "string", "description": "Visual universe ID (e.g. 'jack-3d-creator', 'rbp-kinetic-monochrome', 'nadia-brand')" },
+          "data": { "type": "object", "description": "Candidate profile data including github username, bio, and projects" }
+        },
+        "required": ["data"]
+      }
+    },
+    {
+      "id": "list_templates",
+      "name": "List 3D Universes & Templates",
+      "description": "Retrieves all available 3D developer universes, aesthetics, and target personas.",
+      "endpoint": "https://myfolio.tech/api/templates",
+      "method": "GET"
+    },
+    {
+      "id": "get_pricing",
+      "name": "Platform Pricing & Build Model",
+      "description": "Returns transparent pricing tiers: Free evaluation (3 builds/wk), Lifetime Build (₹149 one-time with ZIP export), and Pro Domain (₹149/mo).",
+      "endpoint": "https://myfolio.tech/api/pricing",
+      "method": "GET"
+    },
+    {
+      "id": "get_readme_badge",
+      "name": "GitHub Profile README Badge",
+      "description": "Generates a dynamic real-time SVG shield badge for GitHub Profile READMEs linking to the developer's 3D MyFolio portfolio.",
+      "endpoint": "https://myfolio.tech/api/badge/:username",
+      "method": "GET"
+    }
+  ]
+}

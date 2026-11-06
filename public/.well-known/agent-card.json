@@ -1,0 +1,38 @@
+{
+  "$schema": "https://cloud.cloudflare.com/schemas/agent-card.json",
+  "name": "MyFolio AI Portfolio Agent",
+  "description": "Autonomous AI engine that synthesizes interactive 3D WebGL developer portfolios and personal websites from GitHub repositories with standalone ZIP source code export.",
+  "url": "https://myfolio.tech",
+  "version": "2.5.0",
+  "provider": {
+    "name": "MyFolio",
+    "url": "https://myfolio.tech",
+    "contact": "support@myfolio.tech"
+  },
+  "protocols": [
+    "http",
+    "rest",
+    "mcp",
+    "a2a"
+  ],
+  "capabilities": {
+    "tools": true,
+    "streaming": false,
+    "markdown_negotiation": true,
+    "source_code_export": true
+  },
+  "endpoints": {
+    "agent_card": "https://myfolio.tech/.well-known/agent-card.json",
+    "skills": "https://myfolio.tech/.well-known/skills.json",
+    "mcp": "https://myfolio.tech/.well-known/mcp.json",
+    "openapi": "https://myfolio.tech/.well-known/openapi.json",
+    "api_catalog": "https://myfolio.tech/.well-known/api-catalog",
+    "auth": "https://myfolio.tech/auth.md",
+    "documentation": "https://myfolio.tech/llms.txt"
+  },
+  "pricing": {
+    "free_tier": "3 free 3D builds per week, no credit card required",
+    "lifetime_build": "₹149 one-time with permanent hosting and full source code ZIP export",
+    "pro_domain": "₹149/month with branded subdomain and full source code ZIP export"
+  }
+}
