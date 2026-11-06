@@ -3090,7 +3090,7 @@ app.get(['/.well-known/oauth-authorization-server', '/.well-known/openid-configu
   res.sendFile(getPagePath('.well-known/oauth-authorization-server'));
 });
 
-app.get('/.well-known/oauth-protected-resource', (req, res) => {
+app.get(['/.well-known/oauth-protected-resource', '/.well-known/oauth-protected-resource.json', '/oauth-protected-resource'], (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
   res.sendFile(getPagePath('.well-known/oauth-protected-resource'));

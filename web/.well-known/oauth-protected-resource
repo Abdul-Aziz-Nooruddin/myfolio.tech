@@ -1,5 +1,5 @@
 {
-  "resource": "https://myfolio.tech/api",
+  "resource": "https://myfolio.tech",
   "authorization_servers": [
     "https://myfolio.tech"
   ],

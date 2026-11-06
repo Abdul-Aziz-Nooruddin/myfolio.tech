@@ -169,7 +169,7 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     const res = await fetch(`${baseUrl}/.well-known/oauth-protected-resource`);
     assert.equal(res.status, 200);
     const body = await res.json();
-    assert.equal(body.resource, 'https://myfolio.tech/api');
+    assert.equal(body.resource, 'https://myfolio.tech');
     assert.deepEqual(body.authorization_servers, ['https://myfolio.tech']);
     assert.ok(Array.isArray(body.scopes_supported));
     assert.ok(body.bearer_methods_supported.includes('header'));
@@ -227,5 +227,16 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     const indexHtml = fs.readFileSync(path.join(process.cwd(), 'web', 'index.html'), 'utf8');
     assert.ok(indexHtml.includes('navigator.modelContext.registerTool'));
     assert.ok(indexHtml.includes('generate_portfolio'));
+  });
+
+  await t.test('23. Protected routes return WWW-Authenticate with resource_metadata on 401', async () => {
+    const res = await fetch(`${baseUrl}/api/user/portfolios`, {
+      headers: {
+        authorization: 'Bearer invalid_token'
+      }
+    });
+    assert.equal(res.status, 401);
+    const authHeader = res.headers.get('www-authenticate') || '';
+    assert.match(authHeader, /resource_metadata="https:\/\/myfolio\.tech\/\.well-known\/oauth-protected-resource"/);
   });
 });

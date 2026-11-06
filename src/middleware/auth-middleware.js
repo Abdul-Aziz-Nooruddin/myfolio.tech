@@ -153,10 +153,13 @@ class AuthMiddleware {
   }
 
   /**
-   * Guard: Rejects unauthenticated requests
+   * Guard: Rejects unauthenticated requests (RFC 9728 resource_metadata discovery)
    */
   static requireAuth(req, res, next) {
     if (!req.user) {
+      if (typeof res.setHeader === 'function') {
+        res.setHeader('WWW-Authenticate', 'Bearer resource_metadata="https://myfolio.tech/.well-known/oauth-protected-resource"');
+      }
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Authentication required. Please sign in.'
@@ -170,6 +173,9 @@ class AuthMiddleware {
    */
   static requireAdmin(req, res, next) {
     if (!req.user) {
+      if (typeof res.setHeader === 'function') {
+        res.setHeader('WWW-Authenticate', 'Bearer resource_metadata="https://myfolio.tech/.well-known/oauth-protected-resource"');
+      }
       return res.status(401).json({ error: 'Unauthorized', message: 'Authentication required.' });
     }
 
