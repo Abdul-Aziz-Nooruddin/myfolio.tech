@@ -329,14 +329,15 @@ class SiteGenerator {
 
       <!-- TOP FLOATING PILL BADGE -->
       <div style="width: 100%; display: flex; justify-content: center; padding-top: 10px; position: relative; z-index: 2;">
-        <div id="preview-watermark-pill">
+        <a id="preview-watermark-pill" href="https://myfolio.tech/studio" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; cursor: pointer;" title="Built with MyFolio • Create your 3D portfolio in 30s">
           <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:5px;">
             <span id="preview-watermark-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor;"></span>
             <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
           </span>
           <span style="opacity: 0.4;">•</span>
           <span style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
-        </div>
+          <span style="opacity: 0.7; font-size: 10px; margin-left: 2px;">↗</span>
+        </a>
       </div>
 
       ${bigDiagonal}

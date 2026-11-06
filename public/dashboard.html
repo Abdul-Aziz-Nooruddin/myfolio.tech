@@ -1194,7 +1194,6 @@
         order: -1 !important;
         border-left: none !important;
         border-bottom: 1px solid var(--dash-border) !important;
-        border-top: none !important;
         padding: 1rem !important;
         background: var(--dash-surface-inner) !important;
       }
@@ -1376,6 +1375,10 @@
                 <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="openQrModal()" title="Open QR Code on phone">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                   <span>QR Code</span>
+                </button>
+                <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="openBadgeModal()" title="Get GitHub README Badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  <span>README Badge</span>
                 </button>
               </div>
             </div>
@@ -1583,6 +1586,39 @@
           Copy Link
         </button>
         <button type="button" class="mf-btn mf-btn-secondary" onclick="closeQrModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub README Badge Modal -->
+  <div class="modal-backdrop" id="badgeModalBackdrop" style="display:none;" onclick="closeBadgeModal(event)">
+    <div class="modal-card" style="max-width:520px; width:100%; position:relative;" onclick="event.stopPropagation()">
+      <button type="button" class="badge-modal-close-btn" onclick="closeBadgeModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--dash-text-muted); font-size:24px; cursor:pointer; line-height:1;" aria-label="Close">&times;</button>
+      <div style="width:44px; height:44px; border-radius:12px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); color:#38BDF8; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </div>
+      <h3 style="font-size:1.3rem; font-weight:600; color:var(--dash-text-primary);">GitHub Profile README Badge</h3>
+      <p style="font-size:13px; color:var(--dash-text-secondary); margin-top:4px; line-height:1.5;">
+        Add this interactive badge to your GitHub profile <code>README.md</code>. Recruiters and developers visiting your GitHub will click through directly to your 3D portfolio!
+      </p>
+
+      <div style="background:var(--dash-surface-inner); border:1px solid var(--dash-border); border-radius:12px; padding:16px; margin:16px 0; text-align:center;">
+        <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--dash-text-muted); margin-bottom:8px;">Live Badge Preview</div>
+        <img id="badgePreviewImg" src="https://img.shields.io/badge/3D%20Portfolio-MyFolio-0D9488?style=for-the-badge&logo=three.js" alt="3D Portfolio Badge" style="display:inline-block; border-radius:4px;" />
+      </div>
+
+      <div style="text-align:left; margin-bottom:18px;">
+        <label style="font-size:11.5px; font-weight:700; color:var(--dash-text-secondary); display:block; margin-bottom:6px;">Copy Markdown for README.md:</label>
+        <textarea id="badgeMarkdownText" readonly style="width:100%; height:75px; background:var(--dash-surface-inner); border:1px solid var(--dash-border); border-radius:10px; color:var(--dash-accent-sky); font-family:'JetBrains Mono',monospace; font-size:12px; padding:10px; resize:none; box-sizing:border-box; outline:none;"></textarea>
+      </div>
+
+      <div style="display:flex; gap:10px; width:100%;">
+        <button type="button" class="mf-btn mf-btn-primary" style="flex:1;" onclick="copyBadgeMarkdown()">
+          Copy Markdown Snippet
+        </button>
+        <button type="button" class="mf-btn mf-btn-secondary" onclick="closeBadgeModal()">
           Close
         </button>
       </div>
@@ -2427,6 +2463,33 @@
       if (!img) return;
       const cleanUrl = text || (window.currentSiteUrl || window.location.origin);
       img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=${encodeURIComponent(cleanUrl)}`;
+    }
+
+    // Modal controls: GitHub README Badge
+    function openBadgeModal() {
+      const modal = document.getElementById('badgeModalBackdrop');
+      const url = currentSiteUrl || (window.location.origin + '/studio');
+      const md = `[![3D Portfolio](https://img.shields.io/badge/3D%20Portfolio-MyFolio-0D9488?style=for-the-badge&logo=three.js)](${url})`;
+      const mdInput = document.getElementById('badgeMarkdownText');
+      if (mdInput) mdInput.value = md;
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeBadgeModal(e) {
+      const modal = document.getElementById('badgeModalBackdrop');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function copyBadgeMarkdown() {
+      const mdInput = document.getElementById('badgeMarkdownText');
+      if (!mdInput) return;
+      navigator.clipboard.writeText(mdInput.value).then(() => {
+        showToast('GitHub Badge markdown copied! Paste into your README.md.');
+      }).catch(() => {
+        mdInput.select();
+        document.execCommand('copy');
+        showToast('Badge markdown copied!');
+      });
     }
 
     // Modal controls: Pro Upgrade Modal
