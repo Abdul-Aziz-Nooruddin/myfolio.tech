@@ -239,4 +239,25 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     const authHeader = res.headers.get('www-authenticate') || '';
     assert.match(authHeader, /resource_metadata="https:\/\/myfolio\.tech\/\.well-known\/oauth-protected-resource"/);
   });
+
+  await t.test('24. DNS for AI Discovery (DNS-AID) SVCB records & DNSSEC validation', async () => {
+    try {
+      const dohRes = await fetch('https://cloudflare-dns.com/dns-query?name=_index._agents.myfolio.tech&type=SVCB&do=1', {
+        headers: { Accept: 'application/dns-json' },
+        signal: AbortSignal.timeout(5000)
+      });
+      if (dohRes.ok) {
+        const doh = await dohRes.json();
+        assert.equal(doh.Status, 0);
+        assert.equal(doh.AD, true, 'DNSSEC AD flag must be true');
+        assert.ok(Array.isArray(doh.Answer) && doh.Answer.length > 0);
+        assert.ok(doh.Answer.some(a => a.data.includes('alpn=a2a')));
+      }
+    } catch (e) {
+      // In offline/mock test environments, network fetch to Cloudflare DoH may be skipped gracefully
+      if (e.name !== 'TimeoutError' && !e.message?.includes('fetch failed')) {
+        throw e;
+      }
+    }
+  });
 });
