@@ -3554,14 +3554,16 @@ app.get(
   (req, res) => authHandler.googleCallback(req, res)
 );
 
-// 2d. GitHub OAuth Discontinued (Authentication strictly via Email & Google OAuth)
-app.get('/api/auth/github', (req, res) => {
-  res.redirect('/auth?error=' + encodeURIComponent('GitHub authentication has been discontinued. Please sign in with Email or Google OAuth.'));
-});
+// 2d. GitHub OAuth 2.0 Authorization & Callback Flow
+app.get(
+  '/api/auth/github',
+  (req, res) => authHandler.githubRedirect(req, res)
+);
 
-app.get('/api/auth/github/callback', (req, res) => {
-  res.redirect('/auth?error=' + encodeURIComponent('GitHub authentication has been discontinued. Please sign in with Email or Google OAuth.'));
-});
+app.get(
+  '/api/auth/github/callback',
+  (req, res) => authHandler.githubCallback(req, res)
+);
 
 // 2d. Google OAuth 2.0 Identity Services Config & Token Verification
 app.get(

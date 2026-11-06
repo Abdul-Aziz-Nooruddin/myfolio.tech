@@ -186,15 +186,12 @@ if (loginForm) {
         } catch (e) {}
       }
 
-      showAlert('Signed in successfully! Redirecting to dashboard...', 'success');
+      showAlert('Signed in successfully! Redirecting...', 'success');
       setTimeout(() => {
         const params = new URLSearchParams(window.location.search);
-        let redirect = params.get('redirect');
-        if (!redirect || redirect === '/studio' || redirect.startsWith('/studio')) {
-          redirect = '/dashboard';
-        }
+        const redirect = params.get('redirect') || '/dashboard';
         window.location.href = redirect.startsWith('/') ? redirect : '/dashboard';
-      }, 600);
+      }, 500);
     } catch (err) {
       showAlert(err.message);
       btn.disabled = false;
@@ -367,8 +364,10 @@ async function executeSignup() {
 
     showAlert('Account created successfully! Redirecting...', 'success');
     setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 800);
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect') || '/dashboard';
+      window.location.href = redirect.startsWith('/') ? redirect : '/dashboard';
+    }, 500);
   } catch (err) {
     console.error('[AUTH SIGNUP ERROR]', err);
     showAlert(err.message || 'An unexpected error occurred. Please try again.');
@@ -458,10 +457,12 @@ if (otpForm) {
         } catch (e) {}
       }
 
-      showAlert('✅ Account verified and created successfully! Redirecting to dashboard...', 'success');
+      showAlert('✅ Account verified and created successfully! Redirecting...', 'success');
       setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 700);
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect') || '/dashboard';
+        window.location.href = redirect.startsWith('/') ? redirect : '/dashboard';
+      }, 500);
     } catch (err) {
       showAlert(err.message, 'error');
       btn.disabled = false;

@@ -101,8 +101,8 @@ class SiteGenerator {
     const subWatermarkText = isTemplateShowcase ? 'TEMPLATE PREVIEW' : 'PORTFOLIO PREVIEW';
     const diagonalSubtitle = isTemplateShowcase ? 'PREVIEW ONLY • NOT FOR PRODUCTION' : 'PORTFOLIO PREVIEW • UNPUBLISHED DRAFT';
     const pillText = isTemplateShowcase ? 'MYFOLIO • TEMPLATE' : 'PORTFOLIO PREVIEW';
-    const barLabel = isTemplateShowcase ? 'Template Showcase' : 'Portfolio Preview (Draft)';
-    const ctaLabel = isTemplateShowcase ? 'Use This Template in Studio ➔' : 'Publish Live (From ₹149) ➔';
+    const barLabel = isTemplateShowcase ? 'Turn your GitHub into this 3D portfolio in 30s' : 'Portfolio Preview (Draft)';
+    const ctaLabel = isTemplateShowcase ? 'Build with My GitHub ✦' : 'Publish Live (From ₹149) ➔';
 
     const diagonalSvg = isTemplateShowcase ? '' : `
       <!-- FULL-SCREEN DIAGONAL REPEATING WATERMARK SVG GRID -->
