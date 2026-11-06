@@ -310,6 +310,9 @@ async function executeSignup() {
     }
 
     if (data.requireOtp) {
+      if (data.pendingToken) {
+        try { sessionStorage.setItem('myfolio_pending_signup_token', data.pendingToken); } catch (e) {}
+      }
       const otpEmailEl = document.getElementById('otpEmail');
       if (otpEmailEl) otpEmailEl.value = email;
       const instruction = document.getElementById('otpInstructionText');
@@ -421,11 +424,12 @@ if (otpForm) {
     btn.innerHTML = '<span>Verifying & Creating Account...</span>';
 
     try {
+      const pendingToken = sessionStorage.getItem('myfolio_pending_signup_token') || '';
       const res = await fetch('/api/auth/verify-signup-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, otp })
+        body: JSON.stringify({ email, otp, pendingToken })
       });
 
       const data = await res.json();
@@ -621,6 +625,19 @@ window.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const view = urlParams.get('view') || 'login';
   const token = urlParams.get('token');
+
+  // Preserve redirect destination across GitHub & Google 1-Click OAuth flows
+  const redirectParam = urlParams.get('redirect') || urlParams.get('returnTo');
+  if (redirectParam && redirectParam.startsWith('/')) {
+    ['btnGithubLogin', 'btnGithubSignup'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.href = `/api/auth/github?redirect=${encodeURIComponent(redirectParam)}`;
+    });
+    ['btnGoogleLogin', 'btnGoogleSignup'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.href = `/api/auth/google?redirect=${encodeURIComponent(redirectParam)}`;
+    });
+  }
 
   if (view === 'reset' && token) {
     const tokenInput = document.getElementById('resetTokenInput');

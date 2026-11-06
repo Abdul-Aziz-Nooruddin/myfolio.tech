@@ -168,7 +168,7 @@ class AuthHandler {
       const otp = AuthHandler.generateAlphaNumericOtp(6);
 
       // Store pending registration (valid for 10 minutes)
-      this.pendingSignups.set(normalizedEmail, {
+      const pendingData = {
         name: cleanName,
         email,
         username: cleanUsername,
@@ -177,7 +177,14 @@ class AuthHandler {
         createdAt: Date.now(),
         expiresAt: Date.now() + 10 * 60 * 1000,
         attempts: 0
-      });
+      };
+      this.pendingSignups.set(normalizedEmail, pendingData);
+
+      // Sign a stateless fallback token so container restarts or worker shifts never drop pending registrations
+      const secret = process.env.SESSION_SECRET || 'myfolio_auth_secret_key_2026';
+      const tokenPayload = Buffer.from(JSON.stringify(pendingData)).toString('base64url');
+      const signature = crypto.createHmac('sha256', secret).update(tokenPayload).digest('base64url');
+      const pendingSignupToken = `${tokenPayload}.${signature}`;
 
       // Dispatch 6-digit alphanumeric OTP strictly via email (awaited for serverless runtimes)
       let emailDispatched = false;
@@ -203,6 +210,7 @@ class AuthHandler {
         requireOtp: true,
         email,
         emailDelivered: emailDispatched,
+        pendingToken: pendingSignupToken,
         message: emailDispatched
           ? 'A 6-character verification code has been sent to your email. Please check your inbox.'
           : 'Server email credentials are being routed. Your verification code is provided below.'
@@ -226,14 +234,32 @@ class AuthHandler {
    */
   async verifySignupOtp(req, res) {
     try {
-      const { email, otp } = req.body;
+      const { email, otp, pendingToken } = req.body;
 
       if (!email || !otp) {
         return res.status(400).json({ error: 'Email and 6-character verification code are required.' });
       }
 
       const normalizedEmail = this.db.constructor.normalizeEmail(email);
-      const pending = this.pendingSignups.get(normalizedEmail);
+      let pending = this.pendingSignups.get(normalizedEmail);
+
+      // Restore from signed token if in-memory state was cleared by cloud host restart or multi-process routing
+      if (!pending && pendingToken && typeof pendingToken === 'string' && pendingToken.includes('.')) {
+        try {
+          const [payloadB64, clientSig] = pendingToken.split('.');
+          const secret = process.env.SESSION_SECRET || 'myfolio_auth_secret_key_2026';
+          const expectedSig = crypto.createHmac('sha256', secret).update(payloadB64).digest('base64url');
+          if (clientSig && expectedSig && clientSig.length === expectedSig.length && crypto.timingSafeEqual(Buffer.from(clientSig), Buffer.from(expectedSig))) {
+            const restored = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
+            if (this.db.constructor.normalizeEmail(restored.email) === normalizedEmail) {
+              pending = restored;
+              this.pendingSignups.set(normalizedEmail, pending);
+            }
+          }
+        } catch (tokenErr) {
+          console.warn('[PENDING TOKEN RESTORE WARN]', tokenErr.message);
+        }
+      }
 
       if (!pending) {
         return res.status(400).json({ error: 'No pending registration found for this email, or the code has expired. Please sign up again.' });
@@ -515,9 +541,12 @@ class AuthHandler {
   async googleRedirect(req, res) {
     try {
       const redirectUri = this._getGoogleRedirectUri(req);
+      const redirect = req.query.redirect || req.query.returnTo || '/dashboard';
+      const stateObj = { redirect: redirect.startsWith('/') ? redirect : '/dashboard' };
+      const state = Buffer.from(JSON.stringify(stateObj)).toString('base64url');
 
       if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_ID.trim() !== '' && process.env.GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID_HERE') {
-        const authUrl = this.googleOAuth.getAuthorizationUrl(redirectUri);
+        const authUrl = this.googleOAuth.getAuthorizationUrl(redirectUri, state);
         return res.redirect(authUrl);
       }
 
@@ -535,9 +564,19 @@ class AuthHandler {
    */
   async googleCallback(req, res) {
     try {
-      const { code, error } = req.query;
+      const { code, state, error } = req.query;
       const redirectUri = this._getGoogleRedirectUri(req);
       const ip = req.ip || req.headers['x-forwarded-for'] || '127.0.0.1';
+
+      let targetRedirect = '/dashboard';
+      if (state) {
+        try {
+          const parsed = JSON.parse(Buffer.from(state, 'base64url').toString('utf8'));
+          if (parsed && typeof parsed.redirect === 'string' && parsed.redirect.startsWith('/')) {
+            targetRedirect = parsed.redirect;
+          }
+        } catch (e) {}
+      }
 
       if (error) {
         return res.redirect(`/login?error=${encodeURIComponent(error)}`);
@@ -596,7 +635,7 @@ class AuthHandler {
       });
 
       this._setSessionCookie(res, rawSessionToken, maxAgeMs);
-      res.redirect('/dashboard');
+      res.redirect(targetRedirect);
     } catch (err) {
       console.error('[GOOGLE CALLBACK ERROR]', err);
       res.redirect(`/login?error=${encodeURIComponent(err.message)}`);
@@ -637,9 +676,12 @@ class AuthHandler {
     try {
       const redirectUri = this._getGithubRedirectUri(req);
       const clientId = process.env.GITHUB_CLIENT_ID;
+      const redirect = req.query.redirect || req.query.returnTo || '/dashboard';
+      const stateObj = { redirect: redirect.startsWith('/') ? redirect : '/dashboard' };
+      const state = Buffer.from(JSON.stringify(stateObj)).toString('base64url');
 
       if (clientId && clientId.trim() !== '' && clientId !== 'YOUR_GITHUB_CLIENT_ID_HERE') {
-        const authUrl = `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=read:user,user:email`;
+        const authUrl = `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=read:user,user:email&state=${encodeURIComponent(state)}`;
         return res.redirect(authUrl);
       }
 
@@ -657,9 +699,19 @@ class AuthHandler {
    */
   async githubCallback(req, res) {
     try {
-      const { code, error } = req.query;
+      const { code, state, error } = req.query;
       const redirectUri = this._getGithubRedirectUri(req);
       const ip = req.ip || req.headers['x-forwarded-for'] || '127.0.0.1';
+
+      let targetRedirect = '/dashboard';
+      if (state) {
+        try {
+          const parsed = JSON.parse(Buffer.from(state, 'base64url').toString('utf8'));
+          if (parsed && typeof parsed.redirect === 'string' && parsed.redirect.startsWith('/')) {
+            targetRedirect = parsed.redirect;
+          }
+        } catch (e) {}
+      }
 
       if (error) {
         return res.redirect(`/login?error=${encodeURIComponent(error)}`);
@@ -753,7 +805,7 @@ class AuthHandler {
       });
 
       this._setSessionCookie(res, rawSessionToken, maxAgeMs);
-      res.redirect('/dashboard');
+      res.redirect(targetRedirect);
     } catch (err) {
       console.error('[GITHUB CALLBACK ERROR]', err);
       res.redirect(`/login?error=${encodeURIComponent(err.message)}`);

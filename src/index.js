@@ -3587,7 +3587,7 @@ app.post(
 
 // 4. Current Authenticated Profile
 app.get(
-  '/api/auth/me',
+  ['/api/auth/me', '/api/user/profile'],
   AuthMiddleware.requireAuth,
   (req, res) => authHandler.getMe(req, res)
 );
