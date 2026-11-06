@@ -1226,7 +1226,7 @@ const TomCelAnimatorTemplate = {
         </a>
       </div>
       <div class="flex flex-col md:flex-row items-center justify-between gap-space-sm font-caption text-caption text-on-surface-variant">
-        <p class="text-center md:text-left">© ${currentYear} ${safeName}. Powered by MyFolio. All rights reserved.</p>
+        <p class="text-center md:text-left">© ${currentYear} ${safeName}. Synthesized with <a href="https://myfolio.tech?ref=portfolio" target="_blank" rel="noopener" class="font-bold underline decoration-primary hover:text-primary transition-colors">MyFolio ✦</a>. All rights reserved.</p>
         <div class="flex items-center gap-space-md uppercase font-bold">
           <a class="hover:text-primary transition-colors" href="mailto:${email}">Direct Contact</a>
           <span>•</span>

@@ -25,12 +25,36 @@
   <!-- MyFolio Studio — Real-Time 3D Customizer & Editor -->
   <url>
     <loc>https://myfolio.tech/studio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <image:image>
       <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
       <image:title>MyFolio 3D Creator Studio</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: GitHub Portfolio Generator -->
+  <url>
+    <loc>https://myfolio.tech/github-portfolio-generator</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>GitHub Portfolio Generator — Turn GitHub into a 3D WebGL Portfolio</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: AI Portfolio Generator & Maker -->
+  <url>
+    <loc>https://myfolio.tech/ai-portfolio-generator</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>AI Portfolio Generator &amp; Developer Portfolio Maker</image:title>
     </image:image>
   </url>
 

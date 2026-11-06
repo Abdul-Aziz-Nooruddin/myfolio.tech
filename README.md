@@ -5,8 +5,8 @@
 [![Version](https://img.shields.io/badge/Version-2.5.0-00F0FF.svg?style=for-the-badge&logo=git&logoColor=white)](https://myfolio.tech)
 [![Official Platform](https://img.shields.io/badge/Official%20Platform-myfolio.tech-38BDF8.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://myfolio.tech)
 [![Creator](https://img.shields.io/badge/Author-Abdul--Aziz--Nooruddin-8B5CF6.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin)
-[![Tests Passing](https://img.shields.io/badge/Tests-120%2F120%20Passing-10B981.svg?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech)
-[![Cloudflare Agent Readiness](https://img.shields.io/badge/Agent%20Readiness-Fully%20Agent--Optimized%20(100%25)-F38020.svg?style=for-the-badge&logo=cloudflare&logoColor=white)](https://myfolio.tech/llms.txt)
+[![Tests Passing](https://img.shields.io/badge/Tests-121%2F121%20Passing-10B981.svg?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech)
+[![Cloudflare Agent Readiness](https://img.shields.io/badge/Agent%20Readiness-DNS--AID%20%7C%20Level%205%20Agent--Native-F38020.svg?style=for-the-badge&logo=cloudflare&logoColor=white)](https://myfolio.tech/llms.txt)
 [![Design Intelligence](https://img.shields.io/badge/IA%20Models-10%20Architectures-EC4899.svg?style=for-the-badge&logo=webgl&logoColor=white)](https://myfolio.tech/studio)
 
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B%20LTS-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org)
@@ -21,7 +21,7 @@
 **Transform GitHub repositories, developer commits, and technical credentials into award-winning, mobile-first 3D WebGL developer portfolios in under 60 seconds.**  
 *Powered by the AI Portfolio Identity & Content Engine, procedural Three.js spatial viewports, GSAP ScrollTrigger scrollytelling, Lenis smooth inertia scrolling, dynamic section morphing, and standalone static ZIP source code exports with ZERO vendor lock-in.*
 
-[Explore Platform](https://myfolio.tech) • [Launch Web Studio](https://myfolio.tech/studio) • [Template Showcases](#-production-template-showcases) • [Agent & AEO Protocol](#-autonomous-agent-readiness--emerging-protocols-aeo) • [GitHub README Badge](#-github-profile-readme-badge-generator) • [Pricing Model](#-transparent-pricing-architecture) • [API Reference](#-api--agent-tool-reference)
+[Explore Platform](https://myfolio.tech) • [Launch Web Studio](https://myfolio.tech/studio) • [GitHub Generator](https://myfolio.tech/github-portfolio-generator) • [AI Portfolio Maker](https://myfolio.tech/ai-portfolio-generator) • [Template Showcases](#-production-template-showcases) • [Agent & AEO Protocol](#-autonomous-agent-readiness--emerging-protocols-aeo) • [GitHub README Badge](#-github-profile-readme-badge-generator) • [Pricing Model](#-transparent-pricing-architecture) • [API Reference](#-api--agent-tool-reference)
 
 </div>
 

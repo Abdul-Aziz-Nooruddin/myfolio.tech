@@ -19,6 +19,8 @@ const PUBLIC_INDEXABLE_PAGES = [
   { file: 'web/privacy.html', canonical: 'https://myfolio.tech/privacy' },
   { file: 'web/refund.html', canonical: 'https://myfolio.tech/refund' },
   { file: 'web/studio.html', canonical: 'https://myfolio.tech/studio' },
+  { file: 'web/github-portfolio-generator.html', canonical: 'https://myfolio.tech/github-portfolio-generator' },
+  { file: 'web/ai-portfolio-generator.html', canonical: 'https://myfolio.tech/ai-portfolio-generator' },
   { file: 'web/tom.html', canonical: 'https://myfolio.tech/tom' },
   { file: 'web/slush.html', canonical: 'https://myfolio.tech/slush' }
 ];

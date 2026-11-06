@@ -1348,6 +1348,7 @@ const RBPKineticMonochromeTemplate = {
     <!-- Footer -->
     <footer class="site-footer">
       <div>© ${new Date().getFullYear()} ${safeName}. Crafted with precision.</div>
+      <div><a href="https://myfolio.tech?ref=portfolio" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Synthesized with <strong>MyFolio ✦</strong></a></div>
       <div>Kinetic Monochrome Studio</div>
     </footer>
 

@@ -129,7 +129,7 @@ class SiteGenerator {
     <div id="preview-floating-bar">
       <div style="display: inline-flex; align-items: center; gap: 6px;">
         <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
-        <span>✨ <strong>${barLabel}</strong><span class="wm-hide-mobile"> • MyFolio</span></span>
+        <span>✨ <strong>${barLabel}</strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=template_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
       </div>
       <a href="/studio?template=${encodeURIComponent(siteId)}" class="preview-cta-btn">
         <span>${ctaLabel}</span>
@@ -139,7 +139,7 @@ class SiteGenerator {
     <div id="preview-floating-bar">
       <div style="display: inline-flex; align-items: center; gap: 6px;">
         <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
-        <span>🔒 <strong>${barLabel}</strong><span class="wm-hide-mobile"> • MyFolio</span></span>
+        <span>🔒 <strong>${barLabel}</strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=preview_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
       </div>
       <a href="javascript:void(0)" class="preview-cta-btn" onclick="openPreviewCheckoutModal(); return false;">
         <span>${ctaLabel}</span>

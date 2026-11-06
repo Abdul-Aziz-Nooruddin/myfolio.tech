@@ -755,6 +755,9 @@ ${COMPILED_CSS}
 
       <div class="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#D7E2EA]/50 uppercase tracking-widest">
         <span>© ${new Date().getFullYear()} ${safeName} -- ${safeTitle}</span>
+        <a href="https://myfolio.tech?ref=portfolio" target="_blank" rel="noopener" class="hover:text-white transition-colors flex items-center gap-1.5 font-medium lowercase tracking-normal">
+          <span>Synthesized with</span> <strong class="text-white hover:text-[#75c5de] transition-colors underline decoration-[#75c5de]/40">MyFolio ✦</strong>
+        </a>
         <a href="#" class="flex items-center gap-2 hover:text-[#D7E2EA] transition-colors">
           <span>Back to Top</span>
           <span>&uarr;</span>

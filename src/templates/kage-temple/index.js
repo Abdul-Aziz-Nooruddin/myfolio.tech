@@ -322,7 +322,7 @@ const KageTempleTemplate = {
       `<div class="foot-base">
         <span>© ${curYear} ${name} — All Rights Reserved</span>
         <span class="jp">静けさは一つの技である</span>
-        <span>WebGL · Kyoto Sanctuary · MyFolio</span>
+        <a href="https://myfolio.tech?ref=portfolio" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">WebGL · Kyoto Sanctuary · <strong style="text-decoration: underline;">MyFolio ✦</strong></a>
       </div>`
     );
 

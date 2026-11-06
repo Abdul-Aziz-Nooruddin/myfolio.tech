@@ -835,6 +835,9 @@ const NadiaBrandTemplate = {
         ${githubLink ? `<a href="${githubLink}" target="_blank" rel="noreferrer" style="color: inherit; text-decoration: none;">GitHub</a>` : ''}
         ${linkedinLink ? `<a href="${linkedinLink}" target="_blank" rel="noreferrer" style="color: inherit; text-decoration: none;">LinkedIn</a>` : ''}
       </div>
+      <a href="https://myfolio.tech?ref=portfolio" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+        <span>Synthesized with</span> <strong style="color: var(--foreground); text-decoration: underline; text-decoration-color: #75c5de;">MyFolio ✦</strong>
+      </a>
       <span>&copy; 2026 ${safeName}</span>
     </div>
   </footer>
