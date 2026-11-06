@@ -138,20 +138,23 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     assert.ok(robotsTxt.includes('API-Catalog: https://myfolio.tech/.well-known/api-catalog'));
   });
 
-  await t.test('13. Bot auth guide /auth.md returns 200 and text/markdown', async () => {
+  await t.test('13. Bot auth guide /auth.md returns 200 and text/markdown with H1 containing auth.md', async () => {
     const res = await fetch(`${baseUrl}/auth.md`);
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type') || '', /text\/markdown/);
     const text = await res.text();
-    assert.match(text, /Authentication Guide/i);
+    assert.match(text, /# auth\.md/i);
   });
 
-  await t.test('14. A2A Agent Card /.well-known/agent-card.json returns 200 and card schema', async () => {
+  await t.test('14. A2A Agent Card contains supportedInterfaces, skills, and AP2 extension', async () => {
     const res = await fetch(`${baseUrl}/.well-known/agent-card.json`);
     assert.equal(res.status, 200);
     const body = await res.json();
     assert.equal(body.name, 'MyFolio AI Portfolio Agent');
-    assert.ok(body.capabilities);
+    assert.ok(Array.isArray(body.supportedInterfaces));
+    assert.ok(Array.isArray(body.skills));
+    assert.ok(Array.isArray(body.extensions));
+    assert.ok(body.extensions.some((ext) => ext.uri.includes('AP2')));
   });
 
   await t.test('15. Skills Index /.well-known/skills.json returns 200 and skills', async () => {
@@ -162,11 +165,67 @@ test('🤖 Cloudflare Agent Readiness & AEO Verification', async (t) => {
     assert.ok(body.skills.some((s) => s.id === 'generate_portfolio'));
   });
 
-  await t.test('16. OAuth Protected Resource metadata returns 200 and scopes', async () => {
+  await t.test('16. OAuth Protected Resource metadata returns 200 and RFC 9728 fields', async () => {
     const res = await fetch(`${baseUrl}/.well-known/oauth-protected-resource`);
     assert.equal(res.status, 200);
     const body = await res.json();
     assert.equal(body.resource, 'https://myfolio.tech/api');
+    assert.deepEqual(body.authorization_servers, ['https://myfolio.tech']);
     assert.ok(Array.isArray(body.scopes_supported));
+    assert.ok(body.bearer_methods_supported.includes('header'));
+  });
+
+  await t.test('17. OAuth Authorization Server metadata contains agent_auth block', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/oauth-authorization-server`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.issuer, 'https://myfolio.tech');
+    assert.ok(body.agent_auth);
+    assert.equal(body.agent_auth.skill, 'https://myfolio.tech/auth.md');
+    assert.ok(Array.isArray(body.agent_auth.identity_types_supported));
+  });
+
+  await t.test('18. Web Bot Auth JWKS at http-message-signatures-directory returns 200 and keys', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/http-message-signatures-directory`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.ok(Array.isArray(body.keys));
+    assert.ok(body.keys.length > 0);
+  });
+
+  await t.test('19. ACP discovery document /.well-known/acp.json returns 200 and spec', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/acp.json`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.protocol.name, 'acp');
+    assert.equal(body.api_base_url, 'https://myfolio.tech/api');
+    assert.ok(Array.isArray(body.transports));
+    assert.ok(Array.isArray(body.capabilities.services));
+  });
+
+  await t.test('20. UCP discovery document /.well-known/ucp returns 200 and services', async () => {
+    const res = await fetch(`${baseUrl}/.well-known/ucp`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.protocol_version, '1.0.0');
+    assert.ok(Array.isArray(body.services));
+    assert.ok(body.endpoints.checkout);
+  });
+
+  await t.test('21. OpenAPI document contains MPP x-payment-info and x-service-info', async () => {
+    const res = await fetch(`${baseUrl}/openapi.json`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.ok(body.info['x-service-info']);
+    const createOrder = body.paths['/api/web/create-order'];
+    assert.ok(createOrder.post['x-payment-info']);
+    assert.equal(createOrder.post['x-payment-info'].intent, 'charge');
+    assert.equal(createOrder.post['x-payment-info'].amount, 149);
+  });
+
+  await t.test('22. WebMCP registration script is present on index.html', () => {
+    const indexHtml = fs.readFileSync(path.join(process.cwd(), 'web', 'index.html'), 'utf8');
+    assert.ok(indexHtml.includes('navigator.modelContext.registerTool'));
+    assert.ok(indexHtml.includes('generate_portfolio'));
   });
 });

@@ -1,19 +1,22 @@
 {
-  "$schema": "https://cloud.cloudflare.com/schemas/agent-card.json",
+  "$schema": "https://a2a-protocol.org/latest/schemas/agent-card.json",
   "name": "MyFolio AI Portfolio Agent",
-  "description": "Autonomous AI engine that synthesizes interactive 3D WebGL developer portfolios and personal websites from GitHub repositories with standalone ZIP source code export.",
-  "url": "https://myfolio.tech",
   "version": "2.5.0",
+  "description": "Autonomous AI engine that synthesizes interactive 3D WebGL developer portfolios and personal websites from GitHub repositories with standalone ZIP source code export.",
   "provider": {
     "name": "MyFolio",
     "url": "https://myfolio.tech",
     "contact": "support@myfolio.tech"
   },
-  "protocols": [
-    "http",
-    "rest",
-    "mcp",
-    "a2a"
+  "supportedInterfaces": [
+    {
+      "url": "https://myfolio.tech/api",
+      "transport": "http"
+    },
+    {
+      "url": "https://myfolio.tech/.well-known/mcp.json",
+      "transport": "mcp"
+    }
   ],
   "capabilities": {
     "tools": true,
@@ -21,18 +24,35 @@
     "markdown_negotiation": true,
     "source_code_export": true
   },
-  "endpoints": {
-    "agent_card": "https://myfolio.tech/.well-known/agent-card.json",
-    "skills": "https://myfolio.tech/.well-known/skills.json",
-    "mcp": "https://myfolio.tech/.well-known/mcp.json",
-    "openapi": "https://myfolio.tech/.well-known/openapi.json",
-    "api_catalog": "https://myfolio.tech/.well-known/api-catalog",
-    "auth": "https://myfolio.tech/auth.md",
-    "documentation": "https://myfolio.tech/llms.txt"
-  },
-  "pricing": {
-    "free_tier": "3 free 3D builds per week, no credit card required",
-    "lifetime_build": "₹149 one-time with permanent hosting and full source code ZIP export",
-    "pro_domain": "₹149/month with branded subdomain and full source code ZIP export"
-  }
+  "skills": [
+    {
+      "id": "generate_portfolio",
+      "name": "3D Portfolio Synthesis",
+      "description": "Transforms GitHub code repositories and developer credentials into an interactive 3D WebGL portfolio in under 60 seconds."
+    },
+    {
+      "id": "list_templates",
+      "name": "List 3D Universes & Templates",
+      "description": "Retrieves available 3D developer universes, aesthetics, and recommended roles."
+    },
+    {
+      "id": "get_pricing",
+      "name": "Platform Pricing & Build Model",
+      "description": "Returns transparent pricing tiers (Free evaluation 3 builds/wk, ₹149 lifetime build with ZIP export, and ₹149/mo Pro Domain)."
+    },
+    {
+      "id": "get_readme_badge",
+      "name": "GitHub Profile README Badge",
+      "description": "Generates a dynamic real-time SVG shield badge for GitHub Profile READMEs."
+    }
+  ],
+  "extensions": [
+    {
+      "uri": "https://github.com/google-agentic-commerce/AP2/tree/v0.1.0",
+      "required": true,
+      "params": {
+        "roles": ["merchant"]
+      }
+    }
+  ]
 }

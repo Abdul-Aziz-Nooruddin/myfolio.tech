@@ -1,0 +1,23 @@
+{
+  "protocol": {
+    "name": "acp",
+    "version": "1.0.0"
+  },
+  "api_base_url": "https://myfolio.tech/api",
+  "transports": [
+    "http",
+    "rest"
+  ],
+  "capabilities": {
+    "services": [
+      "checkout",
+      "order_status",
+      "product_catalog"
+    ]
+  },
+  "endpoints": {
+    "products": "https://myfolio.tech/api/pricing",
+    "checkout": "https://myfolio.tech/api/web/create-order",
+    "order_status": "https://myfolio.tech/api/web/order-status"
+  }
+}

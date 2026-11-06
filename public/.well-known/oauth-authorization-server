@@ -2,8 +2,26 @@
   "issuer": "https://myfolio.tech",
   "authorization_endpoint": "https://myfolio.tech/login",
   "token_endpoint": "https://myfolio.tech/api/auth/login",
+  "registration_endpoint": "https://myfolio.tech/api/auth/register",
   "response_types_supported": ["token", "code"],
-  "grant_types_supported": ["authorization_code", "password"],
+  "grant_types_supported": ["authorization_code", "password", "urn:ietf:params:oauth:grant-type:token-exchange"],
   "token_endpoint_auth_methods_supported": ["client_secret_basic", "none"],
-  "service_documentation": "https://myfolio.tech/.well-known/auth.json"
+  "service_documentation": "https://myfolio.tech/auth.md",
+  "agent_auth": {
+    "skill": "https://myfolio.tech/auth.md",
+    "register_uri": "https://myfolio.tech/api/auth/register",
+    "identity_types_supported": ["anonymous", "identity_assertion"],
+    "anonymous": {
+      "credential_types_supported": ["none", "ephemeral_token"],
+      "claim_uri": "https://myfolio.tech/studio"
+    },
+    "identity_assertion": {
+      "assertion_types_supported": [
+        "urn:ietf:params:oauth:token-type:id-jag",
+        "verified_email"
+      ],
+      "credential_types_supported": ["bearer_jwt"],
+      "claim_uri": "https://myfolio.tech/api/auth/login"
+    }
+  }
 }

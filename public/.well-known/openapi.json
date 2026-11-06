@@ -12,6 +12,16 @@
     "license": {
       "name": "Proprietary / User Code Ownership",
       "url": "https://myfolio.tech/terms"
+    },
+    "x-service-info": {
+      "categories": [
+        "developer-tools",
+        "portfolio-builder",
+        "ai-generation",
+        "3d-webgl",
+        "commerce"
+      ],
+      "monetization": "per_build"
     }
   },
   "servers": [
@@ -139,6 +149,52 @@
           },
           "429": {
             "description": "Weekly generation quota exceeded (3 builds/week limit for free tier)"
+          }
+        }
+      }
+    },
+    "/api/web/create-order": {
+      "post": {
+        "summary": "Create Build Payment Order",
+        "description": "Creates a verified payment session for purchasing Lifetime Build or Pro Domain.",
+        "operationId": "createOrder",
+        "x-payment-info": {
+          "intent": "charge",
+          "method": "card",
+          "amount": 149,
+          "currency": "INR",
+          "description": "Lifetime Build with standalone ZIP source code export"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "siteId": { "type": "string", "description": "Portfolio site identifier" },
+                  "plan": { "type": "string", "enum": ["starter", "pro"] }
+                },
+                "required": ["siteId", "plan"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment order session initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderId": { "type": "string" },
+                    "amount": { "type": "integer" },
+                    "currency": { "type": "string" }
+                  }
+                }
+              }
+            }
           }
         }
       }

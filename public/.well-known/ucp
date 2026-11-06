@@ -1,0 +1,36 @@
+{
+  "protocol_version": "1.0.0",
+  "name": "MyFolio Universal Commerce Protocol",
+  "description": "Autonomous commerce and machine checkout specification for MyFolio portfolio builds and source code exports.",
+  "services": [
+    {
+      "id": "lifetime_build",
+      "name": "Lifetime Build",
+      "description": "Permanent hosting and full standalone source code ZIP export.",
+      "price": 149,
+      "currency": "INR",
+      "price_usd": 2.99
+    },
+    {
+      "id": "pro_domain",
+      "name": "Pro Domain",
+      "description": "Custom vanity subdomain with automated SSL and full standalone source code ZIP export.",
+      "price": 149,
+      "currency": "INR",
+      "price_usd": 2.99,
+      "interval": "month"
+    }
+  ],
+  "capabilities": {
+    "instant_checkout": true,
+    "crypto_payment": false,
+    "card_payment": true,
+    "machine_payable": true
+  },
+  "endpoints": {
+    "catalog": "https://myfolio.tech/api/pricing",
+    "checkout": "https://myfolio.tech/api/web/create-order",
+    "verify": "https://myfolio.tech/api/web/verify-payment",
+    "documentation": "https://myfolio.tech/auth.md"
+  }
+}

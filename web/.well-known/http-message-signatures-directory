@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "kid": "myfolio-agent-key-2026",
+      "x": "O2aFRL2STxPNe8MgWycg65Rkd_H6i8n1C_f-2uS4bE8",
+      "use": "sig",
+      "alg": "EdDSA"
+    }
+  ]
+}

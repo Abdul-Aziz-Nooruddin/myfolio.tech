@@ -1,0 +1,13 @@
+{
+  "protocol": "x402",
+  "version": "1.0.0",
+  "description": "x402 HTTP Payment Protocol specification for MyFolio paid builds and source code exports.",
+  "facilitator": "https://myfolio.tech/api/web/create-order",
+  "currency": "INR",
+  "price": 149,
+  "endpoints": {
+    "create_order": "https://myfolio.tech/api/web/create-order",
+    "verify_payment": "https://myfolio.tech/api/web/verify-payment",
+    "pricing": "https://myfolio.tech/api/pricing"
+  }
+}

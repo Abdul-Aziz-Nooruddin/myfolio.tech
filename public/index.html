@@ -255,5 +255,52 @@
       </header>
     </div>
 
+    <!-- WebMCP in-browser agent tool registration (https://webmachinelearning.github.io/webmcp/) -->
+    <script>
+      (function initWebMCP() {
+        if (typeof navigator !== 'undefined' && navigator.modelContext && typeof navigator.modelContext.registerTool === 'function') {
+          try {
+            const controller = new AbortController();
+            navigator.modelContext.registerTool({
+              name: 'generate_portfolio',
+              description: 'Synthesizes an interactive 3D WebGL developer portfolio from a public GitHub username.',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  github_username: { type: 'string', description: 'GitHub username' }
+                },
+                required: ['github_username']
+              },
+              execute: async ({ github_username }) => {
+                window.location.href = '/studio?github=' + encodeURIComponent(github_username);
+                return { success: true, redirect: '/studio?github=' + github_username };
+              }
+            }, { signal: controller.signal });
+
+            navigator.modelContext.registerTool({
+              name: 'get_pricing',
+              description: 'Returns MyFolio transparent pricing (Free 3 builds/wk, ₹149 lifetime build with source code ZIP export).',
+              inputSchema: { type: 'object', properties: {} },
+              execute: async () => {
+                const res = await fetch('/api/pricing');
+                return await res.json();
+              }
+            }, { signal: controller.signal });
+
+            navigator.modelContext.registerTool({
+              name: 'list_templates',
+              description: 'Lists all available 3D developer universes, aesthetics, and recommended roles.',
+              inputSchema: { type: 'object', properties: {} },
+              execute: async () => {
+                const res = await fetch('/api/templates');
+                return await res.json();
+              }
+            }, { signal: controller.signal });
+          } catch (e) {
+            console.debug('WebMCP registration error:', e);
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

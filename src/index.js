@@ -3124,6 +3124,34 @@ app.get(['/.well-known/mcp.json', '/mcp.json'], (req, res) => {
   res.sendFile(getPagePath('.well-known/mcp.json'));
 });
 
+// Web Bot Auth Signature Directory (IETF WebBotAuth WG & Cloudflare Bot Verification)
+app.get(['/.well-known/http-message-signatures-directory', '/http-message-signatures-directory'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/http-message-signatures-directory'));
+});
+
+// Agentic Commerce Protocol (ACP Discovery Document)
+app.get(['/.well-known/acp.json', '/.well-known/acp', '/acp.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/acp.json'));
+});
+
+// Universal Commerce Protocol (UCP Discovery Document)
+app.get(['/.well-known/ucp', '/.well-known/ucp.json', '/ucp.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/ucp'));
+});
+
+// x402 HTTP Payment Protocol Specification
+app.get(['/.well-known/x402', '/.well-known/x402.json', '/x402.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/x402.json'));
+});
+
 // Transparent Pricing Endpoint for Agents and UI
 app.get('/api/pricing', (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
