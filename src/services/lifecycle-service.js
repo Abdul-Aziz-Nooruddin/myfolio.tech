@@ -17,6 +17,7 @@ const LIFECYCLE_STATES = {
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000; // 24 hours free preview window
 const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000; // 5 days total retention before permanent deletion
+const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000; // Strict 72-hour cooldown: at most 1 email per user every 3 days
 
 class LifecycleService {
   constructor(dbService, emailService = null, notifier = null, hostingProvider = null) {
@@ -25,19 +26,74 @@ class LifecycleService {
     this.notifier = notifier;
     this.hostingProvider = hostingProvider;
     this.cronTask = null;
+    this.diskPurgeInterval = null;
+    this.lastSentTimes = new Map();
+    this.usersEmailedInThisCycle = new Set();
   }
 
   setNotifier(notifierFn) {
     this.notifier = notifierFn;
   }
 
-  startScheduler(cronExpression = '*/15 * * * *') {
+  getLastSentTime(userId, userEmail) {
+    let t = 0;
+    if (userId && this.lastSentTimes.has(userId)) {
+      t = Math.max(t, this.lastSentTimes.get(userId));
+    }
+    if (userEmail && this.lastSentTimes.has(userEmail.toLowerCase().trim())) {
+      t = Math.max(t, this.lastSentTimes.get(userEmail.toLowerCase().trim()));
+    }
+    return t;
+  }
+
+  markUserEmailed(userId, userEmail, time = Date.now()) {
+    if (userId) {
+      this.lastSentTimes.set(userId, time);
+      this.usersEmailedInThisCycle.add(userId);
+    }
+    if (userEmail) {
+      const clean = userEmail.toLowerCase().trim();
+      this.lastSentTimes.set(clean, time);
+      this.usersEmailedInThisCycle.add(clean);
+    }
+  }
+
+  async canSendToUser(userId, userEmail, now = Date.now()) {
+    if (userId && this.usersEmailedInThisCycle.has(userId)) return false;
+    if (userEmail && this.usersEmailedInThisCycle.has(userEmail.toLowerCase().trim())) return false;
+
+    // Check in-service memory cache
+    const localLast = this.getLastSentTime(userId, userEmail);
+    if (localLast && (now - localLast < THREE_DAYS_MS)) {
+      return false;
+    }
+
+    // Check persistent database / file history
+    if (this.db && typeof this.db.getLastEmailSentTime === 'function') {
+      try {
+        const dbLast = await this.db.getLastEmailSentTime(userId, userEmail);
+        if (dbLast && (now - dbLast < THREE_DAYS_MS)) {
+          return false;
+        }
+      } catch (e) {}
+    }
+
+    return true;
+  }
+
+  startScheduler(cronExpression = '0 9 */3 * *') {
     // Run initial sweep on startup to keep disk clean of sites older than 24 hours
     this.purgeOrphanAndExpiredDiskSites(TWENTY_FOUR_HOURS_MS);
 
-    // Run deterministic check every 15 minutes
+    // Ephemeral disk purge sweep runs every 6 hours so temporary previews are unmounted cleanly
+    this.diskPurgeInterval = setInterval(() => {
+      this.purgeOrphanAndExpiredDiskSites(TWENTY_FOUR_HOURS_MS);
+    }, 6 * 60 * 60 * 1000);
+    if (this.diskPurgeInterval.unref) this.diskPurgeInterval.unref();
+
+    // Lifecycle re-engagement and conversion emails run strictly on the 3-day cron schedule
     this.cronTask = cron.schedule(cronExpression, async () => {
-      console.log('[LIFECYCLE CRON] Running deterministic lifecycle check & disk auto-purge...');
+      console.log(`[LIFECYCLE CRON] Running deterministic 3-day lifecycle check (schedule: ${cronExpression})...`);
       try {
         await this.runLifecycleCycle();
         this.purgeOrphanAndExpiredDiskSites(TWENTY_FOUR_HOURS_MS);
@@ -45,7 +101,7 @@ class LifecycleService {
         console.error('[LIFECYCLE CRON ERROR]:', err);
       }
     });
-    console.log(`[LIFECYCLE] Scheduler & Auto-Purge Sweeper started (Cron: ${cronExpression})`);
+    console.log(`[LIFECYCLE] Scheduler & Auto-Purge Sweeper started (Cron: ${cronExpression} - Strict 3-Day Frequency)`);
   }
 
   /**
@@ -94,6 +150,10 @@ class LifecycleService {
       this.cronTask.stop();
       this.cronTask = null;
     }
+    if (this.diskPurgeInterval) {
+      clearInterval(this.diskPurgeInterval);
+      this.diskPurgeInterval = null;
+    }
   }
 
   /**
@@ -111,6 +171,7 @@ class LifecycleService {
     };
 
     const now = Date.now();
+    this.usersEmailedInThisCycle.clear();
 
     // 1. Process Unpaid Previews (24-hour preview window & 5-day permanent deletion)
     const activePreviews = await this.db.getUnpaidPreviews();
@@ -135,7 +196,7 @@ class LifecycleService {
             const user = item.users || (typeof this.db.getUserById === 'function' ? await this.db.getUserById(item.user_id) : null);
             const userEmail = user?.email || item.extracted_data?.email;
             const userName = user?.name || item.extracted_data?.name || 'there';
-            if (userEmail) {
+            if (userEmail && (await this.canSendToUser(item.user_id, userEmail, now))) {
               const hoursLeft = Math.max(1, Math.round((TWENTY_FOUR_HOURS_MS - elapsed) / (60 * 60 * 1000)));
               const previewUrl = item.live_url || `${process.env.HOST_URL || 'https://myfolio.tech'}/p/${item.id}`;
               const subscribeUrl = `${process.env.HOST_URL || 'https://myfolio.tech'}/subscribe?userId=${item.user_id}`;
@@ -146,6 +207,7 @@ class LifecycleService {
                 previewUrl,
                 subscribeUrl
               });
+              this.markUserEmailed(item.user_id, userEmail, now);
               results.expiringSoonEmailsSent++;
             }
           }
@@ -170,14 +232,16 @@ class LifecycleService {
       if (elapsed >= FIVE_DAYS_MS) {
         console.log(`[LIFECYCLE] Lapsed account ${item.id} exceeded 5-day grace period. Permanently purging.`);
         await this.transitionToDeleted(item, 'lapsed_5day_timeout');
-        if (this.email && userEmail) {
+        if (this.email && userEmail && (await this.canSendToUser(item.user_id, userEmail, now))) {
           if (typeof this.email.sendPurgedFreshStartEmail === 'function') {
             const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(item.user_id, 'purged_fresh_start') : false;
             if (!sent) {
               await this.email.sendPurgedFreshStartEmail(userEmail, { userId: item.user_id, name: userName });
+              this.markUserEmailed(item.user_id, userEmail, now);
             }
           } else if (typeof this.email.sendDeletionConfirmation === 'function') {
             await this.email.sendDeletionConfirmation(userEmail, { userId: item.user_id, name: userName });
+            this.markUserEmailed(item.user_id, userEmail, now);
           }
         }
         results.lapsedPurged++;
@@ -185,7 +249,7 @@ class LifecycleService {
       }
 
       // Check milestones for grace period emails
-      if (this.email && userEmail) {
+      if (this.email && userEmail && (await this.canSendToUser(item.user_id, userEmail, now))) {
         if (elapsedDays >= 4.5) {
           const sent = await this.db.hasEmailBeenSent(item.user_id, 'grace_reminder_day_4_5');
           if (!sent) {
@@ -197,6 +261,7 @@ class LifecycleService {
               retryUrl,
               siteUrl
             });
+            this.markUserEmailed(item.user_id, userEmail, now);
             results.lapsedRemindersSent++;
           }
         } else if (elapsedDays >= 3.0) {
@@ -210,6 +275,7 @@ class LifecycleService {
               retryUrl,
               siteUrl
             });
+            this.markUserEmailed(item.user_id, userEmail, now);
             results.lapsedRemindersSent++;
           }
         } else if (elapsedDays >= 1.0) {
@@ -223,6 +289,7 @@ class LifecycleService {
               retryUrl,
               siteUrl
             });
+            this.markUserEmailed(item.user_id, userEmail, now);
             results.lapsedRemindersSent++;
           }
         }
@@ -242,24 +309,31 @@ class LifecycleService {
           const createdAt = u.created_at ? new Date(u.created_at).getTime() : now;
           const elapsedDays = (now - createdAt) / (24 * 60 * 60 * 1000);
 
-          // Track 3a: NO SITE YET users (Funny re-engagement sequences)
+          // Track 3a: NO SITE YET users (Funny re-engagement sequences with strict 3-day cooldown)
           if (status === 'no_site_yet' && this.email && typeof this.email.sendNoSiteYetEmail === 'function') {
+            if (!(await this.canSendToUser(userId, userEmail, now))) {
+              continue;
+            }
+
             if (elapsedDays >= 7.0) {
               const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_3') : false;
               if (!sent) {
                 await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 3 });
+                this.markUserEmailed(userId, userEmail, now);
                 results.noSiteEmailsSent++;
               }
             } else if (elapsedDays >= 3.0) {
               const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_2') : false;
               if (!sent) {
                 await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 2 });
+                this.markUserEmailed(userId, userEmail, now);
                 results.noSiteEmailsSent++;
               }
             } else if (elapsedDays >= 1.0) {
               const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'no_site_yet_step_1') : false;
               if (!sent) {
                 await this.email.sendNoSiteYetEmail(userEmail, { userId, name: userName, step: 1 });
+                this.markUserEmailed(userId, userEmail, now);
                 results.noSiteEmailsSent++;
               }
             }
@@ -267,6 +341,9 @@ class LifecycleService {
 
           // Track 3b: LIVE (Paid) users welcome & tips milestone
           if (status === 'live' && this.email && typeof this.email.sendLiveWelcomeEmail === 'function') {
+            if (!(await this.canSendToUser(userId, userEmail, now))) {
+              continue;
+            }
             const sent = typeof this.db.hasEmailBeenSent === 'function' ? await this.db.hasEmailBeenSent(userId, 'live_welcome_milestone') : false;
             if (!sent) {
               const siteUrl = u.siteUrl ? `${process.env.HOST_URL || 'https://myfolio.tech'}${u.siteUrl}` : `${process.env.HOST_URL || 'https://myfolio.tech'}/dashboard.html`;
@@ -276,6 +353,7 @@ class LifecycleService {
                 siteUrl,
                 plan: u.plan === 'starter' ? 'Starter' : 'Pro'
               });
+              this.markUserEmailed(userId, userEmail, now);
               results.liveWelcomeEmailsSent++;
             }
           }
@@ -296,29 +374,36 @@ class LifecycleService {
         const subscribeUrl = `${process.env.HOST_URL || 'http://localhost:5050'}/subscribe?userId=${user.id}`;
 
         if (!userEmail) continue;
+        if (!(await this.canSendToUser(user.id, userEmail, now))) {
+          continue;
+        }
 
         if (elapsedDays >= 30.0) {
           const sentMonthly = await this.db.hasEmailBeenSent(user.id, 'conversion_email_monthly');
           if (!sentMonthly) {
             await this.email.sendMonthlyReengagementEmail(userEmail, { userId: user.id, name: userName });
+            this.markUserEmailed(user.id, userEmail, now);
             results.conversionEmailsSent++;
           }
         } else if (elapsedDays >= 9.0) {
           const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_4_day_9');
           if (!sent) {
             await this.email.sendConversionEmail4(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            this.markUserEmailed(user.id, userEmail, now);
             results.conversionEmailsSent++;
           }
         } else if (elapsedDays >= 6.0) {
           const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_3_day_6');
           if (!sent) {
             await this.email.sendConversionEmail3(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            this.markUserEmailed(user.id, userEmail, now);
             results.conversionEmailsSent++;
           }
         } else if (elapsedDays >= 3.0) {
           const sent = await this.db.hasEmailBeenSent(user.id, 'conversion_email_2_day_3');
           if (!sent) {
             await this.email.sendConversionEmail2(userEmail, { userId: user.id, name: userName, subscribeUrl });
+            this.markUserEmailed(user.id, userEmail, now);
             results.conversionEmailsSent++;
           }
         }

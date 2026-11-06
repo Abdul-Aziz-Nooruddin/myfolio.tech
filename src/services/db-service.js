@@ -14,6 +14,8 @@ if (typeof globalThis.WebSocket === 'undefined') {
   };
 }
 
+const fs = require('fs');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 class DatabaseService {
@@ -50,8 +52,12 @@ class DatabaseService {
         eq: () => chain,
         gte: () => chain,
         lte: () => chain,
+        in: () => chain,
+        order: () => chain,
+        limit: () => chain,
         select: () => chain,
         single: async () => ({ data: null, error: null }),
+        maybeSingle: async () => ({ data: null, error: null }),
         upsert: async () => ({ data: null, error: null }),
         update: () => chain,
         insert: (payload) => ({ select: () => ({ single: async () => ({ data: { id: 'usr_' + Date.now(), ...(Array.isArray(payload) ? payload[0] : payload) }, error: null }) }) }),
@@ -751,49 +757,191 @@ class DatabaseService {
     return `${local}@${domain}`;
   }
 
+  _getEmailLogFilePath() {
+    return path.join(process.cwd(), 'src', 'data', 'email-dispatch-history.json');
+  }
+
+  _loadEmailLogsFromFile() {
+    try {
+      const filePath = this._getEmailLogFilePath();
+      if (!fs.existsSync(filePath)) return [];
+      const content = fs.readFileSync(filePath, 'utf8');
+      const parsed = JSON.parse(content);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  _persistEmailLogToFile(entry) {
+    try {
+      const filePath = this._getEmailLogFilePath();
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      const existing = this._loadEmailLogsFromFile();
+      existing.push(entry);
+      // Retain the last 2000 logs to prevent file bloat
+      const trimmed = existing.slice(-2000);
+      fs.writeFileSync(filePath, JSON.stringify(trimmed, null, 2), 'utf8');
+    } catch (e) {
+      // Non-blocking
+    }
+  }
+
   async recordEmailLog(logData) {
-    const payload = {
-      user_id: logData.user_id,
-      email: logData.email,
-      sequence_type: logData.sequence_type,
+    const isUuid = (val) => typeof val === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(val);
+    const cleanEmail = logData.email ? logData.email.toLowerCase().trim() : '';
+    const nowIso = new Date().toISOString();
+
+    const memEntry = {
+      id: `elog_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+      user_id: logData.user_id || null,
+      email: cleanEmail,
+      sequence_type: logData.sequence_type || null,
       trigger_name: logData.trigger_name,
       status: logData.status || 'sent',
-      sent_at: new Date().toISOString()
+      sent_at: nowIso
     };
-    if (logData.email_index !== undefined) {
-      payload.email_index = logData.email_index;
-    }
 
-    const { error } = await this.client
-      .from('email_logs')
-      .insert(payload);
+    // 1. In-memory storage for immediate session deduplication
+    if (!this._memoryStore) this._memoryStore = {};
+    if (!Array.isArray(this._memoryStore.emailLogs)) this._memoryStore.emailLogs = [];
+    this._memoryStore.emailLogs.push(memEntry);
 
-    if (error && error.code !== '42P01' && !error.message?.includes('column')) {
-      console.warn('[DB] recordEmailLog warning:', error.message);
+    // 2. Persist to local JSON file so restarts retain history
+    this._persistEmailLogToFile(memEntry);
+
+    // 3. Persist to Supabase if available (only using valid schema columns)
+    if (this.client && process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY)) {
+      try {
+        const dbPayload = {
+          user_id: isUuid(logData.user_id) ? logData.user_id : null,
+          email: cleanEmail,
+          trigger_name: logData.trigger_name,
+          status: logData.status || 'sent',
+          error_message: logData.error_message || null,
+          sent_at: nowIso
+        };
+        const { error } = await this.client
+          .from('email_logs')
+          .insert(dbPayload);
+        if (error && error.code !== '42P01') {
+          console.warn('[DB] Supabase recordEmailLog notice:', error.message);
+        }
+      } catch (err) {
+        // Handled by in-memory & file storage
+      }
     }
   }
 
   async hasEmailBeenSent(identifier, triggerName) {
-    if (!identifier || !this.client) return false;
-    try {
-      const isEmail = typeof identifier === 'string' && identifier.includes('@');
-      let query = this.client
-        .from('email_logs')
-        .select('id')
-        .eq('trigger_name', triggerName);
+    if (!identifier) return false;
+    const cleanId = typeof identifier === 'string' ? identifier.trim() : String(identifier);
+    const isEmail = cleanId.includes('@');
+    const cleanEmail = isEmail ? cleanId.toLowerCase() : null;
 
-      if (isEmail) {
-        query = query.eq('email', identifier.toLowerCase().trim());
-      } else {
-        query = query.eq('user_id', identifier);
-      }
-
-      const { data, error } = await query.limit(1);
-      if (error && error.code !== 'PGRST116') return false;
-      return Array.isArray(data) && data.length > 0;
-    } catch (e) {
-      return false;
+    // 1. Check in-memory store
+    if (this._memoryStore?.emailLogs?.length) {
+      const foundInMem = this._memoryStore.emailLogs.some(log => {
+        if (log.trigger_name !== triggerName) return false;
+        if (cleanEmail && log.email && log.email.toLowerCase() === cleanEmail) return true;
+        if (log.user_id && log.user_id === cleanId) return true;
+        return false;
+      });
+      if (foundInMem) return true;
     }
+
+    // 2. Check local file persistence
+    const fileLogs = this._loadEmailLogsFromFile();
+    if (fileLogs.length) {
+      const foundInFile = fileLogs.some(log => {
+        if (log.trigger_name !== triggerName) return false;
+        if (cleanEmail && log.email && log.email.toLowerCase() === cleanEmail) return true;
+        if (log.user_id && log.user_id === cleanId) return true;
+        return false;
+      });
+      if (foundInFile) return true;
+    }
+
+    // 3. Check Supabase
+    if (this.client && process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY)) {
+      try {
+        let query = this.client
+          .from('email_logs')
+          .select('id')
+          .eq('trigger_name', triggerName);
+
+        if (cleanEmail) {
+          query = query.eq('email', cleanEmail);
+        } else {
+          query = query.eq('user_id', cleanId);
+        }
+
+        const { data, error } = await query.limit(1);
+        if (!error && Array.isArray(data) && data.length > 0) return true;
+      } catch (e) {
+        // Fall back to false
+      }
+    }
+
+    return false;
+  }
+
+  async getLastEmailSentTime(identifier, email = null) {
+    const cleanId = identifier ? String(identifier).trim() : null;
+    const cleanEmail = email ? email.toLowerCase().trim() : (cleanId && cleanId.includes('@') ? cleanId.toLowerCase() : null);
+
+    let latestTime = 0;
+
+    // 1. In-memory check
+    if (this._memoryStore?.emailLogs?.length) {
+      for (const log of this._memoryStore.emailLogs) {
+        const matchesUser = (cleanId && log.user_id && log.user_id === cleanId);
+        const matchesEmail = (cleanEmail && log.email && log.email.toLowerCase() === cleanEmail);
+        if (matchesUser || matchesEmail) {
+          const t = new Date(log.sent_at).getTime();
+          if (t > latestTime) latestTime = t;
+        }
+      }
+    }
+
+    // 2. File persistence check
+    const fileLogs = this._loadEmailLogsFromFile();
+    for (const log of fileLogs) {
+      const matchesUser = (cleanId && log.user_id && log.user_id === cleanId);
+      const matchesEmail = (cleanEmail && log.email && log.email.toLowerCase() === cleanEmail);
+      if (matchesUser || matchesEmail) {
+        const t = new Date(log.sent_at).getTime();
+        if (t > latestTime) latestTime = t;
+      }
+    }
+
+    // 3. Supabase check
+    if (this.client && process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY)) {
+      try {
+        let query = this.client
+          .from('email_logs')
+          .select('sent_at')
+          .order('sent_at', { ascending: false })
+          .limit(1);
+
+        if (cleanEmail) {
+          query = query.eq('email', cleanEmail);
+        } else if (cleanId) {
+          query = query.eq('user_id', cleanId);
+        }
+
+        const { data } = await query;
+        if (Array.isArray(data) && data[0]?.sent_at) {
+          const t = new Date(data[0].sent_at).getTime();
+          if (t > latestTime) latestTime = t;
+        }
+      } catch (e) {}
+    }
+
+    return latestTime;
   }
 
   async recordAuditLog(auditData) {

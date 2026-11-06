@@ -303,3 +303,96 @@ test('LifecycleService sends cryogenic sleep email when preview expires', async 
   assert.equal(sentEmails[0].name, 'Robin');
 });
 
+test('Strict 3-Day Cooldown: prevents any user from receiving more than 1 email every 3 days (72 hours)', async () => {
+  const sentEmails = [];
+  const db = new DatabaseService(null, null); // Uses mock client & in-memory/file storage
+
+  const uniqueSuffix = Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+  const testUserId = `u-throttle-test-${uniqueSuffix}`;
+  const testUserEmail = `throttle_${uniqueSuffix}@example.com`;
+
+  const mockDb = {
+    getUnpaidPreviews: async () => [],
+    getLapsedAccounts: async () => [],
+    getOptedInUnconvertedUsers: async () => [],
+    getAllAdminUsers: async () => [
+      {
+        id: testUserId,
+        email: testUserEmail,
+        name: 'Throttled User',
+        computedStatus: 'no_site_yet',
+        created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days old
+      }
+    ],
+    hasEmailBeenSent: async (id, trig) => db.hasEmailBeenSent(id, trig),
+    getLastEmailSentTime: async (id, em) => db.getLastEmailSentTime(id, em),
+    recordEmailLog: async (log) => db.recordEmailLog(log)
+  };
+
+  const mockEmail = {
+    sendNoSiteYetEmail: async (to, data) => {
+      sentEmails.push({ to, step: data.step });
+      await db.recordEmailLog({
+        user_id: data.userId,
+        email: to,
+        trigger_name: `no_site_yet_step_${data.step}`,
+        status: 'sent'
+      });
+    }
+  };
+
+  const lifecycle = new LifecycleService(mockDb, mockEmail);
+
+  // 1. First run: should send Step 1 email
+  const res1 = await lifecycle.runLifecycleCycle();
+  assert.equal(res1.noSiteEmailsSent, 1, 'First run sends initial email');
+  assert.equal(sentEmails.length, 1);
+
+  // 2. Immediate second run (within 72h window): MUST be blocked by 3-day cooldown
+  const res2 = await lifecycle.runLifecycleCycle();
+  assert.equal(res2.noSiteEmailsSent, 0, 'Immediate run blocked by 3-day cooldown');
+  assert.equal(sentEmails.length, 1, 'No second email sent within 72h');
+
+  // 3. Simulated next day (24h later): still within 72h cooldown -> MUST be blocked
+  const oneDayLater = Date.now() + 24 * 60 * 60 * 1000;
+  const canSend24h = await lifecycle.canSendToUser(testUserId, testUserEmail, oneDayLater);
+  assert.equal(canSend24h, false, 'User throttled 24h after first email');
+
+  // 4. Simulated 3 days later (72h+ elapsed): cooldown expires
+  const threeDaysLater = Date.now() + 73 * 60 * 60 * 1000;
+  const canSend72h = await lifecycle.canSendToUser(testUserId, testUserEmail, threeDaysLater);
+  assert.equal(canSend72h, true, 'User unthrottled after 72 hours (3 days)');
+});
+
+test('DatabaseService mock client supports .limit(), .order(), and tracks email logs without error', async () => {
+  const db = new DatabaseService(null, null);
+  const uId = `usr_mock_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+  const uEmail = `mock_${Date.now()}@example.com`;
+
+  // Record an email log
+  await db.recordEmailLog({
+    user_id: uId,
+    email: uEmail,
+    trigger_name: 'test_trigger_alpha',
+    status: 'sent'
+  });
+
+  // Check hasEmailBeenSent returns true by user_id
+  const sentByUserId = await db.hasEmailBeenSent(uId, 'test_trigger_alpha');
+  assert.equal(sentByUserId, true);
+
+  // Check hasEmailBeenSent returns true by email
+  const sentByEmail = await db.hasEmailBeenSent(uEmail, 'test_trigger_alpha');
+  assert.equal(sentByEmail, true);
+
+  // Check hasEmailBeenSent returns false for unsent trigger
+  const sentUnsent = await db.hasEmailBeenSent(uEmail, 'unknown_trigger');
+  assert.equal(sentUnsent, false);
+
+  // Check getLastEmailSentTime returns recent timestamp
+  const lastTime = await db.getLastEmailSentTime(uId, uEmail);
+  assert.ok(lastTime > 0);
+  assert.ok(Date.now() - lastTime < 5000);
+});
+
+

@@ -681,7 +681,7 @@ const razorpayService = youpiService;
 
 const lifecycleService = new LifecycleService(dbService, emailService, null, hostingProvider);
 if (require.main === module) {
-  lifecycleService.startScheduler('0 * * * *'); // Hourly deterministic check
+  lifecycleService.startScheduler('0 9 */3 * *'); // Strict 3-day deterministic check at 09:00 AM (at most 1 email every 3 days)
 
   // Render Anti-Spin-Down Keepalive: Pings /healthz every 10 minutes to prevent Render free-tier cold starts & Cloudflare 524 timeouts
   if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
