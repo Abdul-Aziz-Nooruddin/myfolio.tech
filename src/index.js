@@ -279,13 +279,15 @@ app.use((req, res, next) => {
   if (req.path.startsWith('/assets') || req.path.startsWith('/web/') || req.path.endsWith('.ico') || req.path.endsWith('.webp') || req.path.endsWith('.png') || req.path.endsWith('.jpg') || req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.endsWith('.woff2')) {
     return next();
   }
-  // 2. Unblock Search Engine Crawlers & Meta Indexing files (Googlebot, Bingbot, sitemap, robots)
-  const isSearchFile = ['/sitemap.xml', '/sitemap', '/robots.txt', '/llms.txt', '/ads.txt', '/manifest.json'].includes(req.path) || req.path.startsWith('/google001961baa3b6a214');
+  // 2. Unblock Search Engine Crawlers & Meta Indexing files (Googlebot, Bingbot, sitemap, robots, llms, .well-known)
+  const isSearchFile = [
+    '/sitemap.xml', '/sitemap', '/robots.txt', '/llms.txt', '/llms-full.txt', '/ads.txt', '/manifest.json', '/openapi.json', '/api-catalog', '/agent.json'
+  ].includes(req.path) || req.path.startsWith('/google001961baa3b6a214') || req.path.startsWith('/.well-known/');
   if (isSearchFile) {
     return next();
   }
   const ua = (req.get('user-agent') || '').toLowerCase();
-  const isSearchCrawler = /googlebot|google-inspectiontool|mediapartners-google|adsbot-google|bingbot|applebot|duckduckbot|yandexbot|baiduspider/i.test(ua);
+  const isSearchCrawler = /googlebot|google-inspectiontool|mediapartners-google|adsbot-google|bingbot|applebot|duckduckbot|yandexbot|baiduspider|gptbot|chatgpt-user|claudebot|claude-searchbot|perplexitybot|semrushbot|ahrefsbot|bytespider/i.test(ua);
   if (isSearchCrawler && ['GET', 'HEAD'].includes(req.method)) {
     return next();
   }
@@ -505,7 +507,9 @@ app.use(async (req, res, next) => {
     req.path.startsWith('/sites/') ||
     req.path.startsWith('/p/') ||
     req.path.startsWith('/u/') ||
-    /\.(png|jpe?g|webp|gif|svg|ico|css|js|glb|gltf|bin|wasm|woff2?|ttf|eot|json|mp4|webm|pdf)$/i.test(req.path)
+    req.path.startsWith('/.well-known/') ||
+    ['/robots.txt', '/sitemap.xml', '/sitemap', '/llms.txt', '/llms-full.txt', '/ads.txt', '/manifest.json', '/openapi.json', '/api-catalog', '/agent.json'].includes(req.path) ||
+    /\.(png|jpe?g|webp|gif|svg|ico|css|js|glb|gltf|bin|wasm|woff2?|ttf|eot|json|mp4|webm|pdf|txt|xml)$/i.test(req.path)
   ) {
     return next();
   }
@@ -2985,9 +2989,161 @@ const getPagePath = (filename) => {
   return fallback;
 };
 
-// Root homepage early route (O(1) instant delivery)
+// Helper to evaluate Markdown Content Negotiation (Cloudflare Agent Readiness & AI Crawlers)
+const acceptsMarkdown = (req) => {
+  const format = req.query?.format;
+  if (format === 'md' || format === 'markdown') return true;
+  const accept = (req.headers['accept'] || '').toLowerCase();
+  if (accept.includes('text/markdown') || accept.includes('text/x-markdown')) {
+    const parts = accept.split(',').map(s => s.trim());
+    const mdPart = parts.find(p => p.startsWith('text/markdown') || p.startsWith('text/x-markdown'));
+    const htmlPart = parts.find(p => p.startsWith('text/html'));
+    if (!htmlPart) return true;
+    const getQ = (str) => {
+      const m = str.match(/;q=([0-9.]+)/);
+      return m ? parseFloat(m[1]) : 1.0;
+    };
+    return getQ(mdPart) >= getQ(htmlPart);
+  }
+  return false;
+};
+
+// Root homepage early route with AI-Optimized Markdown Negotiation (O(1) instant delivery)
 app.get(['/', '/index', '/home'], (req, res) => {
+  if (acceptsMarkdown(req)) {
+    res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+    res.setHeader('Vary', 'Accept');
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+    return res.sendFile(getPagePath('llms.txt'));
+  }
   res.sendFile(getPagePath('index.html'));
+});
+
+// Canonical llms.txt and llms-full.txt for Answer Engines & AI Agents
+app.get(['/llms.txt', '/.well-known/llms.txt'], (req, res) => {
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Vary', 'Accept');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('llms.txt'));
+});
+
+app.get(['/llms-full.txt', '/.well-known/llms-full.txt'], (req, res) => {
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Vary', 'Accept');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  const fullCand = getPagePath('llms-full.txt');
+  if (fs.existsSync(fullCand)) {
+    return res.sendFile(fullCand);
+  }
+  res.sendFile(getPagePath('llms.txt'));
+});
+
+// RFC 9309 API Catalog Discovery
+app.get(['/.well-known/api-catalog', '/api-catalog'], (req, res) => {
+  res.setHeader('Content-Type', 'application/linkset+json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/api-catalog'));
+});
+
+// OpenAPI 3.0.3 Public Specifications
+app.get(['/.well-known/openapi.json', '/openapi.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/openapi.json'));
+});
+
+// RAG Pointers & Semantic Knowledge Index
+app.get('/.well-known/rag-pointers.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/rag-pointers.json'));
+});
+
+// Bot & Agent Authentication Instructions
+app.get('/.well-known/auth.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/auth.json'));
+});
+
+// OAuth 2.0 Authorization Server Metadata
+app.get(['/.well-known/oauth-authorization-server', '/.well-known/openid-configuration'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/oauth-authorization-server'));
+});
+
+// Emerging Agent Profile & Discovery (A2A)
+app.get(['/.well-known/ai-agent.json', '/.well-known/agent.json', '/agent.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/ai-agent.json'));
+});
+
+// WebMCP Tool Manifest (Model Context Protocol)
+app.get(['/.well-known/mcp.json', '/mcp.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.sendFile(getPagePath('.well-known/mcp.json'));
+});
+
+// Transparent Pricing Endpoint for Agents and UI
+app.get('/api/pricing', (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+  res.json({
+    success: true,
+    currency: 'INR',
+    currency_usd: 'USD',
+    model: 'per_build',
+    tiers: [
+      {
+        id: 'free_evaluation',
+        name: 'Free Evaluation',
+        price_inr: 0,
+        price_usd: 0,
+        billing: 'free_weekly',
+        allowance: '3 builds per week',
+        duration: '24 hours active per build',
+        features: [
+          '3 free portfolio builds every week',
+          'Full interactive 3D WebGL rendering',
+          'Unrestricted Web Studio customization',
+          'No credit card required'
+        ]
+      },
+      {
+        id: 'lifetime_build',
+        name: 'Lifetime Build',
+        price_inr: 149,
+        price_usd: 2.99,
+        billing: 'one_time',
+        source_code_export: true,
+        features: [
+          'Full Standalone Source Code Export (Clean ZIP download)',
+          'Permanent lifetime Netlify hosting',
+          'Automated live GitHub synchronization',
+          'Complete removal of all MyFolio watermarks',
+          'Zero recurring fees — pay once, own forever'
+        ]
+      },
+      {
+        id: 'pro_domain',
+        name: 'Pro Domain',
+        price_inr: 149,
+        price_usd: 2.99,
+        billing: 'monthly',
+        source_code_export: true,
+        features: [
+          'Full Standalone Source Code Export (Clean ZIP download)',
+          'Branded vanity subdomain (<username>.myfolio.tech)',
+          'Automated SSL certification & edge CDN routing',
+          'Automated live GitHub synchronization',
+          'Unlimited studio rebuilds and live edits'
+        ]
+      }
+    ]
+  });
 });
 
 // Google AdSense & Digital Ads Verification Route (ads.txt)

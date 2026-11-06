@@ -1,0 +1,23 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://myfolio.tech/api",
+      "service-desc": [
+        {
+          "href": "https://myfolio.tech/.well-known/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://myfolio.tech/llms.txt",
+          "type": "text/markdown"
+        },
+        {
+          "href": "https://myfolio.tech/studio",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}

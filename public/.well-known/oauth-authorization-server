@@ -1,0 +1,9 @@
+{
+  "issuer": "https://myfolio.tech",
+  "authorization_endpoint": "https://myfolio.tech/login",
+  "token_endpoint": "https://myfolio.tech/api/auth/login",
+  "response_types_supported": ["token", "code"],
+  "grant_types_supported": ["authorization_code", "password"],
+  "token_endpoint_auth_methods_supported": ["client_secret_basic", "none"],
+  "service_documentation": "https://myfolio.tech/.well-known/auth.json"
+}

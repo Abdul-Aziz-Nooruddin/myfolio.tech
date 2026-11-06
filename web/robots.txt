@@ -30,6 +30,8 @@ Allow: /landing-pages/
 Allow: /images/
 Allow: /sitemap.xml
 Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/
 Allow: /ads.txt
 Allow: /manifest.json
 Allow: /favicon*
@@ -86,6 +88,8 @@ Allow: /landing-pages/
 Allow: /images/
 Allow: /sitemap.xml
 Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/
 Allow: /ads.txt
 Allow: /manifest.json
 Allow: /favicon*
@@ -129,6 +133,8 @@ Allow: /landing-pages/
 Allow: /images/
 Allow: /sitemap.xml
 Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/
 Allow: /ads.txt
 Disallow: /api/
 Disallow: /admin
@@ -137,10 +143,11 @@ Disallow: /p/
 Disallow: /sites/
 
 # ==========================================================
-# AI & Generative Search Engines (GEO - ChatGPT Search, Perplexity, Claude)
+# AI & Generative Search Engines (GEO - ChatGPT Search, Perplexity, Claude, Applebot)
 # ==========================================================
 User-agent: GPTBot
 Allow: /
+Allow: /.well-known/
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
@@ -149,6 +156,7 @@ Disallow: /sites/
 
 User-agent: ChatGPT-User
 Allow: /
+Allow: /.well-known/
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
@@ -157,6 +165,16 @@ Disallow: /sites/
 
 User-agent: ClaudeBot
 Allow: /
+Allow: /.well-known/
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
+
+User-agent: Claude-SearchBot
+Allow: /
+Allow: /.well-known/
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
@@ -165,11 +183,33 @@ Disallow: /sites/
 
 User-agent: PerplexityBot
 Allow: /
+Allow: /.well-known/
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /p/
 Disallow: /sites/
+
+User-agent: Applebot
+Allow: /
+Allow: /.well-known/
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /.well-known/
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+
+User-agent: DuckAssistBot
+Allow: /
+Allow: /.well-known/
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
 
 # ==========================================================
 # Social Media Crawlers (Allow Assets for Rich Link Previews)
@@ -190,19 +230,39 @@ Allow: /assets/
 Allow: /images/
 
 # ==========================================================
-# Scraper Throttling & Protection
+# SEO Audit & Verification Tools
 # ==========================================================
-User-agent: AhrefsBot
-Disallow: /
-
 User-agent: SemrushBot
-Disallow: /
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
 
+User-agent: AhrefsBot
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /p/
+Disallow: /sites/
+
+# ==========================================================
+# Aggressive Scraper Throttling
+# ==========================================================
 User-agent: DotBot
 Disallow: /
 
 User-agent: MJ12bot
 Disallow: /
 
-# Canonical Sitemaps
+# ==========================================================
+# Canonical Sitemaps & Emerging Agent Discovery
+# ==========================================================
 Sitemap: https://myfolio.tech/sitemap.xml
+LLMs: https://myfolio.tech/llms.txt
+LLMs-Full: https://myfolio.tech/llms-full.txt
+OpenAPI: https://myfolio.tech/.well-known/openapi.json
+API-Catalog: https://myfolio.tech/.well-known/api-catalog
+Agent: https://myfolio.tech/.well-known/agent.json

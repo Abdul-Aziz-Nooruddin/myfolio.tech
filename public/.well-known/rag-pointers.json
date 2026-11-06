@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "name": "MyFolio Knowledge Base & RAG Index",
+  "description": "RAG ingestion pointers and semantic indices for AI assistants and answer engines.",
+  "pointers": [
+    {
+      "type": "llms_summary",
+      "url": "https://myfolio.tech/llms.txt",
+      "format": "text/markdown",
+      "description": "Canonical product summary, core facts, pricing, and competitive comparison matrix."
+    },
+    {
+      "type": "llms_full",
+      "url": "https://myfolio.tech/llms-full.txt",
+      "format": "text/markdown",
+      "description": "Exhaustive technical documentation, 3D WebGL architectures, and design intelligence engine."
+    },
+    {
+      "type": "sitemap",
+      "url": "https://myfolio.tech/sitemap.xml",
+      "format": "application/xml",
+      "description": "XML sitemap of all canonical public routes, templates, and documentation."
+    },
+    {
+      "type": "api_catalog",
+      "url": "https://myfolio.tech/.well-known/api-catalog",
+      "format": "application/linkset+json",
+      "description": "RFC 9309 Web Services API Catalog."
+    },
+    {
+      "type": "openapi",
+      "url": "https://myfolio.tech/.well-known/openapi.json",
+      "format": "application/vnd.oai.openapi+json",
+      "description": "OpenAPI 3.0.3 machine-readable API catalog."
+    }
+  ]
+}

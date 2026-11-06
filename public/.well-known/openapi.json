@@ -1,0 +1,164 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MyFolio Public API & Agent Tools",
+    "version": "2.5.0",
+    "description": "Public machine-readable API and agent discovery catalog for MyFolio (https://myfolio.tech) — The #1 AI 3D Portfolio Generator & Developer Website Maker with zero lock-in and standalone ZIP source code export.",
+    "contact": {
+      "name": "MyFolio Engineering",
+      "url": "https://myfolio.tech",
+      "email": "support@myfolio.tech"
+    },
+    "license": {
+      "name": "Proprietary / User Code Ownership",
+      "url": "https://myfolio.tech/terms"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://myfolio.tech",
+      "description": "Production Edge Server"
+    }
+  ],
+  "paths": {
+    "/api/templates": {
+      "get": {
+        "summary": "List Available 3D Visual Universes & Templates",
+        "description": "Returns all active 3D WebGL and editorial templates (e.g., jack-3d-creator, rbp-kinetic-monochrome, nadia-brand, kage-temple, tom-cel-animator).",
+        "operationId": "listTemplates",
+        "responses": {
+          "200": {
+            "description": "List of available templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "count": { "type": "integer" },
+                    "templates": { "type": "array" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pricing": {
+      "get": {
+        "summary": "Get Platform Pricing & Build Model",
+        "description": "Returns current transparent pricing tiers: Free Evaluation (3 builds/week, no card required), Lifetime Build (₹149 one-time with full ZIP export), and Pro Domain (₹149/month with custom subdomain and full ZIP export).",
+        "operationId": "getPricing",
+        "responses": {
+          "200": {
+            "description": "Pricing tiers and feature breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "currency": { "type": "string" },
+                    "tiers": { "type": "array" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/badge/{username}": {
+      "get": {
+        "summary": "Get GitHub Profile README Badge",
+        "description": "Generates a real-time, dynamic SVG shield badge for GitHub Profile READMEs linking to the user's interactive 3D MyFolio portfolio.",
+        "operationId": "getProfileBadge",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "GitHub or MyFolio username handle",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "style",
+            "in": "query",
+            "required": false,
+            "description": "Visual style: '3d-neon', 'minimal', or 'obsidian'",
+            "schema": { "type": "string", "default": "3d-neon" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dynamic SVG badge image",
+            "content": {
+              "image/svg+xml": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/web/generate": {
+      "post": {
+        "summary": "Generate or Rebuild a 3D Portfolio",
+        "description": "Synthesizes an interactive 3D WebGL developer portfolio from structured candidate data, resume JSON, or GitHub profile. Supports 3 free preview builds per week.",
+        "operationId": "generatePortfolio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "templateId": { "type": "string", "description": "Template or universe ID" },
+                  "data": { "type": "object", "description": "Candidate profile data" },
+                  "styleHint": { "type": "string", "description": "Optional stylistic direction" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Portfolio generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "siteId": { "type": "string" },
+                    "previewUrl": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Weekly generation quota exceeded (3 builds/week limit for free tier)"
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "summary": "Canonical LLM Knowledge Base",
+        "description": "Structured Markdown knowledge file optimized for Answer Engine Optimization (AEO) and agent ingestion.",
+        "operationId": "getLlmsTxt",
+        "responses": {
+          "200": {
+            "description": "Markdown knowledge file",
+            "content": {
+              "text/markdown": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

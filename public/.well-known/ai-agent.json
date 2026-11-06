@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "name": "MyFolio AI Portfolio Synthesizer",
+  "description": "Autonomous AI engine that synthesizes interactive 3D WebGL developer portfolios and personal brand websites from GitHub repositories in under 60 seconds, with zero vendor lock-in and standalone ZIP source code export.",
+  "url": "https://myfolio.tech",
+  "author": "MyFolio Team",
+  "version": "2.5.0",
+  "capabilities": [
+    "github_repository_ingestion",
+    "developer_identity_synthesis",
+    "3d_webgl_rendering",
+    "source_code_zip_export",
+    "custom_subdomain_hosting",
+    "markdown_content_negotiation"
+  ],
+  "interfaces": {
+    "web_studio": "https://myfolio.tech/studio",
+    "api_catalog": "https://myfolio.tech/.well-known/api-catalog",
+    "openapi": "https://myfolio.tech/.well-known/openapi.json",
+    "mcp": "https://myfolio.tech/.well-known/mcp.json",
+    "llms_txt": "https://myfolio.tech/llms.txt"
+  },
+  "pricing": {
+    "free_tier": "3 free 3D builds per week, no credit card required",
+    "lifetime_build": "₹149 ($2.99 USD) one-time with permanent hosting and full source code ZIP export",
+    "pro_domain": "₹149 ($2.99 USD) / month with branded subdomain and full source code ZIP export"
+  }
+}

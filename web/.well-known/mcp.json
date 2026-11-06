@@ -1,0 +1,53 @@
+{
+  "name": "myfolio-mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) tool manifest for MyFolio AI Portfolio Synthesizer",
+  "tools": [
+    {
+      "name": "generate_portfolio",
+      "description": "Synthesizes an interactive 3D WebGL developer portfolio from a public GitHub username in under 60 seconds. Free evaluation: 3 builds/week.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "github_username": {
+            "type": "string",
+            "description": "GitHub username or profile handle to ingest"
+          },
+          "template": {
+            "type": "string",
+            "description": "Visual universe (e.g., 'jack-3d-creator', 'rbp-kinetic-monochrome', 'nadia-brand')"
+          }
+        },
+        "required": ["github_username"]
+      }
+    },
+    {
+      "name": "list_templates",
+      "description": "Lists all available 3D developer universes, aesthetics, and recommended roles.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "get_pricing",
+      "description": "Returns current transparent pricing: Free evaluation (3 builds/wk), Lifetime Build (₹149 one-time with ZIP export), and Pro Domain (₹149/mo).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "get_readme_badge",
+      "description": "Generates a markdown badge snippet for a developer's GitHub README linking to their 3D MyFolio portfolio.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "description": "GitHub username" },
+          "style": { "type": "string", "description": "Badge theme: '3d-neon', 'minimal', 'obsidian'" }
+        },
+        "required": ["username"]
+      }
+    }
+  ]
+}
