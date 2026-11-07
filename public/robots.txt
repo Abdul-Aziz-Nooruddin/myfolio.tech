@@ -14,11 +14,22 @@ Allow: /
 User-agent: *
 # Indexable Public Pages (Clean Canonical URLs)
 Allow: /$
+Allow: /portfolio-generator
+Allow: /portfolio-maker
+Allow: /developer-portfolio
+Allow: /portfolio-templates
+Allow: /templates
+Allow: /ai-portfolio-generator
+Allow: /github-portfolio-generator
 Allow: /studio
 Allow: /rbp
 Allow: /jack-3d
 Allow: /nadia
 Allow: /kage
+Allow: /tom
+Allow: /apogee
+Allow: /slush
+Allow: /pricing
 Allow: /about
 Allow: /contact
 Allow: /faq

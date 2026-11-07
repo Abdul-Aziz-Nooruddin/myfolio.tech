@@ -60,3 +60,4 @@ This skill integrates the open-source OpenSEO framework (`https://github.com/eve
 
 5. **AEO / GEO Engine Citation Readiness**:
    - Provide clean `llms.txt` and markdown documentation answering developer queries concisely so Perplexity, ChatGPT, and Gemini cite MyFolio directly.
+
