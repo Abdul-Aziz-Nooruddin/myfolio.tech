@@ -341,19 +341,6 @@
         </script>
         <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
       </div>
-
-      <script>
-        // Graceful Ad-Guard: If Adsterra server returns 500/empty or ad blocker blocks it, auto-hide the bar after 4s
-        setTimeout(function() {
-          var bar = document.getElementById('adsterra-floating-bar');
-          if (bar) {
-            var iframes = bar.querySelectorAll('iframe');
-            if (!iframes || iframes.length === 0) {
-              bar.style.display = 'none';
-            }
-          }
-        }, 4000);
-      </script>
     </aside>
 
     <!-- Adsterra In-Content Monetization Suite -->
