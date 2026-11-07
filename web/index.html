@@ -309,24 +309,45 @@
       })();
     </script>
 
-    <!-- Floating Interactive Sponsored Partner Dock (Glassmorphic & Monetized) -->
-    <aside id="adsterra-floating-bar" aria-label="Sponsored Discovery Dock" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 1040px; z-index: 99999; background: rgba(20, 22, 20, 0.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 16px; padding: 12px 18px; box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;">
-      <!-- Interactive Top Bar: Live Pulse + Direct Smartlink Partner CTA + Dismiss -->
-      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px;">
+    <!-- Floating Interactive Arcade & Monetized Partner Dock -->
+    <aside id="adsterra-floating-bar" aria-label="Interactive Developer Arcade" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 980px; z-index: 99999; background: rgba(18, 20, 18, 0.90); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 18px; padding: 12px 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      
+      <!-- Arcade Header & Controls -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 100px; padding: 3px 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4ade80;">
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e;"></span>
-            Partner Showcase
+          <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 100px; padding: 3px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #38bdf8;">
+            <span style="animation: pulse 1.5s infinite; width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
+            🕹️ Cyber Catcher
           </span>
-          <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #f4f1e8; text-decoration: none; padding: 4px 12px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.12)'; this.style.borderColor='rgba(255,255,255,0.25)';" onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-            <span>Explore Developer Tools &amp; Cloud Offers</span>
-            <span style="color: #4ade80; font-size: 11px;">↗</span>
-          </a>
+          <div style="display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; color: #f4f1e8; background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+            <span>Score: <strong id="gameScore" style="color: #4ade80; font-family: monospace; font-size: 14px;">0</strong></span>
+            <span style="opacity: 0.4;">|</span>
+            <span>Lives: <span id="gameLives">❤️❤️❤️</span></span>
+          </div>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-          <a href="/studio" style="display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-decoration: none; padding: 3px 8px;" onmouseover="this.style.color='#ffffff';" onmouseout="this.style.color='rgba(255,255,255,0.7)';">Open Studio</a>
-          <button type="button" onclick="document.getElementById('adsterra-floating-bar').style.display='none'" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); font-size: 13px; cursor: pointer; padding: 4px 10px; border-radius: 8px; line-height: 1; transition: background 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.14)';" onmouseout="this.style.background='rgba(255,255,255,0.06)';" title="Dismiss dock">✕</button>
+          <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: #f4f1e8; text-decoration: none; padding: 4px 10px; border-radius: 8px; background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(56,189,248,0.2)); border: 1px solid rgba(34,197,94,0.4);" title="Unlock partner perks & developer rewards">
+            <span>🎁 Claim Reward</span>
+            <span style="color: #4ade80; font-size: 11px;">↗</span>
+          </a>
+          <button type="button" id="btnToggleGame" onclick="toggleArcadeView()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #ffffff; font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 8px; line-height: 1;">
+            <span id="btnToggleGameText">Play 🎮</span>
+          </button>
+          <button type="button" onclick="document.getElementById('adsterra-floating-bar').style.display='none'" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 12px; cursor: pointer; padding: 4px 8px; border-radius: 8px; line-height: 1;" title="Dismiss bar">✕</button>
+        </div>
+      </div>
+
+      <!-- Playable HTML5 Canvas Arena -->
+      <div id="arcadeArena" style="display: none; position: relative; width: 100%; height: 130px; background: radial-gradient(circle at 50% 100%, #1e293b, #090d16); border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; margin-bottom: 8px; cursor: crosshair;">
+        <canvas id="gameCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+        <div id="gameOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 10;">
+          <div style="font-size: 15px; font-weight: 800; color: #f4f1e8;" id="overlayTitle">👾 Catch Falling Stars!</div>
+          <div style="font-size: 11.5px; color: rgba(255,255,255,0.7);" id="overlaySubtitle">Move mouse or touch to steer your blue voxel hero</div>
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <button type="button" onclick="startMiniGame()" style="background: #22c55e; color: #000; border: none; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer;">Start Game 🚀</button>
+            <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">🎁 Bonus Perk ↗</a>
+          </div>
         </div>
       </div>
 
@@ -358,6 +379,230 @@
         <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
       </div>
     </aside>
+
+    <!-- Mini-Game Engine Script -->
+    <script>
+      (function() {
+        let isGameRunning = false;
+        let score = 0;
+        let lives = 3;
+        let playerX = 150;
+        let items = [];
+        let particles = [];
+        let lastTime = 0;
+        let animId = null;
+
+        const arena = document.getElementById('arcadeArena');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        const overlay = document.getElementById('gameOverlay');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlaySubtitle = document.getElementById('overlaySubtitle');
+        const scoreEl = document.getElementById('gameScore');
+        const livesEl = document.getElementById('gameLives');
+        const toggleBtn = document.getElementById('btnToggleGameText');
+
+        window.toggleArcadeView = function() {
+          if (!arena) return;
+          if (arena.style.display === 'none') {
+            arena.style.display = 'block';
+            toggleBtn.textContent = 'Hide 🕹️';
+            resizeCanvas();
+            showOverlay('👾 Cyber Voxel Catcher', 'Move cursor/finger to catch stars ⭐ & gems 💎. Dodge red bugs 👾!');
+          } else {
+            arena.style.display = 'none';
+            toggleBtn.textContent = 'Play 🎮';
+            stopGame();
+          }
+        };
+
+        function resizeCanvas() {
+          if (!canvas || !arena) return;
+          canvas.width = arena.clientWidth;
+          canvas.height = arena.clientHeight;
+          playerX = canvas.width / 2;
+        }
+
+        function showOverlay(title, subtitle) {
+          if (!overlay) return;
+          overlay.style.display = 'flex';
+          overlayTitle.textContent = title;
+          overlaySubtitle.textContent = subtitle;
+        }
+
+        window.startMiniGame = function() {
+          if (!canvas || !ctx) return;
+          resizeCanvas();
+          if (overlay) overlay.style.display = 'none';
+          score = 0;
+          lives = 3;
+          items = [];
+          particles = [];
+          updateUI();
+          isGameRunning = true;
+          lastTime = performance.now();
+          if (animId) cancelAnimationFrame(animId);
+          animId = requestAnimationFrame(gameLoop);
+        };
+
+        function stopGame() {
+          isGameRunning = false;
+          if (animId) cancelAnimationFrame(animId);
+        }
+
+        function updateUI() {
+          if (scoreEl) scoreEl.textContent = score;
+          if (livesEl) livesEl.textContent = '❤️'.repeat(Math.max(0, lives)) || '💀';
+        }
+
+        function spawnItem() {
+          if (!canvas) return;
+          const types = [
+            { char: '⭐', pts: 10, speed: 2.2, bad: false },
+            { char: '💎', pts: 25, speed: 2.8, bad: false },
+            { char: '⚡', pts: 15, speed: 2.5, bad: false },
+            { char: '👾', pts: 0, speed: 2.0, bad: true }
+          ];
+          const choice = types[Math.floor(Math.random() * types.length)];
+          items.push({
+            x: 20 + Math.random() * (canvas.width - 40),
+            y: -20,
+            char: choice.char,
+            pts: choice.pts,
+            speed: choice.speed + (score * 0.02),
+            bad: choice.bad,
+            size: 20
+          });
+        }
+
+        function spawnCatchParticles(x, y, color) {
+          for (let i = 0; i < 8; i++) {
+            particles.push({
+              x: x,
+              y: y,
+              vx: (Math.random() - 0.5) * 6,
+              vy: (Math.random() - 0.5) * 6,
+              life: 1.0,
+              color: color
+            });
+          }
+        }
+
+        function gameLoop(now) {
+          if (!isGameRunning || !ctx) return;
+          const dt = (now - lastTime) / 1000;
+          lastTime = now;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Grid lines
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.lineWidth = 1;
+          for (let x = 0; x < canvas.width; x += 30) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+          }
+
+          // Spawn items
+          if (Math.random() < 0.045) {
+            spawnItem();
+          }
+
+          // Draw Player (Blue Voxel Ninja Avatar)
+          const playerY = canvas.height - 24;
+          ctx.font = '24px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('🤖', playerX, playerY);
+
+          // Glow base
+          ctx.beginPath();
+          ctx.ellipse(playerX, playerY + 12, 14, 4, 0, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+          ctx.fill();
+
+          // Update & Draw Items
+          for (let i = items.length - 1; i >= 0; i--) {
+            const it = items[i];
+            it.y += it.speed;
+
+            ctx.font = '18px sans-serif';
+            ctx.fillText(it.char, it.x, it.y);
+
+            // Collision Check with player
+            const dist = Math.hypot(it.x - playerX, it.y - playerY);
+            if (dist < 26) {
+              if (it.bad) {
+                lives--;
+                spawnCatchParticles(it.x, it.y, '#ef4444');
+                updateUI();
+                if (lives <= 0) {
+                  stopGame();
+                  showOverlay('💥 System Glitch! Game Over', `Final Score: ${score} pts. Claim your developer reward below!`);
+                  return;
+                }
+              } else {
+                score += it.pts;
+                spawnCatchParticles(it.x, it.y, '#38bdf8');
+                updateUI();
+              }
+              items.splice(i, 1);
+              continue;
+            }
+
+            // Ground hit
+            if (it.y > canvas.height + 20) {
+              items.splice(i, 1);
+            }
+          }
+
+          // Update & Draw Particles
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.04;
+            if (p.life <= 0) {
+              particles.splice(i, 1);
+            } else {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+              ctx.fillStyle = p.color;
+              ctx.globalAlpha = p.life;
+              ctx.fill();
+              ctx.globalAlpha = 1.0;
+            }
+          }
+
+          animId = requestAnimationFrame(gameLoop);
+        }
+
+        // Pointer controls
+        function handleMove(clientX) {
+          if (!canvas) return;
+          const rect = canvas.getBoundingClientRect();
+          const x = clientX - rect.left;
+          playerX = Math.max(16, Math.min(canvas.width - 16, x));
+        }
+
+        if (canvas) {
+          canvas.addEventListener('mousemove', (e) => handleMove(e.clientX));
+          canvas.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+              handleMove(e.touches[0].clientX);
+            }
+          }, { passive: true });
+        }
+
+        window.addEventListener('resize', () => {
+          if (arena && arena.style.display !== 'none') {
+            resizeCanvas();
+          }
+        });
+      })();
+    </script>
 
     <!-- Adsterra In-Content Monetization Suite -->
     <div id="adsterra-banner-slot" style="position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px);">
