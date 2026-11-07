@@ -2274,7 +2274,7 @@
           <div class="workflow-card" id="stepSectionWorld">
             <div class="workflow-step-badge">2. Active Portfolio Template</div>
             <div class="workflow-card-title">Choose Your Design Template</div>
-            <div class="workflow-card-desc">Select from our 4 production-grade portfolio architectures crafted for impact.</div>
+            <div class="workflow-card-desc">Select from our 6 production-grade portfolio architectures crafted for impact.</div>
 
             <!-- Curated Templates: Jack 3D Creator, Nadia Personal Brand, Kage Kyoto Temple & RBP Kinetic Monochrome -->
             <div class="world-category-grid" id="curatedWorldsGrid" style="display: flex; flex-direction: column; gap: 12px;">
@@ -2350,35 +2350,35 @@
           <div class="confirmation-summary-box" id="confirmationSummaryBox">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:11px; font-family:var(--mf-font-mono); color:var(--mf-accent-blue); letter-spacing:0.08em; font-weight:700;">CONFIRMATION SUMMARY</span>
-              <span class="mf-badge mf-badge-accent" style="font-size:9.5px;" id="summaryStatusBadge">READY</span>
+              <span class="mf-badge" style="font-size:9.5px;" id="summaryStatusBadge">WAITING FOR INPUT</span>
             </div>
 
             <ul class="confirmation-list">
-              <li id="chkGithub" class="chk-item checked">
+              <li id="chkGithub" class="chk-item">
                 <span class="chk-icon">✓</span>
                 <span>GitHub connected</span>
               </li>
-              <li id="chkProjects" class="chk-item checked">
+              <li id="chkProjects" class="chk-item">
                 <span class="chk-icon">✓</span>
                 <span>Projects found</span>
               </li>
-              <li id="chkSkills" class="chk-item checked">
+              <li id="chkSkills" class="chk-item">
                 <span class="chk-icon">✓</span>
                 <span>Skills detected</span>
               </li>
-              <li id="chkExperience" class="chk-item checked">
+              <li id="chkExperience" class="chk-item">
                 <span class="chk-icon">✓</span>
                 <span>Experience detected</span>
               </li>
-              <li id="chkResume" class="chk-item checked">
+              <li id="chkResume" class="chk-item">
                 <span class="chk-icon">✓</span>
                 <span>Resume analyzed</span>
               </li>
             </ul>
 
-            <div class="ready-banner">
+            <div class="ready-banner" id="readyBannerStatus" style="display:none;">
               <span style="font-size:14px;">✦</span>
-              <span>Your portfolio is ready to generate.</span>
+              <span>Your portfolio credentials are ready to synthesize.</span>
             </div>
 
             <button type="button" onclick="handleStudioGenerate(event)" class="primary-generate-btn" id="btnMainGenerateAction">
@@ -2556,8 +2556,8 @@
           <button class="device-btn" onclick="setDeviceView('mobile', this)">Mobile</button>
         </div>
 
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:11.5px; font-family:var(--mf-font-mono); color:var(--mf-text-muted);" id="generatedUrlText">
+        <div style="display:flex; align-items:center; gap:8px; min-width:0; max-width:min(440px, 48vw);">
+          <span style="font-size:11.5px; font-family:var(--mf-font-mono); color:var(--mf-text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-flex; align-items:center;" id="generatedUrlText">
             https://myfolio.tech/jack-3d
           </span>
           <button type="button" class="mf-btn mf-btn-ghost mf-btn-sm" onclick="reloadStudioCanvas()" title="Reload Canvas">
@@ -3509,6 +3509,25 @@
         if (score === 100) hintEl.textContent = 'All core credentials populated & ready';
         else hintEl.textContent = `${5 - completedCount} items pending before optimal generation`;
       }
+
+      // Update Summary Status Badge and Ready Banner
+      const statusBadge = document.getElementById('summaryStatusBadge');
+      const readyBanner = document.getElementById('readyBannerStatus');
+      if (statusBadge) {
+        if (completedCount >= 3) {
+          statusBadge.textContent = 'READY';
+          statusBadge.className = 'mf-badge mf-badge-accent';
+        } else if (completedCount > 0) {
+          statusBadge.textContent = 'IN PROGRESS';
+          statusBadge.className = 'mf-badge';
+        } else {
+          statusBadge.textContent = 'WAITING FOR INPUT';
+          statusBadge.className = 'mf-badge';
+        }
+      }
+      if (readyBanner) {
+        readyBanner.style.display = completedCount >= 2 ? 'flex' : 'none';
+      }
     }
 
     function updateStepperActive(step) {
@@ -3736,9 +3755,21 @@
     }
 
     function copyGeneratedUrl() {
-      const url = document.getElementById('generatedUrlText').textContent.trim();
-      navigator.clipboard.writeText(url);
-      showToast('Copied: ' + url, 'success');
+      let urlToCopy = '';
+      const cleanEl = document.getElementById('cleanDisplayUrl');
+      if (cleanEl && cleanEl.textContent.trim()) {
+        urlToCopy = cleanEl.textContent.trim();
+      } else if (currentDraftSiteId) {
+        urlToCopy = `${window.location.origin}/p/${currentDraftSiteId}`;
+      } else {
+        const urlEl = document.getElementById('generatedUrlText');
+        urlToCopy = (urlEl ? urlEl.textContent.trim() : '').replace(/^DRAFT PREVIEW\s*/i, '');
+      }
+      if (!urlToCopy) {
+        urlToCopy = `${window.location.origin}/jack-3d`;
+      }
+      navigator.clipboard.writeText(urlToCopy);
+      showToast('Copied: ' + urlToCopy, 'success');
     }
 
     function applyAiSuggestion(action) {
@@ -3798,7 +3829,20 @@
     let genOrbInstance = null;
 
     async function handleStudioGenerate(e) {
-      e.preventDefault();
+      if (e && e.preventDefault) e.preventDefault();
+
+      const ghUserVal = document.getElementById('ghUsername')?.value.trim() || '';
+      const fullNameVal = document.getElementById('manualFullName')?.value.trim() || '';
+      if (!ghUserVal && !fullNameVal && !uploadedResumeBase64) {
+        showToast('Please enter your GitHub username or fill in your details before generating.', 'warning');
+        const ghInput = document.getElementById('ghUsername');
+        if (ghInput) {
+          ghInput.focus();
+          ghInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
       const btn = document.getElementById('btnSubmitGenerate');
       const fluidLevel = document.getElementById('fluidLevel');
       const fluidBtnText = document.getElementById('fluidBtnText');
@@ -4068,9 +4112,9 @@
 
         // Update URL bar to display draft preview status (NEVER show custom domain before user selects and pays)
         const urlDisplay = document.getElementById('generatedUrlText');
+        const displayUrl = data.previewUrl ? `${window.location.origin}${data.previewUrl}` : `${window.location.origin}/p/${data.siteId}`;
         if (urlDisplay) {
-          const displayUrl = data.previewUrl ? `${window.location.origin}${data.previewUrl}` : `${window.location.origin}/p/${data.siteId}`;
-          urlDisplay.innerHTML = `<span style="background:rgba(234,179,8,0.2); color:#facc15; border:1px solid rgba(234,179,8,0.4); padding:2px 7px; border-radius:4px; font-size:10px; font-weight:700; margin-right:6px;">DRAFT PREVIEW</span> ${displayUrl}`;
+          urlDisplay.innerHTML = `<span style="background:rgba(234,179,8,0.2); color:#facc15; border:1px solid rgba(234,179,8,0.4); padding:2px 7px; border-radius:4px; font-size:10px; font-weight:700; margin-right:6px; flex-shrink:0;">DRAFT PREVIEW</span><span id="cleanDisplayUrl" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${displayUrl}</span>`;
         }
         const openLiveBtn = document.getElementById('btnOpenGeneratedLive');
         if (openLiveBtn) {
@@ -4109,9 +4153,9 @@
         if (fluidBtnPercent) fluidBtnPercent.style.display = 'none';
         if (fluidBtnText) fluidBtnText.textContent = 'Publish Live';
         console.error('[STUDIO] Generation failed:', err);
-        const isAbort = err.name === 'AbortError' || (err.message && (err.message.includes('abort') || err.message.includes('timed out')));
+        const isAbort = err.name === 'AbortError' || (err.message && (err.message.includes('abort') || err.message.includes('timed out') || err.message.includes('without reason')));
         const userMsg = isAbort
-          ? 'Generation took longer than expected. Please try again or simplify your input.'
+          ? 'Generation took longer than expected. Please check your network or try again.'
           : (err.message || 'Network error');
         showToast('Generation note: ' + userMsg, 'error');
       } finally {
@@ -4467,9 +4511,10 @@
 
     async function publishDraftPortfolio() {
       if (!currentDraftSiteId) {
-        showToast('Generating portfolio preview first...', 'info');
-        const form = document.getElementById('portfolioGenerationForm');
-        if (form) form.requestSubmit();
+        showToast('Please generate your portfolio preview draft first.', 'info');
+        jumpToStudioStep('content');
+        const genBox = document.getElementById('confirmationSummaryBox');
+        if (genBox) genBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
@@ -4587,6 +4632,35 @@
 
       // Initial validation of confirmation summary checklist
       updateConfirmationChecks();
+
+      // Escape key listener to exit fullscreen and close open studio modals
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+          const canvasFrame = document.getElementById('canvasFrame');
+          if (canvasFrame && canvasFrame.classList.contains('fullscreen-mode')) {
+            canvasFrame.classList.remove('fullscreen-mode');
+          }
+          const guestModal = document.getElementById('guestClaimModal');
+          if (guestModal && guestModal.style.display !== 'none') {
+            guestModal.style.display = 'none';
+          }
+          const upModal = document.getElementById('usernamePickerModal');
+          if (upModal && upModal.style.display !== 'none') {
+            upModal.style.display = 'none';
+          }
+          const worldsDrawer = document.getElementById('allWorldsDrawer');
+          if (worldsDrawer && worldsDrawer.classList.contains('open')) {
+            if (typeof toggleAllWorldsDrawer === 'function') {
+              toggleAllWorldsDrawer(false);
+            } else {
+              worldsDrawer.classList.remove('open');
+            }
+          }
+        }
+      });
 
       // Drag and drop for resume dropzone
       const dropZone = document.getElementById('studioResumeDropZone');

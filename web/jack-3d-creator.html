@@ -65,23 +65,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            background: '#0C0C0C',
-            accentText: '#D7E2EA',
-          },
-          fontFamily: {
-            kanit: ['Kanit', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind CSS Engine (Zero External CDN Dependency) -->
+  <link rel="stylesheet" href="/assets/jack-3d-tailwind.css">
 
   <style>
     *, *::before, *::after {
@@ -104,7 +89,12 @@
       -webkit-text-fill-color: transparent;
     }
 
+    h1.hero-heading {
+      font-size: clamp(38px, 14vw, 190px) !important;
+    }
+
     .contact-btn {
+      white-space: nowrap !important;
       background: linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%);
       box-shadow: 0px 4px 4px rgba(181, 1, 167, 0.25), inset 4px 4px 12px #7721B1;
       outline: 2px solid white;
@@ -1139,14 +1129,14 @@
                   <div class="grid grid-cols-1 md:grid-cols-10 gap-3 sm:gap-4 pt-2">
                     <div class="md:col-span-4 flex flex-col gap-3 sm:gap-4">
                       <div class="h-[clamp(130px,16vw,230px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                        <img src="/assets/projects/blockchain_consent_3d.webp" alt="Pass A Note - View 1" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                        <img src="/assets/projects/pass_note_messenger_3d.webp" alt="Pass A Note - View 1" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                       </div>
                       <div class="h-[clamp(160px,22vw,340px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                        <img src="/assets/projects/algorand_escrow_protocol_3d.webp" alt="Pass A Note - View 2" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                        <img src="/assets/projects/consent_chain_privacy_3d.webp" alt="Pass A Note - View 2" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                       </div>
                     </div>
                     <div class="md:col-span-6 h-[clamp(300px,40vw,586px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                      <img src="/assets/projects/consent_chain_privacy_3d.webp" alt="Pass A Note - Showcase Hero" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                      <img src="/assets/projects/pass_note_messenger_3d.webp" alt="Pass A Note - Showcase Hero" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                     </div>
                   </div>
                 </div>
@@ -1189,14 +1179,14 @@
                   <div class="grid grid-cols-1 md:grid-cols-10 gap-3 sm:gap-4 pt-2">
                     <div class="md:col-span-4 flex flex-col gap-3 sm:gap-4">
                       <div class="h-[clamp(130px,16vw,230px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                        <img src="/assets/projects/blockchain_consent_3d.webp" alt="LMS User Management - View 1" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                        <img src="/assets/projects/student_database_manager_3d.webp" alt="LMS User Management - View 1" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                       </div>
                       <div class="h-[clamp(160px,22vw,340px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                        <img src="/assets/projects/algorand_escrow_protocol_3d.webp" alt="LMS User Management - View 2" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                        <img src="/assets/projects/lms_user_management_3d.webp" alt="LMS User Management - View 2" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                       </div>
                     </div>
                     <div class="md:col-span-6 h-[clamp(300px,40vw,586px)] w-full overflow-hidden rounded-[40px] sm:rounded-[50px] md:rounded-[60px] bg-[#141414] border border-white/5">
-                      <img src="/assets/projects/consent_chain_privacy_3d.webp" alt="LMS User Management - Showcase Hero" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                      <img src="/assets/projects/lms_user_management_3d.webp" alt="LMS User Management - Showcase Hero" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                     </div>
                   </div>
                 </div>
@@ -1307,7 +1297,7 @@
     </section>
 
     <!-- 8. FOOTER SECTION -->
-    <footer id="contact" class="w-full bg-[#0C0C0C] border-t border-white/10 px-6 sm:px-10 py-16 sm:py-20 relative z-20">
+    <footer id="contact" class="w-full bg-[#0C0C0C] border-t border-white/10 px-6 sm:px-10 pt-16 sm:pt-20 pb-28 sm:pb-24 relative z-20">
       <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
         <div>
           <span class="text-xs uppercase tracking-widest text-[#D7E2EA]/60 font-light">Get In Touch</span>
@@ -1661,16 +1651,19 @@
 
           // H. Continuous Interactive 3D Parallax Drift for Background Layers
           if (!isReducedMotion) {
-            gsap.to('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer', {
-              yPercent: 22,
-              ease: "none",
-              scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.2
-              }
-            });
+            const bgTargets = document.querySelectorAll('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer');
+            if (bgTargets.length > 0) {
+              gsap.to(bgTargets, {
+                yPercent: 22,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: "body",
+                  start: "top top",
+                  end: "bottom bottom",
+                  scrub: 1.2
+                }
+              });
+            }
           }
         });
 

@@ -295,7 +295,7 @@
         const user = chip.getAttribute('data-user');
         if (user) {
           input.value = user;
-          triggerGeneration(user);
+          input.focus();
         }
       });
     });

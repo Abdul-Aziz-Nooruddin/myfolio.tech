@@ -235,7 +235,11 @@
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 6px;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(117, 197, 222, 0.4) transparent;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(to right, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);
 }
 .universe-nav-pills::-webkit-scrollbar { display: none; }
 

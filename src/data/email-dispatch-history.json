@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "elog_1794036574375_gxme3x",
+    "user_id": "u-throttle-test-1794036574374_0lle8",
+    "email": "throttle_1794036574374_0lle8@example.com",
+    "sequence_type": null,
+    "trigger_name": "no_site_yet_step_1",
+    "status": "sent",
+    "sent_at": "2026-11-07T07:29:34.375Z"
+  },
+  {
+    "id": "elog_1794036574375_81rqsg",
+    "user_id": "usr_mock_1794036574375_kppu9",
+    "email": "mock_1794036574375@example.com",
+    "sequence_type": null,
+    "trigger_name": "test_trigger_alpha",
+    "status": "sent",
+    "sent_at": "2026-11-07T07:29:34.375Z"
+  },
+  {
+    "id": "elog_1794040873018_owh731",
+    "user_id": "u-throttle-test-1794040873017_ne2ql",
+    "email": "throttle_1794040873017_ne2ql@example.com",
+    "sequence_type": null,
+    "trigger_name": "no_site_yet_step_1",
+    "status": "sent",
+    "sent_at": "2026-11-07T08:41:13.018Z"
+  },
+  {
+    "id": "elog_1794040873019_5oh38a",
+    "user_id": "usr_mock_1794040873019_k3a1q",
+    "email": "mock_1794040873019@example.com",
+    "sequence_type": null,
+    "trigger_name": "test_trigger_alpha",
+    "status": "sent",
+    "sent_at": "2026-11-07T08:41:13.019Z"
+  }
+]

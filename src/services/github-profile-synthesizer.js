@@ -114,43 +114,27 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
       });
     }
 
-    // If less than 2 experiences, derive authentic milestones from real projects
-    if (expList.length < 2 && projects.length > 0) {
-      const topProj = projects[0];
+    // Strictly verified experience grounded in actual profile data (Decision A - Zero hallucinations)
+    if (expList.length === 0 && (github.publicRepositories > 0 || projects.length > 0)) {
+      const startYear = github.createdAt ? new Date(github.createdAt).getFullYear() : (currentYear - 2);
       expList.push({
-        role: `Lead Systems Engineer`,
-        company: topProj.name,
-        period: `${currentYear - 1} — Present`,
-        desc: topProj.description || `Engineered modular architecture, interface design, and deployment workflows.`
+        role: 'Open Source Contributor & Maintainer',
+        company: 'GitHub Open Source',
+        period: `${startYear} — Present`,
+        desc: `Building, publishing, and maintaining ${github.publicRepositories || projects.length}+ public repositories with clean code architectures and version-controlled releases.`
       });
     }
 
-    if (expList.length < 3) {
-      expList.push({
-        role: 'Open Source Creator & Maintainer',
-        company: 'GitHub Ecosystem',
-        period: `${currentYear - 3} — Present`,
-        desc: `Authored and maintained ${github.publicRepositories || projects.length}+ public repositories with continuous integration, unit testing, and modular architecture.`
-      });
-    }
-
-    // Education & Credentials
+    // Education & Credentials (Decision A - strictly verified, zero fake universities)
     const eduList = Array.isArray(aiOutput.education) && aiOutput.education.length > 0
       ? aiOutput.education
-      : [
-          {
-            degree: 'Software Engineering & Computer Systems',
-            institution: 'Verified Engineering Practice',
-            year: 'Continuous'
-          }
-        ];
+      : [];
 
     // Certifications & Open Source Badges
     const certList = Array.isArray(aiOutput.certifications) && aiOutput.certifications.length > 0
       ? aiOutput.certifications
       : [
-          { name: `Verified GitHub Creator (${github.publicRepositories || 0} Repositories)`, issuer: 'GitHub' },
-          { name: 'Modern Full-Stack Development Proficiency', issuer: 'Open Source Standard' }
+          { name: `Verified GitHub Developer (${github.publicRepositories || 0} Repositories)`, issuer: 'GitHub' }
         ];
 
     const allSkills = [
@@ -164,12 +148,22 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
       ...(skills.tools || [])
     ];
 
+    let candidateEmail = aiOutput.email || identity.email || '';
+    if (candidateEmail.includes('noreply') || candidateEmail.includes('@users.noreply.github.com')) {
+      candidateEmail = '';
+    }
+
     const validated = {
       name: aiOutput.name || identity.name || identity.username,
       role: aiOutput.role || this.inferRoleFromLanguages(skills.languages, skills.web3, projects),
       tagline: aiOutput.tagline || identity.bio || `Engineering high-impact digital experiences in ${skills.languages.slice(0, 3).join(', ') || 'modern software'}.`,
       bio: aiOutput.bio || identity.bio || `Passionate software developer actively building open-source projects across ${skills.languages.slice(0, 4).join(', ') || 'full-stack systems'}. Dedicated to clean architecture, developer ergonomics, and resilient digital solutions.`,
-      email: aiOutput.email || `${identity.username}@users.noreply.github.com`,
+      email: candidateEmail,
+      contact: {
+        email: candidateEmail,
+        github: github.profileUrl,
+        location: aiOutput.location || identity.location || 'Remote'
+      },
       location: aiOutput.location || identity.location || 'Remote',
       github: github.profileUrl,
       website: identity.website || '',
@@ -199,12 +193,15 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
         // Map every verified project in evidence, enhancing with AI description if available
         let projs = projects.map(orig => {
           const aiP = aiProjectsMap.get(orig.name.toLowerCase().trim()) || {};
+          const rawLive = orig.live || aiP.live || null;
+          // Item 27: Do not link "LIVE ↗" button to GitHub repository URLs
+          const cleanLive = (rawLive && rawLive !== orig.github && rawLive !== github.profileUrl) ? rawLive : null;
           return {
             name: orig.name,
             desc: aiP.desc || orig.description || `Engineered ${orig.name} utilizing ${orig.tech || 'modern software principles'}.`,
             tech: aiP.tech || orig.tech || 'Software Engineering',
             github: orig.github || github.profileUrl,
-            live: orig.live || orig.github || github.profileUrl
+            live: cleanLive
           };
         });
 
@@ -215,14 +212,7 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
               desc: 'Primary developer repository and open source workspace showcasing clean architecture and modern tooling.',
               tech: skills.languages.slice(0, 3).join(' • ') || 'TypeScript • Node.js',
               github: github.profileUrl,
-              live: github.profileUrl
-            },
-            {
-              name: 'Developer Tooling & Scripts',
-              desc: 'Automated configuration, developer workflow utilities, and personal software library.',
-              tech: skills.languages[0] || 'Modern Tooling',
-              github: github.profileUrl,
-              live: github.profileUrl
+              live: null
             }
           ];
         }
@@ -317,14 +307,14 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
           desc: 'Primary developer repository and open source workspace showcasing clean architecture and modern tooling.',
           tech: skills.languages.slice(0, 3).join(' • ') || 'TypeScript • Node.js',
           github: github.profileUrl,
-          live: github.profileUrl
+          live: null
         },
         {
           name: 'Developer Tooling & Scripts',
           desc: 'Automated configuration, developer workflow utilities, and personal software library.',
           tech: skills.languages[0] || 'Modern Tooling',
           github: github.profileUrl,
-          live: github.profileUrl
+          live: null
         }
       ];
     } else if (projs.length === 1) {
@@ -333,16 +323,23 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
         desc: 'Continuous integration pipelines, developer environment automation, and reusable software modules.',
         tech: skills.languages.slice(0, 2).join(' • ') || 'Modern Tooling',
         github: github.profileUrl,
-        live: github.profileUrl
+        live: null
       });
     }
+
+    const deterministicEmail = (identity.email && !identity.email.includes('noreply')) ? identity.email : '';
 
     return {
       name: identity.name || identity.username,
       role,
       tagline: identity.bio || `Building robust, scalable digital experiences with ${skills.languages.slice(0, 3).join(', ') || 'modern software technologies'}.`,
       bio: `Dedicated developer actively contributing to open-source software and digital infrastructure. Specializing in ${skills.languages.slice(0, 4).join(', ') || 'clean software architectures'} with a commitment to reliable code and user-centered solutions.`,
-      email: `${identity.username}@users.noreply.github.com`,
+      email: deterministicEmail,
+      contact: {
+        email: deterministicEmail,
+        github: github.profileUrl,
+        location: identity.location || 'Remote'
+      },
       location: identity.location || 'Remote',
       github: github.profileUrl,
       website: identity.website || '',

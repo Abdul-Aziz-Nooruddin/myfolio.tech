@@ -52,19 +52,19 @@ const ApogeeSpatialTemplate = {
   render(rawCandidateData = {}, options = {}) {
     const data = TemplateHelper.normalize ? TemplateHelper.normalize(rawCandidateData) : rawCandidateData;
 
-    const name = TemplateHelper.escapeHtml(data.name || 'Alex Vance');
-    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack AI & Systems Architect');
+    const name = TemplateHelper.escapeHtml(data.name || data.username || 'Developer');
+    const role = TemplateHelper.escapeHtml(data.role || data.title || 'Full-Stack Software Engineer');
     const bio = TemplateHelper.escapeHtml(
       data.bio ||
         data.about ||
         'Engineering high-throughput distributed protocols, autonomous agent runtimes, and bespoke spatial 3D WebGL web surfaces.'
     );
-    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || 'alex.vance@example.com');
+    const email = TemplateHelper.escapeHtml(data.contact?.email || data.email || '');
     const githubUrl = TemplateHelper.sanitizeUrl(
-      data.contact?.github || data.github || 'https://github.com/developer',
-      'https://github.com/developer'
+      data.contact?.github || data.github || (data.username ? `https://github.com/${data.username}` : ''),
+      ''
     );
-    const location = TemplateHelper.escapeHtml(data.location || 'San Francisco, CA • Remote Worldwide');
+    const location = TemplateHelper.escapeHtml(data.location || 'Remote Worldwide');
 
     // Parse and bind projects dynamically
     let projects = [];
@@ -851,14 +851,18 @@ const ApogeeSpatialTemplate = {
                 </p>
 
                 <div className="space-y-4 text-xs font-semibold uppercase tracking-wider text-white/90">
-                  <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
-                    <div className="text-white/50 text-[11px] mb-1">Direct Email</div>
-                    <a href={"mailto:" + CANDIDATE.email} className="hover:underline">{CANDIDATE.email}</a>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
-                    <div className="text-white/50 text-[11px] mb-1">GitHub Profile</div>
-                    <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.githubUrl.replace('https://', '').replace('http://', '')}</a>
-                  </div>
+                  {CANDIDATE.email ? (
+                    <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
+                      <div className="text-white/50 text-[11px] mb-1">Direct Email</div>
+                      <a href={"mailto:" + CANDIDATE.email} className="hover:underline">{CANDIDATE.email}</a>
+                    </div>
+                  ) : null}
+                  {CANDIDATE.githubUrl ? (
+                    <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
+                      <div className="text-white/50 text-[11px] mb-1">GitHub Profile</div>
+                      <a href={CANDIDATE.githubUrl} target="_blank" rel="noreferrer" className="hover:underline">{CANDIDATE.githubUrl.replace('https://', '').replace('http://', '')}</a>
+                    </div>
+                  ) : null}
                   <div className="p-4 rounded-2xl bg-black/20 border border-white/10">
                     <div className="text-white/50 text-[11px] mb-1">Live Studio</div>
                     <a href="https://myfolio.tech" target="_blank" rel="noreferrer" className="hover:underline">myfolio.tech</a>

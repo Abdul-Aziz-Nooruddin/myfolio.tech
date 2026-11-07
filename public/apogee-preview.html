@@ -1134,16 +1134,19 @@
 
           // H. Continuous Interactive 3D Parallax Drift for Background Layers
           if (!isReducedMotion) {
-            gsap.to('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer', {
-              yPercent: 22,
-              ease: "none",
-              scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.2
-              }
-            });
+            const bgTargets = document.querySelectorAll('.hero-canvas-container, .cosmic-hero-bg, .stars-layer, .matrix-grid-bg, .abyss-canvas-layer');
+            if (bgTargets.length > 0) {
+              gsap.to(bgTargets, {
+                yPercent: 22,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: "body",
+                  start: "top top",
+                  end: "bottom bottom",
+                  scrub: 1.2
+                }
+              });
+            }
           }
         });
 

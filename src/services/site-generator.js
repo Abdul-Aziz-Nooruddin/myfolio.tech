@@ -129,7 +129,7 @@ class SiteGenerator {
     <div id="preview-floating-bar">
       <div style="display: inline-flex; align-items: center; gap: 6px;">
         <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
-        <span>✨ <strong>${barLabel}</strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=template_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
+        <span>✨ <strong><span class="wm-hide-mobile">${barLabel}</span><span class="wm-mobile-only">Turn GitHub to 3D</span></strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=template_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
       </div>
       <a href="/studio?template=${encodeURIComponent(siteId)}" class="preview-cta-btn">
         <span>${ctaLabel}</span>
@@ -139,7 +139,7 @@ class SiteGenerator {
     <div id="preview-floating-bar">
       <div style="display: inline-flex; align-items: center; gap: 6px;">
         <span style="display:inline-block; width:6px; height:6px; background:#75c5de; border-radius:50%; box-shadow: 0 0 6px #75c5de;"></span>
-        <span>🔒 <strong>${barLabel}</strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=preview_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
+        <span>🔒 <strong><span class="wm-hide-mobile">${barLabel}</span><span class="wm-mobile-only">3D Preview Draft</span></strong><span class="wm-hide-mobile"> • <a href="https://myfolio.tech?ref=preview_bar" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">MyFolio</a></span></span>
       </div>
       <a href="javascript:void(0)" class="preview-cta-btn" onclick="openPreviewCheckoutModal(); return false;">
         <span>${ctaLabel}</span>
@@ -220,10 +220,10 @@ class SiteGenerator {
           <div style="font-size:11px; color:#94A3B8; margin-top:6px;">Includes automated SSL certificate and live portfolio routing.</div>
         </div>
 
-        <!-- Non-refundable Legal Terms Checkbox -->
+        <!-- Non-refundable Legal Terms Checkbox (Unticked by default - Item 16) -->
         <div style="margin-bottom:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px;">
           <label style="display:flex; align-items:flex-start; gap:8px; font-size:11.5px; color:#CBD5E1; cursor:pointer;">
-            <input type="checkbox" id="mf-precheck-terms" checked style="margin-top:2px; accent-color:#0D9488; width:15px; height:15px;" />
+            <input type="checkbox" id="mf-precheck-terms" style="margin-top:2px; accent-color:#0D9488; width:15px; height:15px;" />
             <span>I agree to the <a href="/terms" target="_blank" style="color:#38BDF8; text-decoration:underline;">Terms</a> and <a href="/refund" target="_blank" style="color:#38BDF8; text-decoration:underline;">Refund Policy</a> (100% non-refundable once digital portfolio is provisioned).</span>
           </label>
         </div>
@@ -300,24 +300,37 @@ class SiteGenerator {
         box-shadow: 0 4px 20px rgba(0,0,0,0.35);
         line-height: 1;
         white-space: nowrap;
+        max-width: 90vw;
+      }
+      .wm-mobile-only {
+        display: none !important;
       }
       @media (max-width: 540px) {
+        .wm-mobile-only {
+          display: inline !important;
+        }
         #preview-floating-bar {
           bottom: 8px !important;
-          padding: 2.5px 3px 2.5px 8px !important;
+          padding: 2.5px 5px 2.5px 8px !important;
           gap: 6px !important;
-          font-size: 10.5px !important;
+          font-size: 10px !important;
+          max-width: 96vw !important;
         }
         #preview-floating-bar .wm-hide-mobile {
           display: none !important;
         }
         #preview-floating-bar a.preview-cta-btn {
-          font-size: 10px !important;
-          padding: 4px 8px !important;
+          font-size: 9.5px !important;
+          padding: 3.5px 7px !important;
+          white-space: nowrap !important;
         }
         #preview-watermark-pill {
-          padding: 3px 8px !important;
-          font-size: 9.5px !important;
+          padding: 2.5px 7px !important;
+          font-size: 9px !important;
+          max-width: 88vw !important;
+        }
+        #preview-watermark-pill .watermark-main-title {
+          font-size: 9px !important;
         }
         #preview-watermark-pill .wm-hide-mobile {
           display: none !important;
@@ -328,14 +341,14 @@ class SiteGenerator {
       ${diagonalSvg}
 
       <!-- TOP FLOATING PILL BADGE -->
-      <div style="width: 100%; display: flex; justify-content: center; padding-top: 10px; position: relative; z-index: 2;">
+      <div style="width: 100%; display: flex; justify-content: center; padding-top: 14px; position: relative; z-index: 2;">
         <a id="preview-watermark-pill" href="https://myfolio.tech/studio" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; cursor: pointer;" title="Built with MyFolio • Create your 3D portfolio in 30s">
           <span class="watermark-main-title" style="display:inline-flex; align-items:center; gap:5px;">
             <span id="preview-watermark-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; box-shadow: 0 0 6px currentColor;"></span>
             <span style="letter-spacing: 0.04em; font-weight: 800;">myfolio.tech</span>
           </span>
-          <span style="opacity: 0.4;">•</span>
-          <span style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
+          <span class="wm-hide-mobile" style="opacity: 0.4;">•</span>
+          <span class="wm-hide-mobile" style="font-weight: 800; letter-spacing: 0.1em;">${pillText}</span>
           <span style="opacity: 0.7; font-size: 10px; margin-left: 2px;">↗</span>
         </a>
       </div>

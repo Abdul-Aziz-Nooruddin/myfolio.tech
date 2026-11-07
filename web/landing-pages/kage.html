@@ -4828,8 +4828,8 @@ function boot() {
     let r;
     try { r = j[1](); }
     catch (err) {
-      console.error('[kage] job "' + j[0] + '" failed', err);
-      if (i <= 1) return fallback(err);          /* no renderer, no scene */
+      console.warn('[kage] 3D pipeline note: "' + j[0] + '" falling back to static presentation:', err.message || err);
+      return fallback(err);
     }
     (r && r.then) ? r.then(done, done) : done();
   };

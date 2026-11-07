@@ -598,6 +598,12 @@ app.use(async (req, res, next) => {
   if (host.endsWith('.myfolio.tech') && host !== 'www.myfolio.tech') {
     const subdomain = host.replace(/\.myfolio\.tech$/, '').trim();
     if (subdomain && subdomain !== 'api' && subdomain !== 'app' && subdomain !== 'mail') {
+      // Allow core app routes and asset paths to redirect cleanly to root domain instead of being hijacked
+      const appPaths = ['/studio', '/dashboard', '/profile', '/pricing', '/login', '/signup', '/faq', '/terms', '/privacy', '/refund', '/api', '/assets', '/images'];
+      if (appPaths.some(p => req.path.startsWith(p))) {
+        return res.redirect(302, `https://myfolio.tech${req.originalUrl}`);
+      }
+
       if (subdomain === 'rbp' || subdomain === 'rbp-portfolio' || subdomain === 'rbp-kinetic') {
         const { TemplateRegistry } = require('./templates/template-registry');
         const rendered = TemplateRegistry.render('rbp-kinetic-monochrome', {
@@ -647,7 +653,7 @@ app.use(async (req, res, next) => {
         const banner = `
           <div id="unclaimed-subdomain-banner" style="position:relative; z-index:9999999; background:linear-gradient(90deg, #0284C7, #0D9488); color:#FFFFFF; padding:10px 16px; text-align:center; font-family:'Inter',system-ui,sans-serif; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
             <span>Looking for <strong>@${cleanSub}</strong>'s 3D portfolio? This subdomain handle is currently available!</span>
-            <a href="/studio?handle=${encodeURIComponent(cleanSub)}" style="background:#FFFFFF; color:#0F172A; padding:5px 14px; border-radius:9999px; text-decoration:none; font-size:12px; font-weight:800; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+            <a href="https://myfolio.tech/studio?github=${encodeURIComponent(cleanSub)}&handle=${encodeURIComponent(cleanSub)}" style="background:#FFFFFF; color:#0F172A; padding:5px 14px; border-radius:9999px; text-decoration:none; font-size:12px; font-weight:800; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
               <span>Claim ${cleanSub}.myfolio.tech</span> &rarr;
             </a>
           </div>

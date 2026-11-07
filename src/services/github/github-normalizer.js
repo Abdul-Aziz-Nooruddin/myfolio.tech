@@ -37,20 +37,26 @@ class GitHubNormalizer {
     // List of scripting / config / build languages to categorize as tools rather than primary languages
     const toolLanguages = new Set(['powershell', 'shell', 'makefile', 'batchfile', 'dockerfile', 'cmake', 'qmake', 'vim script', 'autohotkey']);
 
-    // Extract verified primary programming languages sorted by bytes and filtering noise (< 1.5% if totalBytes > 10000)
-    let filteredLanguages = Object.entries(languageStats)
+    // Extract verified primary programming languages sorted by bytes
+    const detectedLanguages = Object.entries(languageStats).sort((a, b) => b[1] - a[1]);
+    const toolLangsDetected = [];
+
+    let filteredLanguages = detectedLanguages
       .filter(([lang, bytes]) => {
-        if (toolLanguages.has(lang.toLowerCase())) return false;
-        if (totalBytes > 10000 && (bytes / totalBytes) < 0.015) return false;
+        if (toolLanguages.has(lang.toLowerCase())) {
+          toolLangsDetected.push(lang);
+          return false;
+        }
+        // Only prune minor languages (< 1%) if the candidate has more than 10 distinct detected languages
+        if (detectedLanguages.length > 10 && totalBytes > 10000 && (bytes / totalBytes) < 0.01) {
+          return false;
+        }
         return true;
       })
-      .sort((a, b) => b[1] - a[1])
       .map(([lang]) => lang);
 
     if (filteredLanguages.length === 0) {
-      filteredLanguages = Object.entries(languageStats)
-        .sort((a, b) => b[1] - a[1])
-        .map(([lang]) => lang);
+      filteredLanguages = detectedLanguages.map(([lang]) => lang);
     }
 
     const sortedLanguages = filteredLanguages;
@@ -75,7 +81,7 @@ class GitHubNormalizer {
       ai: [],
       devops: [],
       databases: [],
-      tools: []
+      tools: [...toolLangsDetected]
     };
 
     const frontendKeywords = ['react', 'vue', 'svelte', 'nextjs', 'tailwind', 'css', 'html', 'typescript', 'javascript', 'threejs', 'webgl'];

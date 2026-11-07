@@ -89,7 +89,7 @@ const RBPKineticMonochromeTemplate = {
     const firstName = nameParts[0] || safeName;
     const safeRole = TemplateHelper.escapeHtml(data.role || 'Design Engineer & Full-Stack Developer');
     const safeBio = TemplateHelper.escapeHtml(data.bio || 'Designing and engineering focused software surfaces where ideas, code, and aesthetics coexist cleanly.');
-    const safeEmail = TemplateHelper.escapeHtml(data.email || 'hello@example.com');
+    const safeEmail = TemplateHelper.escapeHtml(data.email || data.contact?.email || '');
     const safeLocation = TemplateHelper.escapeHtml(data.location || 'Remote / Worldwide');
 
     const github = data.github || '';
@@ -255,8 +255,8 @@ const RBPKineticMonochromeTemplate = {
       "@type": "Person",
       "name": "${safeName}",
       "jobTitle": "${safeRole}",
-      "description": "${safeBio.slice(0, 200)}",
-      "email": "${safeEmail}"${data.canonicalUrl ? `,
+      "description": "${safeBio.slice(0, 200)}"${safeEmail ? `,
+      "email": "${safeEmail}"` : ''}${data.canonicalUrl ? `,
       "url": "${TemplateHelper.escapeHtml(data.canonicalUrl)}"` : ''}
     }
   }
@@ -1326,6 +1326,7 @@ const RBPKineticMonochromeTemplate = {
           </div>
 
           <div class="contact-actions">
+            ${safeEmail ? `
             <button class="copy-email-btn" id="copy-email-btn" data-email="${safeEmail}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
@@ -1333,6 +1334,7 @@ const RBPKineticMonochromeTemplate = {
               </svg>
               <span>Copy Email Address</span>
             </button>
+            ` : ''}
 
             <div class="social-links-row">
               ${github ? `<a href="${github}" target="_blank" rel="noopener" class="social-btn">GitHub ↗</a>` : ''}

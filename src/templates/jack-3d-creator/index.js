@@ -239,8 +239,27 @@ const Jack3DCreatorTemplate = {
       { src: '/assets/marquee/bio_digital_fusion_3d.webp', title: 'Protocol Ecosystem Fusion', tag: 'POLYGON & ALGORAND' }
     ];
 
-    const row1 = [...marqueeAssets.slice(0, 11), ...marqueeAssets.slice(0, 11), ...marqueeAssets.slice(0, 11)];
-    const row2 = [...marqueeAssets.slice(11), ...marqueeAssets.slice(11), ...marqueeAssets.slice(11)];
+    // Dynamic candidate-tailored marquee items (Item 3 - ground in real candidate projects & verified skills)
+    const dynamicMarquee = (data.projects || []).map((p, i) => {
+      const art = p.artwork || p.image || marqueeAssets[i % marqueeAssets.length].src;
+      return {
+        src: art,
+        title: p.name || p.title || 'Systems Project',
+        tag: (p.tech || 'CORE ARCHITECTURE').toUpperCase()
+      };
+    });
+
+    const candidateSkillsList = (data.skills || []).slice(0, 10).map((s, i) => ({
+      src: marqueeAssets[(i + 4) % marqueeAssets.length].src,
+      title: s,
+      tag: 'VERIFIED SKILL // CORE STACK'
+    }));
+
+    const finalMarquee = [...dynamicMarquee, ...candidateSkillsList];
+    const marqueeList = finalMarquee.length >= 6 ? finalMarquee : marqueeAssets;
+    const half = Math.ceil(marqueeList.length / 2);
+    const row1 = [...marqueeList.slice(0, half), ...marqueeList.slice(0, half), ...marqueeList.slice(0, half)];
+    const row2 = [...marqueeList.slice(half), ...marqueeList.slice(half), ...marqueeList.slice(half)];
 
     // Experience
     const currentYear = new Date().getFullYear();
@@ -420,7 +439,7 @@ ${COMPILED_CSS}
       <!-- Massive Hero Heading: Responsive Stacked on Mobile, Split Masthead on Desktop -->
       <h1 class="hero-masthead-container w-full max-w-[96vw] mx-auto px-4 sm:px-8 md:px-12 flex flex-col sm:flex-row items-center sm:justify-between z-20 pointer-events-none select-none mt-2 sm:mt-6 md:mt-2 relative">
         <span class="hero-lead-text font-black uppercase tracking-tight leading-none text-center sm:text-left whitespace-nowrap text-[#75C5DE] sm:text-[#D7E2EA]">
-          Hi, i&apos;m
+          Hi, i&apos;m&nbsp;
         </span>
         <span class="hero-candidate-name font-black uppercase tracking-tight leading-none text-center sm:text-right whitespace-nowrap text-white">
           ${displayHeroName.toLowerCase()}
@@ -428,23 +447,23 @@ ${COMPILED_CSS}
       </h1>
 
       <!-- Hero Portrait with Magnetic Physics -->
-      <div id="magnetic-portrait-wrapper" class="absolute left-1/2 -translate-x-1/2 z-10 w-[240px] sm:w-[320px] md:w-[380px] lg:w-[440px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0 pointer-events-auto">
+      <div id="magnetic-portrait-wrapper" class="absolute left-1/2 -translate-x-1/2 z-10 w-[210px] sm:w-[320px] md:w-[380px] lg:w-[440px] top-[48%] -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0 pointer-events-auto">
         <div id="magnetic-target" class="flex items-end justify-center w-full transition-transform duration-300 ease-out will-change-transform">
           <img
             src="${candidateAvatar}"
             alt="${safeName} Portrait"
-            class="w-full h-auto object-contain select-none pointer-events-none drop-shadow-2xl max-h-[68vh] rounded-3xl"
+            class="w-full h-auto object-contain select-none pointer-events-none drop-shadow-2xl max-h-[64vh] rounded-3xl"
             loading="eager"
           />
         </div>
       </div>
 
       <!-- Bottom Bar -->
-      <div class="w-full px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 flex justify-between items-end z-20">
-        <p class="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug text-xs sm:text-sm md:text-base max-w-[200px] sm:max-w-[260px] md:max-w-[320px] line-clamp-3 overflow-hidden">
+      <div class="w-full px-4 sm:px-6 md:px-10 pb-5 sm:pb-8 md:pb-10 flex flex-col sm:flex-row justify-between items-center sm:items-end gap-3 sm:gap-0 z-20">
+        <p class="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug text-[11px] sm:text-sm md:text-base max-w-[280px] sm:max-w-[260px] md:max-w-[320px] text-center sm:text-left line-clamp-2 sm:line-clamp-3 overflow-hidden">
           ${safeTagline.toLowerCase()}
         </p>
-        <a href="${safeEmail ? 'mailto:' + safeEmail : '#contact'}" class="contact-btn inline-flex items-center justify-center rounded-full text-white font-medium uppercase tracking-widest px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base transition-transform duration-200 active:scale-95 hover:scale-[1.03]">
+        <a href="${safeEmail ? 'mailto:' + safeEmail : '#contact'}" class="whitespace-nowrap contact-btn inline-flex items-center justify-center rounded-full text-white font-medium uppercase tracking-widest px-6 py-2.5 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base transition-transform duration-200 active:scale-95 hover:scale-[1.03]">
           Contact Me
         </a>
       </div>
@@ -719,7 +738,7 @@ ${COMPILED_CSS}
     </section>
 
     <!-- 8. FOOTER SECTION -->
-    <footer id="contact" class="w-full bg-[#0C0C0C] border-t border-white/10 px-6 sm:px-10 py-16 sm:py-20 relative z-20">
+    <footer id="contact" class="w-full bg-[#0C0C0C] border-t border-white/10 px-6 sm:px-10 pt-16 sm:pt-20 pb-28 sm:pb-24 relative z-20">
       <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
         <div>
           <span class="text-xs uppercase tracking-widest text-[#D7E2EA]/60 font-light">Get In Touch</span>
