@@ -3260,13 +3260,7 @@ app.get(['/dashboard', '/app', '/dash'], AuthMiddleware.requirePageAuth, (req, r
   res.sendFile(getPagePath('dashboard.html'));
 });
 
-app.get(['/studio', '/webstudio', '/builder', '/generator'], (req, res, next) => {
-  // Allow anonymous visitor access if previewing via GitHub username parameter or demo mode
-  if (req.query?.github || req.query?.gh || req.query?.demo || req.user) {
-    return res.sendFile(getPagePath('studio.html'));
-  }
-  return AuthMiddleware.requirePageAuth(req, res, next);
-}, (req, res) => {
+app.get(['/studio', '/webstudio', '/builder', '/generator'], (req, res) => {
   res.sendFile(getPagePath('studio.html'));
 });
 
