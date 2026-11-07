@@ -102,18 +102,18 @@ class AuthHandler {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         signal: AbortSignal.timeout(10_000),
         body: new URLSearchParams({
-          secret: secret,
+          secret: secret.trim(),
           response: token,
           remoteip: clientIp || '',
         }),
       });
-      if (!r.ok) throw new Error(`siteverify HTTP ${r.status}`);
       result = await r.json();
     } catch (err) {
       return { valid: false, error: "Verification server communication error. Please try again." };
     }
 
     if (
+      !result ||
       !result.success ||
       (result.action && result.action !== expectedAction) ||
       (result.hostname && !expectedHostnames.has(result.hostname))
