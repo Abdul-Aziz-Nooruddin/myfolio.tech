@@ -58,3 +58,4 @@ test('🧩 MATCHSTICK MIND: 404 Page Integration Verification', async (t) => {
     assert.equal(res.decodedEquation, '0 + 4 = 4');
   });
 });
+
