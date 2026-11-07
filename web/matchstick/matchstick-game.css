@@ -1,29 +1,36 @@
 /* ==========================================================================
    MATCHSTICK MIND - Stylesheet
-   Crafted for MyFolio 404 Sector
+   Harmonized with MyFolio Design Language & Editorial Cream Theme
    ========================================================================== */
 
 :root {
-  --mm-bg: #0c0e12;
-  --mm-card-bg: rgba(18, 22, 28, 0.95);
-  --mm-border: rgba(255, 255, 255, 0.1);
-  --mm-border-glow: rgba(249, 115, 22, 0.35);
-  --mm-wood-light: #e8cfa8;
-  --mm-wood-dark: #c49d68;
-  --mm-wood-shadow: #8a6538;
-  --mm-ember-core: #ffedd5;
+  /* MyFolio Theme Synchronized Variables */
+  --mm-paper: #f4f1e8;
+  --mm-card: #ffffff;
+  --mm-card-subtle: #faf8f3;
+  --mm-ink: #171817;
+  --mm-muted: #60615b;
+  --mm-border: rgba(23, 24, 23, 0.1);
+  --mm-border-strong: rgba(23, 24, 23, 0.2);
+  --mm-sky: #75c5de;
+  --mm-sky-deep: #13708e;
+  
+  /* Board Slate (Tactile Luxury Felt Mat) */
+  --mm-board-bg: #141618;
+  --mm-slot-bg: rgba(255, 255, 255, 0.04);
+  --mm-slot-border: rgba(255, 255, 255, 0.12);
+  --mm-slot-highlight-bg: rgba(117, 197, 222, 0.15);
+  --mm-slot-highlight-border: #75c5de;
+
+  /* Natural Birch Wood & Phosphorus Ember Physics */
+  --mm-wood-light: #f7e7ce;
+  --mm-wood-mid: #dfb882;
+  --mm-wood-dark: #b8864a;
+  --mm-wood-grain: rgba(100, 60, 20, 0.12);
+  --mm-ember-core: #ffffff;
   --mm-ember-hot: #fb923c;
-  --mm-ember-deep: #ea580c;
-  --mm-ember-char: #7c2d12;
-  --mm-slot-bg: rgba(255, 255, 255, 0.035);
-  --mm-slot-border: rgba(255, 255, 255, 0.08);
-  --mm-slot-active-bg: rgba(34, 197, 94, 0.08);
-  --mm-slot-active-border: rgba(34, 197, 94, 0.5);
-  --mm-text: #f4f1e8;
-  --mm-muted: #94a3b8;
-  --mm-accent: #f97316;
-  --mm-success: #22c55e;
-  --mm-danger: #ef4444;
+  --mm-ember-deep: #e11d48;
+  --mm-ember-shadow: rgba(249, 115, 22, 0.7);
 
   /* Responsive Board Sizing */
   --digit-w: 78px;
@@ -32,58 +39,59 @@
   --stick-h-h: 10px;
   --stick-v-w: 10px;
   --stick-v-h: 52px;
-  --head-size: 11px;
+  --head-size: 12px;
 }
 
 @media (max-width: 680px) {
   :root {
-    --digit-w: 56px;
-    --digit-h: 98px;
-    --stick-h-w: 36px;
+    --digit-w: 58px;
+    --digit-h: 102px;
+    --stick-h-w: 38px;
     --stick-h-h: 8px;
     --stick-v-w: 8px;
-    --stick-v-h: 36px;
-    --head-size: 9px;
+    --stick-v-h: 38px;
+    --head-size: 10px;
   }
 }
 
 @media (max-width: 440px) {
   :root {
-    --digit-w: 46px;
-    --digit-h: 82px;
-    --stick-h-w: 28px;
+    --digit-w: 48px;
+    --digit-h: 86px;
+    --stick-h-w: 30px;
     --stick-h-h: 7px;
     --stick-v-w: 7px;
-    --stick-v-h: 28px;
-    --head-size: 8px;
+    --stick-v-h: 30px;
+    --head-size: 8.5px;
   }
 }
 
-/* Container */
+/* ==========================================================================
+   Outer Card Container: Clean MyFolio Architectural White Card
+   ========================================================================== */
 .mm-container {
   width: 100%;
-  max-width: 860px;
-  margin: 28px auto 0;
-  background: var(--mm-card-bg);
+  max-width: 880px;
+  margin: 32px auto 0;
+  background: var(--mm-card);
   border: 1px solid var(--mm-border);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
-  color: var(--mm-text);
-  font-family: inherit;
+  border-radius: 24px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 16px 48px -12px rgba(23, 24, 23, 0.08), 0 2px 6px rgba(23, 24, 23, 0.04);
+  color: var(--mm-ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  text-align: left;
 }
 
 /* Header */
 .mm-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 20px;
-  border-bottom: 1px solid var(--mm-border);
-  padding-bottom: 16px;
 }
 
 .mm-title-row {
@@ -91,76 +99,95 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
 .mm-brand-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .mm-game-logo {
-  width: 32px;
-  height: 32px;
-  background: radial-gradient(circle at 35% 35%, var(--mm-ember-hot), var(--mm-ember-deep));
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  background: radial-gradient(circle at 35% 35%, #ffedd5, #fb923c 45%, #ea580c 80%);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+  font-size: 17px;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  border: 1px solid rgba(234, 88, 12, 0.3);
 }
 
 .mm-title-text h2 {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
   margin: 0;
-  color: var(--mm-text);
+  color: var(--mm-ink);
 }
 
 .mm-subtitle {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--mm-muted);
-  margin-top: 2px;
+  margin-top: 3px;
+  letter-spacing: -0.01em;
 }
 
-.mm-level-badge {
-  display: inline-flex;
+/* Level Dropdown & Pill */
+.mm-header-controls {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.06);
+  gap: 10px;
+}
+
+.mm-level-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--mm-card-subtle) url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23171817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
   border: 1px solid var(--mm-border);
+  color: var(--mm-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 34px 8px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.mm-level-select:hover, .mm-level-select:focus {
+  border-color: var(--mm-border-strong);
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(23, 24, 23, 0.05);
 }
 
 .mm-diff-pill {
-  padding: 2px 7px;
+  padding: 4px 10px;
   border-radius: 100px;
-  font-size: 10.5px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 800;
+  letter-spacing: 0.1em;
+  font-weight: 700;
 }
-.mm-diff-Easy { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-.mm-diff-Medium { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); }
-.mm-diff-Hard { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-.mm-diff-Expert { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.4); }
+.mm-diff-Easy { background: rgba(34, 197, 94, 0.12); color: #15803d; border: 1px solid rgba(34, 197, 94, 0.3); }
+.mm-diff-Medium { background: rgba(14, 165, 233, 0.12); color: #0369a1; border: 1px solid rgba(14, 165, 233, 0.3); }
+.mm-diff-Hard { background: rgba(245, 158, 11, 0.12); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.3); }
+.mm-diff-Expert { background: rgba(225, 29, 72, 0.12); color: #be123c; border: 1px solid rgba(225, 29, 72, 0.3); }
 
 /* Stats Bar */
 .mm-stats-bar {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.35);
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 12px;
+  background: var(--mm-card-subtle);
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--mm-border);
 }
 
 .mm-stat-item {
@@ -169,7 +196,7 @@
 }
 
 .mm-stat-label {
-  font-size: 10px;
+  font-size: 10.5px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--mm-muted);
@@ -177,62 +204,85 @@
 }
 
 .mm-stat-val {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--mm-ink);
   font-variant-numeric: tabular-nums;
-  margin-top: 1px;
+  margin-top: 2px;
+  letter-spacing: -0.02em;
 }
 
 .mm-stat-val.highlight {
-  color: #fb923c;
+  color: var(--mm-sky-deep);
 }
 
 /* Prompt Banner */
 .mm-puzzle-prompt {
-  background: rgba(249, 115, 22, 0.07);
-  border: 1px dashed rgba(249, 115, 22, 0.3);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-bottom: 18px;
+  background: #fff;
+  border: 1px solid var(--mm-border);
+  border-radius: 12px;
+  padding: 11px 16px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  font-size: 13px;
+  font-size: 13.5px;
+  color: var(--mm-ink);
 }
 
 .mm-prompt-text strong {
-  color: #fed7aa;
+  color: var(--mm-sky-deep);
+  font-weight: 700;
 }
 
 .mm-hand-status {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: #4ade80;
+  color: #15803d;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  animation: mmStatusPulse 2s infinite alternate ease-in-out;
+}
+
+@keyframes mmStatusPulse {
+  0% { transform: scale(0.98); }
+  100% { transform: scale(1.02); }
 }
 
 /* ==========================================================================
-   Main Puzzle Board
+   Main Puzzle Board: Tactile Dark Obsidian Felt Mat
    ========================================================================== */
 .mm-board-stage {
   position: relative;
-  background: radial-gradient(circle at 50% 50%, #171c24, #0b0d12);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 32px 16px;
+  background: radial-gradient(circle at 50% 40%, #1c1f24 0%, #121417 100%);
+  border: 1px solid rgba(23, 24, 23, 0.18);
+  border-radius: 20px;
+  padding: 38px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-x: auto;
-  min-height: 220px;
+  overflow: hidden;
+  min-height: 230px;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(23, 24, 23, 0.06);
+}
+
+/* Interactive Particle Canvas (Sparks) */
+.mm-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
 }
 
 .mm-equation-grid {
@@ -241,6 +291,8 @@
   justify-content: center;
   gap: clamp(10px, 2.5vw, 24px);
   max-width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 /* Digit Container */
@@ -274,13 +326,13 @@
   background: var(--mm-slot-bg);
   border: 1px dashed var(--mm-slot-border);
   border-radius: 100px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }
 
 .mm-slot:focus-visible {
-  outline: 2px solid #fb923c;
-  outline-offset: 2px;
+  outline: 2px solid var(--mm-sky);
+  outline-offset: 3px;
 }
 
 /* Slot geometry inside Digit */
@@ -295,11 +347,11 @@
 }
 
 .mm-slot-seg-a { top: 4px; }
-.mm-slot-seg-b { top: calc(var(--stick-h-h) + 3px); right: 4px; }
-.mm-slot-seg-c { bottom: calc(var(--stick-h-h) + 3px); right: 4px; }
+.mm-slot-seg-b { top: calc(var(--stick-h-h) + 4px); right: 4px; }
+.mm-slot-seg-c { bottom: calc(var(--stick-h-h) + 4px); right: 4px; }
 .mm-slot-seg-d { bottom: 4px; }
-.mm-slot-seg-e { bottom: calc(var(--stick-h-h) + 3px); left: 4px; }
-.mm-slot-seg-f { top: calc(var(--stick-h-h) + 3px); left: 4px; }
+.mm-slot-seg-e { bottom: calc(var(--stick-h-h) + 4px); left: 4px; }
+.mm-slot-seg-f { top: calc(var(--stick-h-h) + 4px); left: 4px; }
 .mm-slot-seg-g { top: calc((var(--digit-h) - var(--stick-h-h)) / 2); }
 
 /* Operator slots */
@@ -332,30 +384,32 @@
 
 /* Empty slot states */
 .mm-slot.is-empty {
-  opacity: 0.45;
+  opacity: 0.35;
 }
 .mm-slot.is-empty:hover {
-  opacity: 0.85;
+  opacity: 0.7;
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* When a stick is selected in hand, empty slots glow with drop invitations */
+/* When a stick is selected in hand, empty slots glow with MyFolio sky-blue drop invitation */
 .mm-board-stage.has-selected-stick .mm-slot.is-empty {
-  border: 1px dashed var(--mm-slot-active-border);
-  background: var(--mm-slot-active-bg);
+  border: 1.5px dashed var(--mm-slot-highlight-border);
+  background: var(--mm-slot-highlight-bg);
   opacity: 0.85;
-  animation: mmPulseInvite 1.5s infinite alternate ease-in-out;
+  box-shadow: 0 0 12px rgba(117, 197, 222, 0.3);
+  animation: mmPulseInvite 1.4s infinite alternate ease-in-out;
 }
 .mm-board-stage.has-selected-stick .mm-slot.is-empty:hover {
   opacity: 1;
-  background: rgba(34, 197, 94, 0.22);
-  border-color: #4ade80;
-  box-shadow: 0 0 14px rgba(74, 222, 128, 0.45);
+  background: rgba(117, 197, 222, 0.3);
+  border-color: #fff;
+  box-shadow: 0 0 20px rgba(117, 197, 222, 0.6);
+  transform: scale(1.06);
 }
 
 @keyframes mmPulseInvite {
-  0% { transform: scale(0.96); opacity: 0.6; }
-  100% { transform: scale(1.04); opacity: 0.95; }
+  0% { transform: scale(0.97); opacity: 0.6; }
+  100% { transform: scale(1.03); opacity: 0.95; }
 }
 
 /* ==========================================================================
@@ -368,11 +422,11 @@
   background: linear-gradient(
     135deg,
     var(--mm-wood-light) 0%,
-    var(--mm-wood-dark) 60%,
-    var(--mm-wood-shadow) 100%
+    var(--mm-wood-mid) 55%,
+    var(--mm-wood-dark) 100%
   );
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, filter 0.28s ease;
   cursor: grab;
   touch-action: none;
 }
@@ -381,7 +435,12 @@
   cursor: grabbing;
 }
 
-/* The Glowing Ember Match Head */
+.mm-stick:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), inset 0 1px 1.5px rgba(255, 255, 255, 0.7);
+}
+
+/* The Glowing Phosphorus Match Head */
 .mm-head {
   position: absolute;
   border-radius: 50%;
@@ -390,12 +449,19 @@
   background: radial-gradient(
     circle at 35% 35%,
     var(--mm-ember-core) 0%,
-    var(--mm-ember-hot) 45%,
+    var(--mm-ember-hot) 40%,
     var(--mm-ember-deep) 80%,
-    var(--mm-ember-char) 100%
+    #881337 100%
   );
-  box-shadow: 0 0 8px rgba(249, 115, 22, 0.85), 0 0 2px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px var(--mm-ember-shadow), 0 0 2px #ffffff;
   pointer-events: none;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  animation: mmEmberBreathe 2.8s infinite alternate ease-in-out;
+}
+
+@keyframes mmEmberBreathe {
+  0% { box-shadow: 0 0 7px rgba(249, 115, 22, 0.6), 0 0 1.5px #fff; }
+  100% { box-shadow: 0 0 14px rgba(249, 115, 22, 0.95), 0 0 3px #fff; }
 }
 
 /* Match Head Positioning */
@@ -410,15 +476,39 @@
   transform: translateX(-50%);
 }
 
-/* Selected / Lifted State */
+/* Smooth Click/Lift Animation & Elevation */
 .mm-slot.is-selected .mm-stick {
-  transform: scale(1.1) translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.75), 0 0 18px rgba(249, 115, 22, 0.9);
+  transform: translateY(-12px) scale(1.12) rotate(1.5deg);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.75), 0 0 22px rgba(249, 115, 22, 0.85);
   z-index: 50;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  animation: mmStickFloat 2s infinite alternate ease-in-out;
 }
+
+@keyframes mmStickFloat {
+  0% { transform: translateY(-12px) scale(1.12) rotate(1.5deg); }
+  100% { transform: translateY(-16px) scale(1.14) rotate(-0.5deg); }
+}
+
 .mm-slot.is-selected .mm-head {
-  box-shadow: 0 0 16px rgba(251, 146, 60, 1), 0 0 4px #ffffff;
+  box-shadow: 0 0 22px rgba(251, 146, 60, 1), 0 0 6px #ffffff;
+  animation: mmHeadIgnite 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes mmHeadIgnite {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.2); filter: brightness(1.3); }
+}
+
+/* Placement Snap Animation */
+.mm-slot.just-placed .mm-stick {
+  animation: mmStickSnap 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes mmStickSnap {
+  0% { transform: scale(1.15) translateY(-8px); }
+  60% { transform: scale(0.96) translateY(1px); }
+  100% { transform: scale(1) translateY(0); }
 }
 
 /* Ghost dragging matchstick */
@@ -428,8 +518,8 @@
   z-index: 10000;
   border-radius: 100px;
   background: linear-gradient(135deg, var(--mm-wood-light), var(--mm-wood-dark));
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(249, 115, 22, 1);
-  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85), 0 0 24px rgba(249, 115, 22, 1);
+  transform: translate(-50%, -50%) scale(1.18);
   cursor: grabbing;
 }
 
@@ -437,74 +527,79 @@
    Feedback Message Bar
    ========================================================================== */
 .mm-message-bar {
-  min-height: 38px;
-  margin-top: 16px;
-  padding: 8px 16px;
-  border-radius: 10px;
+  min-height: 40px;
+  margin-top: 18px;
+  padding: 10px 18px;
+  border-radius: 12px;
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   transition: all 0.3s ease;
+  border: 1px solid var(--mm-border);
 }
 
 .mm-message-bar.info {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--mm-card-subtle);
   color: var(--mm-muted);
 }
 .mm-message-bar.success {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.08);
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.3);
+  font-weight: 600;
 }
 .mm-message-bar.error {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 /* ==========================================================================
-   Controls Toolbar
+   Controls Toolbar: Refined MyFolio Pill System
    ========================================================================== */
 .mm-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 16px;
-  padding-top: 16px;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
   border-top: 1px solid var(--mm-border);
 }
 
 .mm-control-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .mm-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.07);
+  gap: 7px;
+  background: #ffffff;
   border: 1px solid var(--mm-border);
-  color: var(--mm-text);
-  font-size: 12.5px;
+  color: var(--mm-ink);
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 9px 16px;
+  border-radius: 100px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   line-height: 1;
+  box-shadow: 0 1px 3px rgba(23, 24, 23, 0.04);
 }
 
 .mm-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  border-color: var(--mm-border-strong);
+  background: var(--mm-card-subtle);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 24, 23, 0.08);
 }
 
 .mm-btn:active:not(:disabled) {
@@ -515,38 +610,48 @@
   opacity: 0.35;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
+/* Primary Submit / Check Button */
 .mm-btn-submit {
-  background: #22c55e;
-  color: #051608;
-  border: 1px solid #16a34a;
-  font-weight: 800;
+  background: var(--mm-ink);
+  color: #ffffff;
+  border: 1px solid var(--mm-ink);
+  font-weight: 600;
+  padding: 10px 22px;
+  box-shadow: 0 4px 14px rgba(23, 24, 23, 0.15);
 }
 .mm-btn-submit:hover:not(:disabled) {
-  background: #4ade80;
-  box-shadow: 0 0 16px rgba(74, 222, 128, 0.4);
+  background: #2a2c2a;
+  border-color: #2a2c2a;
+  box-shadow: 0 6px 18px rgba(23, 24, 23, 0.22);
 }
 
-.mm-btn-hint {
-  border-color: rgba(245, 158, 11, 0.4);
-  color: #fef3c7;
+.mm-btn-next-level {
+  background: var(--mm-sky);
+  color: #0c3340;
+  border: 1px solid var(--mm-sky);
+  font-weight: 700;
+  padding: 10px 22px;
 }
-.mm-btn-hint:hover:not(:disabled) {
-  background: rgba(245, 158, 11, 0.18);
-  border-color: #f59e0b;
+.mm-btn-next-level:hover {
+  background: #60b9d4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(117, 197, 222, 0.35);
 }
 
 /* Hint Box */
 .mm-hint-box {
   display: none;
-  background: rgba(245, 158, 11, 0.08);
+  background: rgba(245, 158, 11, 0.06);
   border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-top: 14px;
-  font-size: 13px;
-  color: #fde68a;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: #92400e;
+  line-height: 1.5;
 }
 
 .mm-hint-box.is-visible {
@@ -560,13 +665,13 @@
 }
 
 /* ==========================================================================
-   Victory / Level Complete Overlay
+   Victory / Level Solved Overlay Modal (Warm Paper Aesthetics)
    ========================================================================== */
 .mm-overlay-modal {
   display: none;
   position: absolute;
   inset: 0;
-  background: rgba(10, 12, 16, 0.92);
+  background: rgba(244, 241, 232, 0.88);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 100;
@@ -581,81 +686,90 @@
 }
 
 .mm-modal-card {
-  background: #14171d;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 18px;
-  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid var(--mm-border);
+  border-radius: 24px;
+  max-width: 440px;
   width: 100%;
-  padding: 28px 24px;
+  padding: 32px 28px;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 24px 70px -12px rgba(23, 24, 23, 0.2), 0 2px 8px rgba(23, 24, 23, 0.05);
   position: relative;
 }
 
 .mm-victory-icon {
-  font-size: 44px;
-  margin-bottom: 8px;
+  font-size: 46px;
+  margin-bottom: 10px;
   animation: mmBounce 0.8s ease infinite alternate;
 }
 
 @keyframes mmBounce {
   from { transform: translateY(0); }
-  to { transform: translateY(-6px); }
+  to { transform: translateY(-8px); }
 }
 
 .mm-modal-card h3 {
-  font-size: 22px;
-  font-weight: 800;
-  color: #f4f1e8;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--mm-ink);
   margin: 0 0 6px 0;
 }
 
 .mm-solved-eq {
   font-family: monospace;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
-  color: #4ade80;
-  background: rgba(34, 197, 94, 0.1);
-  padding: 8px 16px;
-  border-radius: 10px;
-  margin: 14px 0;
-  letter-spacing: 0.1em;
-  border: 1px dashed rgba(34, 197, 94, 0.4);
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.08);
+  padding: 10px 18px;
+  border-radius: 14px;
+  margin: 16px 0;
+  letter-spacing: 0.12em;
+  border: 1px dashed rgba(34, 197, 94, 0.35);
 }
 
 .mm-score-breakdown {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  font-size: 12px;
-  margin: 16px 0 20px;
+  gap: 10px;
+  font-size: 13px;
+  margin: 18px 0 24px;
   text-align: left;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 12px 14px;
-  border-radius: 10px;
+  background: var(--mm-card-subtle);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--mm-border);
+  color: var(--mm-muted);
+}
+.mm-score-breakdown strong {
+  color: var(--mm-ink);
+  font-weight: 700;
 }
 
 .mm-modal-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
 }
 
-/* Footer Section CTA below the game */
+/* ==========================================================================
+   Footer Section CTA below the game
+   ========================================================================== */
 .mm-section-cta {
-  margin-top: 36px;
+  margin-top: 40px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .mm-section-cta h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.02em;
+  color: var(--mm-ink);
+  letter-spacing: -0.03em;
 }
 
 .mm-cta-buttons {
@@ -667,19 +781,21 @@
 }
 
 .mm-btn-restart {
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
-  padding: 14px 24px;
+  padding: 15px 28px;
   border-radius: 100px;
-  background: #fff;
-  border: 1px solid var(--border);
-  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid var(--mm-border);
+  color: var(--mm-ink);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(23, 24, 23, 0.04);
 }
 
 .mm-btn-restart:hover {
-  background: #f4f1e8;
-  border-color: rgba(23, 24, 23, 0.3);
+  background: var(--mm-paper);
+  border-color: var(--mm-border-strong);
   transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(23, 24, 23, 0.08);
 }

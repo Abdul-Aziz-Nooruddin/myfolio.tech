@@ -1,6 +1,7 @@
 /**
  * MATCHSTICK MIND - UI Game Controller
- * Interactive matchstick logic puzzle built for MyFolio 404 page.
+ * Fully interactive matchstick logic puzzle with particle physics & smooth graphics animations
+ * Harmonized with MyFolio's warm paper aesthetic & design system.
  */
 
 (function () {
@@ -31,6 +32,12 @@
       this.highScore = 0;
       this.unlockedLevels = 1;
 
+      // Particle System
+      this.particles = [];
+      this.canvas = null;
+      this.ctx = null;
+      this.particleAnimId = null;
+
       // Drag State
       this.dragActive = false;
       this.dragGhost = null;
@@ -38,6 +45,7 @@
 
       this.loadStorage();
       this.renderSkeleton();
+      this.initParticleCanvas();
       this.loadLevel(this.currentLevelIndex);
       this.bindGlobalKeys();
     }
@@ -56,9 +64,7 @@
         if (savedScore !== null) this.score = parseInt(savedScore, 10) || 0;
         if (savedHighScore !== null) this.highScore = parseInt(savedHighScore, 10) || 0;
         if (savedUnlocked !== null) this.unlockedLevels = Math.min(Math.max(parseInt(savedUnlocked, 10), 1), 20);
-      } catch (e) {
-        // Fallback for sandboxed localStorage
-      }
+      } catch (e) {}
     }
 
     saveStorage() {
@@ -87,13 +93,11 @@
                 </div>
               </div>
 
-              <div style="display:flex; align-items:center; gap:8px;">
-                <select id="mm-level-select" class="mm-btn" style="padding:6px 10px; font-weight:700; cursor:pointer;" aria-label="Select puzzle level">
+              <div class="mm-header-controls">
+                <select id="mm-level-select" class="mm-level-select" aria-label="Select puzzle level">
                   ${this.engine.PUZZLES.map((p, idx) => `<option value="${idx}">Level ${p.id}: ${p.title} (${p.difficulty})</option>`).join('')}
                 </select>
-                <div class="mm-level-badge">
-                  <span id="mm-diff-pill" class="mm-diff-pill mm-diff-Easy">Easy</span>
-                </div>
+                <div class="mm-diff-pill mm-diff-Easy" id="mm-diff-pill">Easy</div>
               </div>
             </div>
 
@@ -128,18 +132,19 @@
               <span id="mm-prompt-instruction">Move <strong>1 matchstick</strong> to balance the equation.</span>
             </div>
             <div class="mm-hand-status" id="mm-hand-status" style="display:none;">
-              <span>✋ Holding stick: tap an empty slot to place</span>
+              <span>✋ Stick in hand — tap an empty slot to place</span>
             </div>
           </div>
 
           <!-- Interactive Board Stage -->
           <div class="mm-board-stage" id="mm-board-stage" tabindex="0" aria-label="Matchstick Equation Arena">
+            <canvas class="mm-particle-canvas" id="mm-particle-canvas"></canvas>
             <div class="mm-equation-grid" id="mm-equation-grid"></div>
           </div>
 
           <!-- Feedback Bar -->
           <div class="mm-message-bar info" id="mm-message-bar" aria-live="polite">
-            <span id="mm-message-text">Tap any glowing matchstick to pick it up, then tap an empty slot.</span>
+            <span id="mm-message-text">Tap any matchstick to pick it up, then tap an empty slot.</span>
           </div>
 
           <!-- Hint Box -->
@@ -154,7 +159,7 @@
               <button type="button" class="mm-btn" id="mm-btn-reset" title="Reset puzzle to start (R)">
                 <span>⟲</span> Reset
               </button>
-              <button type="button" class="mm-btn mm-btn-hint" id="mm-btn-hint" title="Reveal hint (H)">
+              <button type="button" class="mm-btn" id="mm-btn-hint" title="Reveal hint (H)">
                 <span>💡</span> Hint (<span id="mm-hint-count">0</span>/3)
               </button>
             </div>
@@ -163,7 +168,7 @@
               <button type="button" class="mm-btn mm-btn-submit" id="mm-btn-submit">
                 <span>✓</span> Check Equation
               </button>
-              <button type="button" class="mm-btn" id="mm-btn-next" style="display:none; background:#f97316; color:#000; font-weight:800;">
+              <button type="button" class="mm-btn mm-btn-next-level" id="mm-btn-next" style="display:none;">
                 Next Level ➔
               </button>
             </div>
@@ -174,7 +179,7 @@
             <div class="mm-modal-card">
               <div class="mm-victory-icon">🎉</div>
               <h3 id="mm-victory-title">PUZZLE SOLVED!</h3>
-              <p style="font-size:13px; color:#94a3b8; margin-bottom:12px;">Mathematical equilibrium restored.</p>
+              <p style="font-size:14px; color:var(--mm-muted); margin-bottom:12px;">Mathematical equilibrium restored.</p>
               
               <div class="mm-solved-eq" id="mm-modal-solved-eq">6 + 4 = 10</div>
               
@@ -186,7 +191,7 @@
               </div>
 
               <div class="mm-modal-actions">
-                <button type="button" class="mm-btn mm-btn-submit" id="mm-modal-btn-next" style="padding:10px 22px; font-size:14px;">
+                <button type="button" class="mm-btn mm-btn-next-level" id="mm-modal-btn-next" style="padding:12px 28px; font-size:14px;">
                   Continue to Next Level ➔
                 </button>
               </div>
@@ -195,10 +200,11 @@
         </div>
       `;
 
-      // Bind Button Actions
+      // Cache DOM references
       this.dom = {
         board: document.getElementById('mm-board-stage'),
         grid: document.getElementById('mm-equation-grid'),
+        particleCanvas: document.getElementById('mm-particle-canvas'),
         levelSelect: document.getElementById('mm-level-select'),
         diffPill: document.getElementById('mm-diff-pill'),
         movesAllowed: document.getElementById('mm-moves-allowed'),
@@ -236,6 +242,85 @@
       this.dom.levelSelect.addEventListener('change', (e) => {
         this.loadLevel(parseInt(e.target.value, 10));
       });
+    }
+
+    /* ------------------------------------------------------------------------
+       Smooth Ember Particle Physics
+       ------------------------------------------------------------------------ */
+    initParticleCanvas() {
+      this.canvas = this.dom.particleCanvas;
+      if (!this.canvas) return;
+      this.ctx = this.canvas.getContext('2d');
+
+      const resizeCanvas = () => {
+        if (!this.dom.board) return;
+        const rect = this.dom.board.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+      };
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      const loop = () => {
+        this.updateAndDrawParticles();
+        this.particleAnimId = requestAnimationFrame(loop);
+      };
+      loop();
+    }
+
+    emitSparks(clientX, clientY, count = 10, isVictory = false) {
+      if (!this.canvas || !this.ctx) return;
+      const rect = this.canvas.getBoundingClientRect();
+      const originX = clientX - rect.left;
+      const originY = clientY - rect.top;
+
+      const colors = isVictory
+        ? ['#75c5de', '#38bdf8', '#4ade80', '#fbbf24', '#ffedd5']
+        : ['#fb923c', '#ea580c', '#f59e0b', '#fef08a', '#ffffff'];
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * (isVictory ? 4.5 : 2.8) + 0.5;
+        this.particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - (isVictory ? 2 : 1.2), // gentle upward lift
+          radius: Math.random() * (isVictory ? 3.5 : 2.5) + 1,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.025 + 0.015
+        });
+      }
+    }
+
+    updateAndDrawParticles() {
+      if (!this.ctx || !this.canvas) return;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      for (let i = this.particles.length - 1; i >= 0; i--) {
+        const p = this.particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.04; // subtle gravity
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          this.particles.splice(i, 1);
+          continue;
+        }
+
+        this.ctx.save();
+        this.ctx.globalAlpha = Math.max(0, p.alpha);
+        this.ctx.fillStyle = p.color;
+        this.ctx.shadowColor = p.color;
+        this.ctx.shadowBlur = 6;
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+      }
     }
 
     /* ------------------------------------------------------------------------
@@ -387,14 +472,15 @@
       // Click / Tap Handler
       slot.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.handleSlotClick(tokenIdx, slotKey, isOccupied);
+        this.handleSlotClick(e, tokenIdx, slotKey, isOccupied);
       });
 
       // Keyboard space/enter
       slot.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          this.handleSlotClick(tokenIdx, slotKey, isOccupied);
+          const rect = slot.getBoundingClientRect();
+          this.handleSlotClick({ clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 }, tokenIdx, slotKey, isOccupied);
         }
       });
 
@@ -404,13 +490,15 @@
     /* ------------------------------------------------------------------------
        Interaction: Click / Tap Mechanics
        ------------------------------------------------------------------------ */
-    handleSlotClick(tokenIdx, slotKey, isOccupied) {
+    handleSlotClick(e, tokenIdx, slotKey, isOccupied) {
       if (this.isLevelSolved) return;
+
+      const clickX = e.clientX || 0;
+      const clickY = e.clientY || 0;
 
       // Case 1: No stick is currently held
       if (!this.selectedStick) {
         if (isOccupied) {
-          // Check if player has moves remaining before picking up another stick
           const stats = this.engine.calculateMoves(this.initialTokens, this.currentTokens);
           if (stats.movesUsed >= this.puzzle.movesAllowed) {
             this.setMessage(`You've already used all ${this.puzzle.movesAllowed} allowed move(s). Tap Undo or Reset to try another move.`, 'error');
@@ -418,6 +506,7 @@
           }
 
           this.selectedStick = { tokenIdx, slotKey };
+          this.emitSparks(clickX, clickY, 8); // spark burst on lift
           this.renderBoard();
           this.updateMovesDisplay();
           this.vibrate(15);
@@ -444,6 +533,7 @@
       // 2B: Tapped another occupied stick -> Switch selection
       if (isOccupied) {
         this.selectedStick = { tokenIdx, slotKey };
+        this.emitSparks(clickX, clickY, 6);
         this.renderBoard();
         this.updateMovesDisplay();
         this.vibrate(15);
@@ -452,6 +542,7 @@
       }
 
       // 2C: Tapped an EMPTY slot -> Execute Move!
+      this.emitSparks(clickX, clickY, 12); // spark burst on landing
       this.executeMove(originToken, originSlot, tokenIdx, slotKey);
     }
 
@@ -484,8 +575,9 @@
       this.dragGhost.appendChild(head);
       document.body.appendChild(this.dragGhost);
 
-      // Select origin stick
+      // Select origin stick & emit sparks
       this.selectedStick = { tokenIdx, slotKey };
+      this.emitSparks(e.clientX, e.clientY, 8);
       this.renderBoard();
       this.updateMovesDisplay();
       this.vibrate(15);
@@ -518,12 +610,11 @@
           const isTargetOccupied = slotEl.classList.contains('is-occupied');
 
           if (!isTargetOccupied) {
+            this.emitSparks(upEv.clientX, upEv.clientY, 14);
             this.executeMove(this.dragOrigin.tokenIdx, this.dragOrigin.slotKey, targetToken, targetSlot);
             return;
           }
         }
-
-        // Cancelled or dropped outside -> stick remains selected for tap-to-place
       };
 
       document.addEventListener('pointermove', onPointerMove);
@@ -547,6 +638,14 @@
       this.selectedStick = null;
       this.vibrate([20, 40]);
       this.renderBoard();
+
+      // Trigger placement snap animation on target slot
+      const targetSlotEl = this.dom.grid.querySelector(`.mm-digit-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"], .mm-operator-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"], .mm-equals-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"]`);
+      if (targetSlotEl) {
+        targetSlotEl.classList.add('just-placed');
+        setTimeout(() => targetSlotEl.classList.remove('just-placed'), 400);
+      }
+
       this.updateMovesDisplay();
 
       // 3. Immediately test if equation is balanced!
@@ -589,7 +688,6 @@
           this.vibrate([40, 60, 40]);
           this.setMessage(`Incorrect: ${result.message}`, 'error');
         } else {
-          // If moves limit reached, notify player
           const stats = this.engine.calculateMoves(this.initialTokens, this.currentTokens);
           if (stats.movesUsed === this.puzzle.movesAllowed) {
             if (result.errorType === 'MATH_MISMATCH') {
@@ -627,6 +725,12 @@
       this.isLevelSolved = true;
       this.stopTimer();
       this.vibrate([60, 40, 100]);
+
+      // Massive victory sparks burst!
+      if (this.canvas) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.emitSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 35, true);
+      }
 
       // Calculate score
       const basePts = 500;
@@ -674,7 +778,6 @@
        ------------------------------------------------------------------------ */
     bindGlobalKeys() {
       document.addEventListener('keydown', (e) => {
-        // Ignore if user is typing in form inputs
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
         if (e.key === 'u' || e.key === 'U') {
