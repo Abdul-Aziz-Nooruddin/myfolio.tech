@@ -13,8 +13,9 @@ try {
   pdfParse = null;
 }
 const ACTIVE_MODELS = [
-  'gemini-1.5-flash',
-  'gemini-2.0-flash',
+  'gemini-3.1-flash-lite',
+  'gemini-3.1-flash-lite-preview',
+  'gemini-3-flash-preview',
   'gemini-flash-latest'
 ];
 
@@ -46,8 +47,9 @@ class AIService {
     this.apiKey = uniqueKeys[0] || apiKey || '';
     this.isAuthKey = Boolean(this.apiKey && this.apiKey.startsWith('AQ.'));
 
-    this.genAI = this.apiKey ? new GoogleGenerativeAI(this.apiKey) : null;
-    this.sdkAvailable = !!this.genAI;
+    // SDK requires AIzaSy keys; AQ keys use high-performance native REST fetch
+    this.genAI = (this.apiKey && this.apiKey.startsWith('AIzaSy')) ? new GoogleGenerativeAI(this.apiKey) : null;
+    this.sdkAvailable = Boolean(this.genAI);
 
     // Rate Limit (429) Adaptive Circuit Breaker
     this.circuitBreaker = {
@@ -113,85 +115,102 @@ class AIService {
     // Multi-model rotating fallback with ultra-fast priority
     for (const modelName of ACTIVE_MODELS) {
       const activeKey = this.getNextApiKey();
-      const client = (activeKey === this.apiKey && this.genAI) ? this.genAI : new GoogleGenerativeAI(activeKey);
+      const isAqKey = Boolean(activeKey && activeKey.startsWith('AQ.'));
 
-      try {
-        const model = client.getGenerativeModel({
-          model: modelName,
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 2048,
-            responseMimeType: 'application/json'
+      // If it's an AQ. key, use direct REST fetch (proven fast & reliable with Gemini 3.x)
+      if (isAqKey) {
+        try {
+          const restResult = await this.callGeminiRest(prompt, modelName, activeKey);
+          if (restResult && (restResult.extracted_data || restResult.branch || restResult.status || Object.keys(restResult).length > 0)) {
+            this.circuitBreaker.consecutive429s = 0;
+            return restResult;
           }
-        });
-        const result = await Promise.race([
-          model.generateContent(prompt),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('SDK_TIMEOUT: generateContent exceeded 5000ms')), 5000))
-        ]);
-        const text = result.response.text();
-        const parsed = this.parseJsonResponse(text);
-        if (parsed && (parsed.extracted_data || parsed.branch || parsed.status || Object.keys(parsed).length > 0)) {
-          this.circuitBreaker.consecutive429s = 0;
-          return parsed;
+        } catch (restError) {
+          console.warn(`[AI] REST ${modelName} fallback: ${restError.message.substring(0, 100)}`);
+          continue;
         }
-      } catch (sdkError) {
-        if (sdkError.message && (
-          sdkError.message.includes('401') ||
-          sdkError.message.includes('API key not valid') ||
-          sdkError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
-          sdkError.message.includes('UNAUTHENTICATED')
-        )) {
-          console.warn('[AI] Gemini API Key invalid or unauthenticated (401). Tripping circuit breaker for fast deterministic fallback.');
-          this.circuitBreaker.isOpen = true;
-          this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
-          throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
-        }
+      } else {
+        // SDK path for AIzaSy keys
+        const client = (activeKey === this.apiKey && this.genAI) ? this.genAI : new GoogleGenerativeAI(activeKey);
 
-        if (sdkError.message && (sdkError.message.includes('429') || sdkError.message.includes('quota'))) {
-          this.circuitBreaker.consecutive429s++;
-          if (this.circuitBreaker.consecutive429s >= 2) {
+        try {
+          const model = client.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 2048,
+              responseMimeType: 'application/json'
+            }
+          });
+          const result = await Promise.race([
+            model.generateContent(prompt),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('SDK_TIMEOUT: generateContent exceeded 5000ms')), 5000))
+          ]);
+          const text = result.response.text();
+          const parsed = this.parseJsonResponse(text);
+          if (parsed && (parsed.extracted_data || parsed.branch || parsed.status || Object.keys(parsed).length > 0)) {
+            this.circuitBreaker.consecutive429s = 0;
+            return parsed;
+          }
+        } catch (sdkError) {
+          if (sdkError.message && (
+            sdkError.message.includes('401') ||
+            sdkError.message.includes('API key not valid') ||
+            sdkError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+            sdkError.message.includes('UNAUTHENTICATED')
+          )) {
+            console.warn('[AI] Gemini API Key invalid or unauthenticated (401). Tripping circuit breaker for fast deterministic fallback.');
             this.circuitBreaker.isOpen = true;
-            this.circuitBreaker.openUntil = Date.now() + this.circuitBreaker.cooldownMs;
+            this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
+            throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
           }
-        }
-        console.warn(`[AI] Model ${modelName} fallback (${sdkError.message.substring(0, 100)}), trying next...`);
-      }
 
-      // REST fallback for this model
-      try {
-        const restResult = await this.callGeminiRest(prompt, modelName, activeKey);
-        if (restResult && (restResult.extracted_data || restResult.branch || restResult.status || Object.keys(restResult).length > 0)) {
-          this.circuitBreaker.consecutive429s = 0;
-          return restResult;
-        }
-      } catch (restError) {
-        if (restError.message && (
-          restError.message.includes('401') ||
-          restError.message.includes('API key not valid') ||
-          restError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
-          restError.message.includes('UNAUTHENTICATED')
-        )) {
-          console.warn('[AI] Gemini REST API Key invalid or unauthenticated (401). Tripping circuit breaker.');
-          this.circuitBreaker.isOpen = true;
-          this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
-          throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
+          if (sdkError.message && (sdkError.message.includes('429') || sdkError.message.includes('quota'))) {
+            this.circuitBreaker.consecutive429s++;
+            if (this.circuitBreaker.consecutive429s >= 2) {
+              this.circuitBreaker.isOpen = true;
+              this.circuitBreaker.openUntil = Date.now() + this.circuitBreaker.cooldownMs;
+            }
+          }
+          console.warn(`[AI] Model ${modelName} fallback (${sdkError.message.substring(0, 100)}), trying REST...`);
         }
 
-        if (restError.message && (restError.message.includes('429') || restError.message.includes('quota'))) {
-          this.circuitBreaker.consecutive429s++;
-          if (this.circuitBreaker.consecutive429s >= 2) {
+        // REST fallback for this model
+        try {
+          const restResult = await this.callGeminiRest(prompt, modelName, activeKey);
+          if (restResult && (restResult.extracted_data || restResult.branch || restResult.status || Object.keys(restResult).length > 0)) {
+            this.circuitBreaker.consecutive429s = 0;
+            return restResult;
+          }
+        } catch (restError) {
+          if (restError.message && (
+            restError.message.includes('401') ||
+            restError.message.includes('API key not valid') ||
+            restError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+            restError.message.includes('UNAUTHENTICATED')
+          )) {
+            console.warn('[AI] Gemini REST API Key invalid or unauthenticated (401). Tripping circuit breaker.');
             this.circuitBreaker.isOpen = true;
-            this.circuitBreaker.openUntil = Date.now() + this.circuitBreaker.cooldownMs;
+            this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
+            throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
           }
+
+          if (restError.message && (restError.message.includes('429') || restError.message.includes('quota'))) {
+            this.circuitBreaker.consecutive429s++;
+            if (this.circuitBreaker.consecutive429s >= 2) {
+              this.circuitBreaker.isOpen = true;
+              this.circuitBreaker.openUntil = Date.now() + this.circuitBreaker.cooldownMs;
+            }
+          }
+          console.warn(`[AI] REST ${modelName} fallback: ${restError.message.substring(0, 100)}`);
         }
-        console.warn(`[AI] REST ${modelName} fallback: ${restError.message.substring(0, 100)}`);
       }
     }
 
     throw new Error('All Gemini AI models currently busy or unreachable. Please try again in a moment!');
   }
 
-  async callGeminiRest(prompt, modelName = 'gemini-flash-latest', overrideKey = null) {
+  async callGeminiRest(prompt, modelName = 'gemini-3.1-flash-lite', overrideKey = null) {
     const keyToUse = overrideKey || this.apiKey;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${keyToUse}`;
 
