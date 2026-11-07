@@ -327,10 +327,10 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-          <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: #f4f1e8; text-decoration: none; padding: 4px 10px; border-radius: 8px; background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(56,189,248,0.2)); border: 1px solid rgba(34,197,94,0.4);" title="Unlock partner perks & developer rewards">
+          <button type="button" onclick="openRewardModal()" style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: #f4f1e8; border: 1px solid rgba(34,197,94,0.4); padding: 4px 10px; border-radius: 8px; background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(56,189,248,0.2)); cursor: pointer;" title="Unlock developer rewards & bonuses">
             <span>🎁 Claim Reward</span>
-            <span style="color: #4ade80; font-size: 11px;">↗</span>
-          </a>
+            <span style="color: #4ade80; font-size: 11px;">✦</span>
+          </button>
           <button type="button" id="btnToggleGame" onclick="toggleArcadeView()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #ffffff; font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 8px; line-height: 1;">
             <span id="btnToggleGameText">Play 🎮</span>
           </button>
@@ -346,7 +346,7 @@
           <div style="font-size: 11.5px; color: rgba(255,255,255,0.7);" id="overlaySubtitle">Move mouse or touch to steer your blue voxel hero</div>
           <div style="display: flex; gap: 8px; margin-top: 4px;">
             <button type="button" onclick="startMiniGame()" style="background: #22c55e; color: #000; border: none; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer;">Start Game 🚀</button>
-            <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">🎁 Bonus Perk ↗</a>
+            <button type="button" onclick="openRewardModal()" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">🎁 Bonus Perk ✦</button>
           </div>
         </div>
       </div>
@@ -602,6 +602,43 @@
           }
         });
       })();
+    </script>
+
+    <!-- Developer Loot Reward Modal -->
+    <div id="rewardModal" style="display: none; position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 16px;">
+      <div style="background: #141714; border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; max-width: 440px; width: 100%; padding: 28px 24px; text-align: center; box-shadow: 0 24px 70px rgba(0,0,0,0.8); position: relative;">
+        <button type="button" onclick="closeRewardModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 28px;">✕</button>
+        
+        <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
+        <h3 style="font-size: 20px; font-weight: 800; color: #f4f1e8; margin: 0 0 6px 0;">Developer Reward Unlocked!</h3>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin: 0 0 18px 0;">Thanks for playing Cyber Catcher on MyFolio. You unlocked the 3D Creator Pass.</p>
+        
+        <div style="background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.4); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #4ade80; font-weight: 700; margin-bottom: 4px;">Exclusive Creator Perks</div>
+          <div style="font-size: 15px; font-weight: 800; color: #ffffff;">3D Studio Access + Full Source Export</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">Ready to generate your personalized WebGL portfolio in seconds.</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="/studio" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #22c55e; color: #000000; font-weight: 800; font-size: 14px; padding: 12px 20px; border-radius: 10px; text-decoration: none; transition: transform 0.2s ease;">
+            <span>Build My 3D Portfolio Now 🚀</span>
+          </a>
+          <a href="/#templates" onclick="closeRewardModal()" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 12px; padding: 10px 16px; border-radius: 10px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1);">
+            <span>Explore 3D Template Showcase ✦</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.openRewardModal = function() {
+        var modal = document.getElementById('rewardModal');
+        if (modal) modal.style.display = 'flex';
+      };
+      window.closeRewardModal = function() {
+        var modal = document.getElementById('rewardModal');
+        if (modal) modal.style.display = 'none';
+      };
     </script>
 
     <!-- Adsterra In-Content Monetization Suite -->
