@@ -62,6 +62,69 @@ class AuthHandler {
   }
 
   /**
+   * Cloudflare Turnstile Canonical Siteverify Validator (Canonical prompt.md contract)
+   * Validates token against Cloudflare challenges API, matching expected action and hostnames.
+   */
+  static async verifyTurnstile(req, expectedAction) {
+    const secret = process.env.TURNSTILE_SECRET;
+    // In test environment or when TURNSTILE_SECRET is not configured, pass through
+    if (!secret || process.env.NODE_ENV === 'test') {
+      return { valid: true };
+    }
+
+    const token = req.body?.['cf-turnstile-response'] ||
+                  req.body?.turnstileToken ||
+                  req.headers?.['cf-turnstile-response'];
+
+    const expectedHostnames = new Set(
+      (process.env.TURNSTILE_HOSTNAMES ?? "myfolio.tech,www.myfolio.tech,localhost,127.0.0.1")
+        .split(",")
+        .map((hostname) => hostname.trim())
+        .filter(Boolean)
+    );
+
+    if (
+      typeof token !== "string" ||
+      token.length === 0 ||
+      token.length > 2048 ||
+      expectedHostnames.size === 0
+    ) {
+      return { valid: false, error: "Bot verification required. Please complete the verification challenge." };
+    }
+
+    const clientIp = req.headers['cf-connecting-ip'] ||
+                     (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : req.ip);
+
+    let result;
+    try {
+      const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        signal: AbortSignal.timeout(10_000),
+        body: new URLSearchParams({
+          secret: secret,
+          response: token,
+          remoteip: clientIp || '',
+        }),
+      });
+      if (!r.ok) throw new Error(`siteverify HTTP ${r.status}`);
+      result = await r.json();
+    } catch (err) {
+      return { valid: false, error: "Verification server communication error. Please try again." };
+    }
+
+    if (
+      !result.success ||
+      (result.action && result.action !== expectedAction) ||
+      (result.hostname && !expectedHostnames.has(result.hostname))
+    ) {
+      return { valid: false, error: "Bot verification failed or expired. Please refresh and try again." };
+    }
+
+    return { valid: true };
+  }
+
+  /**
    * Helper to set secure session cookie
    */
   _setSessionCookie(res, rawToken, maxAgeMs = 7 * 24 * 60 * 60 * 1000) {
@@ -108,6 +171,12 @@ class AuthHandler {
    */
   async signup(req, res) {
     try {
+      // Cloudflare Turnstile Canonical Verification (Step 9)
+      const turnstileCheck = await AuthHandler.verifyTurnstile(req, 'signup');
+      if (!turnstileCheck.valid) {
+        return res.status(403).json({ error: turnstileCheck.error });
+      }
+
       const { name, email, username, password, confirmPassword, termsAccepted } = req.body;
 
       if (!termsAccepted) {
@@ -407,6 +476,12 @@ class AuthHandler {
    */
   async login(req, res) {
     try {
+      // Cloudflare Turnstile Canonical Verification (Step 9)
+      const turnstileCheck = await AuthHandler.verifyTurnstile(req, 'login');
+      if (!turnstileCheck.valid) {
+        return res.status(403).json({ error: turnstileCheck.error });
+      }
+
       const { identifier, password, rememberMe } = req.body;
       const ip = req.ip || req.headers['x-forwarded-for'] || '127.0.0.1';
 

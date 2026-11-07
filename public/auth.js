@@ -149,12 +149,16 @@ if (loginForm) {
     btn.disabled = true;
     btn.innerHTML = '<span>Signing in...</span>';
 
+    // Retrieve Cloudflare Turnstile verification token
+    const turnstileToken = document.querySelector('#loginForm [name="cf-turnstile-response"]')?.value ||
+                           (window.turnstile && typeof window.turnstile.getResponse === 'function' ? window.turnstile.getResponse('#turnstileLogin') : '');
+
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ identifier, password, rememberMe })
+        body: JSON.stringify({ identifier, password, rememberMe, 'cf-turnstile-response': turnstileToken })
       });
 
       const data = await res.json();
@@ -196,6 +200,9 @@ if (loginForm) {
       showAlert(err.message);
       btn.disabled = false;
       btn.innerHTML = '<span>Sign In</span> &rarr;';
+      if (window.turnstile && typeof window.turnstile.reset === 'function') {
+        try { window.turnstile.reset('#turnstileLogin'); } catch (e) {}
+      }
     }
   });
 }
@@ -296,12 +303,16 @@ async function executeSignup() {
     btn.innerHTML = '<span>Creating account...</span>';
   }
 
+  // Retrieve Cloudflare Turnstile verification token
+  const turnstileToken = document.querySelector('#signupForm [name="cf-turnstile-response"]')?.value ||
+                         (window.turnstile && typeof window.turnstile.getResponse === 'function' ? window.turnstile.getResponse('#turnstileSignup') : '');
+
   try {
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ name, email, username, password, confirmPassword, termsAccepted })
+      body: JSON.stringify({ name, email, username, password, confirmPassword, termsAccepted, 'cf-turnstile-response': turnstileToken })
     });
 
     const data = await res.json();
@@ -377,6 +388,9 @@ async function executeSignup() {
     if (btn) {
       btn.disabled = false;
       btn.innerHTML = '<span>Create account</span> &rarr;';
+    }
+    if (window.turnstile && typeof window.turnstile.reset === 'function') {
+      try { window.turnstile.reset('#turnstileSignup'); } catch (e) {}
     }
   } finally {
     isSignupProcessing = false;

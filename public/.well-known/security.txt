@@ -6,3 +6,4 @@ Canonical: https://myfolio.tech/.well-known/security.txt
 Acknowledgments: https://myfolio.tech/security-acknowledgments
 Encryption: https://myfolio.tech/.well-known/pgp-key.txt
 Hiring: https://myfolio.tech/about
+
