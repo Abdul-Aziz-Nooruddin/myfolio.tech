@@ -1,0 +1,685 @@
+/* ==========================================================================
+   MATCHSTICK MIND - Stylesheet
+   Crafted for MyFolio 404 Sector
+   ========================================================================== */
+
+:root {
+  --mm-bg: #0c0e12;
+  --mm-card-bg: rgba(18, 22, 28, 0.95);
+  --mm-border: rgba(255, 255, 255, 0.1);
+  --mm-border-glow: rgba(249, 115, 22, 0.35);
+  --mm-wood-light: #e8cfa8;
+  --mm-wood-dark: #c49d68;
+  --mm-wood-shadow: #8a6538;
+  --mm-ember-core: #ffedd5;
+  --mm-ember-hot: #fb923c;
+  --mm-ember-deep: #ea580c;
+  --mm-ember-char: #7c2d12;
+  --mm-slot-bg: rgba(255, 255, 255, 0.035);
+  --mm-slot-border: rgba(255, 255, 255, 0.08);
+  --mm-slot-active-bg: rgba(34, 197, 94, 0.08);
+  --mm-slot-active-border: rgba(34, 197, 94, 0.5);
+  --mm-text: #f4f1e8;
+  --mm-muted: #94a3b8;
+  --mm-accent: #f97316;
+  --mm-success: #22c55e;
+  --mm-danger: #ef4444;
+
+  /* Responsive Board Sizing */
+  --digit-w: 78px;
+  --digit-h: 136px;
+  --stick-h-w: 52px;
+  --stick-h-h: 10px;
+  --stick-v-w: 10px;
+  --stick-v-h: 52px;
+  --head-size: 11px;
+}
+
+@media (max-width: 680px) {
+  :root {
+    --digit-w: 56px;
+    --digit-h: 98px;
+    --stick-h-w: 36px;
+    --stick-h-h: 8px;
+    --stick-v-w: 8px;
+    --stick-v-h: 36px;
+    --head-size: 9px;
+  }
+}
+
+@media (max-width: 440px) {
+  :root {
+    --digit-w: 46px;
+    --digit-h: 82px;
+    --stick-h-w: 28px;
+    --stick-h-h: 7px;
+    --stick-v-w: 7px;
+    --stick-v-h: 28px;
+    --head-size: 8px;
+  }
+}
+
+/* Container */
+.mm-container {
+  width: 100%;
+  max-width: 860px;
+  margin: 28px auto 0;
+  background: var(--mm-card-bg);
+  border: 1px solid var(--mm-border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: var(--mm-text);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Header */
+.mm-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--mm-border);
+  padding-bottom: 16px;
+}
+
+.mm-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mm-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mm-game-logo {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle at 35% 35%, var(--mm-ember-hot), var(--mm-ember-deep));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+}
+
+.mm-title-text h2 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--mm-text);
+}
+
+.mm-subtitle {
+  font-size: 12px;
+  color: var(--mm-muted);
+  margin-top: 2px;
+}
+
+.mm-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--mm-border);
+}
+
+.mm-diff-pill {
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+}
+.mm-diff-Easy { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+.mm-diff-Medium { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); }
+.mm-diff-Hard { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.mm-diff-Expert { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.4); }
+
+/* Stats Bar */
+.mm-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mm-stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.mm-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mm-muted);
+  font-weight: 600;
+}
+
+.mm-stat-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+.mm-stat-val.highlight {
+  color: #fb923c;
+}
+
+/* Prompt Banner */
+.mm-puzzle-prompt {
+  background: rgba(249, 115, 22, 0.07);
+  border: 1px dashed rgba(249, 115, 22, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.mm-prompt-text strong {
+  color: #fed7aa;
+}
+
+.mm-hand-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4ade80;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   Main Puzzle Board
+   ========================================================================== */
+.mm-board-stage {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #171c24, #0b0d12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  min-height: 220px;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.mm-equation-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.5vw, 24px);
+  max-width: 100%;
+}
+
+/* Digit Container */
+.mm-digit-token {
+  position: relative;
+  width: var(--digit-w);
+  height: var(--digit-h);
+  flex-shrink: 0;
+}
+
+/* Operator Container (+, -) */
+.mm-operator-token {
+  position: relative;
+  width: calc(var(--digit-w) * 0.75);
+  height: var(--digit-h);
+  flex-shrink: 0;
+}
+
+/* Equals Container (=) */
+.mm-equals-token {
+  position: relative;
+  width: calc(var(--digit-w) * 0.75);
+  height: var(--digit-h);
+  flex-shrink: 0;
+}
+
+/* Matchstick Slot (Base) */
+.mm-slot {
+  position: absolute;
+  cursor: pointer;
+  background: var(--mm-slot-bg);
+  border: 1px dashed var(--mm-slot-border);
+  border-radius: 100px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.mm-slot:focus-visible {
+  outline: 2px solid #fb923c;
+  outline-offset: 2px;
+}
+
+/* Slot geometry inside Digit */
+.mm-slot-h {
+  width: var(--stick-h-w);
+  height: var(--stick-h-h);
+  left: calc((var(--digit-w) - var(--stick-h-w)) / 2);
+}
+.mm-slot-v {
+  width: var(--stick-v-w);
+  height: var(--stick-v-h);
+}
+
+.mm-slot-seg-a { top: 4px; }
+.mm-slot-seg-b { top: calc(var(--stick-h-h) + 3px); right: 4px; }
+.mm-slot-seg-c { bottom: calc(var(--stick-h-h) + 3px); right: 4px; }
+.mm-slot-seg-d { bottom: 4px; }
+.mm-slot-seg-e { bottom: calc(var(--stick-h-h) + 3px); left: 4px; }
+.mm-slot-seg-f { top: calc(var(--stick-h-h) + 3px); left: 4px; }
+.mm-slot-seg-g { top: calc((var(--digit-h) - var(--stick-h-h)) / 2); }
+
+/* Operator slots */
+.mm-slot-op-h {
+  width: var(--stick-h-w);
+  height: var(--stick-h-h);
+  top: calc((var(--digit-h) - var(--stick-h-h)) / 2);
+  left: calc(((var(--digit-w) * 0.75) - var(--stick-h-w)) / 2);
+}
+.mm-slot-op-v {
+  width: var(--stick-v-w);
+  height: var(--stick-v-h);
+  top: calc((var(--digit-h) - var(--stick-v-h)) / 2);
+  left: calc(((var(--digit-w) * 0.75) - var(--stick-v-w)) / 2);
+}
+
+/* Equals slots */
+.mm-slot-eq-top {
+  width: var(--stick-h-w);
+  height: var(--stick-h-h);
+  top: calc((var(--digit-h) / 2) - var(--stick-h-h) - 8px);
+  left: calc(((var(--digit-w) * 0.75) - var(--stick-h-w)) / 2);
+}
+.mm-slot-eq-bottom {
+  width: var(--stick-h-w);
+  height: var(--stick-h-h);
+  top: calc((var(--digit-h) / 2) + 8px);
+  left: calc(((var(--digit-w) * 0.75) - var(--stick-h-w)) / 2);
+}
+
+/* Empty slot states */
+.mm-slot.is-empty {
+  opacity: 0.45;
+}
+.mm-slot.is-empty:hover {
+  opacity: 0.85;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* When a stick is selected in hand, empty slots glow with drop invitations */
+.mm-board-stage.has-selected-stick .mm-slot.is-empty {
+  border: 1px dashed var(--mm-slot-active-border);
+  background: var(--mm-slot-active-bg);
+  opacity: 0.85;
+  animation: mmPulseInvite 1.5s infinite alternate ease-in-out;
+}
+.mm-board-stage.has-selected-stick .mm-slot.is-empty:hover {
+  opacity: 1;
+  background: rgba(34, 197, 94, 0.22);
+  border-color: #4ade80;
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.45);
+}
+
+@keyframes mmPulseInvite {
+  0% { transform: scale(0.96); opacity: 0.6; }
+  100% { transform: scale(1.04); opacity: 0.95; }
+}
+
+/* ==========================================================================
+   The Realistic Physical Matchstick
+   ========================================================================== */
+.mm-stick {
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: linear-gradient(
+    135deg,
+    var(--mm-wood-light) 0%,
+    var(--mm-wood-dark) 60%,
+    var(--mm-wood-shadow) 100%
+  );
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  cursor: grab;
+  touch-action: none;
+}
+
+.mm-stick:active {
+  cursor: grabbing;
+}
+
+/* The Glowing Ember Match Head */
+.mm-head {
+  position: absolute;
+  border-radius: 50%;
+  width: var(--head-size);
+  height: var(--head-size);
+  background: radial-gradient(
+    circle at 35% 35%,
+    var(--mm-ember-core) 0%,
+    var(--mm-ember-hot) 45%,
+    var(--mm-ember-deep) 80%,
+    var(--mm-ember-char) 100%
+  );
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.85), 0 0 2px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+/* Match Head Positioning */
+.mm-slot-h .mm-head {
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.mm-slot-v .mm-head {
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Selected / Lifted State */
+.mm-slot.is-selected .mm-stick {
+  transform: scale(1.1) translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.75), 0 0 18px rgba(249, 115, 22, 0.9);
+  z-index: 50;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.mm-slot.is-selected .mm-head {
+  box-shadow: 0 0 16px rgba(251, 146, 60, 1), 0 0 4px #ffffff;
+}
+
+/* Ghost dragging matchstick */
+.mm-dragging-stick {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  border-radius: 100px;
+  background: linear-gradient(135deg, var(--mm-wood-light), var(--mm-wood-dark));
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(249, 115, 22, 1);
+  transform: translate(-50%, -50%) scale(1.15);
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   Feedback Message Bar
+   ========================================================================== */
+.mm-message-bar {
+  min-height: 38px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.mm-message-bar.info {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mm-muted);
+}
+.mm-message-bar.success {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+.mm-message-bar.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* ==========================================================================
+   Controls Toolbar
+   ========================================================================== */
+.mm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--mm-border);
+}
+
+.mm-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--mm-border);
+  color: var(--mm-text);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.mm-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.mm-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.mm-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mm-btn-submit {
+  background: #22c55e;
+  color: #051608;
+  border: 1px solid #16a34a;
+  font-weight: 800;
+}
+.mm-btn-submit:hover:not(:disabled) {
+  background: #4ade80;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.4);
+}
+
+.mm-btn-hint {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fef3c7;
+}
+.mm-btn-hint:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: #f59e0b;
+}
+
+/* Hint Box */
+.mm-hint-box {
+  display: none;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: #fde68a;
+}
+
+.mm-hint-box.is-visible {
+  display: block;
+  animation: mmFadeIn 0.3s ease;
+}
+
+@keyframes mmFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Victory / Level Complete Overlay
+   ========================================================================== */
+.mm-overlay-modal {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 16, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: mmFadeIn 0.3s ease;
+}
+
+.mm-overlay-modal.is-active {
+  display: flex;
+}
+
+.mm-modal-card {
+  background: #14171d;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  max-width: 420px;
+  width: 100%;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(249, 115, 22, 0.25);
+  position: relative;
+}
+
+.mm-victory-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+  animation: mmBounce 0.8s ease infinite alternate;
+}
+
+@keyframes mmBounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-6px); }
+}
+
+.mm-modal-card h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f4f1e8;
+  margin: 0 0 6px 0;
+}
+
+.mm-solved-eq {
+  font-family: monospace;
+  font-size: 26px;
+  font-weight: 800;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 8px 16px;
+  border-radius: 10px;
+  margin: 14px 0;
+  letter-spacing: 0.1em;
+  border: 1px dashed rgba(34, 197, 94, 0.4);
+}
+
+.mm-score-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 12px;
+  margin: 16px 0 20px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+
+.mm-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Footer Section CTA below the game */
+.mm-section-cta {
+  margin-top: 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.mm-section-cta h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.mm-cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mm-btn-restart {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 100px;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mm-btn-restart:hover {
+  background: #f4f1e8;
+  border-color: rgba(23, 24, 23, 0.3);
+  transform: translateY(-2px);
+}
