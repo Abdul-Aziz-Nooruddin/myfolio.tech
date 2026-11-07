@@ -13,7 +13,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pricing &amp; Plans — MyFolio 3D Portfolio Studio</title>
-  <meta name="description" content="Transparent, accessible developer pricing for MyFolio. Full source code ZIP export, lifetime hosting, and branded custom subdomains at ₹149. Zero vendor lock-in.">
+  <meta name="description" content="Transparent pricing for MyFolio 3D portfolios. Full source code ZIP export, lifetime hosting, and custom subdomains for ₹149. Zero vendor lock-in.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://myfolio.tech/pricing">
 

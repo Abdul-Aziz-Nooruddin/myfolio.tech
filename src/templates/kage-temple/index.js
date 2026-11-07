@@ -281,16 +281,16 @@ const KageTempleTemplate = {
       `<section class="sec fin" id="eternity" data-cam="4">
         <div class="fg" data-fg="eternity" aria-hidden="true">
           <span class="fg-el fg-hill" data-fg-in="up">
-            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/hill.webp" alt="" width="1774" height="887" loading="lazy" decoding="async">
+            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/hill.webp" alt="Kyoto temple moss hill" width="1774" height="887" loading="lazy" decoding="async">
           </span>
           <span class="fg-el fg-ruins" data-fg-in="left">
-            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/shrine-ruins.webp" alt="" width="1536" height="1001" loading="lazy" decoding="async">
+            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/shrine-ruins.webp" alt="Ancient Torii shrine ruins" width="1536" height="1001" loading="lazy" decoding="async">
           </span>
           <span class="fg-el fg-grass" data-fg-in="up">
-            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
+            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/tall-grass.webp" alt="Bowing bamboo tall grass" width="1717" height="916" loading="lazy" decoding="async">
           </span>
           <span class="fg-el fg-sakura" data-fg-in="left">
-            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/sakura-branch.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+            <img crossorigin="anonymous" src="/landing-pages/secret-pathways-assets/foreground/png/sakura-branch.webp" alt="Flowering sakura blossom branch" width="1536" height="1024" loading="lazy" decoding="async">
           </span>
         </div>
         <div class="eyebrow" data-rv="fade">Chapter 04 — Afterlight</div>

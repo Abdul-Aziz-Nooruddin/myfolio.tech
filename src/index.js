@@ -4376,6 +4376,11 @@ app.get(['/avatar.png', '/sites/:handle/avatar.png', '/u/:handle/avatar.png'], (
   next();
 });
 
+// Cloudflare Email Protection Crawler Defense (Prevents 404s when crawlers follow obfuscation URLs)
+app.all(['/cdn-cgi/l/email-protection*', '/cdn-cgi/l/*'], (req, res) => {
+  return res.redirect(301, '/contact');
+});
+
 // Dynamic Vanity Direct Route: Redirect /abdulaziz or any /:handle to its dedicated subdomain https://<handle>.myfolio.tech/
 app.get(['/abdulaziz', '/u/abdulaziz', '/aziz', '/u/aziz', '/u/:handle', '/:handle([a-zA-Z0-9_-]{2,32})'], async (req, res, next) => {
   let handle = (req.params.handle || (req.path.startsWith('/u/') ? req.path.slice(3) : req.path.slice(1))).toLowerCase().trim();
@@ -4385,7 +4390,8 @@ app.get(['/abdulaziz', '/u/abdulaziz', '/aziz', '/u/aziz', '/u/:handle', '/:hand
     'profile', 'settings', 'account', 'privacy', 'privacy-policy', 'terms', 'tos',
     'terms-of-service', 'about', 'about-us', 'our-story', 'contact', 'contact-us',
     'support', 'webhook', 'thank-you', 'success', 'design-demo', 'universes', 'themes', 'gallery',
-    'subscribe', 'pricing', 'checkout', 'payment', 'health', 'healthz', 'status', 'docs', 'faq', 'index'
+    'subscribe', 'pricing', 'checkout', 'payment', 'health', 'healthz', 'status', 'docs', 'faq', 'index',
+    'slush', 'jack-3d', 'nadia', 'kage', 'rbp', 'tom', 'apogee'
   ];
   if (!handle || reservedPaths.includes(handle)) {
     return next();
@@ -4414,12 +4420,8 @@ app.get(['/abdulaziz', '/u/abdulaziz', '/aziz', '/u/aziz', '/u/:handle', '/:hand
     return res.send(html);
   }
 
-  // Local development redirect fallback
-  if (req.headers.host && req.headers.host.includes('localhost')) {
-    return res.redirect(302, `http://${handle}.localhost:5050/`);
-  }
-
-  return res.redirect(301, `https://${handle}.myfolio.tech/`);
+  // If no portfolio HTML exists for this handle, continue to next routes or 404 handler
+  return next();
 });
 
 // VIP Set Active Live Site Endpoint (Protected: Admin Only)

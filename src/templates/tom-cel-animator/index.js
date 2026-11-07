@@ -327,6 +327,13 @@ const TomCelAnimatorTemplate = {
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <meta content="web_standard" name="shell-type"/>
   <title>${safeName} | ${role}</title>
+  <meta name="description" content="Explore Tom Cel Animator: Stylized 3D character design, cel-shaded comic aesthetics, and motion portfolio template. Full source code ZIP included."/>
+  <meta property="og:title" content="${safeName} | ${role}"/>
+  <meta property="og:description" content="Explore Tom Cel Animator: Stylized 3D character design, cel-shaded comic aesthetics, and motion portfolio template. Full source code ZIP included."/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="${safeName} | ${role}"/>
+  <meta name="twitter:description" content="Explore Tom Cel Animator: Stylized 3D character design, cel-shaded comic aesthetics, and motion portfolio template. Full source code ZIP included."/>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -352,7 +359,7 @@ const TomCelAnimatorTemplate = {
       animation-play-state: paused;
     }
   </style>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",

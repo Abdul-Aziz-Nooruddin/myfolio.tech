@@ -257,8 +257,15 @@ const ApogeeSpatialTemplate = {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${name} // ${role}</title>
+  <meta name="description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
+  <meta property="og:title" content="${name} // ${role}">
+  <meta property="og:description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${name} // ${role}">
+  <meta name="twitter:description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
   
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -312,11 +319,16 @@ const ApogeeSpatialTemplate = {
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div id="ssr-hero" style="max-width: 900px; margin: 40px auto; padding: 24px; text-align: center; color: #ffffff;">
+      <h1 class="font-anton uppercase text-5xl sm:text-7xl mb-4">${name} — ${role}</h1>
+      <p class="text-xl max-w-2xl mx-auto opacity-90">${bio}</p>
+    </div>
+  </div>
 
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.4/babel.min.js"></script>
 
   <script type="text/babel">
     const { useState, useEffect, useCallback } = React;

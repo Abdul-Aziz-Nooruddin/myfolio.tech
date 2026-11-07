@@ -3,9 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex Vance // Full-Stack AI &amp; Systems Architect</title>
+  <title>Apogee Spatial 3D — Aerospace Tech Portfolio | MyFolio</title>
+  <meta name="description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
+  <meta property="og:title" content="Apogee Spatial 3D — Aerospace Tech Portfolio | MyFolio">
+  <meta property="og:description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Apogee Spatial 3D — Aerospace Tech Portfolio | MyFolio">
+  <meta name="twitter:description" content="Apogee Spatial 3D developer portfolio. Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel with ZIP export.">
   
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -144,11 +151,16 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div id="ssr-hero" style="max-width: 900px; margin: 40px auto; padding: 24px; text-align: center; color: #ffffff;">
+      <h1 class="font-anton uppercase text-5xl sm:text-7xl mb-4">Apogee Spatial 3D — Aerospace Tech Portfolio</h1>
+      <p class="text-xl max-w-2xl mx-auto opacity-90">Dynamic color-shifting studio, technical typography, and interactive spatial repository carousel.</p>
+    </div>
+  </div>
 
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.4/babel.min.js"></script>
 
   <script type="text/babel">
     const { useState, useEffect, useCallback } = React;
