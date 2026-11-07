@@ -340,13 +340,16 @@
             <div class="loader-spinner"></div>
             <span>Spinning up live WebGL 3D environment...</span>
           </div>
-          <iframe 
-            src="${universe.demoUrl}" 
-            id="sandboxIframe" 
-            class="sandbox-iframe desktop-mode" 
-            title="${universe.name} Live Demo" 
-            loading="eager"
-          ></iframe>
+          <div class="sandbox-phone-shell" id="sandboxPhoneShell">
+            <div class="phone-dynamic-island" aria-hidden="true"></div>
+            <iframe 
+              src="${universe.demoUrl}" 
+              id="sandboxIframe" 
+              class="sandbox-iframe desktop-mode" 
+              title="${universe.name} Live Demo" 
+              loading="eager"
+            ></iframe>
+          </div>
         </div>
       </div>
     `;
@@ -362,9 +365,44 @@
 
     const closeBtn = modal.querySelector('#closeSandboxModal');
     const backdrop = modal.querySelector('#sandboxBackdrop');
+    const btnDesk = modal.querySelector('#btnDeviceDesktop');
+    const btnMob = modal.querySelector('#btnDeviceMobile');
+    const phoneShell = modal.querySelector('#sandboxPhoneShell');
+    const frameWrap = modal.querySelector('#sandboxFrameWrap');
+
+    function applyMobileScale() {
+      if (!phoneShell || !phoneShell.classList.contains('mobile-active')) {
+        if (phoneShell) phoneShell.style.transform = '';
+        return;
+      }
+      if (window.innerWidth <= 768) {
+        phoneShell.style.transform = '';
+        return;
+      }
+      // Target viewport 393 x 852 (standard iPhone 15/16 Pro)
+      // Phone shell with bezels is 417 x 876
+      const shellW = 417;
+      const shellH = 876;
+      const pad = 24;
+      const availW = frameWrap.clientWidth - pad;
+      const availH = frameWrap.clientHeight - pad;
+      if (availW <= 0 || availH <= 0) return;
+      const scale = Math.min(1, Math.min(availW / shellW, availH / shellH));
+      phoneShell.style.transform = `scale(${scale.toFixed(4)})`;
+      phoneShell.style.transformOrigin = 'center center';
+    }
+
+    const handleResize = () => {
+      if (phoneShell && phoneShell.classList.contains('mobile-active')) {
+        applyMobileScale();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
     function closeModal() {
       modal.classList.remove('is-open');
       document.body.style.overflow = '';
+      window.removeEventListener('resize', handleResize);
       setTimeout(() => {
         modal.innerHTML = '';
       }, 250);
@@ -373,17 +411,19 @@
     closeBtn.addEventListener('click', closeModal);
     backdrop.addEventListener('click', closeModal);
 
-    const btnDesk = modal.querySelector('#btnDeviceDesktop');
-    const btnMob = modal.querySelector('#btnDeviceMobile');
     btnDesk.addEventListener('click', () => {
       btnDesk.classList.add('active');
       btnMob.classList.remove('active');
+      phoneShell.classList.remove('mobile-active');
       iframe.className = 'sandbox-iframe desktop-mode';
+      applyMobileScale();
     });
     btnMob.addEventListener('click', () => {
       btnMob.classList.add('active');
       btnDesk.classList.remove('active');
+      phoneShell.classList.add('mobile-active');
       iframe.className = 'sandbox-iframe mobile-mode';
+      applyMobileScale();
     });
 
     const handleEsc = (e) => {
