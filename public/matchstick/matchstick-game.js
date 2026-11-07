@@ -87,7 +87,12 @@
           <div class="mm-header">
             <div class="mm-title-row">
               <div class="mm-brand-group">
-                <div class="mm-game-logo">🔥</div>
+                <div class="mm-game-logo" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="6" y1="18" x2="16" y2="8" stroke="currentColor"/>
+                    <circle cx="17.5" cy="6.5" r="2.8" fill="#fb923c" stroke="#ea580c" stroke-width="0.8"/>
+                  </svg>
+                </div>
                 <div class="mm-title-text">
                   <h2>Matchstick Mind</h2>
                   <div class="mm-subtitle">Think logically. Move carefully.</div>
@@ -151,7 +156,7 @@
                 <span>⟲</span> Reset
               </button>
               <button type="button" class="mm-btn" id="mm-btn-hint" title="Hint (H)">
-                <span>💡</span> Hint (<span id="mm-hint-count">0</span>/3)
+                <span style="font-size:11px;">✦</span> Hint (<span id="mm-hint-count">0</span>/3)
               </button>
             </div>
 
@@ -168,7 +173,12 @@
           <!-- Victory / Level Solved Overlay -->
           <div class="mm-overlay-modal" id="mm-modal-victory" role="dialog" aria-modal="true" aria-labelledby="mm-victory-title">
             <div class="mm-modal-card">
-              <div class="mm-victory-icon">🎉</div>
+              <div class="mm-victory-icon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
               <h3 id="mm-victory-title">PUZZLE SOLVED!</h3>
               <p style="font-size:13px; color:var(--mm-muted); margin-bottom:10px;">Mathematical equilibrium restored.</p>
               
@@ -720,7 +730,7 @@
       this.dom.score.textContent = `${this.score}`;
       this.dom.highScore.textContent = `${this.highScore}`;
       this.dom.btnNext.style.display = 'inline-flex';
-      this.setMessage(`🎉 PUZZLE SOLVED! ${result.decodedEquation} (+${levelTotal} pts)`, 'success');
+      this.setMessage(`✦ PUZZLE SOLVED! ${result.decodedEquation} (+${levelTotal} pts)`, 'success');
 
       this.dom.modalSolvedEq.textContent = result.decodedEquation;
       this.dom.modalPtsBase.textContent = `+${basePts}`;

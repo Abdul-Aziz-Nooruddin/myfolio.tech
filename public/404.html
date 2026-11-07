@@ -340,82 +340,90 @@
   <script src="/matchstick/puzzle-engine.js"></script>
   <script src="/matchstick/matchstick-game.js"></script>
 
-  <!-- Tactile Overscroll Elastic Rubber-Band Stretch Physics -->
+  <!-- Tactile Overscroll Elastic Rubber-Band Stretch Physics (Smooth 60/120fps) -->
   <script>
     (function () {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const mainEl = document.querySelector('.notfound-main');
-      const huge404 = document.querySelector('.huge-404');
-      const gameRoot = document.getElementById('matchstick-game-root');
       if (!mainEl) return;
 
-      let currentY = 0;
+      let pullDelta = 0;
       let targetY = 0;
-      let isSpringing = false;
-      let touchStartY = null;
-      let touchLastY = null;
+      let currentY = 0;
+      let velocity = 0;
+      let isInteracting = false;
       let animId = null;
+      let idleTimer = null;
 
-      const MAX_STRETCH = 58;  // Max displacement in px
-      const TENSION = 0.32;    // Natural resistance factor
+      const MAX_STRETCH = 52; // Max displacement in px
 
-      function springLoop() {
-        // High-fidelity damped harmonic spring return
-        targetY *= 0.86;
-        currentY += (targetY - currentY) * 0.22;
+      // Apple UIKit asymptotic rubber-band curve (monotonic, zero-clamp resistance)
+      function rubberBand(d, limit) {
+        const absD = Math.abs(d);
+        const y = (absD * limit) / (absD + limit);
+        return Math.sign(d) * y;
+      }
 
-        if (Math.abs(currentY) < 0.15 && Math.abs(targetY) < 0.15) {
-          currentY = 0;
+      function updatePhysics() {
+        if (isInteracting) {
+          // Zero-lag tracking during active wheel or touch pull
+          currentY += (targetY - currentY) * 0.34;
+        } else {
+          // Smooth critically-damped spring snapback to rest
+          const force = (0 - currentY) * 0.16;
+          velocity = (velocity + force) * 0.82;
+          currentY += velocity;
+
+          if (Math.abs(currentY) < 0.08 && Math.abs(velocity) < 0.08) {
+            currentY = 0;
+            velocity = 0;
+            targetY = 0;
+            pullDelta = 0;
+            mainEl.style.transform = '';
+            animId = null;
+            return;
+          }
+        }
+
+        // Apply single GPU-composited transform from center origin
+        const stretch = 1 + Math.abs(currentY) * 0.0006;
+        mainEl.style.transform = `translate3d(0, ${currentY.toFixed(2)}px, 0) scale3d(1, ${stretch.toFixed(4)}, 1)`;
+
+        animId = requestAnimationFrame(updatePhysics);
+      }
+
+      function wakeLoop() {
+        if (!animId) {
+          animId = requestAnimationFrame(updatePhysics);
+        }
+      }
+
+      function addPull(delta) {
+        pullDelta += delta;
+        targetY = rubberBand(pullDelta, MAX_STRETCH);
+        isInteracting = true;
+        wakeLoop();
+
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          isInteracting = false;
+          pullDelta = 0;
           targetY = 0;
-          applyStretch(0);
-          isSpringing = false;
-          cancelAnimationFrame(animId);
-          return;
-        }
-
-        applyStretch(currentY);
-        animId = requestAnimationFrame(springLoop);
+        }, 70);
       }
 
-      function startSpring() {
-        if (!isSpringing) {
-          isSpringing = true;
-          animId = requestAnimationFrame(springLoop);
-        }
-      }
-
-      function applyStretch(y) {
-        const clampedY = Math.sign(y) * Math.min(Math.abs(y), MAX_STRETCH);
-        // Vertical rubber band stretch + horizontal Poisson contraction
-        const stretchY = 1 + Math.abs(clampedY) * 0.0016;
-        const squishX = 1 - Math.abs(clampedY) * 0.0008;
-
-        mainEl.style.transform = `translate3d(0, ${clampedY}px, 0) scale3d(${squishX}, ${stretchY}, 1)`;
-        mainEl.style.transformOrigin = clampedY > 0 ? 'top center' : 'bottom center';
-
-        // Organic rubber jelly elasticity on 404
-        if (huge404) {
-          const numStretch = 1 + Math.abs(clampedY) * 0.0028;
-          huge404.style.transform = `scale3d(1, ${numStretch}, 1) translate3d(0, ${clampedY * 0.2}px, 0)`;
-        }
-
-        // Tactile micro-tilt on game container
-        const card = document.querySelector('.mm-container');
-        if (card) {
-          card.style.transform = `rotate(${clampedY * 0.015}deg)`;
-        }
-      }
-
-      // Wheel Listener (Desktop Trackpad & Mouse Wheel)
+      // Wheel Listener (Trackpad & Mouse Wheel)
       window.addEventListener('wheel', (e) => {
         if (e.target && e.target.closest('.mm-level-select, .mm-hint-box, .mm-overlay-modal')) return;
-        targetY -= e.deltaY * TENSION;
-        targetY = Math.max(-MAX_STRETCH * 1.4, Math.min(MAX_STRETCH * 1.4, targetY));
-        startSpring();
+        // Invert delta so pulling down pulls content upward smoothly
+        addPull(-e.deltaY * 0.55);
       }, { passive: true });
 
-      // Touch Listeners (Mobile & Tablet Pull to Stretch)
+      // Touch Listeners (Mobile & Tablet)
+      let touchStartY = null;
+      let touchLastY = null;
+
       window.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
           touchStartY = e.touches[0].clientY;
@@ -426,28 +434,26 @@
       window.addEventListener('touchmove', (e) => {
         if (touchStartY === null || e.touches.length !== 1) return;
         const currentTouchY = e.touches[0].clientY;
-        const delta = (currentTouchY - touchLastY) * 0.42;
+        const diff = currentTouchY - touchLastY;
         touchLastY = currentTouchY;
-
-        targetY += delta;
-        targetY = Math.max(-MAX_STRETCH * 1.4, Math.min(MAX_STRETCH * 1.4, targetY));
-        startSpring();
+        addPull(diff * 0.85);
       }, { passive: true });
 
       window.addEventListener('touchend', () => {
         touchStartY = null;
         touchLastY = null;
+        isInteracting = false;
+        pullDelta = 0;
+        targetY = 0;
       }, { passive: true });
 
-      // Keyboard arrow scroll stretch
+      // Tactile Arrow Keys
       window.addEventListener('keydown', (e) => {
         if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
         if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-          targetY += 24;
-          startSpring();
+          addPull(28);
         } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-          targetY -= 24;
-          startSpring();
+          addPull(-28);
         }
       });
     })();
