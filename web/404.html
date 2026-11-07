@@ -29,83 +29,252 @@
       --sky: #75c5de;
       --muted: #60615b;
       --border: rgba(23, 24, 23, 0.1);
+      --border-strong: rgba(23, 24, 23, 0.2);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh; display: flex; flex-direction: column;
-      justify-content: space-between; background: var(--paper); color: var(--ink);
-      overflow-x: hidden; position: relative;
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @media (min-width: 960px) and (min-height: 600px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+      }
+    }
+
     a { color: inherit; text-decoration: none; }
 
     .site-header {
-      padding: 24px 36px; display: flex; justify-content: space-between; align-items: center;
-      position: relative; z-index: 10;
+      padding: 14px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
     }
     .brand {
-      display: inline-flex; align-items: center; gap: 11px;
-      font-size: 26px; font-weight: 600; letter-spacing: -0.06em; line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1;
     }
-    .brand-logo-wrap { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; flex-shrink: 0; }
-    .brand-logo-img { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; display: block; border: 1px solid var(--border); }
-    .brand-footer .brand-logo-img { border: 1px solid rgba(255, 255, 255, 0.2); }
+    .brand-logo-wrap { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; }
+    .brand-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; display: block; border: 1px solid var(--border); }
+    .brand-period { color: #13708e; }
 
+    /* Main Split Section: Zero Scroll Single Section */
     .notfound-main {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 30px 20px 50px;
-      position: relative; z-index: 2; width: 100%; max-width: 1040px; margin: 0 auto;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.16fr 0.84fr;
+      gap: 36px;
+      align-items: center;
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 8px 36px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
     }
 
-    .watermark-404 {
-      position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
-      font-size: clamp(140px, 24vw, 360px); font-weight: 800; letter-spacing: -0.08em;
-      color: rgba(23, 24, 23, 0.035); z-index: -1; user-select: none; pointer-events: none;
+    @media (max-width: 960px) {
+      .notfound-main {
+        grid-template-columns: 1fr;
+        padding: 20px 20px 36px;
+        gap: 28px;
+        overflow-y: visible;
+      }
+    }
+
+    /* Left Column: Matchstick Mind Game */
+    .notfound-col-left {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Right Column: 404 Narrative & Actions */
+    .notfound-col-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      padding-left: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .notfound-col-right {
+        align-items: center;
+        text-align: center;
+        padding-left: 0;
+      }
     }
 
     .eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      color: #13708e; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #13708e;
+      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
+    .huge-404 {
+      font-size: clamp(68px, 7.5vw, 114px);
+      font-weight: 800;
+      letter-spacing: -0.07em;
+      line-height: 0.9;
+      color: var(--ink);
+      margin: 2px 0 10px;
+      user-select: none;
+    }
+
     .notfound-title {
-      font-size: clamp(32px, 5vw, 56px); font-weight: 700; line-height: 1.15;
-      letter-spacing: -0.04em; margin-bottom: 12px; color: var(--ink);
+      font-size: clamp(22px, 2.4vw, 34px);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.035em;
+      margin-bottom: 8px;
+      color: var(--ink);
     }
     .notfound-desc {
-      font-size: 16px; color: var(--muted); max-width: 540px; line-height: 1.6;
-      margin-bottom: 24px;
+      font-size: 14.5px;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    /* Challenge Action Block */
+    .mm-section-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+    @media (max-width: 960px) {
+      .mm-section-cta {
+        align-items: center;
+      }
+    }
+
+    .mm-section-cta h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .mm-cta-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .pill-button {
-      position: relative; isolation: isolate; display: inline-flex; align-items: center;
-      gap: 10px; border-radius: 100px; padding: 6px; color: var(--ink);
-      background: transparent; width: max-content;
+      position: relative;
+      isolation: isolate;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 100px;
+      padding: 5px;
+      color: var(--ink);
+      background: transparent;
+      width: max-content;
+      transition: all 0.25s ease;
     }
     .pill-background {
-      position: absolute; z-index: -1; left: 6px; top: 6px; bottom: 6px;
-      width: calc(100% - 76px); border-radius: 100px; background: #fff;
-      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: absolute;
+      z-index: -1;
+      left: 5px;
+      top: 5px;
+      bottom: 5px;
+      width: calc(100% - 62px);
+      border-radius: 100px;
+      background: #fff;
+      transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border: 1px solid var(--border);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
     }
-    .pill-label { padding: 14px 26px; font-size: 14.5px; font-weight: 600; white-space: nowrap; }
+    .pill-label { padding: 11px 20px; font-size: 13.5px; font-weight: 600; white-space: nowrap; }
     .pill-circle {
-      display: flex; width: 48px; height: 48px; align-items: center; justify-content: center;
-      border-radius: 50%; background: var(--sky); transition: transform 0.4s ease;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--sky);
+      transition: transform 0.35s ease;
     }
-    .pill-button:hover .pill-background { width: calc(100% - 12px); }
-    .pill-button:hover .pill-circle { transform: translateX(-4px); }
+    .pill-button:hover .pill-background { width: calc(100% - 10px); }
+    .pill-button:hover .pill-circle { transform: translateX(-3px); }
+
+    .mm-btn-restart {
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 100px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .mm-btn-restart:hover {
+      background: var(--paper);
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
     .notfound-links {
-      display: flex; gap: 24px; margin-top: 24px; font-size: 13px; color: var(--muted);
+      display: flex;
+      gap: 20px;
+      margin-top: 18px;
+      font-size: 12.5px;
+      color: var(--muted);
     }
     .notfound-links a:hover { color: #13708e; text-decoration: underline; }
 
     .notfound-footer {
-      padding: 24px 40px; text-align: center; font-size: 13px; color: var(--muted);
+      padding: 12px 36px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
       border-top: 1px solid var(--border);
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -114,43 +283,47 @@
   <header class="site-header">
     <a class="brand" href="/" aria-label="MyFolio home">
       <span class="brand-logo-wrap" aria-hidden="true">
-        <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="34" height="34" style="border-radius:50%; object-fit:cover; display:block;" />
+        <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="32" height="32" style="border-radius:50%; object-fit:cover; display:block;" />
       </span>
       <span>myfolio<span class="brand-period">.</span></span>
     </a>
-    <a href="/studio" style="font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 100px; background: #fff; border: 1px solid var(--border);">Open studio ↗</a>
+    <a href="/studio" style="font-size: 12.5px; font-weight: 500; padding: 7px 16px; border-radius: 100px; background: #fff; border: 1px solid var(--border);">Open studio ↗</a>
   </header>
 
   <main class="notfound-main">
-    <div class="watermark-404">404</div>
-    <div class="eyebrow"><span class="status-dot"></span> MISSING SECTOR // 404</div>
-    <h1 class="notfound-title">Oops! You've found a missing page.</h1>
-    <p class="notfound-desc">Instead of leaving empty-handed, solve a little puzzle: <strong>MATCHSTICK MIND</strong>.</p>
-
-    <!-- Matchstick Mind Interactive Game Mount -->
-    <div id="matchstick-game-root" style="width: 100%;"></div>
-
-    <!-- Below Game CTA Section -->
-    <div class="mm-section-cta">
-      <h3>Think you've got what it takes?</h3>
-      <div class="mm-cta-buttons">
-        <a class="pill-button" href="/" aria-label="Back to MyFolio">
-          <span class="pill-background"></span>
-          <span class="pill-label">Back to MyFolio</span>
-          <span class="pill-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-        <button type="button" class="mm-btn-restart" onclick="window.matchstickGame && window.matchstickGame.resetGame()" title="Reset game from level 1">
-          <span>Play Again ✦</span>
-        </button>
-      </div>
+    <!-- Left Column: Interactive Matchstick Game -->
+    <div class="notfound-col-left">
+      <div id="matchstick-game-root" style="width: 100%;"></div>
     </div>
 
-    <div class="notfound-links">
-      <a href="/about">Our story</a>
-      <a href="/studio">Web Studio</a>
-      <a href="/contact">Support</a>
+    <!-- Right Column: 404 Narrative & Quick Return Actions -->
+    <div class="notfound-col-right">
+      <div class="eyebrow"><span class="status-dot"></span> MISSING SECTOR // 404</div>
+      <div class="huge-404">404</div>
+      <h1 class="notfound-title">Oops! You've found a missing page.</h1>
+      <p class="notfound-desc">Instead of leaving empty-handed, solve this little puzzle: <strong>MATCHSTICK MIND</strong>.</p>
+
+      <div class="mm-section-cta">
+        <h3>Think you've got what it takes?</h3>
+        <div class="mm-cta-buttons">
+          <a class="pill-button" href="/" aria-label="Back to MyFolio">
+            <span class="pill-background"></span>
+            <span class="pill-label">Back to MyFolio</span>
+            <span class="pill-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+          <button type="button" class="mm-btn-restart" onclick="window.matchstickGame && window.matchstickGame.resetGame()" title="Reset game from level 1">
+            <span>Play Again ✦</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="notfound-links">
+        <a href="/about">Our story</a>
+        <a href="/studio">Web Studio</a>
+        <a href="/contact">Support</a>
+      </div>
     </div>
   </main>
 
