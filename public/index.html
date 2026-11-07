@@ -311,11 +311,11 @@
       })();
     </script>
 
-    <!-- Floating Interactive Arcade & Monetized Partner Dock -->
-    <aside id="adsterra-floating-bar" aria-label="Interactive Developer Arcade" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 980px; z-index: 99999; background: rgba(18, 20, 18, 0.90); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 18px; padding: 12px 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+    <!-- Floating Interactive Arcade & Monetized Partner Dock (Auto-Collapsing) -->
+    <aside id="adsterra-floating-bar" aria-label="Interactive Developer Arcade" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 980px; z-index: 99999; background: rgba(18, 20, 18, 0.90); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 18px; padding: 8px 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
       
       <!-- Arcade Header & Controls -->
-      <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px;">
+      <div id="floating-bar-header" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 0;">
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 100px; padding: 3px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #38bdf8;">
             <span style="animation: pulse 1.5s infinite; width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
@@ -341,7 +341,7 @@
       </div>
 
       <!-- Playable HTML5 Canvas Arena -->
-      <div id="arcadeArena" style="display: none; position: relative; width: 100%; height: 130px; background: radial-gradient(circle at 50% 100%, #1e293b, #090d16); border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; margin-bottom: 8px; cursor: crosshair;">
+      <div id="arcadeArena" style="display: none; position: relative; width: 100%; height: 130px; background: radial-gradient(circle at 50% 100%, #1e293b, #090d16); border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; margin-top: 8px; margin-bottom: 4px; cursor: crosshair;">
         <canvas id="gameCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
         <div id="gameOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 10;">
           <div style="font-size: 15px; font-weight: 800; color: #f4f1e8;" id="overlayTitle">👾 Catch Falling Stars!</div>
@@ -353,8 +353,8 @@
         </div>
       </div>
 
-      <!-- Desktop 728x90 Leaderboard Ad -->
-      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; width: 100%; overflow: hidden; border-radius: 8px;">
+      <!-- Desktop 728x90 Leaderboard Ad (Auto-Collapses if Unfilled / Error) -->
+      <div class="adsterra-desktop-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;">
         <script>
           atOptions = {
             'key' : '8724b8606818a9cca1bcbb253b74fe12',
@@ -367,8 +367,8 @@
         <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
       </div>
 
-      <!-- Mobile 320x50 Leaderboard Ad -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; width: 100%; overflow: hidden; border-radius: 8px;">
+      <!-- Mobile 320x50 Leaderboard Ad (Auto-Collapses if Unfilled / Error) -->
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;">
         <script>
           atOptions = {
             'key' : '10e49210ba4a073634c68e773acfa211',
@@ -643,12 +643,12 @@
       };
     </script>
 
-    <!-- Adsterra In-Content Monetization Suite -->
-    <div id="adsterra-banner-slot" style="position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px);">
+    <!-- Adsterra In-Content Monetization Suite (Auto-Collapsing) -->
+    <div id="adsterra-banner-slot" style="display: none; position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px);">
       <div style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); margin-bottom: 12px;">Sponsored</div>
       
       <!-- Desktop 728x90 Leaderboard -->
-      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; overflow: hidden;">
+      <div class="adsterra-desktop-banner" style="display: none; justify-content: center; min-height: 0; overflow: hidden;">
         <script>
           atOptions = {
             'key' : '8724b8606818a9cca1bcbb253b74fe12',
@@ -662,7 +662,7 @@
       </div>
 
       <!-- Mobile 320x50 Leaderboard -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; overflow: hidden;">
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 0; overflow: hidden;">
         <script>
           atOptions = {
             'key' : '10e49210ba4a073634c68e773acfa211',
@@ -678,10 +678,70 @@
       <style>
         @media (max-width: 768px) {
           .adsterra-desktop-banner { display: none !important; }
-          .adsterra-mobile-banner { display: flex !important; }
         }
       </style>
     </div>
+
+    <!-- Ad Auto-Collapse Engine (Expands only when an ad actually loads) -->
+    <script>
+      (function initAdAutoCollapse() {
+        function checkAndExpandBanner(bannerEl) {
+          if (!bannerEl) return false;
+          const iframe = bannerEl.querySelector('iframe');
+          if (iframe && iframe.offsetHeight > 15) {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile && bannerEl.classList.contains('adsterra-desktop-banner')) {
+              bannerEl.style.display = 'none';
+              return false;
+            }
+            if (!isMobile && bannerEl.classList.contains('adsterra-mobile-banner')) {
+              bannerEl.style.display = 'none';
+              return false;
+            }
+            bannerEl.style.display = 'flex';
+            bannerEl.style.minHeight = isMobile ? '50px' : '90px';
+            
+            const parentSlot = bannerEl.closest('#adsterra-banner-slot');
+            if (parentSlot) parentSlot.style.display = 'block';
+
+            const header = document.getElementById('floating-bar-header');
+            if (header && bannerEl.closest('#adsterra-floating-bar')) {
+              header.style.marginBottom = '8px';
+            }
+            return true;
+          }
+          return false;
+        }
+
+        function watchBanners() {
+          const banners = document.querySelectorAll('.adsterra-desktop-banner, .adsterra-mobile-banner');
+          banners.forEach(b => {
+            const observer = new MutationObserver(() => {
+              checkAndExpandBanner(b);
+            });
+            observer.observe(b, { childList: true, subtree: true });
+          });
+
+          let checkCount = 0;
+          const pollTimer = setInterval(() => {
+            checkCount++;
+            let anyLoaded = false;
+            banners.forEach(b => {
+              if (checkAndExpandBanner(b)) anyLoaded = true;
+            });
+            if (anyLoaded || checkCount >= 15) {
+              clearInterval(pollTimer);
+            }
+          }, 300);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', watchBanners);
+        } else {
+          watchBanners();
+        }
+      })();
+    </script>
 
     <!-- Adsterra Native Container & Popunder / In-Page Push -->
     <div style="max-width: 1200px; margin: 0 auto 30px; padding: 0 16px; text-align: center; overflow: hidden;">
