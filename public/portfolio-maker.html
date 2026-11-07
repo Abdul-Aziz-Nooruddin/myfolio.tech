@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171817">
+
+  <!-- Primary SEO & Meta Tags -->
+  <title>Portfolio Maker — Free Online Developer Portfolio Maker | MyFolio</title>
+  <meta name="title" content="Portfolio Maker — Free Online Developer Portfolio Maker | MyFolio">
+  <meta name="description" content="Build your developer portfolio with the #1 free online portfolio maker. Create interactive 3D WebGL portfolios in seconds with full source code ZIP export, live customization, and zero coding required.">
+  <meta name="keywords" content="portfolio maker, developer portfolio maker, free portfolio maker, online portfolio maker, best portfolio maker, 3d portfolio maker, coding portfolio maker, software engineer portfolio builder">
+  <meta name="author" content="Abdul Aziz Nooruddin, MyFolio">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://myfolio.tech/portfolio-maker">
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://myfolio.tech/portfolio-maker">
+  <meta property="og:title" content="Portfolio Maker — Free Online Developer Portfolio Maker | MyFolio">
+  <meta property="og:description" content="Make an interactive 3D WebGL developer portfolio in seconds. Customize in real time, export 100% full source code (ZIP), and own your digital presence.">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="MyFolio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@myfoliotech">
+  <meta name="twitter:creator" content="@myfoliotech">
+  <meta name="twitter:title" content="Portfolio Maker — Free Online Developer Portfolio Maker">
+  <meta name="twitter:description" content="Make an interactive 3D WebGL developer portfolio with zero code. Standalone ZIP download included.">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo-3d.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo-3d.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!-- Typography & Performance Preloads -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="help" href="/llms.txt" type="text/plain" title="LLM Knowledge File">
+
+  <!-- Schema.org JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://myfolio.tech/portfolio-maker#webapp",
+        "name": "MyFolio Developer Portfolio Maker",
+        "url": "https://myfolio.tech/portfolio-maker",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "All",
+        "description": "Interactive developer portfolio maker. Create customized 3D WebGL developer websites with live studio editing, GitHub sync, and standalone source code ZIP download.",
+        "browserRequirements": "Requires WebGL-compatible browser",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free Evaluation",
+            "price": "0",
+            "priceCurrency": "INR",
+            "description": "3 free preview builds per week, 24-hour evaluation, instant 3D WebGL studio editor"
+          },
+          {
+            "@type": "Offer",
+            "name": "Lifetime Build",
+            "price": "149",
+            "priceCurrency": "INR",
+            "description": "Lifetime hosting on Netlify, full standalone source code ZIP export, live GitHub updates"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://myfolio.tech/portfolio-maker#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why is MyFolio the best portfolio maker for software engineers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Unlike standard site makers that produce generic flat web pages, MyFolio gives you full 3D WebGL spatial viewports, real code inspection, live GitHub synchronization, and 100% full source code ZIP export."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I make a developer portfolio without writing any code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! Enter your GitHub username or upload your resume. MyFolio automatically extracts your projects, skills, and experience, creating a production-grade portfolio in seconds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I download my portfolio and host it myself?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! All paid builds include a complete standalone source code ZIP export. You can self-host on GitHub Pages, Vercel, Netlify, Cloudflare, or AWS S3 with zero recurring fees."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://myfolio.tech/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Portfolio Maker",
+            "item": "https://myfolio.tech/portfolio-maker"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --ink: #171817;
+      --sky: #75c5de;
+      --sky-dark: #13708e;
+      --card-bg: #111311;
+      --border: rgba(23, 24, 23, 0.1);
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 36px;
+      background: rgba(244, 241, 232, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-display); font-size: 22px; font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .brand-logo { width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+    .nav-links { display: none; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 600; }
+    @media (min-width: 820px) { .nav-links { display: flex; } }
+    .nav-cta {
+      background: var(--ink); color: #ffffff;
+      padding: 9px 18px; border-radius: 9999px;
+      font-size: 13px; font-weight: 700;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .nav-cta:hover { transform: translateY(-1px); background: #282a28; }
+
+    .hero-container {
+      max-width: 1100px; margin: 0 auto;
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(117, 197, 222, 0.18);
+      border: 1px solid rgba(19, 112, 142, 0.25);
+      color: var(--sky-dark);
+      padding: 6px 14px; border-radius: 9999px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.04em; color: var(--ink);
+      max-width: 920px; margin: 0 auto 20px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #13708e 0%, #207b96 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: #555a52; max-width: 700px; margin: 0 auto 36px;
+      line-height: 1.55;
+    }
+
+    .github-dock-wrap { max-width: 620px; margin: 0 auto 16px; }
+    .github-capsule {
+      display: flex; align-items: center;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+      padding: 5px 6px 5px 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      height: 56px;
+    }
+    .github-capsule:focus-within {
+      border-color: var(--sky);
+      box-shadow: 0 16px 40px rgba(32, 123, 150, 0.35), 0 0 0 3px rgba(117, 197, 222, 0.25);
+    }
+    .github-prefix { font-family: var(--font-mono); font-size: 13.5px; color: #8c9088; white-space: nowrap; margin-right: 4px; }
+    .github-input {
+      flex: 1; min-width: 0; background: transparent;
+      border: none; outline: none; color: #ffffff;
+      font-family: var(--font-mono); font-size: 14px; font-weight: 600;
+    }
+    .github-input::placeholder { color: #5a5f57; font-weight: 400; }
+    .github-submit-btn {
+      background: #ffffff; color: #111311;
+      padding: 0 20px; height: 44px; border-radius: 9999px;
+      font-size: 13.5px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.15s ease; white-space: nowrap;
+    }
+    .github-submit-btn:hover { background: #e5e5e5; transform: scale(1.02); }
+
+    .micro-trust {
+      display: flex; justify-content: center; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-top: 14px;
+      font-size: 12.5px; color: #6b7066; font-weight: 500;
+    }
+
+    /* 3-Step Process */
+    .steps-section { max-width: 1100px; margin: 40px auto 80px; padding: 0 24px; }
+    .section-head { text-align: center; margin-bottom: 48px; }
+    .section-head h2 {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px;
+    }
+    .section-head p { font-size: 1.1rem; color: #6b7066; max-width: 600px; margin: 0 auto; }
+
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .step-card {
+      background: #ffffff; border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      position: relative; overflow: hidden;
+    }
+    .step-num {
+      font-family: var(--font-mono); font-size: 32px; font-weight: 800;
+      color: var(--sky); opacity: 0.8; margin-bottom: 16px;
+    }
+    .step-card h3 {
+      font-family: var(--font-display); font-size: 20px; font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .step-card p { font-size: 14.5px; color: #555a52; line-height: 1.6; }
+
+    /* Features Grid */
+    .features-section { max-width: 1100px; margin: 40px auto 80px; padding: 0 24px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .feature-box {
+      background: #111311; color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px; padding: 28px;
+    }
+    .feature-box h4 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #ffffff; }
+    .feature-box p { font-size: 14px; color: #a1a69e; line-height: 1.55; }
+
+    /* FAQ Section */
+    .faq-section { max-width: 800px; margin: 0 auto 100px; padding: 0 24px; }
+    .faq-list { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+    .faq-item { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .faq-question { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .faq-answer { font-size: 14.5px; color: #555a52; line-height: 1.6; }
+
+    /* Footer */
+    .site-footer {
+      background: #111311; color: #8c9088;
+      padding: 64px 36px 36px; border-top: 1px solid var(--border-dark);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer-col h4 { color: #ffffff; font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; }
+    .footer-col a:hover { color: #ffffff; }
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px; font-size: 12.5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="site-nav">
+    <a href="/" class="brand">
+      <img src="/assets/logo-3d.png" alt="MyFolio" class="brand-logo" width="32" height="32">
+      <span>myfolio<span style="color: var(--sky-dark);">.</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/portfolio-generator">Portfolio Generator</a>
+      <a href="/portfolio-maker" style="color: var(--sky-dark); font-weight: 700;">Portfolio Maker</a>
+      <a href="/developer-portfolio">Developer Portfolio</a>
+      <a href="/portfolio-templates">Templates</a>
+      <a href="/pricing">Pricing</a>
+    </div>
+    <a href="/studio" class="nav-cta">Open Studio ↗</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-container">
+    <div class="hero-badge">✦ #1 Free Online Developer Portfolio Maker</div>
+    <h1 class="hero-title">The High-Converting <span class="highlight">Portfolio Maker</span> for Engineers</h1>
+    <p class="hero-subtitle">Make an interactive 3D WebGL developer portfolio in seconds with live customization, full source code ZIP export, and zero coding required.</p>
+
+    <!-- GitHub Capsule -->
+    <div class="github-dock-wrap">
+      <form id="ghForm" class="github-capsule">
+        <span class="github-prefix">github.com/</span>
+        <input type="text" id="ghInput" class="github-input" placeholder="your-username" autocomplete="off" spellcheck="false" required>
+        <button type="submit" class="github-submit-btn">
+          <span>Make Portfolio</span>
+          <span>✦</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="micro-trust">
+      <span>⚡ Instant Live Preview</span>
+      <span>•</span>
+      <span>🎨 Web Studio Visual Customizer</span>
+      <span>•</span>
+      <span>📦 ZIP Source Code Export</span>
+      <span>•</span>
+      <span>🆓 3 Free Builds/Week</span>
+    </div>
+  </header>
+
+  <!-- 3-Step Process -->
+  <section class="steps-section">
+    <div class="section-head">
+      <h2>Make Your Developer Portfolio in 3 Steps</h2>
+      <p>No tedious drag-and-drop or design headaches. Let our portfolio maker assemble your site in seconds.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Connect GitHub or Upload Resume</h3>
+        <p>Provide your GitHub username or upload your existing resume PDF. Our parser inspects repositories, technical stacks, projects, and career milestones automatically.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Choose Your 3D Universe</h3>
+        <p>Pick from developer-crafted 3D WebGL universes: Jack 3D Developer (Cyberpunk Systems), Nadia Personal Brand (Executive), Kage Kyoto Temple (Zen), or Apogee Spatial.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Fine-Tune &amp; Export Source Code</h3>
+        <p>Use Web Studio to edit descriptions, reorder projects, tweak lighting, or export 100% full standalone source code (ZIP) to self-host anywhere.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-section">
+    <div class="section-head">
+      <h2>Everything Built Into the Maker</h2>
+      <p>Engineered to showcase technical competence and convince tech recruiters.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <h4>⚡ Interactive 3D WebGL</h4>
+        <p>Hardware-accelerated Three.js environments with smooth Lenis inertia scrolling and responsive touch controls.</p>
+      </div>
+
+      <div class="feature-box">
+        <h4>📦 Standalone Code Export</h4>
+        <p>Never get held hostage by SaaS subscriptions. Download your complete codebase (HTML/CSS/JS) with 1 click.</p>
+      </div>
+
+      <div class="feature-box">
+        <h4>🔄 GitHub Auto-Sync</h4>
+        <p>Your portfolio stays updated with every commit, new repository, and star milestone via automated GitHub sync.</p>
+      </div>
+
+      <div class="feature-box">
+        <h4>📱 Mobile &amp; Desktop Optimized</h4>
+        <p>Flawless responsive layouts tested across iPhones, iPads, Android, and high-resolution desktop viewports.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="section-head">
+      <h2>Frequently Asked Questions</h2>
+      <p>Have questions about using our portfolio maker?</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3 class="faq-question">Can I use this portfolio maker for free?</h3>
+        <p class="faq-answer">Yes! You get 3 free evaluation builds every week on the Free Starter plan. Test designs, customize in Web Studio, and view full 3D interactive sandboxes with no credit card required.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Can I customize text, projects, and colors?</h3>
+        <p class="faq-answer">Yes, absolutely. MyFolio includes Web Studio, an interactive visual customizer where you can edit project titles, descriptions, live demo links, skill badges, and 3D visual universes in real time.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">What format is the exported code in?</h3>
+        <p class="faq-answer">You receive a clean, production-ready ZIP archive containing HTML5, compiled CSS, JavaScript, WebGL shaders, fonts, and assets. It can be uploaded directly to GitHub Pages, Netlify, Vercel, or AWS S3.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>MyFolio Platform</h4>
+        <p style="max-width: 280px; line-height: 1.5;">The premier developer portfolio maker and 3D AI portfolio studio. Turn your code into living digital worlds.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Keyword Landing Pages</h4>
+        <ul>
+          <li><a href="/portfolio-generator">Portfolio Generator</a></li>
+          <li><a href="/portfolio-maker">Portfolio Maker</a></li>
+          <li><a href="/developer-portfolio">Developer Portfolio</a></li>
+          <li><a href="/portfolio-templates">Portfolio Templates</a></li>
+          <li><a href="/ai-portfolio-generator">AI Portfolio Generator</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Templates</h4>
+        <ul>
+          <li><a href="/jack-3d">Jack 3D Developer</a></li>
+          <li><a href="/kage">Kage Kyoto Temple</a></li>
+          <li><a href="/nadia">Nadia Personal Brand</a></li>
+          <li><a href="/tom">Tom Cel Animator</a></li>
+          <li><a href="/rbp">Kinetic Monochrome</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/refund">Refund Policy</a></li>
+          <li><a href="mailto:support@myfolio.tech">support@myfolio.tech</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MyFolio (myfolio tech). All rights reserved. By Abdul Aziz Nooruddin.</span>
+      <a href="https://myfolio.tech" style="color: var(--sky);">Synthesized with MyFolio ✦</a>
+    </div>
+  </footer>
+
+  <script>
+    function runGh(username) {
+      document.getElementById('ghInput').value = username;
+      window.location.href = '/studio?github=' + encodeURIComponent(username) + '&autobuild=1';
+    }
+
+    document.getElementById('ghForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const val = document.getElementById('ghInput').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/^@+/, '').split('/')[0];
+      if (!val) {
+        document.getElementById('ghInput').focus();
+        return;
+      }
+      runGh(val);
+    });
+  </script>
+</body>
+</html>

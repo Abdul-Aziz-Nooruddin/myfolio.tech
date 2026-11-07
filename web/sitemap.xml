@@ -9,7 +9,7 @@
   <!-- Homepage — 3D AI Portfolio Studio & Developer Maker -->
   <url>
     <loc>https://myfolio.tech/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,6 +19,54 @@
     <image:image>
       <image:loc>https://myfolio.tech/assets/logo-3d.png</image:loc>
       <image:title>MyFolio Official 3D Emblem</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: Portfolio Generator -->
+  <url>
+    <loc>https://myfolio.tech/portfolio-generator</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>Portfolio Generator — #1 AI Portfolio Generator for Developers</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: Portfolio Maker -->
+  <url>
+    <loc>https://myfolio.tech/portfolio-maker</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>Portfolio Maker — Free Online Developer Portfolio Maker</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: Developer Portfolio -->
+  <url>
+    <loc>https://myfolio.tech/developer-portfolio</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>Developer Portfolio — 3D WebGL Portfolios for Software Engineers</image:title>
+    </image:image>
+  </url>
+
+  <!-- High-Intent Keyword Landing: Portfolio Templates -->
+  <url>
+    <loc>https://myfolio.tech/portfolio-templates</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/og/og-default.jpg</image:loc>
+      <image:title>Portfolio Templates — 3D WebGL &amp; Modern Developer Portfolio Templates</image:title>
     </image:image>
   </url>
 

@@ -3270,7 +3270,24 @@ app.get(['/studio', '/webstudio', '/builder', '/generator'], (req, res, next) =>
   res.sendFile(getPagePath('studio.html'));
 });
 
-app.get(['/universes', '/themes', '/gallery', '/design-demo', '/templates'], AuthMiddleware.requirePageAuth, (req, res) => {
+// High-Intent SEO Keyword Landing Pages (OpenSEO Search Optimization)
+app.get(['/portfolio-generator'], (req, res) => {
+  res.sendFile(getPagePath('portfolio-generator.html'));
+});
+
+app.get(['/portfolio-maker'], (req, res) => {
+  res.sendFile(getPagePath('portfolio-maker.html'));
+});
+
+app.get(['/developer-portfolio'], (req, res) => {
+  res.sendFile(getPagePath('developer-portfolio.html'));
+});
+
+app.get(['/portfolio-templates', '/templates'], (req, res) => {
+  res.sendFile(getPagePath('portfolio-templates.html'));
+});
+
+app.get(['/universes', '/themes', '/gallery', '/design-demo'], AuthMiddleware.requirePageAuth, (req, res) => {
   res.redirect('/studio');
 });
 

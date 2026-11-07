@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171817">
+
+  <!-- Primary SEO & Meta Tags -->
+  <title>Portfolio Generator — #1 AI Portfolio Generator for Developers | MyFolio</title>
+  <meta name="title" content="Portfolio Generator — #1 AI Portfolio Generator for Developers | MyFolio">
+  <meta name="description" content="The #1 AI portfolio generator for software engineers, frontend, and backend developers. Turn your GitHub repositories into an interactive 3D WebGL developer portfolio in 30 seconds with full source code ZIP export.">
+  <meta name="keywords" content="portfolio generator, ai portfolio generator, developer portfolio generator, portfolio maker, 3d portfolio generator, github portfolio generator, free portfolio generator, webgl portfolio builder">
+  <meta name="author" content="Abdul Aziz Nooruddin, MyFolio">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://myfolio.tech/portfolio-generator">
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://myfolio.tech/portfolio-generator">
+  <meta property="og:title" content="Portfolio Generator — #1 AI Portfolio Generator for Developers | MyFolio">
+  <meta property="og:description" content="Generate an interactive 3D WebGL developer portfolio from GitHub in 30 seconds. Complete source code ZIP download, 3 free weekly builds & zero vendor lock-in.">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="MyFolio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@myfoliotech">
+  <meta name="twitter:creator" content="@myfoliotech">
+  <meta name="twitter:title" content="Portfolio Generator — #1 AI Portfolio Generator for Developers">
+  <meta name="twitter:description" content="Turn your GitHub into an interactive 3D WebGL portfolio in 30s. Full source code ZIP download and zero lock-in.">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo-3d.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo-3d.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!-- Typography & Performance Preloads -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="help" href="/llms.txt" type="text/plain" title="LLM Knowledge File">
+
+  <!-- Schema.org JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://myfolio.tech/portfolio-generator#webapp",
+        "name": "MyFolio Portfolio Generator",
+        "url": "https://myfolio.tech/portfolio-generator",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "description": "AI-powered portfolio generator for software engineers. Ingests GitHub repositories and synthesizes interactive 3D WebGL portfolios with full standalone source code ZIP export.",
+        "browserRequirements": "Requires WebGL-compatible browser",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free Starter",
+            "price": "0",
+            "priceCurrency": "INR",
+            "description": "3 free preview builds per week, 24-hour evaluation, instant 3D WebGL rendering"
+          },
+          {
+            "@type": "Offer",
+            "name": "Lifetime Starter",
+            "price": "149",
+            "priceCurrency": "INR",
+            "description": "Permanent Netlify hosting, full standalone source code export (ZIP), live GitHub auto-updates"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://myfolio.tech/portfolio-generator#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does this portfolio generator work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Enter your GitHub username. MyFolio reads your public repositories, languages, star counts, and commit velocity, organizes them into verified technical case studies, and renders an interactive 3D WebGL portfolio in 30 seconds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I export the source code from this portfolio generator?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! Every paid build includes a complete standalone source code ZIP export (HTML, CSS, JavaScript, 3D WebGL assets). You have 100% code ownership and zero vendor lock-in."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this portfolio generator free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, you get 3 free evaluation builds every week to test and customize your 3D portfolio with zero credit card required."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://myfolio.tech/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Portfolio Generator",
+            "item": "https://myfolio.tech/portfolio-generator"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --ink: #171817;
+      --sky: #75c5de;
+      --sky-dark: #13708e;
+      --card-bg: #111311;
+      --border: rgba(23, 24, 23, 0.1);
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 36px;
+      background: rgba(244, 241, 232, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-display); font-size: 22px; font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .brand-logo { width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+    .nav-links { display: none; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 600; }
+    @media (min-width: 820px) { .nav-links { display: flex; } }
+    .nav-cta {
+      background: var(--ink); color: #ffffff;
+      padding: 9px 18px; border-radius: 9999px;
+      font-size: 13px; font-weight: 700;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .nav-cta:hover { transform: translateY(-1px); background: #282a28; }
+
+    .hero-container {
+      max-width: 1100px; margin: 0 auto;
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(117, 197, 222, 0.18);
+      border: 1px solid rgba(19, 112, 142, 0.25);
+      color: var(--sky-dark);
+      padding: 6px 14px; border-radius: 9999px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.04em; color: var(--ink);
+      max-width: 920px; margin: 0 auto 20px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #13708e 0%, #207b96 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: #555a52; max-width: 700px; margin: 0 auto 36px;
+      line-height: 1.55;
+    }
+
+    .github-dock-wrap { max-width: 620px; margin: 0 auto 16px; }
+    .github-capsule {
+      display: flex; align-items: center;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+      padding: 5px 6px 5px 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      height: 56px;
+    }
+    .github-capsule:focus-within {
+      border-color: var(--sky);
+      box-shadow: 0 16px 40px rgba(32, 123, 150, 0.35), 0 0 0 3px rgba(117, 197, 222, 0.25);
+    }
+    .github-prefix { font-family: var(--font-mono); font-size: 13.5px; color: #8c9088; white-space: nowrap; margin-right: 4px; }
+    .github-input {
+      flex: 1; min-width: 0; background: transparent;
+      border: none; outline: none; color: #ffffff;
+      font-family: var(--font-mono); font-size: 14px; font-weight: 600;
+    }
+    .github-input::placeholder { color: #5a5f57; font-weight: 400; }
+    .github-submit-btn {
+      background: #ffffff; color: #111311;
+      padding: 0 20px; height: 44px; border-radius: 9999px;
+      font-size: 13.5px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.15s ease; white-space: nowrap;
+    }
+    .github-submit-btn:hover { background: #e5e5e5; transform: scale(1.02); }
+
+    .micro-trust {
+      display: flex; justify-content: center; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-top: 14px;
+      font-size: 12.5px; color: #6b7066; font-weight: 500;
+    }
+    .micro-trust span { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* Bento Grid */
+    .bento-section { max-width: 1100px; margin: 40px auto 80px; padding: 0 24px; }
+    .section-head { text-align: center; margin-bottom: 48px; }
+    .section-head h2 {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px;
+    }
+    .section-head p { font-size: 1.1rem; color: #6b7066; max-width: 600px; margin: 0 auto; }
+
+    .bento-grid {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px;
+    }
+    .bento-card {
+      background: #ffffff; border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bento-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); }
+    .card-span-7 { grid-column: span 12; }
+    .card-span-5 { grid-column: span 12; }
+    .card-span-4 { grid-column: span 12; }
+    @media (min-width: 860px) {
+      .card-span-7 { grid-column: span 7; }
+      .card-span-5 { grid-column: span 5; }
+      .card-span-4 { grid-column: span 4; }
+    }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(117, 197, 222, 0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .bento-card h3 {
+      font-family: var(--font-display); font-size: 20px; font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .bento-card p { font-size: 14.5px; color: #555a52; line-height: 1.6; }
+
+    /* Comparison Table */
+    .compare-section {
+      background: #111311; color: #ffffff;
+      padding: 80px 24px; border-radius: 28px;
+      max-width: 1100px; margin: 0 auto 80px;
+    }
+    .compare-section h2 {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.03em; text-align: center; margin-bottom: 12px;
+    }
+    .compare-table {
+      width: 100%; border-collapse: collapse; margin-top: 36px;
+      font-size: 14.5px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 16px 20px; text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .compare-table th { font-weight: 700; color: #8c9088; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; }
+    .compare-table .feature-col { font-weight: 600; color: #ffffff; }
+    .compare-table .myfolio-col { color: var(--sky); font-weight: 700; }
+
+    /* FAQ Section */
+    .faq-section { max-width: 800px; margin: 0 auto 100px; padding: 0 24px; }
+    .faq-list { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+    .faq-item {
+      background: #ffffff; border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+    .faq-question { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .faq-answer { font-size: 14.5px; color: #555a52; line-height: 1.6; }
+
+    /* Footer */
+    .site-footer {
+      background: #111311; color: #8c9088;
+      padding: 64px 36px 36px; border-top: 1px solid var(--border-dark);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer-col h4 { color: #ffffff; font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; }
+    .footer-col a:hover { color: #ffffff; }
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px; font-size: 12.5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="site-nav">
+    <a href="/" class="brand">
+      <img src="/assets/logo-3d.png" alt="MyFolio" class="brand-logo" width="32" height="32">
+      <span>myfolio<span style="color: var(--sky-dark);">.</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/portfolio-generator" style="color: var(--sky-dark); font-weight: 700;">Portfolio Generator</a>
+      <a href="/portfolio-maker">Portfolio Maker</a>
+      <a href="/developer-portfolio">Developer Portfolio</a>
+      <a href="/portfolio-templates">Templates</a>
+      <a href="/pricing">Pricing</a>
+    </div>
+    <a href="/studio" class="nav-cta">Open Studio ↗</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-container">
+    <div class="hero-badge">✦ #1 AI Developer Portfolio Generator</div>
+    <h1 class="hero-title">The Autonomous <span class="highlight">Portfolio Generator</span> for Modern Developers</h1>
+    <p class="hero-subtitle">Transform your GitHub repositories into an interactive 3D WebGL developer portfolio in 30 seconds. Zero manual writing, 100% full source code ZIP export, and zero vendor lock-in.</p>
+
+    <!-- GitHub Capsule -->
+    <div class="github-dock-wrap">
+      <form id="ghForm" class="github-capsule">
+        <span class="github-prefix">github.com/</span>
+        <input type="text" id="ghInput" class="github-input" placeholder="your-username" autocomplete="off" spellcheck="false" required>
+        <button type="submit" class="github-submit-btn">
+          <span>Generate 3D</span>
+          <span>✦</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="micro-trust">
+      <span>⚡ 30-second automated build</span>
+      <span>•</span>
+      <span>📦 100% Source Code ZIP Download</span>
+      <span>•</span>
+      <span>🆓 3 Free Weekly Builds</span>
+      <span>•</span>
+      <span>🔒 Zero Vendor Lock-in</span>
+    </div>
+  </header>
+
+  <!-- Bento Grid: Why MyFolio Portfolio Generator -->
+  <section class="bento-section">
+    <div class="section-head">
+      <h2>Why Developers Choose MyFolio Portfolio Generator</h2>
+      <p>Built specifically for software engineers, designers, and tech creators who want a portfolio that truly reflects their craft.</p>
+    </div>
+
+    <div class="bento-grid">
+      <div class="bento-card card-span-7">
+        <div class="card-icon">🧠</div>
+        <h3>Zero Hallucination AI Case Studies</h3>
+        <p>Our intelligent repository analyzer parses your real commit history, languages, stars, dependencies, and architectural patterns. It never invents fake metrics or clients—only authentic, verified technical case studies.</p>
+      </div>
+
+      <div class="bento-card card-span-5">
+        <div class="card-icon">🎮</div>
+        <h3>3D WebGL Spatial Universes</h3>
+        <p>Step beyond flat PDF resumes and cookie-cutter grids. Experience interactive 3D viewports powered by Three.js, shaders, and real-time physics that captivate tech recruiters.</p>
+      </div>
+
+      <div class="bento-card card-span-4">
+        <div class="card-icon">📦</div>
+        <h3>100% Full Source Code Export</h3>
+        <p>Download a clean standalone ZIP archive with production-ready HTML5, CSS, and JS. Self-host on Vercel, Netlify, AWS, or Cloudflare with complete code freedom.</p>
+      </div>
+
+      <div class="bento-card card-span-4">
+        <div class="card-icon">🔄</div>
+        <h3>Live GitHub Auto-Sync</h3>
+        <p>Connect webhooks to automatically update your portfolio projects, tech stack badges, and commit activity whenever you push new code to GitHub.</p>
+      </div>
+
+      <div class="bento-card card-span-4">
+        <div class="card-icon">🌐</div>
+        <h3>Custom Vanity Domains</h3>
+        <p>Publish to a clean, SSL-secured vanity domain like <code>yourname.myfolio.tech</code> or connect your own custom root domain with automated DNS provisioning.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="bento-section">
+    <div class="compare-section">
+      <h2>MyFolio vs. Traditional Portfolio Builders</h2>
+      <p style="text-align: center; color: #8c9088; max-width: 600px; margin: 0 auto;">See how MyFolio compares to generic website builders like Wix, Squarespace, and Polywork.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="myfolio-col">MyFolio Portfolio Generator</th>
+            <th>Wix / Squarespace</th>
+            <th>Generic Template Clones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature-col">GitHub Auto-Ingestion</td>
+            <td class="myfolio-col">✓ Automatic in 30s</td>
+            <td>✗ Manual copy-paste</td>
+            <td>✗ Manual hardcoded</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Interactive 3D WebGL</td>
+            <td class="myfolio-col">✓ Native Three.js Shaders</td>
+            <td>✗ Flat 2D templates</td>
+            <td>✗ Rare / Slow</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Full Source Code ZIP Export</td>
+            <td class="myfolio-col">✓ 100% Downloadable</td>
+            <td>✗ Locked into platform</td>
+            <td>✗ Not included</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Vendor Lock-In</td>
+            <td class="myfolio-col">✓ Zero Lock-In (Self-Host)</td>
+            <td>✗ Heavy monthly hostage</td>
+            <td>✗ Variable</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Pricing</td>
+            <td class="myfolio-col">✓ Free 3/wk or ₹149 lifetime</td>
+            <td>✗ ₹800 - ₹2,000 / month</td>
+            <td>✗ $20 - $50 / month</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="section-head">
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know about our developer portfolio generator.</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3 class="faq-question">How does this portfolio generator work?</h3>
+        <p class="faq-answer">Simply enter your GitHub username. Our AI pipeline inspects your public repositories, languages, stars, and commits, crafts verified technical case studies, and generates an interactive 3D WebGL developer portfolio in 30 seconds.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Can I export and download the source code?</h3>
+        <p class="faq-answer">Yes! Every paid build includes a complete standalone source code ZIP export containing HTML, CSS, JavaScript, and WebGL assets. You own your code completely with zero vendor lock-in and can self-host on Vercel, Netlify, or AWS.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Is it free to try?</h3>
+        <p class="faq-answer">Yes. MyFolio provides 3 free evaluation builds every week on the Free Starter plan. Each build stays active for 24 hours with full Web Studio customization and interactive 3D WebGL rendering with no credit card required.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Can I connect my own custom domain?</h3>
+        <p class="faq-answer">Yes, with the Pro Creator plan at ₹149/month, you get a clean branded <code>&lt;username&gt;.myfolio.tech</code> address with automated SSL and edge CDN routing, or you can export the code and host on your own custom domain for free.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>MyFolio Platform</h4>
+        <p style="max-width: 280px; line-height: 1.5;">The #1 AI portfolio generator and 3D portfolio maker for developers. Turn your code into living digital worlds.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Keyword Landing Pages</h4>
+        <ul>
+          <li><a href="/portfolio-generator">Portfolio Generator</a></li>
+          <li><a href="/portfolio-maker">Portfolio Maker</a></li>
+          <li><a href="/developer-portfolio">Developer Portfolio</a></li>
+          <li><a href="/portfolio-templates">Portfolio Templates</a></li>
+          <li><a href="/github-portfolio-generator">GitHub Portfolio Generator</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>3D Templates</h4>
+        <ul>
+          <li><a href="/jack-3d">Jack 3D Developer</a></li>
+          <li><a href="/kage">Kage Kyoto Temple</a></li>
+          <li><a href="/nadia">Nadia Personal Brand</a></li>
+          <li><a href="/tom">Tom Cel Animator</a></li>
+          <li><a href="/apogee">Apogee Spatial 3D</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/refund">Refund Policy</a></li>
+          <li><a href="mailto:support@myfolio.tech">support@myfolio.tech</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MyFolio (myfolio tech). All rights reserved. By Abdul Aziz Nooruddin.</span>
+      <a href="https://myfolio.tech" style="color: var(--sky);">Synthesized with MyFolio ✦</a>
+    </div>
+  </footer>
+
+  <script>
+    function runGh(username) {
+      document.getElementById('ghInput').value = username;
+      window.location.href = '/studio?github=' + encodeURIComponent(username) + '&autobuild=1';
+    }
+
+    document.getElementById('ghForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const val = document.getElementById('ghInput').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/^@+/, '').split('/')[0];
+      if (!val) {
+        document.getElementById('ghInput').focus();
+        return;
+      }
+      runGh(val);
+    });
+  </script>
+</body>
+</html>

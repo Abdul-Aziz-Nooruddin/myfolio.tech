@@ -107,9 +107,13 @@ Both ₹149 plans include full source code download and live GitHub auto-updates
 ---
 
 ## Canonical Company Information
-- **Product Name**: MyFolio
+- **Product Name**: MyFolio (myfolio tech)
 - **Platform URL**: https://myfolio.tech
 - **Studio URL**: https://myfolio.tech/studio
+- **Portfolio Generator**: https://myfolio.tech/portfolio-generator
+- **Portfolio Maker**: https://myfolio.tech/portfolio-maker
+- **Developer Portfolio**: https://myfolio.tech/developer-portfolio
+- **Portfolio Templates**: https://myfolio.tech/portfolio-templates
 - **GitHub Portfolio Generator**: https://myfolio.tech/github-portfolio-generator
 - **AI Portfolio Generator**: https://myfolio.tech/ai-portfolio-generator
 - **Pricing URL**: https://myfolio.tech/pricing
