@@ -156,54 +156,16 @@
   animation: hero-shake 0.35s ease-in-out;
 }
 
-/* Sample Quick Demo Chips */
-.hero-github-samples {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 10px;
-  padding-left: 4px;
-}
-
-.samples-label {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #7b8077;
-  letter-spacing: 0.02em;
-}
-
-.sample-chip {
-  background: rgba(23, 24, 23, 0.06);
-  border: 1px solid rgba(23, 24, 23, 0.12);
-  border-radius: 9999px;
-  padding: 3px 11px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: #40443d;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  line-height: 1.2;
-}
-
-.sample-chip:hover {
-  background: #171817;
-  color: #f4f1e8;
-  border-color: #171817;
-  transform: translateY(-1px);
-}
-
 /* ==========================================================================
    Interactive 3D Universe Exploration Section
    ========================================================================== */
 
 .hero-universe-stage {
-  margin-top: 20px;
+  margin-top: 18px;
   background: #111311;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 14px 16px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   text-align: left;
@@ -213,50 +175,48 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding: 0 4px;
+  margin-bottom: 10px;
+  padding: 0 2px;
 }
 
 .universe-header-title {
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 700;
   color: #75c5de;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .universe-header-sub {
-  font-size: 11.5px;
+  font-size: 11px;
   color: #8c9088;
 }
 
 .universe-nav-pills {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
-  padding-bottom: 6px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(117, 197, 222, 0.4) transparent;
+  padding-bottom: 4px;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  mask-image: linear-gradient(to right, black 88%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);
 }
 .universe-nav-pills::-webkit-scrollbar { display: none; }
 
 .universe-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
-  padding: 6px 12px;
+  padding: 5px 11px;
   color: #adb2a8;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.18s ease;
+  flex-shrink: 0;
 }
 
 .universe-pill:hover {
@@ -272,12 +232,6 @@
   box-shadow: 0 2px 10px rgba(117, 197, 222, 0.35);
 }
 
-.universe-pill .pill-tag {
-  font-size: 10px;
-  opacity: 0.75;
-  font-weight: 500;
-}
-
 /* Universe Card Display */
 .universe-card-display {
   margin-top: 10px;
@@ -285,30 +239,38 @@
 
 .universe-card-inner {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 16px;
+  grid-template-columns: 155px 1fr;
+  gap: 14px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
   padding: 12px;
   align-items: center;
 }
 
 .universe-card-visual {
   position: relative;
-  height: 125px;
-  border-radius: 10px;
+  height: 115px;
+  border-radius: 9px;
   background-size: cover;
   background-position: center top;
   border: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.universe-card-visual:hover {
+  transform: scale(1.02);
+  border-color: rgba(117, 197, 222, 0.5);
 }
 
 .visual-gradient-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.65) 100%);
+  transition: opacity 0.2s ease;
 }
 
 .visual-badge {
@@ -317,90 +279,103 @@
   left: 6px;
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
-  padding: 3px 8px;
+  -webkit-backdrop-filter: blur(8px);
+  padding: 2px 7px;
   border-radius: 9999px;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
 }
 
-.visual-zoom-btn {
+.visual-hover-hint {
   position: absolute;
   bottom: 6px;
-  left: 6px;
   right: 6px;
-  background: rgba(117, 197, 222, 0.9);
-  color: #0c181d;
-  border: none;
-  border-radius: 6px;
-  padding: 5px 8px;
-  font-size: 11px;
-  font-weight: 700;
+  left: 6px;
+  background: rgba(23, 24, 23, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #f4f1e8;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  cursor: pointer;
-  transition: background 0.18s ease, transform 0.18s ease;
+  gap: 4px;
+  opacity: 0.9;
+  transition: all 0.18s ease;
 }
 
-.visual-zoom-btn:hover {
-  background: #ffffff;
-  transform: translateY(-1px);
+.universe-card-visual:hover .visual-hover-hint {
+  background: #75c5de;
+  color: #0c181d;
+  border-color: #75c5de;
+  opacity: 1;
 }
 
 .universe-card-content {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
+  min-width: 0;
 }
 
 .universe-card-heading {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  gap: 8px;
   flex-wrap: wrap;
-  gap: 6px;
 }
 
 .universe-name {
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .universe-role-rec {
-  font-size: 11px;
+  font-size: 10.5px;
   color: #75c5de;
   font-weight: 600;
   background: rgba(117, 197, 222, 0.1);
-  padding: 2px 8px;
-  border-radius: 9999px;
+  padding: 2px 7px;
+  border-radius: 6px;
   border: 1px solid rgba(117, 197, 222, 0.2);
+  white-space: nowrap;
 }
 
 .universe-desc {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #9ba098;
-  line-height: 1.45;
+  line-height: 1.4;
   margin: 0;
 }
 
 .universe-actions {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
   margin-top: 4px;
 }
 
 .btn-universe-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 7px;
   color: #f4f1e8;
-  padding: 6px 12px;
-  font-size: 11.5px;
+  padding: 5px 11px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -411,19 +386,23 @@
 }
 
 .btn-universe-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: #f4f1e8;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
   color: #111311;
-  padding: 6px 14px;
-  font-size: 11.5px;
+  padding: 5px 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.18s ease;
 }
 .btn-universe-select:hover {
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 600px) {
@@ -433,6 +412,11 @@
   }
   .universe-card-visual {
     height: 110px;
+  }
+  .universe-card-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }
 

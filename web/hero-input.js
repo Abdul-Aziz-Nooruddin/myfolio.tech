@@ -15,10 +15,11 @@
       id: 'jack-3d-creator',
       shortId: 'jack-3d',
       name: 'Jack 3D Developer',
+      label: 'Jack 3D',
       tag: 'Spatial Cyber',
       icon: '🚀',
       desc: 'High-fidelity spatial WebGL environment with floating 3D robotic hand, holographic code matrix, and cybernetic schematics.',
-      bestFor: 'Systems Engineers, Backend, Web3 & DevOps',
+      bestFor: 'Systems, Backend & Web3',
       demoUrl: '/jack-3d',
       img: '/assets/templates/jack-3d-creator-hero.webp'
     },
@@ -26,10 +27,11 @@
       id: 'kage-temple',
       shortId: 'kage',
       name: 'Kage Kyoto Temple',
+      label: 'Kage Zen',
       tag: 'Zen Architecture',
       icon: '⛩️',
       desc: 'Serene Japanese architectural spatial experience with volumetric bamboo atmosphere, floating koi pond, and tactile scroll rhythm.',
-      bestFor: 'Architects, Creative Technologists & Full-Stack',
+      bestFor: 'Creative Tech & Full-Stack',
       demoUrl: '/kage',
       img: '/assets/templates/kage-temple-hero.webp'
     },
@@ -37,10 +39,11 @@
       id: 'nadia-brand',
       shortId: 'nadia',
       name: 'Nadia Personal Brand',
+      label: 'Nadia Luxury',
       tag: 'Editorial Luxury',
       icon: '💎',
       desc: 'Ultra-refined editorial aesthetic with obsidian stone materials, liquid gold accents, dynamic typography, and high-fashion curation.',
-      bestFor: 'Engineering Leads, Founders, Tech Speakers & Advisors',
+      bestFor: 'Founders & Tech Leaders',
       demoUrl: '/nadia',
       img: '/assets/templates/nadia-brand-hero.webp'
     },
@@ -48,10 +51,11 @@
       id: 'tom-cel-animator',
       shortId: 'tom',
       name: 'Tom Cel Animator',
+      label: 'Tom Manga',
       tag: 'Manga Motion',
       icon: '⚡',
       desc: 'Vibrant graphic-novel kinetic storytelling with dynamic cel-shaded action frames, expressive typography, and comic layout panels.',
-      bestFor: 'Frontend Wizards, Game Devs & Creative Coders',
+      bestFor: 'Frontend & Creative Coders',
       demoUrl: '/tom',
       img: '/assets/templates/tom-cel-animator-hero.webp'
     },
@@ -59,10 +63,11 @@
       id: 'rbp-kinetic-monochrome',
       shortId: 'rbp',
       name: 'Kinetic Monochrome',
+      label: 'Kinetic Mono',
       tag: 'Swiss Brutalism',
       icon: '🖤',
       desc: 'High-contrast neo-brutalist typographic grid with physics-based particle cards, stark typography, and micro-interactions.',
-      bestFor: 'Full-Stack Hackers, Indie Builders & Minimalists',
+      bestFor: 'Minimalists & Indie Hackers',
       demoUrl: '/rbp',
       img: '/assets/templates/rbp-kinetic-monochrome-hero.webp'
     }
@@ -113,14 +118,6 @@
         </div>
       </form>
 
-      <div class="hero-github-samples" aria-label="Try live demo profiles">
-        <span class="samples-label">⚡ Live demo:</span>
-        <button type="button" class="sample-chip" data-user="torvalds" title="Try Linus Torvalds profile">torvalds</button>
-        <button type="button" class="sample-chip" data-user="shadcn" title="Try shadcn profile">shadcn</button>
-        <button type="button" class="sample-chip" data-user="gaearon" title="Try Dan Abramov profile">gaearon</button>
-        <button type="button" class="sample-chip" data-user="antfu" title="Try Anthony Fu profile">antfu</button>
-      </div>
-
       <!-- Interactive 3D Universe Showcase Section -->
       <div class="hero-universe-stage" id="heroUniverseStage">
         <div class="universe-tabs-header">
@@ -132,8 +129,7 @@
           ${UNIVERSES.map((u, i) => `
             <button type="button" class="universe-pill ${i === 0 ? 'active' : ''}" data-index="${i}" role="tab" aria-selected="${i === 0}">
               <span class="pill-icon">${u.icon}</span>
-              <span class="pill-name">${u.name.split(' ')[0]}</span>
-              <span class="pill-tag">${u.tag}</span>
+              <span class="pill-name">${u.label}</span>
             </button>
           `).join('')}
         </div>
@@ -186,15 +182,15 @@
 
       universeCard.innerHTML = `
         <div class="universe-card-inner">
-          <div class="universe-card-visual" style="background-image: url('${u.img}')">
+          <div class="universe-card-visual" style="background-image: url('${u.img}')" id="openSandboxVisualBtn" role="button" tabindex="0" title="Click to view live 3D sandbox">
             <div class="visual-gradient-overlay"></div>
             <div class="visual-badge">
               <span>${u.icon} ${u.tag}</span>
             </div>
-            <button type="button" class="visual-zoom-btn" id="openSandboxBtn" aria-label="Test Live Preview">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-              <span>Instant Interactive Sandbox</span>
-            </button>
+            <div class="visual-hover-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              <span>Live Sandbox</span>
+            </div>
           </div>
           <div class="universe-card-content">
             <div class="universe-card-heading">
@@ -204,10 +200,11 @@
             <p class="universe-desc">${u.desc}</p>
             <div class="universe-actions">
               <button type="button" class="btn-universe-preview" id="sandboxTriggerBtn">
-                <span>Try Linus in ${u.name.split(' ')[0]} ↗</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                <span>Live Preview</span>
               </button>
               <button type="button" class="btn-universe-select" id="applyUniverseBtn">
-                <span>Build with My GitHub ✦</span>
+                <span>Use This Template ✦</span>
               </button>
             </div>
           </div>
@@ -215,18 +212,21 @@
       `;
 
       // Attach action listeners
-      const openSandbox = universeCard.querySelector('#openSandboxBtn');
+      const openVisual = universeCard.querySelector('#openSandboxVisualBtn');
       const sandboxTrigger = universeCard.querySelector('#sandboxTriggerBtn');
       const applyBtn = universeCard.querySelector('#applyUniverseBtn');
 
-      if (openSandbox) {
-        openSandbox.addEventListener('click', () => openSandboxModal(u));
+      if (openVisual) {
+        openVisual.addEventListener('click', () => openSandboxModal(u));
+        openVisual.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openSandboxModal(u);
+          }
+        });
       }
       if (sandboxTrigger) {
-        sandboxTrigger.addEventListener('click', () => {
-          input.value = 'torvalds';
-          triggerGeneration('torvalds', u.id);
-        });
+        sandboxTrigger.addEventListener('click', () => openSandboxModal(u));
       }
       if (applyBtn) {
         applyBtn.addEventListener('click', () => {
@@ -286,18 +286,6 @@
         e.preventDefault();
         triggerGeneration(input.value);
       }
-    });
-
-    dock.querySelectorAll('.sample-chip').forEach((chip) => {
-      chip.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const user = chip.getAttribute('data-user');
-        if (user) {
-          input.value = user;
-          input.focus();
-        }
-      });
     });
 
     input.addEventListener('paste', () => {
