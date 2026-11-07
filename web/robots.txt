@@ -258,6 +258,51 @@ User-agent: MJ12bot
 Disallow: /
 
 # ==========================================================
+# Unwanted AI Crawlers & Scraper Bots (Cloudflare AI Labyrinth Complement)
+# Block aggressive data-harvesting AI scrapers that do not respect robots.txt
+# ==========================================================
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /api/
+Disallow: /p/
+Disallow: /sites/
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: peer39_crawler
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+User-agent: finebot
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+# ==========================================================
 # Canonical Sitemaps & Emerging Agent Discovery
 # ==========================================================
 Sitemap: https://myfolio.tech/sitemap.xml

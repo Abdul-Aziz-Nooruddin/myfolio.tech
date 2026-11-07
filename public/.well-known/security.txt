@@ -1,0 +1,8 @@
+Contact: mailto:security@myfolio.tech
+Expires: 2027-11-07T00:00:00.000Z
+Preferred-Languages: en
+Policy: https://myfolio.tech/privacy
+Canonical: https://myfolio.tech/.well-known/security.txt
+Acknowledgments: https://myfolio.tech/security-acknowledgments
+Encryption: https://myfolio.tech/.well-known/pgp-key.txt
+Hiring: https://myfolio.tech/about
