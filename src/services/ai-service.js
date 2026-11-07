@@ -13,11 +13,9 @@ try {
   pdfParse = null;
 }
 const ACTIVE_MODELS = [
-  'gemini-flash-latest',
-  'gemini-2.5-flash',
-  'gemini-3.5-flash',
-  'gemini-flash-lite-latest',
-  'gemini-pro-latest'
+  'gemini-1.5-flash',
+  'gemini-2.0-flash',
+  'gemini-flash-latest'
 ];
 
 
@@ -126,7 +124,10 @@ class AIService {
             responseMimeType: 'application/json'
           }
         });
-        const result = await model.generateContent(prompt);
+        const result = await Promise.race([
+          model.generateContent(prompt),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('SDK_TIMEOUT: generateContent exceeded 5000ms')), 5000))
+        ]);
         const text = result.response.text();
         const parsed = this.parseJsonResponse(text);
         if (parsed && (parsed.extracted_data || parsed.branch || parsed.status || Object.keys(parsed).length > 0)) {
@@ -134,6 +135,18 @@ class AIService {
           return parsed;
         }
       } catch (sdkError) {
+        if (sdkError.message && (
+          sdkError.message.includes('401') ||
+          sdkError.message.includes('API key not valid') ||
+          sdkError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+          sdkError.message.includes('UNAUTHENTICATED')
+        )) {
+          console.warn('[AI] Gemini API Key invalid or unauthenticated (401). Tripping circuit breaker for fast deterministic fallback.');
+          this.circuitBreaker.isOpen = true;
+          this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
+          throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
+        }
+
         if (sdkError.message && (sdkError.message.includes('429') || sdkError.message.includes('quota'))) {
           this.circuitBreaker.consecutive429s++;
           if (this.circuitBreaker.consecutive429s >= 2) {
@@ -152,6 +165,18 @@ class AIService {
           return restResult;
         }
       } catch (restError) {
+        if (restError.message && (
+          restError.message.includes('401') ||
+          restError.message.includes('API key not valid') ||
+          restError.message.includes('ACCESS_TOKEN_TYPE_UNSUPPORTED') ||
+          restError.message.includes('UNAUTHENTICATED')
+        )) {
+          console.warn('[AI] Gemini REST API Key invalid or unauthenticated (401). Tripping circuit breaker.');
+          this.circuitBreaker.isOpen = true;
+          this.circuitBreaker.openUntil = Date.now() + 5 * 60 * 1000;
+          throw new Error('AUTH_401: Gemini API key invalid or unauthenticated.');
+        }
+
         if (restError.message && (restError.message.includes('429') || restError.message.includes('quota'))) {
           this.circuitBreaker.consecutive429s++;
           if (this.circuitBreaker.consecutive429s >= 2) {
@@ -173,7 +198,7 @@ class AIService {
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(5000),
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {

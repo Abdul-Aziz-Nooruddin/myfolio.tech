@@ -1849,7 +1849,10 @@ app.post(
       if (!isOverloadFastTrack && input.resumeData?.rawBase64 && (!input.resumeData.skills || input.resumeData.skills.length === 0 || !input.resumeData.projects || input.resumeData.projects.length === 0) && aiService) {
         try {
           const buffer = Buffer.from(input.resumeData.rawBase64, 'base64');
-          const rawParsed = await aiService.parseResumeDocument(buffer, input.resumeData.mimeType || 'application/pdf');
+          const rawParsed = await Promise.race([
+            aiService.parseResumeDocument(buffer, input.resumeData.mimeType || 'application/pdf'),
+            new Promise((_, r) => setTimeout(() => r(null), 8000))
+          ]);
           if (rawParsed && rawParsed.extracted_data) {
             input.resumeData = { ...input.resumeData, ...rawParsed.extracted_data };
           } else if (rawParsed) {

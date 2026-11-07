@@ -3947,12 +3947,16 @@
 
         payload.publish = false; // Always generate preview draft first
 
-        const apiEndpoint = (window.location.hostname === 'myfolio.tech' || window.location.hostname === 'www.myfolio.tech')
-          ? 'https://myfolio.tech/api/generate/unified'
-          : '/api/generate/unified';
+        const apiEndpoint = '/api/generate/unified';
 
         const abortCtrl = new AbortController();
-        const timeoutTimer = setTimeout(() => abortCtrl.abort(), 60000);
+        const timeoutTimer = setTimeout(() => {
+          try {
+            abortCtrl.abort(new Error('Generation request timed out. Please try again.'));
+          } catch (e) {
+            abortCtrl.abort();
+          }
+        }, 75000);
         let res;
         try {
           res = await fetch(apiEndpoint, {
@@ -4105,7 +4109,11 @@
         if (fluidBtnPercent) fluidBtnPercent.style.display = 'none';
         if (fluidBtnText) fluidBtnText.textContent = 'Publish Live';
         console.error('[STUDIO] Generation failed:', err);
-        showToast('Generation note: ' + (err.message || 'Network error'), 'error');
+        const isAbort = err.name === 'AbortError' || (err.message && (err.message.includes('abort') || err.message.includes('timed out')));
+        const userMsg = isAbort
+          ? 'Generation took longer than expected. Please try again or simplify your input.'
+          : (err.message || 'Network error');
+        showToast('Generation note: ' + userMsg, 'error');
       } finally {
         if (btn) btn.disabled = false;
       }

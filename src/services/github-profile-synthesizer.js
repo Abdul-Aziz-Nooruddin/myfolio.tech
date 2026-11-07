@@ -67,12 +67,15 @@ ${projects.map(p => `    { "name": "${p.name}", "desc": "1-2 sentence descriptio
 
     if (this.aiService && typeof this.aiService.callGemini === 'function') {
       try {
-        const response = await this.aiService.callGemini(prompt);
+        const response = await Promise.race([
+          this.aiService.callGemini(prompt),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('AI synthesis timed out after 6000ms')), 6000))
+        ]);
         if (response && response.name && response.role && response.bio) {
           return this.sanitizeAndValidate(response, normalizedProfile);
         }
       } catch (err) {
-        console.warn('[GITHUB SYNTHESIZER] Gemini AI synthesis error, using deterministic fallback:', err.message);
+        console.warn('[GITHUB SYNTHESIZER] Gemini AI synthesis error/timeout, using fast deterministic fallback:', err.message);
       }
     }
 
