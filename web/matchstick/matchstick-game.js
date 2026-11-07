@@ -1,5 +1,6 @@
 /**
  * MATCHSTICK MIND - UI Game Controller
+ * Compact Zero-Scroll Single Viewport Edition
  * Fully interactive matchstick logic puzzle with particle physics & smooth graphics animations
  * Harmonized with MyFolio's warm paper aesthetic & design system.
  */
@@ -77,38 +78,38 @@
     }
 
     /* ------------------------------------------------------------------------
-       Render Core DOM Shell
+       Render Compact DOM Shell (Fits 100vh with Zero Cutoff)
        ------------------------------------------------------------------------ */
     renderSkeleton() {
       this.root.innerHTML = `
         <div class="mm-container" role="region" aria-label="Matchstick Mind Logic Puzzle Game">
-          <!-- Header -->
+          <!-- Compact Header -->
           <div class="mm-header">
             <div class="mm-title-row">
               <div class="mm-brand-group">
                 <div class="mm-game-logo">🔥</div>
                 <div class="mm-title-text">
                   <h2>Matchstick Mind</h2>
-                  <div class="mm-subtitle">Think logically. Move carefully. Solve the equation.</div>
+                  <div class="mm-subtitle">Think logically. Move carefully.</div>
                 </div>
               </div>
 
               <div class="mm-header-controls">
                 <select id="mm-level-select" class="mm-level-select" aria-label="Select puzzle level">
-                  ${this.engine.PUZZLES.map((p, idx) => `<option value="${idx}">Level ${p.id}: ${p.title} (${p.difficulty})</option>`).join('')}
+                  ${this.engine.PUZZLES.map((p, idx) => `<option value="${idx}">Lvl ${p.id}: ${p.title}</option>`).join('')}
                 </select>
                 <div class="mm-diff-pill mm-diff-Easy" id="mm-diff-pill">Easy</div>
               </div>
             </div>
 
-            <!-- Stats Bar -->
+            <!-- Single-Line Stats Strip -->
             <div class="mm-stats-bar">
               <div class="mm-stat-item">
-                <span class="mm-stat-label">Moves Allowed</span>
+                <span class="mm-stat-label">Moves</span>
                 <span class="mm-stat-val" id="mm-moves-allowed">1</span>
               </div>
               <div class="mm-stat-item">
-                <span class="mm-stat-label">Moves Remaining</span>
+                <span class="mm-stat-label">Remaining</span>
                 <span class="mm-stat-val highlight" id="mm-moves-left">1</span>
               </div>
               <div class="mm-stat-item">
@@ -116,24 +117,19 @@
                 <span class="mm-stat-val" id="mm-timer">00:00</span>
               </div>
               <div class="mm-stat-item">
-                <span class="mm-stat-label">Current Score</span>
-                <span class="mm-stat-val" id="mm-score">0 pts</span>
+                <span class="mm-stat-label">Score</span>
+                <span class="mm-stat-val" id="mm-score">0</span>
               </div>
               <div class="mm-stat-item">
-                <span class="mm-stat-label">Best Score</span>
-                <span class="mm-stat-val" id="mm-high-score">${this.highScore} pts</span>
+                <span class="mm-stat-label">Best</span>
+                <span class="mm-stat-val" id="mm-high-score">${this.highScore}</span>
               </div>
             </div>
           </div>
 
-          <!-- Prompt & Status -->
-          <div class="mm-puzzle-prompt">
-            <div class="mm-prompt-text">
-              <span id="mm-prompt-instruction">Move <strong>1 matchstick</strong> to balance the equation.</span>
-            </div>
-            <div class="mm-hand-status" id="mm-hand-status" style="display:none;">
-              <span>✋ Stick in hand — tap an empty slot to place</span>
-            </div>
+          <!-- Dynamic Unified Status Strip -->
+          <div class="mm-status-strip info" id="mm-message-bar" aria-live="polite">
+            <span id="mm-message-text">Move 1 matchstick to balance the equation.</span>
           </div>
 
           <!-- Interactive Board Stage -->
@@ -142,24 +138,19 @@
             <div class="mm-equation-grid" id="mm-equation-grid"></div>
           </div>
 
-          <!-- Feedback Bar -->
-          <div class="mm-message-bar info" id="mm-message-bar" aria-live="polite">
-            <span id="mm-message-text">Tap any matchstick to pick it up, then tap an empty slot.</span>
-          </div>
-
           <!-- Hint Box -->
           <div class="mm-hint-box" id="mm-hint-box"></div>
 
-          <!-- Controls Toolbar -->
+          <!-- Compact Controls Toolbar -->
           <div class="mm-controls">
             <div class="mm-control-group">
-              <button type="button" class="mm-btn" id="mm-btn-undo" title="Undo last move (U)">
+              <button type="button" class="mm-btn" id="mm-btn-undo" title="Undo move (U)">
                 <span>↺</span> Undo
               </button>
-              <button type="button" class="mm-btn" id="mm-btn-reset" title="Reset puzzle to start (R)">
+              <button type="button" class="mm-btn" id="mm-btn-reset" title="Reset (R)">
                 <span>⟲</span> Reset
               </button>
-              <button type="button" class="mm-btn" id="mm-btn-hint" title="Reveal hint (H)">
+              <button type="button" class="mm-btn" id="mm-btn-hint" title="Hint (H)">
                 <span>💡</span> Hint (<span id="mm-hint-count">0</span>/3)
               </button>
             </div>
@@ -179,7 +170,7 @@
             <div class="mm-modal-card">
               <div class="mm-victory-icon">🎉</div>
               <h3 id="mm-victory-title">PUZZLE SOLVED!</h3>
-              <p style="font-size:14px; color:var(--mm-muted); margin-bottom:12px;">Mathematical equilibrium restored.</p>
+              <p style="font-size:13px; color:var(--mm-muted); margin-bottom:10px;">Mathematical equilibrium restored.</p>
               
               <div class="mm-solved-eq" id="mm-modal-solved-eq">6 + 4 = 10</div>
               
@@ -191,7 +182,7 @@
               </div>
 
               <div class="mm-modal-actions">
-                <button type="button" class="mm-btn mm-btn-next-level" id="mm-modal-btn-next" style="padding:12px 28px; font-size:14px;">
+                <button type="button" class="mm-btn mm-btn-next-level" id="mm-modal-btn-next" style="padding:10px 24px; font-size:13.5px;">
                   Continue to Next Level ➔
                 </button>
               </div>
@@ -212,8 +203,6 @@
         timer: document.getElementById('mm-timer'),
         score: document.getElementById('mm-score'),
         highScore: document.getElementById('mm-high-score'),
-        instruction: document.getElementById('mm-prompt-instruction'),
-        handStatus: document.getElementById('mm-hand-status'),
         messageBar: document.getElementById('mm-message-bar'),
         messageText: document.getElementById('mm-message-text'),
         hintBox: document.getElementById('mm-hint-box'),
@@ -269,7 +258,7 @@
       loop();
     }
 
-    emitSparks(clientX, clientY, count = 10, isVictory = false) {
+    emitSparks(clientX, clientY, count = 8, isVictory = false) {
       if (!this.canvas || !this.ctx) return;
       const rect = this.canvas.getBoundingClientRect();
       const originX = clientX - rect.left;
@@ -281,13 +270,13 @@
 
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * (isVictory ? 4.5 : 2.8) + 0.5;
+        const speed = Math.random() * (isVictory ? 4 : 2.5) + 0.5;
         this.particles.push({
           x: originX,
           y: originY,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - (isVictory ? 2 : 1.2), // gentle upward lift
-          radius: Math.random() * (isVictory ? 3.5 : 2.5) + 1,
+          vy: Math.sin(angle) * speed - (isVictory ? 2 : 1),
+          radius: Math.random() * (isVictory ? 3 : 2) + 1,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
           decay: Math.random() * 0.025 + 0.015
@@ -303,7 +292,7 @@
         const p = this.particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.04; // subtle gravity
+        p.vy += 0.04;
         p.alpha -= p.decay;
 
         if (p.alpha <= 0) {
@@ -315,7 +304,7 @@
         this.ctx.globalAlpha = Math.max(0, p.alpha);
         this.ctx.fillStyle = p.color;
         this.ctx.shadowColor = p.color;
-        this.ctx.shadowBlur = 6;
+        this.ctx.shadowBlur = 5;
         this.ctx.beginPath();
         this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         this.ctx.fill();
@@ -341,7 +330,6 @@
       this.dom.diffPill.textContent = this.puzzle.difficulty;
       this.dom.diffPill.className = `mm-diff-pill mm-diff-${this.puzzle.difficulty}`;
       this.dom.movesAllowed.textContent = this.puzzle.movesAllowed;
-      this.dom.instruction.innerHTML = `Move <strong>${this.puzzle.movesAllowed} matchstick${this.puzzle.movesAllowed > 1 ? 's' : ''}</strong> to balance the equation.`;
       
       this.dom.hintBox.classList.remove('is-visible');
       this.dom.hintBox.innerHTML = '';
@@ -351,7 +339,7 @@
 
       this.updateMovesDisplay();
       this.renderBoard();
-      this.setMessage('Tap any matchstick to pick it up, then tap an empty slot to place it.', 'info');
+      this.setMessage(`Move <strong>${this.puzzle.movesAllowed} matchstick${this.puzzle.movesAllowed > 1 ? 's' : ''}</strong> to balance the equation.`, 'info', true);
       this.startTimer();
       this.saveStorage();
     }
@@ -386,10 +374,8 @@
 
       if (this.selectedStick) {
         this.dom.board.classList.add('has-selected-stick');
-        this.dom.handStatus.style.display = 'inline-flex';
       } else {
         this.dom.board.classList.remove('has-selected-stick');
-        this.dom.handStatus.style.display = 'none';
       }
     }
 
@@ -465,17 +451,14 @@
           slot.classList.add('is-selected');
         }
 
-        // Pointer Drag & Drop Support
         stick.addEventListener('pointerdown', (e) => this.handleStickPointerDown(e, tokenIdx, slotKey));
       }
 
-      // Click / Tap Handler
       slot.addEventListener('click', (e) => {
         e.stopPropagation();
         this.handleSlotClick(e, tokenIdx, slotKey, isOccupied);
       });
 
-      // Keyboard space/enter
       slot.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -501,18 +484,18 @@
         if (isOccupied) {
           const stats = this.engine.calculateMoves(this.initialTokens, this.currentTokens);
           if (stats.movesUsed >= this.puzzle.movesAllowed) {
-            this.setMessage(`You've already used all ${this.puzzle.movesAllowed} allowed move(s). Tap Undo or Reset to try another move.`, 'error');
+            this.setMessage(`Used all ${this.puzzle.movesAllowed} move(s). Tap Undo or Reset to try again.`, 'error');
             return;
           }
 
           this.selectedStick = { tokenIdx, slotKey };
-          this.emitSparks(clickX, clickY, 8); // spark burst on lift
+          this.emitSparks(clickX, clickY, 8);
           this.renderBoard();
           this.updateMovesDisplay();
           this.vibrate(15);
-          this.setMessage('Stick in hand! Now tap any highlighted empty slot to place it.', 'info');
+          this.setMessage('✋ <strong>Stick in hand:</strong> tap an empty slot to place.', 'info', true);
         } else {
-          this.setMessage('This slot is empty. First tap a matchstick to pick it up.', 'info');
+          this.setMessage('Tap a glowing matchstick to pick it up.', 'info');
         }
         return;
       }
@@ -521,12 +504,12 @@
       const originToken = this.selectedStick.tokenIdx;
       const originSlot = this.selectedStick.slotKey;
 
-      // 2A: Tapped the exact same stick -> Put back / Deselect
+      // 2A: Tapped the exact same stick -> Put back
       if (originToken === tokenIdx && originSlot === slotKey) {
         this.selectedStick = null;
         this.renderBoard();
         this.updateMovesDisplay();
-        this.setMessage('Put stick back.', 'info');
+        this.setMessage(`Move <strong>${this.puzzle.movesAllowed} matchstick${this.puzzle.movesAllowed > 1 ? 's' : ''}</strong> to balance the equation.`, 'info', true);
         return;
       }
 
@@ -537,12 +520,12 @@
         this.renderBoard();
         this.updateMovesDisplay();
         this.vibrate(15);
-        this.setMessage('Switched selected stick. Now tap an empty slot.', 'info');
+        this.setMessage('Switched selected stick. Tap an empty slot to place.', 'info');
         return;
       }
 
       // 2C: Tapped an EMPTY slot -> Execute Move!
-      this.emitSparks(clickX, clickY, 12); // spark burst on landing
+      this.emitSparks(clickX, clickY, 12);
       this.executeMove(originToken, originSlot, tokenIdx, slotKey);
     }
 
@@ -554,19 +537,18 @@
 
       const stats = this.engine.calculateMoves(this.initialTokens, this.currentTokens);
       if (stats.movesUsed >= this.puzzle.movesAllowed && !this.selectedStick) {
-        return; // Don't drag if moves exhausted
+        return;
       }
 
       e.preventDefault();
       this.dragActive = true;
       this.dragOrigin = { tokenIdx, slotKey };
 
-      // Create ghost element following cursor
       this.dragGhost = document.createElement('div');
       this.dragGhost.className = 'mm-dragging-stick';
       const isVert = ['b', 'c', 'e', 'f', 'v'].includes(slotKey);
-      this.dragGhost.style.width = isVert ? '10px' : '52px';
-      this.dragGhost.style.height = isVert ? '52px' : '10px';
+      this.dragGhost.style.width = isVert ? '9px' : '42px';
+      this.dragGhost.style.height = isVert ? '42px' : '9px';
       this.dragGhost.style.left = `${e.clientX}px`;
       this.dragGhost.style.top = `${e.clientY}px`;
 
@@ -575,7 +557,6 @@
       this.dragGhost.appendChild(head);
       document.body.appendChild(this.dragGhost);
 
-      // Select origin stick & emit sparks
       this.selectedStick = { tokenIdx, slotKey };
       this.emitSparks(e.clientX, e.clientY, 8);
       this.renderBoard();
@@ -600,7 +581,6 @@
         }
         this.dragGhost = null;
 
-        // Detect element under drop point
         const dropTarget = document.elementFromPoint(upEv.clientX, upEv.clientY);
         const slotEl = dropTarget ? dropTarget.closest('.mm-slot') : null;
 
@@ -610,7 +590,7 @@
           const isTargetOccupied = slotEl.classList.contains('is-occupied');
 
           if (!isTargetOccupied) {
-            this.emitSparks(upEv.clientX, upEv.clientY, 14);
+            this.emitSparks(upEv.clientX, upEv.clientY, 12);
             this.executeMove(this.dragOrigin.tokenIdx, this.dragOrigin.slotKey, targetToken, targetSlot);
             return;
           }
@@ -625,11 +605,9 @@
        Move Execution & Verification
        ------------------------------------------------------------------------ */
     executeMove(fromToken, fromSlot, toToken, toSlot) {
-      // 1. Update token state
       this.currentTokens[fromToken].slots[fromSlot] = 0;
       this.currentTokens[toToken].slots[toSlot] = 1;
 
-      // 2. Push to history
       this.moveHistory.push({
         from: { token: fromToken, slot: fromSlot },
         to: { token: toToken, slot: toSlot }
@@ -639,16 +617,14 @@
       this.vibrate([20, 40]);
       this.renderBoard();
 
-      // Trigger placement snap animation on target slot
+      // Trigger placement snap animation
       const targetSlotEl = this.dom.grid.querySelector(`.mm-digit-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"], .mm-operator-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"], .mm-equals-token[data-token-idx="${toToken}"] .mm-slot[data-slot="${toSlot}"]`);
       if (targetSlotEl) {
         targetSlotEl.classList.add('just-placed');
-        setTimeout(() => targetSlotEl.classList.remove('just-placed'), 400);
+        setTimeout(() => targetSlotEl.classList.remove('just-placed'), 350);
       }
 
       this.updateMovesDisplay();
-
-      // 3. Immediately test if equation is balanced!
       this.checkEquation(false);
     }
 
@@ -656,7 +632,6 @@
       if (this.moveHistory.length === 0 || this.isLevelSolved) return;
 
       const lastMove = this.moveHistory.pop();
-      // Reverse slot values
       this.currentTokens[lastMove.to.token].slots[lastMove.to.slot] = 0;
       this.currentTokens[lastMove.from.token].slots[lastMove.from.slot] = 1;
 
@@ -674,14 +649,13 @@
       this.isLevelSolved = false;
       this.renderBoard();
       this.updateMovesDisplay();
-      this.setMessage('Puzzle reset to initial state.', 'info');
+      this.setMessage(`Reset. Move <strong>${this.puzzle.movesAllowed} matchstick${this.puzzle.movesAllowed > 1 ? 's' : ''}</strong> to balance equation.`, 'info', true);
     }
 
     checkEquation(isManualSubmit = false) {
       const result = this.engine.validateBoard(this.puzzle, this.currentTokens);
 
       if (result.isValid) {
-        // SOLVED!
         this.handleLevelVictory(result);
       } else {
         if (isManualSubmit) {
@@ -691,9 +665,9 @@
           const stats = this.engine.calculateMoves(this.initialTokens, this.currentTokens);
           if (stats.movesUsed === this.puzzle.movesAllowed) {
             if (result.errorType === 'MATH_MISMATCH') {
-              this.setMessage(`Equation evaluates to ${result.decodedEquation}, which is not balanced yet. Tap Undo to rethink.`, 'error');
+              this.setMessage(`Evaluates to ${result.decodedEquation} (not balanced). Tap Undo to rethink.`, 'error');
             } else if (result.errorType === 'INVALID_GLYPH') {
-              this.setMessage('One of the shapes is not a valid digit. Tap Undo or adjust your placement.', 'error');
+              this.setMessage('One shape is not a valid digit. Tap Undo or adjust.', 'error');
             }
           }
         }
@@ -705,7 +679,7 @@
        ------------------------------------------------------------------------ */
     revealNextHint() {
       if (this.hintsRevealed >= this.puzzle.hints.length) {
-        this.setMessage('All hints for this puzzle have been revealed!', 'info');
+        this.setMessage('All hints for this puzzle revealed!', 'info');
         return;
       }
 
@@ -713,9 +687,9 @@
       this.dom.hintCount.textContent = this.hintsRevealed;
 
       const hintText = this.puzzle.hints[this.hintsRevealed - 1];
-      this.dom.hintBox.innerHTML = `<strong>Hint ${this.hintsRevealed} of ${this.puzzle.hints.length}:</strong> ${hintText}`;
+      this.dom.hintBox.innerHTML = `<strong>Hint ${this.hintsRevealed}/${this.puzzle.hints.length}:</strong> ${hintText}`;
       this.dom.hintBox.classList.add('is-visible');
-      this.setMessage(`Clue revealed. (Hint ${this.hintsRevealed})`, 'info');
+      this.setMessage(`Hint ${this.hintsRevealed} revealed below.`, 'info');
     }
 
     /* ------------------------------------------------------------------------
@@ -726,13 +700,11 @@
       this.stopTimer();
       this.vibrate([60, 40, 100]);
 
-      // Massive victory sparks burst!
       if (this.canvas) {
         const rect = this.canvas.getBoundingClientRect();
-        this.emitSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 35, true);
+        this.emitSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 30, true);
       }
 
-      // Calculate score
       const basePts = 500;
       const movesBonus = (this.puzzle.movesAllowed - (result.moveStats.movesUsed - 1)) * 100;
       const hintBonus = Math.max(0, 150 - (this.hintsRevealed * 50));
@@ -745,13 +717,11 @@
       this.unlockedLevels = Math.max(this.unlockedLevels, this.currentLevelIndex + 2);
       this.saveStorage();
 
-      // Update UI
-      this.dom.score.textContent = `${this.score} pts`;
-      this.dom.highScore.textContent = `${this.highScore} pts`;
+      this.dom.score.textContent = `${this.score}`;
+      this.dom.highScore.textContent = `${this.highScore}`;
       this.dom.btnNext.style.display = 'inline-flex';
       this.setMessage(`🎉 PUZZLE SOLVED! ${result.decodedEquation} (+${levelTotal} pts)`, 'success');
 
-      // Populate Victory Modal
       this.dom.modalSolvedEq.textContent = result.decodedEquation;
       this.dom.modalPtsBase.textContent = `+${basePts}`;
       this.dom.modalPtsMoves.textContent = `+${movesBonus}`;
@@ -773,9 +743,6 @@
       this.dom.board.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    /* ------------------------------------------------------------------------
-       Global Shortcuts & Accessibility
-       ------------------------------------------------------------------------ */
     bindGlobalKeys() {
       document.addEventListener('keydown', (e) => {
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
@@ -800,9 +767,13 @@
       });
     }
 
-    setMessage(msg, type = 'info') {
-      this.dom.messageBar.className = `mm-message-bar ${type}`;
-      this.dom.messageText.textContent = msg;
+    setMessage(msg, type = 'info', isHtml = false) {
+      this.dom.messageBar.className = `mm-status-strip ${type}`;
+      if (isHtml) {
+        this.dom.messageText.innerHTML = msg;
+      } else {
+        this.dom.messageText.textContent = msg;
+      }
     }
 
     vibrate(pattern) {
