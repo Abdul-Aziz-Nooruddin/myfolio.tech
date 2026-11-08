@@ -3381,7 +3381,29 @@ app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, 
   content = content.replace(/<body[^>]*>/i, '$&' + `<div class="myfolio-template-demo-banner" style="position:relative;z-index:9999;background:#111;color:#eee;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);">
   <span>You're previewing the <strong>Tom Cel Animation</strong> template — a demo portfolio with sample data.</span>
   <a href="/studio" style="background:#fff;color:#111;font-weight:700;padding:6px 14px;border-radius:999px;text-decoration:none;white-space:nowrap;">Use this template →</a>
+</div>
+<div class="myfolio-template-more-row" style="position:relative;z-index:9998;background:#18181b;color:#a1a1aa;font-family:Inter,system-ui,sans-serif;font-size:13px;line-height:1.5;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);">
+  <span>More templates:</span>
+  <a href="/jack-3d" style="color:#d4d4d8;text-decoration:none;">Jack 3D</a>
+  <span>·</span>
+  <a href="/rbp" style="color:#d4d4d8;text-decoration:none;">Kinetic Monochrome</a>
+  <span>·</span>
+  <a href="/apogee" style="color:#d4d4d8;text-decoration:none;">Apogee Spatial 3D</a>
+  <span>·</span>
+  <a href="/kage" style="color:#d4d4d8;text-decoration:none;">Kage Kyoto Temple</a>
+  <span>·</span>
+  <a href="/nadia" style="color:#d4d4d8;text-decoration:none;">Nadia Personal Brand</a>
+  <span>·</span>
+  <strong style="color:#fff;">Tom Cel Animation</strong>
+  <span>—</span>
+  <a href="/compare" style="color:#67e8f9;text-decoration:underline;text-underline-offset:3px;font-weight:500;">Compare MyFolio with Wix, Squarespace and more →</a>
 </div>`);
+
+  // SEO: canonical for the showcase page (fixed to the primary URL — the route
+  // also serves alias URLs, and the canonical must point at the primary one).
+  if (!/<link rel="canonical"/i.test(content)) {
+    content = content.replace(/<head[^>]*>/i, '$&<link rel="canonical" href="https://myfolio.tech/tom">');
+  }
 
   res.type('html').send(content);
 });
@@ -3444,7 +3466,29 @@ app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res
   content = content.replace(/<body[^>]*>/i, '$&' + `<div class="myfolio-template-demo-banner" style="position:relative;z-index:9999;background:#111;color:#eee;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);">
   <span>You're previewing the <strong>Apogee Spatial 3D</strong> template — a demo portfolio with sample data.</span>
   <a href="/studio" style="background:#fff;color:#111;font-weight:700;padding:6px 14px;border-radius:999px;text-decoration:none;white-space:nowrap;">Use this template →</a>
+</div>
+<div class="myfolio-template-more-row" style="position:relative;z-index:9998;background:#18181b;color:#a1a1aa;font-family:Inter,system-ui,sans-serif;font-size:13px;line-height:1.5;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);">
+  <span>More templates:</span>
+  <a href="/jack-3d" style="color:#d4d4d8;text-decoration:none;">Jack 3D</a>
+  <span>·</span>
+  <a href="/rbp" style="color:#d4d4d8;text-decoration:none;">Kinetic Monochrome</a>
+  <span>·</span>
+  <strong style="color:#fff;">Apogee Spatial 3D</strong>
+  <span>·</span>
+  <a href="/kage" style="color:#d4d4d8;text-decoration:none;">Kage Kyoto Temple</a>
+  <span>·</span>
+  <a href="/nadia" style="color:#d4d4d8;text-decoration:none;">Nadia Personal Brand</a>
+  <span>·</span>
+  <a href="/tom" style="color:#d4d4d8;text-decoration:none;">Tom Cel Animation</a>
+  <span>—</span>
+  <a href="/compare" style="color:#67e8f9;text-decoration:underline;text-underline-offset:3px;font-weight:500;">Compare MyFolio with Wix, Squarespace and more →</a>
 </div>`);
+
+  // SEO: canonical for the showcase page (fixed to the primary URL — the route
+  // also serves alias URLs, and the canonical must point at the primary one).
+  if (!/<link rel="canonical"/i.test(content)) {
+    content = content.replace(/<head[^>]*>/i, '$&<link rel="canonical" href="https://myfolio.tech/apogee">');
+  }
 
   res.type('html').send(content);
 });
