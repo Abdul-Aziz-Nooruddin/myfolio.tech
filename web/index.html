@@ -285,44 +285,30 @@
   </head>
   <body>
     <div id="root">
-      <!-- Search Engine Progressive Enhancement & Crawler Fallback (Hydrated by React on load) -->
+      <!-- Search Engine Progressive Enhancement & Crawler Fallback (Only active for crawlers/no-JS to prevent FOUC text flash) -->
       <noscript>
         <div style="max-width: 900px; margin: 40px auto; padding: 24px; text-align: center;">
-          <p style="font-size: 2.2rem; font-weight: 800; color: #171817; margin-bottom: 12px;">MyFolio — 3D Developer Portfolio Platform</p>
-          <p style="font-size: 1.1rem; color: #555a52; margin-bottom: 24px;">Transform your GitHub repositories into an interactive 3D WebGL developer portfolio with full source code export (ZIP download), live GitHub sync, and custom domains.</p>
-          <nav aria-label="Main Navigation" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-            <a href="/studio">Creator Studio</a>
+          <h1 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.4rem; font-weight: 800; color: #171817; letter-spacing: -0.03em; margin-bottom: 14px;">MyFolio — 3D Developer Portfolio Platform</h1>
+          <p style="font-family: 'Inter', sans-serif; font-size: 1.15rem; color: #555a52; max-width: 680px; margin: 0 auto 28px; line-height: 1.55;">Build an interactive 3D WebGL developer portfolio from your GitHub repositories in 30 seconds with 100% full source code ZIP export and zero vendor lock-in.</p>
+          <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <a href="/studio" style="background: #171817; color: #ffffff; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 14px;">Open Creator Studio ↗</a>
+            <a href="/portfolio-templates" style="background: rgba(23,24,23,0.06); color: #171817; border: 1px solid rgba(23,24,23,0.15); padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 14px;">Explore 3D Templates</a>
+          </div>
+          <nav aria-label="Site Sections" style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; font-size: 13px; color: #71766d;">
             <a href="/portfolio-generator">Portfolio Generator</a>
+            <span>•</span>
             <a href="/portfolio-maker">Portfolio Maker</a>
+            <span>•</span>
             <a href="/developer-portfolio">Developer Portfolio</a>
-            <a href="/portfolio-templates">Portfolio Templates</a>
+            <span>•</span>
+            <a href="/portfolio-templates">3D Templates</a>
+            <span>•</span>
             <a href="/slush">Slush Template</a>
-            <a href="/about">About</a>
-            <a href="/pricing">Pricing</a>
+            <span>•</span>
+            <a href="/about">About MyFolio</a>
           </nav>
         </div>
       </noscript>
-      <div id="ssr-hero" style="max-width: 900px; margin: 0 auto; padding: 60px 24px; text-align: center;">
-        <h1 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.4rem; font-weight: 800; color: #171817; letter-spacing: -0.03em; margin-bottom: 14px;">MyFolio — 3D Developer Portfolio Platform</h1>
-        <p style="font-family: 'Inter', sans-serif; font-size: 1.15rem; color: #555a52; max-width: 680px; margin: 0 auto 28px; line-height: 1.55;">Build an interactive 3D WebGL developer portfolio from your GitHub repositories in 30 seconds with 100% full source code ZIP export and zero vendor lock-in.</p>
-        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-          <a href="/studio" style="background: #171817; color: #ffffff; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 14px;">Open Creator Studio ↗</a>
-          <a href="/portfolio-templates" style="background: rgba(23,24,23,0.06); color: #171817; border: 1px solid rgba(23,24,23,0.15); padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 14px;">Explore 3D Templates</a>
-        </div>
-        <nav aria-label="Site Sections" style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; font-size: 13px; color: #71766d;">
-          <a href="/portfolio-generator">Portfolio Generator</a>
-          <span>•</span>
-          <a href="/portfolio-maker">Portfolio Maker</a>
-          <span>•</span>
-          <a href="/developer-portfolio">Developer Portfolio</a>
-          <span>•</span>
-          <a href="/portfolio-templates">3D Templates</a>
-          <span>•</span>
-          <a href="/slush">Slush Template</a>
-          <span>•</span>
-          <a href="/about">About MyFolio</a>
-        </nav>
-      </div>
     </div>
 
     <!-- WebMCP in-browser agent tool registration (https://webmachinelearning.github.io/webmcp/) -->
