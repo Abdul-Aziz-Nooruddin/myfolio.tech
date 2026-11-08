@@ -423,7 +423,7 @@ app.get('/service-worker.js', (req, res) => {
     : path.join(process.cwd(), 'public', 'service-worker.js');
   res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
   res.setHeader('Service-Worker-Allowed', '/');
-  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
   res.sendFile(swPath);
 });
 
@@ -433,7 +433,7 @@ app.get('/turbo-nav.js', (req, res) => {
     ? path.join(process.cwd(), 'web', 'turbo-nav.js')
     : path.join(process.cwd(), 'public', 'turbo-nav.js');
   res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
   res.sendFile(tnPath);
 });
 
@@ -443,7 +443,7 @@ app.get(['/auth.js', '/web/auth.js'], (req, res) => {
     ? path.join(process.cwd(), 'web', 'auth.js')
     : path.join(process.cwd(), 'public', 'auth.js');
   res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
   res.sendFile(authPath);
 });
 
@@ -4254,7 +4254,7 @@ app.get('/service-worker.js', (req, res) => {
   const swPath = path.join(webDir, 'service-worker.js');
   res.setHeader('Content-Type', 'application/javascript');
   res.setHeader('Service-Worker-Allowed', '/');
-  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
   res.sendFile(swPath);
 });
 
@@ -4264,13 +4264,13 @@ app.use(express.static(webDir, {
   maxAge: '7d',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('service-worker.js')) {
-      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
       res.setHeader('Service-Worker-Allowed', '/');
     } else if (filePath.endsWith('.html') || filePath.includes('spatial-realtime-engine')) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     } else if (/\.(css|js)$/i.test(filePath) && !filePath.includes(path.sep + 'assets' + path.sep)) {
-      // Root CSS and JS must revalidate so clients immediately receive styling and navigation updates
-      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      // Root CSS and JS: cached for 24h with background stale-while-revalidate for immediate updates
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else if (/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?|ttf|eot|webp|glb|gltf|bin|wasm)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable');
     }

@@ -52,5 +52,23 @@
     "trigger_name": "test_trigger_alpha",
     "status": "sent",
     "sent_at": "2026-11-07T19:15:37.481Z"
+  },
+  {
+    "id": "elog_1794111127495_8rwn4y",
+    "user_id": "u-throttle-test-1794111127494_btq4o",
+    "email": "throttle_1794111127494_btq4o@example.com",
+    "sequence_type": null,
+    "trigger_name": "no_site_yet_step_1",
+    "status": "sent",
+    "sent_at": "2026-11-08T04:12:07.495Z"
+  },
+  {
+    "id": "elog_1794111127496_jkokfx",
+    "user_id": "usr_mock_1794111127496_q5vfp",
+    "email": "mock_1794111127496@example.com",
+    "sequence_type": null,
+    "trigger_name": "test_trigger_alpha",
+    "status": "sent",
+    "sent_at": "2026-11-08T04:12:07.496Z"
   }
 ]

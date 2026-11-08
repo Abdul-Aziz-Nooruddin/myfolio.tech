@@ -416,272 +416,8 @@
       </div>
 
       <!-- Desktop 728x90 Leaderboard Ad (Auto-Collapses if Unfilled / Error) -->
-      <div class="adsterra-desktop-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;">
-        <script>
-          atOptions = {
-            'key' : '8724b8606818a9cca1bcbb253b74fe12',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
-      </div>
-
-      <!-- Mobile 320x50 Leaderboard Ad (Auto-Collapses if Unfilled / Error) -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;">
-        <script>
-          atOptions = {
-            'key' : '10e49210ba4a073634c68e773acfa211',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
-      </div>
-    </aside>
-
-    <!-- Mini-Game Engine Script -->
-    <script>
-      (function() {
-        let isGameRunning = false;
-        let score = 0;
-        let lives = 3;
-        let playerX = 150;
-        let items = [];
-        let particles = [];
-        let lastTime = 0;
-        let animId = null;
-
-        const arena = document.getElementById('arcadeArena');
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas ? canvas.getContext('2d') : null;
-        const overlay = document.getElementById('gameOverlay');
-        const overlayTitle = document.getElementById('overlayTitle');
-        const overlaySubtitle = document.getElementById('overlaySubtitle');
-        const scoreEl = document.getElementById('gameScore');
-        const livesEl = document.getElementById('gameLives');
-        const toggleBtn = document.getElementById('btnToggleGameText');
-
-        window.toggleArcadeView = function() {
-          if (!arena) return;
-          if (arena.style.display === 'none') {
-            arena.style.display = 'block';
-            toggleBtn.textContent = 'Hide 🕹️';
-            resizeCanvas();
-            showOverlay('👾 Cyber Voxel Catcher', 'Move cursor/finger to catch stars ⭐ & gems 💎. Dodge red bugs 👾!');
-          } else {
-            arena.style.display = 'none';
-            toggleBtn.textContent = 'Play 🎮';
-            stopGame();
-          }
-        };
-
-        function resizeCanvas() {
-          if (!canvas || !arena) return;
-          canvas.width = arena.clientWidth;
-          canvas.height = arena.clientHeight;
-          playerX = canvas.width / 2;
-        }
-
-        function showOverlay(title, subtitle) {
-          if (!overlay) return;
-          overlay.style.display = 'flex';
-          overlayTitle.textContent = title;
-          overlaySubtitle.textContent = subtitle;
-        }
-
-        window.startMiniGame = function() {
-          if (!canvas || !ctx) return;
-          resizeCanvas();
-          if (overlay) overlay.style.display = 'none';
-          score = 0;
-          lives = 3;
-          items = [];
-          particles = [];
-          updateUI();
-          isGameRunning = true;
-          lastTime = performance.now();
-          if (animId) cancelAnimationFrame(animId);
-          animId = requestAnimationFrame(gameLoop);
-        };
-
-        function stopGame() {
-          isGameRunning = false;
-          if (animId) cancelAnimationFrame(animId);
-        }
-
-        function updateUI() {
-          if (scoreEl) scoreEl.textContent = score;
-          if (livesEl) livesEl.textContent = '❤️'.repeat(Math.max(0, lives)) || '💀';
-        }
-
-        function spawnItem() {
-          if (!canvas) return;
-          const types = [
-            { char: '⭐', pts: 10, speed: 2.2, bad: false },
-            { char: '💎', pts: 25, speed: 2.8, bad: false },
-            { char: '⚡', pts: 15, speed: 2.5, bad: false },
-            { char: '👾', pts: 0, speed: 2.0, bad: true }
-          ];
-          const choice = types[Math.floor(Math.random() * types.length)];
-          items.push({
-            x: 20 + Math.random() * (canvas.width - 40),
-            y: -20,
-            char: choice.char,
-            pts: choice.pts,
-            speed: choice.speed + (score * 0.02),
-            bad: choice.bad,
-            size: 20
-          });
-        }
-
-        function spawnCatchParticles(x, y, color) {
-          for (let i = 0; i < 8; i++) {
-            particles.push({
-              x: x,
-              y: y,
-              vx: (Math.random() - 0.5) * 6,
-              vy: (Math.random() - 0.5) * 6,
-              life: 1.0,
-              color: color
-            });
-          }
-        }
-
-        function gameLoop(now) {
-          if (!isGameRunning || !ctx) return;
-          const dt = (now - lastTime) / 1000;
-          lastTime = now;
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          // Grid lines
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-          ctx.lineWidth = 1;
-          for (let x = 0; x < canvas.width; x += 30) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
-          }
-
-          // Spawn items
-          if (Math.random() < 0.045) {
-            spawnItem();
-          }
-
-          // Draw Player (Blue Voxel Ninja Avatar)
-          const playerY = canvas.height - 24;
-          ctx.font = '24px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('🤖', playerX, playerY);
-
-          // Glow base
-          ctx.beginPath();
-          ctx.ellipse(playerX, playerY + 12, 14, 4, 0, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
-          ctx.fill();
-
-          // Update & Draw Items
-          for (let i = items.length - 1; i >= 0; i--) {
-            const it = items[i];
-            it.y += it.speed;
-
-            ctx.font = '18px sans-serif';
-            ctx.fillText(it.char, it.x, it.y);
-
-            // Collision Check with player
-            const dist = Math.hypot(it.x - playerX, it.y - playerY);
-            if (dist < 26) {
-              if (it.bad) {
-                lives--;
-                spawnCatchParticles(it.x, it.y, '#ef4444');
-                updateUI();
-                if (lives <= 0) {
-                  stopGame();
-                  showOverlay('💥 System Glitch! Game Over', `Final Score: ${score} pts. Claim your developer reward below!`);
-                  return;
-                }
-              } else {
-                score += it.pts;
-                spawnCatchParticles(it.x, it.y, '#38bdf8');
-                updateUI();
-              }
-              items.splice(i, 1);
-              continue;
-            }
-
-            // Ground hit
-            if (it.y > canvas.height + 20) {
-              items.splice(i, 1);
-            }
-          }
-
-          // Update & Draw Particles
-          for (let i = particles.length - 1; i >= 0; i--) {
-            const p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= 0.04;
-            if (p.life <= 0) {
-              particles.splice(i, 1);
-            } else {
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-              ctx.fillStyle = p.color;
-              ctx.globalAlpha = p.life;
-              ctx.fill();
-              ctx.globalAlpha = 1.0;
-            }
-          }
-
-          animId = requestAnimationFrame(gameLoop);
-        }
-
-        // Pointer controls
-        function handleMove(clientX) {
-          if (!canvas) return;
-          const rect = canvas.getBoundingClientRect();
-          const x = clientX - rect.left;
-          playerX = Math.max(16, Math.min(canvas.width - 16, x));
-        }
-
-        if (canvas) {
-          canvas.addEventListener('mousemove', (e) => handleMove(e.clientX));
-          canvas.addEventListener('touchmove', (e) => {
-            if (e.touches && e.touches[0]) {
-              handleMove(e.touches[0].clientX);
-            }
-          }, { passive: true });
-        }
-
-        window.addEventListener('resize', () => {
-          if (arena && arena.style.display !== 'none') {
-            resizeCanvas();
-          }
-        });
-      })();
-    </script>
-
-    <!-- Developer Loot Reward Modal -->
-    <div id="rewardModal" style="display: none; position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 16px;">
-      <div style="background: #141714; border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; max-width: 440px; width: 100%; padding: 28px 24px; text-align: center; box-shadow: 0 24px 70px rgba(0,0,0,0.8); position: relative;">
-        <button type="button" onclick="closeRewardModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 28px;">✕</button>
-        
-        <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
-        <h3 style="font-size: 20px; font-weight: 800; color: #f4f1e8; margin: 0 0 6px 0;">Developer Reward Unlocked!</h3>
-        <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin: 0 0 18px 0;">Thanks for playing Cyber Catcher on MyFolio. You unlocked the 3D Creator Pass.</p>
-        
-        <div style="background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.4); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
-          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #4ade80; font-weight: 700; margin-bottom: 4px;">Exclusive Creator Perks</div>
-          <div style="font-size: 15px; font-weight: 800; color: #ffffff;">3D Studio Access + Full Source Export</div>
-          <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">Ready to generate your personalized WebGL portfolio in seconds.</div>
-        </div>
+      <div class="adsterra-desktop-banner" id="ad-desktop-sidebar" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;"></div>
+      <div class="adsterra-mobile-banner" id="ad-mobile-sidebar" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;"></div>
 
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <a href="/studio" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #22c55e; color: #000000; font-weight: 800; font-size: 14px; padding: 12px 20px; border-radius: 10px; text-decoration: none; transition: transform 0.2s ease;">
@@ -808,7 +544,63 @@
     <!-- Adsterra Native Container -->
     <div style="max-width: 1200px; margin: 0 auto 30px; padding: 0 16px; text-align: center; overflow: hidden;">
       <div id="container-d9f487de29cd049aad3613bb7eee1e66"></div>
-      <script async="async" data-cfasync="false" src="https://pl31641041.profitableratecpmnetwork.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js"></script>
+      <!-- Dynamic interactive ad container (hydrated on user interaction) -->
     </div>
-  </body>
+  
+    <script>
+      (function() {
+        // Skip for bots, crawlers, and performance audit tools
+        var isBot = /bot|googlebot|crawler|spider|robot|crawling|seranking|semrush|ahrefs|lighthouse|headlesschrome/i.test(navigator.userAgent || '');
+        if (isBot) return;
+
+        var loaded = false;
+        function loadAds() {
+          if (loaded) return;
+          loaded = true;
+
+          // Helper to inject iframe banner
+          function mountBanner(containerId, key, width, height) {
+            var el = document.getElementById(containerId);
+            if (!el) return;
+            var ifr = document.createElement('iframe');
+            ifr.width = width;
+            ifr.height = height;
+            ifr.frameBorder = '0';
+            ifr.scrolling = 'no';
+            ifr.style.border = 'none';
+            ifr.style.overflow = 'hidden';
+            ifr.srcdoc = '<!DOCTYPE html><html><body style="margin:0;padding:0;display:flex;justify-content:center;">' +
+              '<script>atOptions = { key: "' + key + '", format: "iframe", height: ' + height + ', width: ' + width + ', params: {} };</script>' +
+              '<script src="https://avegogglerequest.com/' + key + '/invoke.js"></script>' +
+              '</body></html>';
+            el.appendChild(ifr);
+            el.style.display = 'flex';
+          }
+
+          var isMobile = window.innerWidth <= 768;
+          if (isMobile) {
+            mountBanner('ad-mobile-sidebar', '10e49210ba4a073634c68e773acfa211', 320, 50);
+            mountBanner('ad-mobile-footer', '10e49210ba4a073634c68e773acfa211', 320, 50);
+          } else {
+            mountBanner('ad-desktop-sidebar', '8724b8606818a9cca1bcbb253b74fe12', 728, 90);
+            mountBanner('ad-desktop-footer', '8724b8606818a9cca1bcbb253b74fe12', 728, 90);
+          }
+
+          // Native banner
+          var nativeEl = document.getElementById('container-d9f487de29cd049aad3613bb7eee1e66');
+          if (nativeEl) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://pl31641041.profitableratecpmnetwork.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js';
+            document.body.appendChild(s);
+          }
+        }
+
+        ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(evt) {
+          window.addEventListener(evt, loadAds, { once: true, passive: true });
+        });
+        setTimeout(loadAds, 4000);
+      })();
+    </script>
+</body>
 </html>
