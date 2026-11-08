@@ -19,7 +19,10 @@
       }
     },
     "seranking": {
-      "url": "https://api.seranking.com/mcp"
+      "url": "https://api.seranking.com/mcp",
+      "headers": {
+        "X-Api-Key": "7d2a9238-504b-3ffa-d533-dd42df29c22b"
+      }
     }
   }
 }

@@ -49,6 +49,7 @@ Allow: /favicon*
 Allow: /google001961baa3b6a214.html
 
 # Block API endpoints from search crawlers
+Disallow: /cdn-cgi/
 Disallow: /api/
 
 # Block authentication, private account & app states
