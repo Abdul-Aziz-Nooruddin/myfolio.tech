@@ -3163,6 +3163,13 @@ app.get(['/.well-known/x402', '/.well-known/x402.json', '/x402.json'], (req, res
   res.sendFile(getPagePath('.well-known/x402.json'));
 });
 
+// RFC 9116 Vulnerability Disclosure (security.txt & .well-known/security.txt)
+app.get(['/security.txt', '/.well-known/security.txt'], (req, res) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.sendFile(getPagePath('.well-known/security.txt'));
+});
+
 // Transparent Pricing Endpoint for Agents and UI
 app.get('/api/pricing', (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
