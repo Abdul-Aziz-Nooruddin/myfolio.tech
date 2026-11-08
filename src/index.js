@@ -4258,6 +4258,17 @@ app.get('/service-worker.js', (req, res) => {
   res.sendFile(swPath);
 });
 
+// Dedicated Monetag / Push Service Worker Route (/sw.js, Scoped to root '/', always revalidated)
+app.get('/sw.js', (req, res) => {
+  const swPath = fs.existsSync(path.join(webDir, 'sw.js'))
+    ? path.join(webDir, 'sw.js')
+    : path.join(process.cwd(), 'sw.js');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Service-Worker-Allowed', '/');
+  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+  res.sendFile(swPath);
+});
+
 // Serve Static Web Assets with HTTP Cache-Control (7 days for JS/CSS/images/fonts, 0s for dynamic HTML)
 app.use(express.static(webDir, {
   extensions: ['html'],
