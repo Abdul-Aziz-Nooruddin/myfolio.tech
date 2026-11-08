@@ -3541,6 +3541,15 @@ app.get(['/contact', '/contact-us', '/support'], (req, res) => {
   res.sendFile(getPagePath('contact.html'));
 });
 
+// Comparison & Competitor Alternative Pages
+app.get('/compare', (req, res) => { res.sendFile(getPagePath('compare.html')); });
+app.get('/vs-wix', (req, res) => { res.sendFile(getPagePath('vs-wix.html')); });
+app.get('/vs-squarespace', (req, res) => { res.sendFile(getPagePath('vs-squarespace.html')); });
+app.get('/vs-wordpress', (req, res) => { res.sendFile(getPagePath('vs-wordpress.html')); });
+app.get('/vs-webflow', (req, res) => { res.sendFile(getPagePath('vs-webflow.html')); });
+app.get('/vs-framer', (req, res) => { res.sendFile(getPagePath('vs-framer.html')); });
+app.get('/vs-github-pages', (req, res) => { res.sendFile(getPagePath('vs-github-pages.html')); });
+
 // Admin Panel
 app.get(['/admin', '/admin.html'], AuthMiddleware.requirePageAdmin, (req, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
