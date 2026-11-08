@@ -952,7 +952,7 @@ app.post(
       
       // Server-Side Weekly Preview Generation Quota (3 free builds per 7-day cycle)
       const userEmail = (req.user?.email || req.user?.normalized_email || '').toLowerCase();
-      const isAdmin = req.user?.role === 'admin' || req.user?.is_admin === true || userEmail === 'abdulaziznoor9876@gmail.com';
+      const isAdmin = req.user?.role === 'admin' || req.user?.is_admin === true || DatabaseService.isSuperAdminEmailOrUsername(userEmail, req.user?.username);
       if (!isAdmin) {
         const generationIdentifier = req.user?.id || req.ip || req.headers?.['x-forwarded-for'] || 'anonymous';
         const isWeeklyAllowed = await dbService.checkWeeklyLimit(generationIdentifier, 3);
@@ -1292,12 +1292,14 @@ async function verifySiteOwnership(req, siteId) {
     return { allowed: false, status: 401, error: 'Unauthorized: Authentication required' };
   }
 
-  const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+  const adminEmails = (process.env.ADMIN_EMAILS || '')
     .split(',')
-    .map(e => e.trim().toLowerCase());
-  const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+    .map(e => e.trim().toLowerCase())
+    .filter(Boolean);
+  const adminUsernames = (process.env.ADMIN_USERNAMES || '')
     .split(',')
-    .map(u => u.trim().toLowerCase());
+    .map(u => u.trim().toLowerCase())
+    .filter(Boolean);
   const userEmail = (req.user.email || req.user.normalized_email || '').toLowerCase();
   const username = (req.user.username || '').toLowerCase();
   const isAdmin =
@@ -1808,7 +1810,7 @@ app.post(
 
       // Server-Side Weekly Preview Generation Quota (3 free builds per 7-day cycle)
       const userEmail = (req.user?.email || req.user?.normalized_email || '').toLowerCase();
-      const isAdmin = req.user?.role === 'admin' || req.user?.is_admin === true || userEmail === 'abdulaziznoor9876@gmail.com';
+      const isAdmin = req.user?.role === 'admin' || req.user?.is_admin === true || DatabaseService.isSuperAdminEmailOrUsername(userEmail, req.user?.username);
       if (!isAdmin) {
         const generationIdentifier = req.user?.id || req.ip || req.headers?.['x-forwarded-for'] || 'anonymous';
         const isWeeklyAllowed = await dbService.checkWeeklyLimit(generationIdentifier, 3);
@@ -1888,7 +1890,7 @@ app.post(
         req.user && (
           req.user.role === 'admin' ||
           req.user.is_admin === true ||
-          authenticatedEmail === 'abdulaziznoor9876@gmail.com'
+          authenticatedEmail && DatabaseService.isSuperAdminEmail(authenticatedEmail)
         )
       ) && isGeneratingForSelf;
 
@@ -2327,7 +2329,7 @@ app.post('/api/portfolio/publish', async (req, res) => {
     } catch (saveDraftErr) {}
 
     const userEmail = (req.user?.email || '').toLowerCase().trim();
-    const isVipFounder = userEmail === 'abdulaziznoor9876@gmail.com' || req.user?.id === 'abdulaziz_founder';
+    const isVipFounder = DatabaseService.isSuperAdminEmail(userEmail) || req.user?.id === 'abdulaziz_founder';
     // customUsername (from Pro plan username picker) takes priority over handle/meta fields
     const rawHandle = customUsername || handle || meta.handle || req.user?.username || (isVipFounder ? 'abdulaziz' : siteId);
     const effectiveHandle = String(rawHandle).toLowerCase().trim().replace(/[^a-z0-9-_]/g, '').slice(0, 30) || siteId;
@@ -2795,7 +2797,7 @@ app.all(['/api/domain/verify-username', '/api/user/check-username'], async (req,
       });
     }
 
-    const isFounder = req.user?.email && req.user.email.toLowerCase().trim() === 'abdulaziznoor9876@gmail.com';
+    const isFounder = req.user?.email && DatabaseService.isSuperAdminEmail(req.user.email);
     if ((cleanHandle === 'abdulaziz' || cleanHandle === 'aziz') && !isFounder) {
       return res.status(200).json({
         available: false,
@@ -3793,7 +3795,7 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
     const user = req.user;
     const userId = user.id;
     const userEmail = (user.email || '').toLowerCase().trim();
-    const isFounder = userEmail === 'abdulaziznoor9876@gmail.com';
+    const isFounder = DatabaseService.isSuperAdminEmail(userEmail);
 
     const portfolios = [];
     const seenSiteIds = new Set();
@@ -3806,7 +3808,7 @@ app.get('/api/user/portfolios', AuthMiddleware.requireAuth, async (req, res) => 
         let targetUserId = isUuid(userId) ? userId : null;
         if (!targetUserId && isFounder) {
           try {
-            const { data: founderRecord } = await dbService.client.from('users').select('id').eq('email', 'abdulaziznoor9876@gmail.com').maybeSingle();
+            const { data: founderRecord } = await dbService.client.from('users').select('id').eq('email', userEmail).maybeSingle();
             if (founderRecord?.id && isUuid(founderRecord.id)) {
               targetUserId = founderRecord.id;
             }
@@ -4008,7 +4010,7 @@ app.post('/api/user/portfolios/sync', AuthMiddleware.requireAuth, async (req, re
     const user = req.user;
     const userId = user.id;
     const userEmail = (user.email || '').toLowerCase().trim();
-    const isFounder = userEmail === 'abdulaziznoor9876@gmail.com';
+    const isFounder = DatabaseService.isSuperAdminEmail(userEmail);
     const items = Array.isArray(req.body?.portfolios) ? req.body.portfolios : (Array.isArray(req.body?.items) ? req.body.items : (req.body?.item ? [req.body.item] : []));
 
     const sitesBaseDir = path.join(process.cwd(), 'public', 'sites');
@@ -4441,12 +4443,14 @@ app.post('/api/vip/set-active-site', AuthMiddleware.requireAdmin, async (req, re
     const { siteId, isVip } = req.body;
     if (!siteId) return res.status(400).json({ error: 'siteId is required' });
 
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
       .split(',')
-      .map(e => e.trim().toLowerCase());
-    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
       .split(',')
-      .map(u => u.trim().toLowerCase());
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
     const userEmail = (req.user?.email || req.user?.normalized_email || '').toLowerCase().trim();
     const username = (req.user?.username || '').toLowerCase().trim();
     const isAuthorized =
@@ -4837,7 +4841,7 @@ app.get('/p/:siteId', async (req, res) => {
                 }
               ],
               experience: prof.experience || [],
-              contact: prof.contact || { email: meta.userEmail || 'abdulaziznoor9876@gmail.com', github: 'https://github.com/Abdul-Aziz-Nooruddin' },
+              contact: prof.contact || { email: meta.userEmail || (process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',')[0].trim() : 'contact@myfolio.tech'), github: process.env.FOUNDER_GITHUB || 'https://github.com/Abdul-Aziz-Nooruddin' },
               social: prof.social || { github: 'https://github.com/Abdul-Aziz-Nooruddin' }
             };
             const rendered = TemplateRegistry.render(uKey, candidateProfile, {});

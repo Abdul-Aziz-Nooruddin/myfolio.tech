@@ -477,7 +477,7 @@ function renderSubscribePage({ siteId = 'demo', youpiKeyId = (process.env.YOUPI_
             description: plan === 'pro' ? ('Pro Subdomain (' + chosenSubdomain + '.myfolio.tech)') : 'Unlock Portfolio (${safeSiteId})',
             order_id: data.orderId,
             orderId: data.orderId,
-            vpa: '9912836034@mbk',
+            vpa: data.vpa || 'merchant@upi',
             handler: async function (paymentResponse) {
               try {
                 var verifyRes = await fetch('/api/web/verify-payment', {

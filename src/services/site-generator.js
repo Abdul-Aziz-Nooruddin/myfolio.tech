@@ -500,7 +500,7 @@ class SiteGenerator {
                 : ('Lifetime Portfolio (' + siteId + ')'),
               orderId: orderData.orderId,
               order_id: orderData.orderId,
-              vpa: '9912836034@mbk',
+              vpa: orderData.vpa || 'merchant@upi',
               handler: function(paymentResponse) {
                 fetch('/api/web/verify-payment', {
                   method: 'POST',

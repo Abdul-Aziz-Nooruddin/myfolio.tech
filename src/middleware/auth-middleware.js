@@ -179,12 +179,14 @@ class AuthMiddleware {
       return res.status(401).json({ error: 'Unauthorized', message: 'Authentication required.' });
     }
 
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
       .split(',')
-      .map(e => e.trim().toLowerCase());
-    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
       .split(',')
-      .map(u => u.trim().toLowerCase());
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
 
     const userEmail = (req.user.email || req.user.normalized_email || '').toLowerCase();
     const username = (req.user.username || '').toLowerCase();
@@ -256,12 +258,14 @@ class AuthMiddleware {
       return res.redirect(`/login?redirect=${target}`);
     }
 
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
       .split(',')
-      .map(e => e.trim().toLowerCase());
-    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
       .split(',')
-      .map(u => u.trim().toLowerCase());
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
 
     const userEmail = (req.user.email || req.user.normalized_email || '').toLowerCase();
     const username = (req.user.username || '').toLowerCase();
@@ -294,12 +298,14 @@ class AuthMiddleware {
           return res.status(404).json({ error: 'Resource not found' });
         }
 
-        const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+        const adminEmails = (process.env.ADMIN_EMAILS || '')
           .split(',')
-          .map(e => e.trim().toLowerCase());
-        const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+          .map(e => e.trim().toLowerCase())
+          .filter(Boolean);
+        const adminUsernames = (process.env.ADMIN_USERNAMES || '')
           .split(',')
-          .map(u => u.trim().toLowerCase());
+          .map(u => u.trim().toLowerCase())
+          .filter(Boolean);
         const userEmail = (req.user.email || req.user.normalized_email || '').toLowerCase();
         const username = (req.user.username || '').toLowerCase();
         const isSuperAdmin =
@@ -333,14 +339,15 @@ class AuthMiddleware {
 
       const userEmail = (req.user?.email || req.user?.normalized_email || '').toLowerCase();
       const userUsername = (req.user?.username || '').toLowerCase();
+      const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+      const adminUsernames = (process.env.ADMIN_USERNAMES || '').split(',').map(u => u.trim().toLowerCase()).filter(Boolean);
 
-      // Check if user is super admin or abdulaziznoor9876@gmail.com
+      // Check if user is super admin
       if (
         req.user?.role === 'admin' ||
         req.user?.is_admin === true ||
-        userEmail === 'abdulaziznoor9876@gmail.com' ||
-        userUsername === 'abdulazizpro1' ||
-        userUsername === 'abdulazizpro'
+        (userEmail && adminEmails.includes(userEmail)) ||
+        (userUsername && adminUsernames.includes(userUsername))
       ) {
         return next(); // Complete exemption from any rate limit or quota
       }

@@ -3,6 +3,8 @@ const { DatabaseService } = require('./services/db-service');
 const { AuthMiddleware } = require('./middleware/auth-middleware');
 
 async function runVipAdminTests() {
+  process.env.ADMIN_EMAILS = process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com';
+  process.env.ADMIN_USERNAMES = process.env.ADMIN_USERNAMES || 'abdulazizpro1';
   console.log('▶ 👑 VIP Master Account Restriction Removal Verification (abdulaziznoor9876@gmail.com)');
 
   const db = new DatabaseService();

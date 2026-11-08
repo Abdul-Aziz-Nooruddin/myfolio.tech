@@ -81,27 +81,30 @@ class DatabaseService {
   // ==========================================
 
   static isSuperAdminEmail(email) {
-    const adminEmails = (process.env.ADMIN_EMAILS || 'abdulaziznoor9876@gmail.com,abdul19388383@gmail.com,abdulaziznooruddin670@gmail.com')
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
       .split(',')
-      .map(e => e.trim().toLowerCase());
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
     const cleanEmail = DatabaseService.normalizeEmail(email);
     return Boolean(cleanEmail && adminEmails.includes(cleanEmail));
   }
 
   static isSuperAdminEmailOrUsername(email, username) {
     if (DatabaseService.isSuperAdminEmail(email)) return true;
-    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
       .split(',')
-      .map(u => u.trim().toLowerCase());
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
     const cleanUsername = (username || '').trim().toLowerCase();
     return Boolean(cleanUsername && adminUsernames.includes(cleanUsername));
   }
 
   _decorateUser(user) {
     if (!user) return null;
-    const adminUsernames = (process.env.ADMIN_USERNAMES || 'abdulazizpro1,abdulazizpro,abdul19388383')
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
       .split(',')
-      .map(u => u.trim().toLowerCase());
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
     const isSuperAdmin =
       DatabaseService.isSuperAdminEmail(user.email || user.normalized_email) ||
       (user.username && adminUsernames.includes(user.username.trim().toLowerCase())) ||
@@ -701,12 +704,20 @@ class DatabaseService {
   }
 
   async checkRateLimit(identifier, action, maxCount = 10, windowMinutes = 1) {
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
+      .split(',')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
+    const adminUsernames = (process.env.ADMIN_USERNAMES || '')
+      .split(',')
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
+
     if (
-      identifier === 'abdulaziznoor9876@gmail.com' ||
-      identifier === 'web_abdulaziznoor9876gmailcom' ||
+      DatabaseService.isSuperAdminEmailOrUsername(identifier, identifier) ||
       (typeof identifier === 'string' && (
-        identifier.toLowerCase().includes('abdulaziznoor9876') ||
-        identifier.toLowerCase().includes('abdulazizpro')
+        adminEmails.some(e => e && identifier.toLowerCase().includes(e.replace(/[^a-z0-9]/g, ''))) ||
+        adminUsernames.some(u => u && identifier.toLowerCase().includes(u))
       ))
     ) {
       return true; // Zero restrictions, 100% exempt
@@ -1178,7 +1189,7 @@ class DatabaseService {
         const latestClientSite = sortedClientSites[0] || null;
 
         const email = (u.email || u.normalized_email || '').toLowerCase().trim();
-        const isVipFounder = email === 'abdulaziznoor9876@gmail.com';
+        const isVipFounder = DatabaseService.isSuperAdminEmail(email);
 
         let siteId = (latestClientSite && (latestClientSite.provider_site_id || latestClientSite.id)) || conv.id || null;
         if (!siteId && isVipFounder) siteId = 'abdulaziz';
@@ -1295,7 +1306,7 @@ class DatabaseService {
       }
 
       const userEmail = (user?.email || '').toLowerCase().trim();
-      const isVipFounder = userEmail === 'abdulaziznoor9876@gmail.com';
+      const isVipFounder = DatabaseService.isSuperAdminEmail(userEmail);
 
       // Check if user has sites in public/sites or sites table
       let siteId = isVipFounder ? 'abdulaziz' : (conversation?.id || null);

@@ -335,7 +335,7 @@
 
       const amount = Number(this.options.amount || 149);
       const merchantName = this.options.name || 'MyFolio Technologies';
-      const vpa = this.options.vpa || '9912836034@mbk';
+      const vpa = this.options.vpa || 'merchant@upi';
       const orderId = this.options.orderId || this.options.order_id || ('youpi_ord_' + Date.now());
       const upiUri = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(merchantName)}&am=${encodeURIComponent(amount)}&cu=INR&tn=${encodeURIComponent('MyFolio Portfolio Unlock ' + orderId)}`;
       const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(upiUri)}`;
