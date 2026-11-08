@@ -61,6 +61,120 @@
       }
 
       window.__myfolioLeaves = leaves;
+
+      // === Gyroscope & Device Motion Physics Engine ===
+      (function attachGyroscopeAndMotion(leavesInstance) {
+        if (!leavesInstance) return;
+
+        var baseWind = [-0.2, 0.5];
+        var baseSpeed = [0.5, 1.2];
+        var baseSway = [0.4, 1.3];
+
+        var targetWindOffset = 0;
+        var currentWindOffset = 0;
+        var targetSpeedMult = 1.0;
+        var currentSpeedMult = 1.0;
+        var targetSwayMult = 1.0;
+        var currentSwayMult = 1.0;
+
+        var hasGyroData = false;
+
+        // 1. Device Orientation (Physical Gyroscope / Accelerometer)
+        function onDeviceOrientation(e) {
+          if (e.gamma === null && e.beta === null) return;
+          hasGyroData = true;
+
+          // gamma: left-to-right tilt in degrees [-90, 90]
+          // Tilting device to the right -> positive gamma -> leaves blow right
+          // Tilting device to the left -> negative gamma -> leaves blow left
+          var gamma = Math.max(-60, Math.min(60, e.gamma || 0));
+          targetWindOffset = (gamma / 45) * 3.2;
+
+          // beta: front-to-back tilt in degrees [-180, 180]
+          // Standard handheld angle is ~45° to 55°
+          var beta = Math.max(0, Math.min(90, e.beta || 45));
+          var pitchRatio = (beta - 45) / 45; // -1 (tilted flat) to +1 (tilted upright/forward)
+          targetSpeedMult = Math.max(0.4, Math.min(2.2, 1.0 + pitchRatio * 0.8));
+
+          // Sway frequency & amplitude expands when tilted
+          targetSwayMult = Math.max(0.6, Math.min(2.0, 1.0 + Math.abs(gamma) / 35));
+        }
+
+        // 2. Desktop Cursor Parallax Fallback (Pointer breeze)
+        var lastMouseX = null;
+        var mouseVelX = 0;
+        var mouseTimer = null;
+
+        function onPointerMove(e) {
+          if (hasGyroData) return; // Physical gyroscope takes precedence on mobile
+          var x = e.clientX;
+          var halfW = window.innerWidth / 2;
+          var posRatio = (x - halfW) / (halfW || 1); // -1 to +1 across viewport
+
+          if (lastMouseX !== null) {
+            mouseVelX = (x - lastMouseX) * 0.04;
+          }
+          lastMouseX = x;
+
+          targetWindOffset = posRatio * 1.6 + Math.max(-1.8, Math.min(1.8, mouseVelX));
+
+          clearTimeout(mouseTimer);
+          mouseTimer = setTimeout(function() {
+            targetWindOffset = posRatio * 1.2;
+            mouseVelX = 0;
+          }, 120);
+        }
+
+        // 3. iOS 13+ Gyroscope permission handshake
+        function requestGyroPermission() {
+          if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+              .then(function(state) {
+                if (state === 'granted') {
+                  window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+                }
+              })
+              .catch(function() {});
+          }
+        }
+
+        // Bind event listeners safely
+        if (typeof window !== 'undefined') {
+          if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+          }
+          window.addEventListener('pointermove', onPointerMove, { passive: true });
+          window.addEventListener('click', requestGyroPermission, { once: true });
+          window.addEventListener('touchstart', requestGyroPermission, { once: true, passive: true });
+
+          // Smooth Exponential Lerp Physics Loop
+          function stepPhysics() {
+            if (leavesInstance.running) {
+              // Silky-smooth spring easing factor
+              currentWindOffset += (targetWindOffset - currentWindOffset) * 0.055;
+              currentSpeedMult += (targetSpeedMult - currentSpeedMult) * 0.055;
+              currentSwayMult += (targetSwayMult - currentSwayMult) * 0.055;
+
+              // Feed updated vectors into running leaf simulation
+              leavesInstance.options.wind = [
+                baseWind[0] + currentWindOffset,
+                baseWind[1] + currentWindOffset
+              ];
+              leavesInstance.options.speed = [
+                baseSpeed[0] * currentSpeedMult,
+                baseSpeed[1] * currentSpeedMult
+              ];
+              leavesInstance.options.sway = [
+                baseSway[0] * currentSwayMult,
+                baseSway[1] * currentSwayMult
+              ];
+            }
+            requestAnimationFrame(stepPhysics);
+          }
+
+          requestAnimationFrame(stepPhysics);
+        }
+      })(leaves);
     } catch (err) {
       console.warn('[falling-leaves] seasonal leaves init:', err);
     }
