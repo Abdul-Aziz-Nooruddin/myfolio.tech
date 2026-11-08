@@ -70,5 +70,41 @@
     "trigger_name": "test_trigger_alpha",
     "status": "sent",
     "sent_at": "2026-11-08T04:12:07.496Z"
+  },
+  {
+    "id": "elog_1794120408923_7sd0hz",
+    "user_id": "u-throttle-test-1794120408922_w3dqn",
+    "email": "throttle_1794120408922_w3dqn@example.com",
+    "sequence_type": null,
+    "trigger_name": "no_site_yet_step_1",
+    "status": "sent",
+    "sent_at": "2026-11-08T06:46:48.923Z"
+  },
+  {
+    "id": "elog_1794120408924_798qsk",
+    "user_id": "usr_mock_1794120408924_26fni",
+    "email": "mock_1794120408924@example.com",
+    "sequence_type": null,
+    "trigger_name": "test_trigger_alpha",
+    "status": "sent",
+    "sent_at": "2026-11-08T06:46:48.924Z"
+  },
+  {
+    "id": "elog_1794120468175_9pmnec",
+    "user_id": "u-throttle-test-1794120468175_nxcor",
+    "email": "throttle_1794120468175_nxcor@example.com",
+    "sequence_type": null,
+    "trigger_name": "no_site_yet_step_1",
+    "status": "sent",
+    "sent_at": "2026-11-08T06:47:48.175Z"
+  },
+  {
+    "id": "elog_1794120468176_8i0er4",
+    "user_id": "usr_mock_1794120468176_9trxg",
+    "email": "mock_1794120468176@example.com",
+    "sequence_type": null,
+    "trigger_name": "test_trigger_alpha",
+    "status": "sent",
+    "sent_at": "2026-11-08T06:47:48.176Z"
   }
 ]

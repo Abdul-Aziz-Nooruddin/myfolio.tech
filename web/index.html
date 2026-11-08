@@ -373,15 +373,15 @@
       })();
     </script>
 
-        <!-- Floating Bottom Sponsor Dock (Auto-Collapsing, Game-Free) -->
-    <aside id="adsterra-floating-bar" aria-label="Sponsored Partner" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 760px; z-index: 99999; background: rgba(18, 20, 18, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 6px 14px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+        <!-- Floating Bottom Sponsor Dock (Auto-Expanding when Ad Loads) -->
+    <aside id="adsterra-floating-bar" aria-label="Sponsored Partner" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(160%); width: calc(100% - 32px); max-width: 760px; z-index: 99999; background: rgba(18, 20, 18, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 6px 14px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; opacity: 0; pointer-events: none; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
         <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5);">Sponsored</span>
-        <button type="button" onclick="document.getElementById('adsterra-floating-bar').style.display='none'" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; padding: 2px 7px; border-radius: 6px; line-height: 1;" title="Dismiss ad">✕</button>
+        <button type="button" onclick="var bar=document.getElementById('adsterra-floating-bar'); if(bar){bar.style.opacity='0'; bar.style.transform='translateX(-50%) translateY(160%)'; bar.style.pointerEvents='none';}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; padding: 2px 7px; border-radius: 6px; line-height: 1;" title="Dismiss ad">✕</button>
       </div>
 
       <!-- Desktop 728x90 Banner -->
-      <div class="adsterra-desktop-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px;">
+      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; width: 100%; overflow: hidden; border-radius: 8px;">
         <script>
           atOptions = {
             'key' : '8724b8606818a9cca1bcbb253b74fe12',
@@ -395,7 +395,7 @@
       </div>
 
       <!-- Mobile 320x50 Banner -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px;">
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; width: 100%; overflow: hidden; border-radius: 8px;">
         <script>
           atOptions = {
             'key' : '10e49210ba4a073634c68e773acfa211',
@@ -409,12 +409,12 @@
       </div>
     </aside>
 
-<!-- Adsterra In-Content Monetization Suite (Auto-Collapsing) -->
-    <div id="adsterra-banner-slot" style="display: none; position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px);">
+    <!-- Adsterra In-Content Monetization Suite (Smooth Reveal) -->
+    <div id="adsterra-banner-slot" style="position: relative; z-index: 100; max-width: 1200px; margin: 0 auto; padding: 0 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid transparent; border-radius: 12px; backdrop-filter: blur(8px); max-height: 0; opacity: 0; overflow: hidden; pointer-events: none; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease, padding 0.3s ease, border-color 0.3s ease;">
       <div style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); margin-bottom: 12px;">Sponsored</div>
       
       <!-- Desktop 728x90 Leaderboard -->
-      <div class="adsterra-desktop-banner" style="display: none; justify-content: center; min-height: 0; overflow: hidden;">
+      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; overflow: hidden;">
         <script>
           atOptions = {
             'key' : '8724b8606818a9cca1bcbb253b74fe12',
@@ -428,7 +428,7 @@
       </div>
 
       <!-- Mobile 320x50 Leaderboard -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 0; overflow: hidden;">
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; overflow: hidden;">
         <script>
           atOptions = {
             'key' : '10e49210ba4a073634c68e773acfa211',
@@ -444,61 +444,73 @@
       <style>
         @media (max-width: 768px) {
           .adsterra-desktop-banner { display: none !important; }
+          .adsterra-mobile-banner { display: flex !important; }
+        }
+        @media (min-width: 769px) {
+          .adsterra-desktop-banner { display: flex !important; }
+          .adsterra-mobile-banner { display: none !important; }
         }
       </style>
     </div>
 
-    <!-- Ad Auto-Collapse Engine (Expands only when an ad actually loads) -->
+    <!-- Ad Auto-Reveal Engine (Smoothly reveals containers once iframe renders) -->
     <script>
-      (function initAdAutoCollapse() {
-        function checkAndExpandBanner(bannerEl) {
+      (function initAdAutoReveal() {
+        function checkAndRevealBanner(bannerEl) {
           if (!bannerEl) return false;
+          const isMobile = window.innerWidth <= 768;
+          if (isMobile && bannerEl.classList.contains('adsterra-desktop-banner')) return false;
+          if (!isMobile && bannerEl.classList.contains('adsterra-mobile-banner')) return false;
+
           const iframe = bannerEl.querySelector('iframe');
-          if (iframe && iframe.offsetHeight > 15) {
-            const isMobile = window.innerWidth <= 768;
-            if (isMobile && bannerEl.classList.contains('adsterra-desktop-banner')) {
-              bannerEl.style.display = 'none';
-              return false;
-            }
-            if (!isMobile && bannerEl.classList.contains('adsterra-mobile-banner')) {
-              bannerEl.style.display = 'none';
-              return false;
-            }
-            bannerEl.style.display = 'flex';
-            bannerEl.style.minHeight = isMobile ? '50px' : '90px';
-            
-            const parentSlot = bannerEl.closest('#adsterra-banner-slot');
-            if (parentSlot) parentSlot.style.display = 'block';
+          if (iframe) {
+            const hasDimensions = iframe.offsetHeight > 15 || iframe.offsetWidth > 15;
+            const hasSource = !!iframe.src || !!iframe.getAttribute('src');
+            const hasAttrs = iframe.getAttribute('width') && iframe.getAttribute('height');
 
-            const floatingBar = bannerEl.closest('#adsterra-floating-bar');
-            if (floatingBar) floatingBar.style.display = 'block';
+            if (hasDimensions || hasSource || hasAttrs) {
+              const floatingBar = document.getElementById('adsterra-floating-bar');
+              if (floatingBar && bannerEl.closest('#adsterra-floating-bar')) {
+                floatingBar.style.transform = 'translateX(-50%) translateY(0)';
+                floatingBar.style.opacity = '1';
+                floatingBar.style.pointerEvents = 'auto';
+              }
 
-            
-            return true;
+              const parentSlot = document.getElementById('adsterra-banner-slot');
+              if (parentSlot && bannerEl.closest('#adsterra-banner-slot')) {
+                parentSlot.style.maxHeight = '240px';
+                parentSlot.style.opacity = '1';
+                parentSlot.style.pointerEvents = 'auto';
+                parentSlot.style.margin = '40px auto 30px';
+                parentSlot.style.padding = '18px 16px';
+                parentSlot.style.borderColor = 'rgba(255,255,255,0.1)';
+              }
+              return true;
+            }
           }
           return false;
         }
 
         function watchBanners() {
           const banners = document.querySelectorAll('.adsterra-desktop-banner, .adsterra-mobile-banner');
-          banners.forEach(b => {
-            const observer = new MutationObserver(() => {
-              checkAndExpandBanner(b);
+          banners.forEach(function(b) {
+            const observer = new MutationObserver(function() {
+              checkAndRevealBanner(b);
             });
-            observer.observe(b, { childList: true, subtree: true });
+            observer.observe(b, { childList: true, subtree: true, attributes: true });
           });
 
-          let checkCount = 0;
-          const pollTimer = setInterval(() => {
+          var checkCount = 0;
+          var pollTimer = setInterval(function() {
             checkCount++;
-            let anyLoaded = false;
-            banners.forEach(b => {
-              if (checkAndExpandBanner(b)) anyLoaded = true;
+            var anyLoaded = false;
+            banners.forEach(function(b) {
+              if (checkAndRevealBanner(b)) anyLoaded = true;
             });
-            if (anyLoaded || checkCount >= 15) {
+            if (anyLoaded || checkCount >= 20) {
               clearInterval(pollTimer);
             }
-          }, 300);
+          }, 250);
         }
 
         if (document.readyState === 'loading') {
@@ -517,7 +529,7 @@
   
     <script>
       (function() {
-        // Skip for bots, crawlers, and performance audit tools
+        // Skip for automated headless bots to preserve Adsterra account standing
         var isBot = /bot|googlebot|crawler|spider|robot|crawling|seranking|semrush|ahrefs|lighthouse|headlesschrome/i.test(navigator.userAgent || '');
         if (isBot) return;
 
@@ -526,20 +538,20 @@
           if (loaded) return;
           loaded = true;
 
-          // Hydrate native sponsor container on user interaction
+          // Hydrate native sponsor container on user interaction inside the target element
           var nativeEl = document.getElementById('container-d9f487de29cd049aad3613bb7eee1e66');
           if (nativeEl) {
             var s = document.createElement('script');
             s.async = true;
             s.src = 'https://pl31641041.profitableratecpmnetwork.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js';
-            document.body.appendChild(s);
+            nativeEl.appendChild(s);
           }
         }
 
         ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(evt) {
           window.addEventListener(evt, loadAds, { once: true, passive: true });
         });
-        setTimeout(loadAds, 4000);
+        setTimeout(loadAds, 3000);
       })();
     </script>
 </body>
