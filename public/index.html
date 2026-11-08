@@ -373,72 +373,126 @@
       })();
     </script>
 
-        <!-- Floating Bottom Sponsor Dock (Auto-Expanding when Ad Loads) -->
-    <aside id="adsterra-floating-bar" aria-label="Sponsored Partner" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(160%); width: calc(100% - 32px); max-width: 760px; z-index: 99999; background: rgba(18, 20, 18, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 6px 14px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; opacity: 0; pointer-events: none; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;">
+    <!-- Floating Bottom Sponsor Dock (Always Visible with Instant House Fallback + Live Ad Layer) -->
+    <aside id="adsterra-floating-bar" aria-label="Sponsored Partner" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 760px; z-index: 99999; background: rgba(18, 20, 18, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 6px 14px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: block; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
         <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5);">Sponsored</span>
-        <button type="button" onclick="var bar=document.getElementById('adsterra-floating-bar'); if(bar){bar.style.opacity='0'; bar.style.transform='translateX(-50%) translateY(160%)'; bar.style.pointerEvents='none';}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; padding: 2px 7px; border-radius: 6px; line-height: 1;" title="Dismiss ad">✕</button>
+        <button type="button" onclick="document.getElementById('adsterra-floating-bar').style.display='none'" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; padding: 2px 7px; border-radius: 6px; line-height: 1;" title="Dismiss ad">✕</button>
       </div>
 
       <!-- Desktop 728x90 Banner -->
-      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; width: 100%; overflow: hidden; border-radius: 8px;">
-        <script>
-          atOptions = {
-            'key' : '8724b8606818a9cca1bcbb253b74fe12',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
+      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; align-items: center; min-height: 90px; width: 100%; overflow: hidden; border-radius: 8px; position: relative;">
+        <!-- House Fallback (visible immediately and when adblockers block 3rd-party network) -->
+        <a href="/build" class="ad-house-fallback" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 728px; height: 90px; padding: 0 20px; background: linear-gradient(135deg, rgba(24,28,34,0.98), rgba(12,14,18,0.98)); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; text-decoration: none; box-sizing: border-box; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">
+          <div style="display: flex; align-items: center; gap: 14px; text-align: left;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #00f0ff, #7000ff); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">✦</div>
+            <div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #f4f4f4; letter-spacing: -0.01em;">MyFolio 3D Studio · Turn your GitHub into a Living Portfolio</div>
+              <div style="font-size: 11.5px; color: rgba(255,255,255,0.6);">High-fidelity WebGL worlds, interactive physics &amp; scrollytelling.</div>
+            </div>
+          </div>
+          <div style="font-size: 11.5px; font-weight: 600; padding: 7px 14px; border-radius: 6px; background: #fff; color: #000; flex-shrink: 0; white-space: nowrap;">Build Now ↗</div>
+        </a>
+
+        <!-- Real Adsterra Live Ad Slot (Layers over fallback on load) -->
+        <div class="adsterra-frame-wrap" style="position: relative; z-index: 2; width: 728px; height: 90px;">
+          <script>
+            atOptions = {
+              'key' : '8724b8606818a9cca1bcbb253b74fe12',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          </script>
+          <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
+        </div>
       </div>
 
       <!-- Mobile 320x50 Banner -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; width: 100%; overflow: hidden; border-radius: 8px;">
-        <script>
-          atOptions = {
-            'key' : '10e49210ba4a073634c68e773acfa211',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; align-items: center; min-height: 50px; width: 100%; overflow: hidden; border-radius: 8px; position: relative;">
+        <!-- Mobile House Fallback -->
+        <a href="/build" class="ad-house-fallback" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 320px; height: 50px; padding: 0 12px; background: linear-gradient(135deg, rgba(24,28,34,0.98), rgba(12,14,18,0.98)); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; text-decoration: none; box-sizing: border-box; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">
+          <div style="display: flex; align-items: center; gap: 8px; text-align: left; overflow: hidden;">
+            <span style="font-size: 12px; color: #00f0ff;">✦</span>
+            <span style="font-size: 11px; font-weight: 600; color: #f4f4f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">MyFolio 3D Studio</span>
+          </div>
+          <span style="font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; background: #fff; color: #000; flex-shrink: 0;">Build ↗</span>
+        </a>
+
+        <!-- Real Mobile Adsterra Live Slot -->
+        <div class="adsterra-frame-wrap" style="position: relative; z-index: 2; width: 320px; height: 50px;">
+          <script>
+            atOptions = {
+              'key' : '10e49210ba4a073634c68e773acfa211',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
+        </div>
       </div>
     </aside>
 
-    <!-- Adsterra In-Content Monetization Suite (Smooth Reveal) -->
-    <div id="adsterra-banner-slot" style="position: relative; z-index: 100; max-width: 1200px; margin: 0 auto; padding: 0 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid transparent; border-radius: 12px; backdrop-filter: blur(8px); max-height: 0; opacity: 0; overflow: hidden; pointer-events: none; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease, padding 0.3s ease, border-color 0.3s ease;">
+    <!-- Adsterra In-Content Monetization Suite -->
+    <div id="adsterra-banner-slot" style="position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px); display: block;">
       <div style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); margin-bottom: 12px;">Sponsored</div>
       
       <!-- Desktop 728x90 Leaderboard -->
-      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; min-height: 90px; overflow: hidden;">
-        <script>
-          atOptions = {
-            'key' : '8724b8606818a9cca1bcbb253b74fe12',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
+      <div class="adsterra-desktop-banner" style="display: flex; justify-content: center; align-items: center; min-height: 90px; overflow: hidden; position: relative;">
+        <!-- House Fallback -->
+        <a href="/build" class="ad-house-fallback" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 728px; height: 90px; padding: 0 20px; background: linear-gradient(135deg, rgba(24,28,34,0.98), rgba(12,14,18,0.98)); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; text-decoration: none; box-sizing: border-box; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">
+          <div style="display: flex; align-items: center; gap: 14px; text-align: left;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #00f0ff, #7000ff); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">✦</div>
+            <div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #f4f4f4; letter-spacing: -0.01em;">MyFolio 3D Studio · Turn your GitHub into a Living Portfolio</div>
+              <div style="font-size: 11.5px; color: rgba(255,255,255,0.6);">High-fidelity WebGL worlds, interactive physics &amp; scrollytelling.</div>
+            </div>
+          </div>
+          <div style="font-size: 11.5px; font-weight: 600; padding: 7px 14px; border-radius: 6px; background: #fff; color: #000; flex-shrink: 0; white-space: nowrap;">Build Now ↗</div>
+        </a>
+
+        <!-- Real Adsterra Slot -->
+        <div class="adsterra-frame-wrap" style="position: relative; z-index: 2; width: 728px; height: 90px;">
+          <script>
+            atOptions = {
+              'key' : '8724b8606818a9cca1bcbb253b74fe12',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          </script>
+          <script src="https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js"></script>
+        </div>
       </div>
 
       <!-- Mobile 320x50 Leaderboard -->
-      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; min-height: 50px; overflow: hidden;">
-        <script>
-          atOptions = {
-            'key' : '10e49210ba4a073634c68e773acfa211',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
+      <div class="adsterra-mobile-banner" style="display: none; justify-content: center; align-items: center; min-height: 50px; overflow: hidden; position: relative;">
+        <!-- Mobile House Fallback -->
+        <a href="/build" class="ad-house-fallback" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 320px; height: 50px; padding: 0 12px; background: linear-gradient(135deg, rgba(24,28,34,0.98), rgba(12,14,18,0.98)); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; text-decoration: none; box-sizing: border-box; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1;">
+          <div style="display: flex; align-items: center; gap: 8px; text-align: left; overflow: hidden;">
+            <span style="font-size: 12px; color: #00f0ff;">✦</span>
+            <span style="font-size: 11px; font-weight: 600; color: #f4f4f4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">MyFolio 3D Studio</span>
+          </div>
+          <span style="font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; background: #fff; color: #000; flex-shrink: 0;">Build ↗</span>
+        </a>
+
+        <!-- Real Mobile Slot -->
+        <div class="adsterra-frame-wrap" style="position: relative; z-index: 2; width: 320px; height: 50px;">
+          <script>
+            atOptions = {
+              'key' : '10e49210ba4a073634c68e773acfa211',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/10e49210ba4a073634c68e773acfa211"></script>
+        </div>
       </div>
 
       <style>
@@ -453,105 +507,26 @@
       </style>
     </div>
 
-    <!-- Ad Auto-Reveal Engine (Smoothly reveals containers once iframe renders) -->
-    <script>
-      (function initAdAutoReveal() {
-        function checkAndRevealBanner(bannerEl) {
-          if (!bannerEl) return false;
-          const isMobile = window.innerWidth <= 768;
-          if (isMobile && bannerEl.classList.contains('adsterra-desktop-banner')) return false;
-          if (!isMobile && bannerEl.classList.contains('adsterra-mobile-banner')) return false;
-
-          const iframe = bannerEl.querySelector('iframe');
-          if (iframe) {
-            const hasDimensions = iframe.offsetHeight > 15 || iframe.offsetWidth > 15;
-            const hasSource = !!iframe.src || !!iframe.getAttribute('src');
-            const hasAttrs = iframe.getAttribute('width') && iframe.getAttribute('height');
-
-            if (hasDimensions || hasSource || hasAttrs) {
-              const floatingBar = document.getElementById('adsterra-floating-bar');
-              if (floatingBar && bannerEl.closest('#adsterra-floating-bar')) {
-                floatingBar.style.transform = 'translateX(-50%) translateY(0)';
-                floatingBar.style.opacity = '1';
-                floatingBar.style.pointerEvents = 'auto';
-              }
-
-              const parentSlot = document.getElementById('adsterra-banner-slot');
-              if (parentSlot && bannerEl.closest('#adsterra-banner-slot')) {
-                parentSlot.style.maxHeight = '240px';
-                parentSlot.style.opacity = '1';
-                parentSlot.style.pointerEvents = 'auto';
-                parentSlot.style.margin = '40px auto 30px';
-                parentSlot.style.padding = '18px 16px';
-                parentSlot.style.borderColor = 'rgba(255,255,255,0.1)';
-              }
-              return true;
-            }
-          }
-          return false;
-        }
-
-        function watchBanners() {
-          const banners = document.querySelectorAll('.adsterra-desktop-banner, .adsterra-mobile-banner');
-          banners.forEach(function(b) {
-            const observer = new MutationObserver(function() {
-              checkAndRevealBanner(b);
-            });
-            observer.observe(b, { childList: true, subtree: true, attributes: true });
-          });
-
-          var checkCount = 0;
-          var pollTimer = setInterval(function() {
-            checkCount++;
-            var anyLoaded = false;
-            banners.forEach(function(b) {
-              if (checkAndRevealBanner(b)) anyLoaded = true;
-            });
-            if (anyLoaded || checkCount >= 20) {
-              clearInterval(pollTimer);
-            }
-          }, 250);
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', watchBanners);
-        } else {
-          watchBanners();
-        }
-      })();
-    </script>
-
     <!-- Adsterra Native Container -->
     <div style="max-width: 1200px; margin: 0 auto 30px; padding: 0 16px; text-align: center; overflow: hidden;">
       <div id="container-d9f487de29cd049aad3613bb7eee1e66"></div>
-      <!-- Dynamic interactive ad container (hydrated on user interaction) -->
+      <script async="async" data-cfasync="false" src="https://pl31641041.profitableratecpmnetwork.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js"></script>
     </div>
-  
+
+    <!-- Fallback Switcher: Hides house fallback when live advertiser iframe completes loading -->
     <script>
-      (function() {
-        // Skip for automated headless bots to preserve Adsterra account standing
-        var isBot = /bot|googlebot|crawler|spider|robot|crawling|seranking|semrush|ahrefs|lighthouse|headlesschrome/i.test(navigator.userAgent || '');
-        if (isBot) return;
-
-        var loaded = false;
-        function loadAds() {
-          if (loaded) return;
-          loaded = true;
-
-          // Hydrate native sponsor container on user interaction inside the target element
-          var nativeEl = document.getElementById('container-d9f487de29cd049aad3613bb7eee1e66');
-          if (nativeEl) {
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://pl31641041.profitableratecpmnetwork.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js';
-            nativeEl.appendChild(s);
-          }
+      (function initAdFallbackSwitcher() {
+        function checkAdFrames() {
+          var slots = document.querySelectorAll('.adsterra-desktop-banner, .adsterra-mobile-banner');
+          slots.forEach(function(slot) {
+            var iframe = slot.querySelector('iframe');
+            if (iframe && (iframe.offsetHeight > 15 || iframe.src)) {
+              var fallback = slot.querySelector('.ad-house-fallback');
+              if (fallback) fallback.style.display = 'none';
+            }
+          });
         }
-
-        ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(evt) {
-          window.addEventListener(evt, loadAds, { once: true, passive: true });
-        });
-        setTimeout(loadAds, 3000);
+        setInterval(checkAdFrames, 600);
       })();
     </script>
 </body>
