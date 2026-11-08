@@ -373,74 +373,6 @@
       })();
     </script>
 
-    <!-- Floating Interactive Arcade & Monetized Partner Dock (Auto-Collapsing) -->
-    <aside id="adsterra-floating-bar" aria-label="Interactive Developer Arcade" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 980px; z-index: 99999; background: rgba(18, 20, 18, 0.90); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 18px; padding: 8px 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-      
-      <!-- Arcade Header & Controls -->
-      <div id="floating-bar-header" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 0;">
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 100px; padding: 3px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #38bdf8;">
-            <span style="animation: pulse 1.5s infinite; width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
-            🕹️ Cyber Catcher
-          </span>
-          <div style="display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; color: #f4f1e8; background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
-            <span>Score: <strong id="gameScore" style="color: #4ade80; font-family: monospace; font-size: 14px;">0</strong></span>
-            <span style="opacity: 0.4;">|</span>
-            <span>Lives: <span id="gameLives">❤️❤️❤️</span></span>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" onclick="openRewardModal()" style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: #f4f1e8; border: 1px solid rgba(34,197,94,0.4); padding: 4px 10px; border-radius: 8px; background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(56,189,248,0.2)); cursor: pointer;" title="Unlock developer rewards & bonuses">
-            <span>🎁 Claim Reward</span>
-            <span style="color: #4ade80; font-size: 11px;">✦</span>
-          </button>
-          <button type="button" id="btnToggleGame" onclick="toggleArcadeView()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #ffffff; font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 8px; line-height: 1;">
-            <span id="btnToggleGameText">Play 🎮</span>
-          </button>
-          <button type="button" onclick="document.getElementById('adsterra-floating-bar').style.display='none'" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 12px; cursor: pointer; padding: 4px 8px; border-radius: 8px; line-height: 1;" title="Dismiss bar">✕</button>
-        </div>
-      </div>
-
-      <!-- Playable HTML5 Canvas Arena -->
-      <div id="arcadeArena" style="display: none; position: relative; width: 100%; height: 130px; background: radial-gradient(circle at 50% 100%, #1e293b, #090d16); border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; margin-top: 8px; margin-bottom: 4px; cursor: crosshair;">
-        <canvas id="gameCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
-        <div id="gameOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 10;">
-          <div style="font-size: 15px; font-weight: 800; color: #f4f1e8;" id="overlayTitle">👾 Catch Falling Stars!</div>
-          <div style="font-size: 11.5px; color: rgba(255,255,255,0.7);" id="overlaySubtitle">Move mouse or touch to steer your blue voxel hero</div>
-          <div style="display: flex; gap: 8px; margin-top: 4px;">
-            <button type="button" onclick="startMiniGame()" style="background: #22c55e; color: #000; border: none; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer;">Start Game 🚀</button>
-            <button type="button" onclick="openRewardModal()" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">🎁 Bonus Perk ✦</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Desktop 728x90 Leaderboard Ad (Auto-Collapses if Unfilled / Error) -->
-      <div class="adsterra-desktop-banner" id="ad-desktop-sidebar" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;"></div>
-      <div class="adsterra-mobile-banner" id="ad-mobile-sidebar" style="display: none; justify-content: center; min-height: 0; width: 100%; overflow: hidden; border-radius: 8px; margin-top: 6px;"></div>
-
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <a href="/studio" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #22c55e; color: #000000; font-weight: 800; font-size: 14px; padding: 12px 20px; border-radius: 10px; text-decoration: none; transition: transform 0.2s ease;">
-            <span>Build My 3D Portfolio Now 🚀</span>
-          </a>
-          <a href="/#templates" onclick="closeRewardModal()" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 12px; padding: 10px 16px; border-radius: 10px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1);">
-            <span>Explore 3D Template Showcase ✦</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      window.openRewardModal = function() {
-        var modal = document.getElementById('rewardModal');
-        if (modal) modal.style.display = 'flex';
-      };
-      window.closeRewardModal = function() {
-        var modal = document.getElementById('rewardModal');
-        if (modal) modal.style.display = 'none';
-      };
-    </script>
-
     <!-- Adsterra In-Content Monetization Suite (Auto-Collapsing) -->
     <div id="adsterra-banner-slot" style="display: none; position: relative; z-index: 100; max-width: 1200px; margin: 40px auto 30px; padding: 18px 16px; text-align: center; background: rgba(23,24,23,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; backdrop-filter: blur(8px);">
       <div style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); margin-bottom: 12px;">Sponsored</div>
@@ -502,10 +434,7 @@
             const parentSlot = bannerEl.closest('#adsterra-banner-slot');
             if (parentSlot) parentSlot.style.display = 'block';
 
-            const header = document.getElementById('floating-bar-header');
-            if (header && bannerEl.closest('#adsterra-floating-bar')) {
-              header.style.marginBottom = '8px';
-            }
+            
             return true;
           }
           return false;
@@ -558,35 +487,7 @@
           if (loaded) return;
           loaded = true;
 
-          // Helper to inject iframe banner
-          function mountBanner(containerId, key, width, height) {
-            var el = document.getElementById(containerId);
-            if (!el) return;
-            var ifr = document.createElement('iframe');
-            ifr.width = width;
-            ifr.height = height;
-            ifr.frameBorder = '0';
-            ifr.scrolling = 'no';
-            ifr.style.border = 'none';
-            ifr.style.overflow = 'hidden';
-            ifr.srcdoc = '<!DOCTYPE html><html><body style="margin:0;padding:0;display:flex;justify-content:center;">' +
-              '<script>atOptions = { key: "' + key + '", format: "iframe", height: ' + height + ', width: ' + width + ', params: {} };</script>' +
-              '<script src="https://avegogglerequest.com/' + key + '/invoke.js"></script>' +
-              '</body></html>';
-            el.appendChild(ifr);
-            el.style.display = 'flex';
-          }
-
-          var isMobile = window.innerWidth <= 768;
-          if (isMobile) {
-            mountBanner('ad-mobile-sidebar', '10e49210ba4a073634c68e773acfa211', 320, 50);
-            mountBanner('ad-mobile-footer', '10e49210ba4a073634c68e773acfa211', 320, 50);
-          } else {
-            mountBanner('ad-desktop-sidebar', '8724b8606818a9cca1bcbb253b74fe12', 728, 90);
-            mountBanner('ad-desktop-footer', '8724b8606818a9cca1bcbb253b74fe12', 728, 90);
-          }
-
-          // Native banner
+          // Hydrate native sponsor container on user interaction
           var nativeEl = document.getElementById('container-d9f487de29cd049aad3613bb7eee1e66');
           if (nativeEl) {
             var s = document.createElement('script');
