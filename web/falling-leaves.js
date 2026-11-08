@@ -62,7 +62,7 @@
 
       window.__myfolioLeaves = leaves;
 
-      // === Gyroscope & Device Motion Physics Engine ===
+      // === Gyroscope & Dynamic Motion Wind Engine ===
       (function attachGyroscopeAndMotion(leavesInstance) {
         if (!leavesInstance) return;
 
@@ -79,50 +79,89 @@
 
         var hasGyroData = false;
 
+        // Pointer tracking for direct leaf air-wake displacement
+        var pointerX = null;
+        var pointerY = null;
+        var pointerVelX = 0;
+        var pointerVelY = 0;
+        var lastPointerX = null;
+        var lastPointerY = null;
+        var lastPointerTime = 0;
+        var pointerActive = false;
+        var pointerDecayTimer = null;
+
         // 1. Device Orientation (Physical Gyroscope / Accelerometer)
         function onDeviceOrientation(e) {
           if (e.gamma === null && e.beta === null) return;
           hasGyroData = true;
 
           // gamma: left-to-right tilt in degrees [-90, 90]
-          // Tilting device to the right -> positive gamma -> leaves blow right
-          // Tilting device to the left -> negative gamma -> leaves blow left
+          // Tilting device to the right -> positive wind -> leaves blow right
+          // Tilting device to the left -> negative wind -> leaves blow left
           var gamma = Math.max(-60, Math.min(60, e.gamma || 0));
-          targetWindOffset = (gamma / 45) * 3.2;
+          targetWindOffset = (gamma / 30) * 8.5; // Strong, immediately noticeable wind tilt
 
           // beta: front-to-back tilt in degrees [-180, 180]
-          // Standard handheld angle is ~45° to 55°
+          // Standard handheld angle is ~45°
           var beta = Math.max(0, Math.min(90, e.beta || 45));
-          var pitchRatio = (beta - 45) / 45; // -1 (tilted flat) to +1 (tilted upright/forward)
-          targetSpeedMult = Math.max(0.4, Math.min(2.2, 1.0 + pitchRatio * 0.8));
+          var pitchRatio = (beta - 45) / 35; // -1 to +1
+          targetSpeedMult = Math.max(0.4, Math.min(2.8, 1.0 + pitchRatio * 1.2));
 
-          // Sway frequency & amplitude expands when tilted
-          targetSwayMult = Math.max(0.6, Math.min(2.0, 1.0 + Math.abs(gamma) / 35));
+          // Sway expands on tilt
+          targetSwayMult = Math.max(0.6, Math.min(2.4, 1.0 + Math.abs(gamma) / 25));
         }
 
-        // 2. Desktop Cursor Parallax Fallback (Pointer breeze)
-        var lastMouseX = null;
-        var mouseVelX = 0;
-        var mouseTimer = null;
-
+        // 2. Desktop & Touch Pointer Gust & Air-Wake
         function onPointerMove(e) {
-          if (hasGyroData) return; // Physical gyroscope takes precedence on mobile
+          var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
           var x = e.clientX;
-          var halfW = window.innerWidth / 2;
-          var posRatio = (x - halfW) / (halfW || 1); // -1 to +1 across viewport
+          var y = e.clientY;
 
-          if (lastMouseX !== null) {
-            mouseVelX = (x - lastMouseX) * 0.04;
+          if (lastPointerX !== null && lastPointerY !== null && lastPointerTime > 0) {
+            var dt = Math.max(1, now - lastPointerTime);
+            // Instantaneous velocity in pixels per frame (~16ms)
+            var rawVx = ((x - lastPointerX) / dt) * 16;
+            var rawVy = ((y - lastPointerY) / dt) * 16;
+            pointerVelX = pointerVelX * 0.4 + rawVx * 0.6;
+            pointerVelY = pointerVelY * 0.4 + rawVy * 0.6;
           }
-          lastMouseX = x;
 
-          targetWindOffset = posRatio * 1.6 + Math.max(-1.8, Math.min(1.8, mouseVelX));
+          pointerX = x;
+          pointerY = y;
+          lastPointerX = x;
+          lastPointerY = y;
+          lastPointerTime = now;
+          pointerActive = true;
 
-          clearTimeout(mouseTimer);
-          mouseTimer = setTimeout(function() {
-            targetWindOffset = posRatio * 1.2;
-            mouseVelX = 0;
-          }, 120);
+          if (!hasGyroData) {
+            var halfW = window.innerWidth / 2;
+            var posRatio = (x - halfW) / (halfW || 1); // -1 to +1 across viewport
+
+            // Global wind combines cursor position breeze + cursor velocity gust
+            var velocityGust = Math.max(-9.0, Math.min(9.0, pointerVelX * 0.65));
+            targetWindOffset = (posRatio * 4.5) + velocityGust;
+            targetSwayMult = Math.min(2.2, 1.0 + Math.abs(pointerVelX) * 0.08);
+
+            clearTimeout(pointerDecayTimer);
+            pointerDecayTimer = setTimeout(function() {
+              // Smoothly settle back to cursor position wind
+              targetWindOffset = posRatio * 3.0;
+              pointerVelX = 0;
+              pointerVelY = 0;
+              targetSwayMult = 1.0;
+            }, 180);
+          }
+        }
+
+        function onPointerLeave() {
+          pointerActive = false;
+          pointerX = null;
+          pointerY = null;
+          pointerVelX = 0;
+          pointerVelY = 0;
+          targetWindOffset = 0;
+          targetSpeedMult = 1.0;
+          targetSwayMult = 1.0;
         }
 
         // 3. iOS 13+ Gyroscope permission handshake
@@ -144,18 +183,19 @@
             window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
           }
           window.addEventListener('pointermove', onPointerMove, { passive: true });
+          window.addEventListener('pointerleave', onPointerLeave, { passive: true });
           window.addEventListener('click', requestGyroPermission, { once: true });
           window.addEventListener('touchstart', requestGyroPermission, { once: true, passive: true });
 
-          // Smooth Exponential Lerp Physics Loop
+          // Interactive Lerp & Proximity Air-Wake Loop
           function stepPhysics() {
             if (leavesInstance.running) {
-              // Silky-smooth spring easing factor
-              currentWindOffset += (targetWindOffset - currentWindOffset) * 0.055;
-              currentSpeedMult += (targetSpeedMult - currentSpeedMult) * 0.055;
-              currentSwayMult += (targetSwayMult - currentSwayMult) * 0.055;
+              // Responsive exponential lerp (fast & snappy, ~0.14)
+              currentWindOffset += (targetWindOffset - currentWindOffset) * 0.14;
+              currentSpeedMult += (targetSpeedMult - currentSpeedMult) * 0.12;
+              currentSwayMult += (targetSwayMult - currentSwayMult) * 0.12;
 
-              // Feed updated vectors into running leaf simulation
+              // Apply global wind & speed vectors to simulation options
               leavesInstance.options.wind = [
                 baseWind[0] + currentWindOffset,
                 baseWind[1] + currentWindOffset
@@ -168,6 +208,38 @@
                 baseSway[0] * currentSwayMult,
                 baseSway[1] * currentSwayMult
               ];
+
+              // Direct Leaf Air-Wake / Vortex interaction (scattering leaves near pointer)
+              if (pointerActive && pointerX !== null && pointerY !== null && leavesInstance.leaves) {
+                var leaves = leavesInstance.leaves;
+                var radius = 220; // 220px interaction bubble
+                var radiusSq = radius * radius;
+
+                for (var i = 0; i < leaves.length; i++) {
+                  var leaf = leaves[i];
+                  var dx = leaf.x - pointerX;
+                  var dy = leaf.y - pointerY;
+                  var distSq = dx * dx + dy * dy;
+
+                  if (distSq < radiusSq && distSq > 4) {
+                    var dist = Math.sqrt(distSq);
+                    var norm = 1 - (dist / radius); // 1 at pointer, 0 at outer edge
+                    var repelForce = norm * norm * 7.5; // quadratic outward push
+
+                    // Outward repulsive air pressure
+                    leaf.x += (dx / dist) * repelForce;
+                    leaf.y += (dy / dist) * repelForce * 0.6;
+
+                    // Drag along with pointer velocity
+                    leaf.x += pointerVelX * norm * 0.7;
+                    leaf.y += pointerVelY * norm * 0.4;
+
+                    // Aerodynamic rotational flutter
+                    leaf.rotation += (pointerVelX * 1.5 + (dx > 0 ? 3.0 : -3.0)) * norm;
+                    leaf.flipPhase += 0.12 * norm;
+                  }
+                }
+              }
             }
             requestAnimationFrame(stepPhysics);
           }
