@@ -3373,6 +3373,16 @@ app.get(['/tom', '/tom-animation', '/tom-cel-animator', '/cel-animator'], (req, 
   };
   const rendered = TemplateRegistry.render('tom-cel-animator', demoData);
   let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'tom-cel-animator');
+  
+  // SEO: showcase-page title/meta/banner override (showcase route only —
+  // never edit src/templates/*, which renders real users' portfolios).
+  content = content.replace(/<title>.*?<\/title>/i, '<title>Tom Cel Animation Portfolio Template</title>');
+  content = content.replace(/<meta name="description" content="[^"]*"/i, '<meta name="description" content="Tom is an animated portfolio template — vintage cartoon style with a 285-frame canvas scrollytelling hero. Preview the demo, then build yours from GitHub with full source export."');
+  content = content.replace(/<body[^>]*>/i, '$&' + `<div class="myfolio-template-demo-banner" style="position:relative;z-index:9999;background:#111;color:#eee;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);">
+  <span>You're previewing the <strong>Tom Cel Animation</strong> template — a demo portfolio with sample data.</span>
+  <a href="/studio" style="background:#fff;color:#111;font-weight:700;padding:6px 14px;border-radius:999px;text-decoration:none;white-space:nowrap;">Use this template →</a>
+</div>`);
+
   res.type('html').send(content);
 });
 
@@ -3426,6 +3436,16 @@ app.get(['/apogee', '/apogee-spatial', '/apogee-hero', '/spatial-3d'], (req, res
   };
   const rendered = TemplateRegistry.render('apogee-spatial', demoData);
   let content = siteGenerator.injectPreviewWatermark(typeof rendered === 'string' ? rendered : (rendered?.html || ''), false, 'apogee-spatial');
+  
+  // SEO: showcase-page title/meta/banner override (showcase route only —
+  // never edit src/templates/*, which renders real users' portfolios).
+  content = content.replace(/<title>.*?<\/title>/i, '<title>Apogee Spatial 3D Portfolio Template</title>');
+  content = content.replace(/<meta name="description" content="[^"]*"/i, '<meta name="description" content="Apogee is a spatial 3D portfolio template — a 3D depth carousel of your repos with dynamic colour themes. Preview the demo, then build yours from GitHub with full source export."');
+  content = content.replace(/<body[^>]*>/i, '$&' + `<div class="myfolio-template-demo-banner" style="position:relative;z-index:9999;background:#111;color:#eee;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);">
+  <span>You're previewing the <strong>Apogee Spatial 3D</strong> template — a demo portfolio with sample data.</span>
+  <a href="/studio" style="background:#fff;color:#111;font-weight:700;padding:6px 14px;border-radius:999px;text-decoration:none;white-space:nowrap;">Use this template →</a>
+</div>`);
+
   res.type('html').send(content);
 });
 
