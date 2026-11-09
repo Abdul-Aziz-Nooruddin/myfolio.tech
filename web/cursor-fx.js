@@ -329,7 +329,9 @@
     }
 
     function scanProximityElements() {
-      // Full-spectrum selector list covering all landing page texts, navigation, and comparison routes
+      // Editorial typography, headings, paragraphs, and narrative copy
+      // Interactive controls (buttons, nav links, form elements) are intentionally excluded
+      // to preserve natural flexbox layout, icon positioning, and zero word/letter splitting
       var selectors = [
         '#hero-heading',
         '.hero-headline',
@@ -337,20 +339,15 @@
         '.hero-title',
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p',
-        'nav a',
-        '.nav-link',
-        '.text-link',
-        '.back-to-top',
-        'button',
-        '.btn',
         '.eyebrow',
         '.section-title',
         '.closing-title',
         '.footer-wordmark',
         '.closing-caption',
-        '.faq-item button',
-        'li',
-        'label',
+        '.section-label span',
+        '.benefit-row span',
+        '.large-copy',
+        '.about-copy p',
         '[data-cursor-proximity]',
         '.text-cursor-proximity',
         '.compare-hero-title'
@@ -361,8 +358,8 @@
         var el = elements[i];
         if (el.dataset.mfProximityBound) continue;
 
-        // Skip ads, tracking, cursor, and leaves containers
-        if (el.closest('#mf-cursor-dot, #mf-cursor-ring, .leaves-container, [class*="monetag"], [id*="monetag"], [class*="ad-"], [id*="ad"], iframe, ins, svg, script, style, noscript')) {
+        // Skip buttons, navigation, ads, tracking, cursor, and leaves containers
+        if (el.closest('button, [role="button"], .btn, nav, .desktop-navigation, .header-actions, .ps-persona-picker, input, select, textarea, .burger-button, #adsterra-floating-bar, #mf-cursor-dot, #mf-cursor-ring, .leaves-container, [class*="monetag"], [id*="monetag"], [class*="ad-"], [id*="ad"], iframe, ins, svg, script, style, noscript')) {
           continue;
         }
 
