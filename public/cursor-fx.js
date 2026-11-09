@@ -2,10 +2,12 @@
  * MyFolio Cursor FX & Text Proximity Motion Engine
  * Features:
  * 1. Fluid Magnetic Cursor Dot & Ring with spring lerp physics
- * 2. Multi-Chromatic Text Cursor Proximity Engine
+ * 2. Multi-Chromatic Text Cursor Proximity Engine with Atomic Word Containers
  *    - Full-page coverage: every heading, paragraph, nav item, badge, button & link
+ *    - Atomic Word Containers (.mf-proximity-word with white-space: nowrap) guarantee words never break mid-word across lines
+ *    - Resilient space spans (.mf-proximity-space) guarantee spacing is preserved inside flexbox containers (prevents "Howitworks" and letter-spaced pills)
  *    - Spectrum of 12 distinct jewel & neon chromatic palettes varying across all texts
- *    - Gaussian distance-based letter scaling (scale 1.0 -> 1.40) & vertical lift
+ *    - Gaussian distance-based letter scaling (scale 1.0 -> 1.38) & vertical lift
  *    - MutationObserver ensures dynamic React mounts on landing & comparison pages are bound
  * 3. Mobile touch awareness (disables custom cursor on touch, activates gyroscope orientation)
  * 4. Full compliance with prefers-reduced-motion
@@ -109,9 +111,25 @@
       border-color: #e0a800;
     }
 
+    /* Atomic word wrapper: prevents mid-word splitting across lines and prevents flexbox letter spacing */
+    .mf-proximity-word {
+      display: inline-block;
+      white-space: nowrap;
+      pointer-events: auto;
+    }
+
+    /* Space span: guarantees space is never collapsed by flexbox containers */
+    .mf-proximity-space {
+      display: inline-block;
+      width: 0.28em;
+      pointer-events: none;
+      user-select: text;
+    }
+
     /* Proximity text letter spans */
     .mf-proximity-letter {
       display: inline-block;
+      white-space: inherit;
       will-change: transform, color, text-shadow;
       transition: transform 0.06s ease-out, color 0.12s ease-out, text-shadow 0.12s ease-out;
       transform-origin: center bottom;
@@ -225,42 +243,52 @@
     var proximityTargets = [];
     var containerCounter = 0;
 
-    // Safely wraps text characters in individual spans without breaking existing React trees
+    // Safely wraps text characters inside atomic word containers (.mf-proximity-word with white-space: nowrap)
+    // and preserves spaces with explicit .mf-proximity-space spans to prevent flexbox collapse
     function wrapTextNodes(node, letterEntries, containerIdx, wordTracker) {
       if (node.nodeType === 3) { // TEXT_NODE
         var text = node.textContent;
         if (!text || text.trim() === '') return;
 
+        var tokens = text.match(/\S+|\s+/g) || [];
         var frag = document.createDocumentFragment();
-        for (var i = 0; i < text.length; i++) {
-          var char = text[i];
-          if (char === ' ' || char === '\n' || char === '\t') {
-            frag.appendChild(document.createTextNode(char));
-            if (char === ' ') {
-              wordTracker.count++;
-            }
+
+        for (var t = 0; t < tokens.length; t++) {
+          var token = tokens[t];
+          if (/^\s+$/.test(token)) {
+            var spaceSpan = document.createElement('span');
+            spaceSpan.className = 'mf-proximity-space';
+            spaceSpan.innerHTML = '&nbsp;';
+            spaceSpan.setAttribute('aria-hidden', 'true');
+            frag.appendChild(spaceSpan);
           } else {
-            var span = document.createElement('span');
-            span.className = 'mf-proximity-letter';
-            span.textContent = char;
-            span.setAttribute('aria-hidden', 'true');
+            var wordSpan = document.createElement('span');
+            wordSpan.className = 'mf-proximity-word';
 
-            // Assign a unique chromatic palette per container and word sequence
-            var paletteIdx = (containerIdx * 5 + wordTracker.count * 2) % CHROMATIC_PALETTES.length;
+            var wordIdx = wordTracker.count++;
+            var paletteIdx = (containerIdx * 5 + wordIdx * 2) % CHROMATIC_PALETTES.length;
             var pal = CHROMATIC_PALETTES[paletteIdx];
-            span._palColor = pal.color;
-            span._palShadow1 = pal.shadow1;
-            span._palShadow2 = pal.shadow2;
-            span._isTransformed = false;
 
-            frag.appendChild(span);
-            letterEntries.push(span);
+            for (var i = 0; i < token.length; i++) {
+              var char = token[i];
+              var letterSpan = document.createElement('span');
+              letterSpan.className = 'mf-proximity-letter';
+              letterSpan.textContent = char;
+
+              letterSpan._palColor = pal.color;
+              letterSpan._palShadow1 = pal.shadow1;
+              letterSpan._palShadow2 = pal.shadow2;
+              letterSpan._isTransformed = false;
+
+              wordSpan.appendChild(letterSpan);
+              letterEntries.push(letterSpan);
+            }
+            frag.appendChild(wordSpan);
           }
         }
         node.parentNode.replaceChild(frag, node);
       } else if (node.nodeType === 1) { // ELEMENT_NODE
-        if (node.classList && node.classList.contains('mf-proximity-letter')) {
-          letterEntries.push(node);
+        if (node.classList && (node.classList.contains('mf-proximity-letter') || node.classList.contains('mf-proximity-word') || node.classList.contains('mf-proximity-space'))) {
           return;
         }
         // Don't traverse SVGs, code tags, or excluded widgets
