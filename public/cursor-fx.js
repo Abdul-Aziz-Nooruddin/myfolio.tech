@@ -3,7 +3,10 @@
  * Features:
  * 1. Fluid Magnetic Cursor Dot & Ring with spring lerp physics
  * 2. Text Cursor Proximity Engine (Gaussian distance-based letter scaling & chromatic illumination)
- * 3. Mobile touch awareness (disables custom cursor on touch, activates gyro orientation)
+ *    - Ported from TextCursorProximity component (from: scale(1), to: scale(1.4), radius: 100, gaussian)
+ *    - Active across Landing Page (#hero-heading, .hero-headline, .hero-wordmark) and Comparison Pages
+ *    - MutationObserver ensures instant binding even when React mounts elements dynamically
+ * 3. Mobile touch awareness (disables custom cursor on touch, activates gyroscope orientation)
  * 4. Full compliance with prefers-reduced-motion
  */
 (function initCursorFx() {
@@ -108,14 +111,13 @@
     /* Proximity text letter spans */
     .mf-proximity-letter {
       display: inline-block;
-      will-change: transform, color;
-      transition: transform 0.08s ease-out, color 0.12s ease-out;
+      will-change: transform, color, text-shadow;
+      transition: transform 0.06s ease-out, color 0.1s ease-out, text-shadow 0.1s ease-out;
       transform-origin: center bottom;
     }
   `;
   document.head.appendChild(style);
 
-  // Initialize once DOM is ready
   function init() {
     // -------------------------------------------------------------
     // Part 1: Interactive Fluid Magnetic Cursor (Desktop)
@@ -141,7 +143,6 @@
     var isHovering = false;
     var isClicking = false;
 
-    // Pointer move listener
     window.addEventListener('pointermove', function(e) {
       if (e.pointerType === 'touch') {
         isTouch = true;
@@ -181,7 +182,6 @@
       document.body.classList.remove('mf-cursor-clicking');
     }, { passive: true });
 
-    // Track interactive element hovers for magnetic expansion
     document.addEventListener('mouseover', function(e) {
       var target = e.target;
       if (target && target.closest && target.closest('a, button, [role="button"], input, select, textarea, .btn, .card, .interactive-card, [data-interactive]')) {
@@ -199,83 +199,103 @@
     }, { passive: true });
 
     // -------------------------------------------------------------
-    // Part 2: Text Cursor Proximity Engine (Port of TextCursorProximity)
+    // Part 2: Text Cursor Proximity Engine (Faithful Port of TextCursorProximity)
     // -------------------------------------------------------------
-    var proximityElements = [];
+    var proximityTargets = [];
 
-    function setupProximityTarget(el) {
-      if (!el || el.dataset.proximityInitialized) return;
-      el.dataset.proximityInitialized = 'true';
+    // Safely wraps text characters in individual spans without breaking existing React trees
+    function wrapTextNodes(node, letterEntries) {
+      if (node.nodeType === 3) { // TEXT_NODE
+        var text = node.textContent;
+        if (!text || text.trim() === '') return;
 
-      var originalText = el.textContent || '';
-      var words = originalText.trim().split(/\s+/);
-      el.innerHTML = '';
-
-      var letterEntries = [];
-
-      words.forEach(function(word, wIdx) {
-        var wordSpan = document.createElement('span');
-        wordSpan.style.display = 'inline-block';
-        wordSpan.style.whiteSpace = 'nowrap';
-
-        for (var i = 0; i < word.length; i++) {
-          var char = word[i];
-          var letterSpan = document.createElement('span');
-          letterSpan.className = 'mf-proximity-letter';
-          letterSpan.textContent = char;
-          letterSpan.setAttribute('aria-hidden', 'true');
-          wordSpan.appendChild(letterSpan);
-          letterEntries.push(letterSpan);
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < text.length; i++) {
+          var char = text[i];
+          if (char === ' ') {
+            frag.appendChild(document.createTextNode(' '));
+          } else {
+            var span = document.createElement('span');
+            span.className = 'mf-proximity-letter';
+            span.textContent = char;
+            span.setAttribute('aria-hidden', 'true');
+            span.style.display = 'inline-block';
+            span.style.willChange = 'transform, color, text-shadow';
+            span.style.transformOrigin = 'center bottom';
+            frag.appendChild(span);
+            letterEntries.push(span);
+          }
         }
-
-        el.appendChild(wordSpan);
-
-        if (wIdx < words.length - 1) {
-          var space = document.createTextNode(' ');
-          el.appendChild(space);
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === 1) { // ELEMENT_NODE
+        if (node.classList && node.classList.contains('mf-proximity-letter')) {
+          letterEntries.push(node);
+          return;
         }
-      });
+        var children = Array.from(node.childNodes);
+        for (var c = 0; c < children.length; c++) {
+          wrapTextNodes(children[c], letterEntries);
+        }
+      }
+    }
 
-      // Accessible hidden label for screen readers
-      var srSpan = document.createElement('span');
-      srSpan.style.position = 'absolute';
-      srSpan.style.width = '1px';
-      srSpan.style.height = '1px';
-      srSpan.style.padding = '0';
-      srSpan.style.margin = '-1px';
-      srSpan.style.overflow = 'hidden';
-      srSpan.style.clip = 'rect(0, 0, 0, 0)';
-      srSpan.style.whiteSpace = 'nowrap';
-      srSpan.style.border = '0';
-      srSpan.textContent = originalText;
-      el.appendChild(srSpan);
+    function registerProximityElement(container) {
+      if (!container || container.dataset.mfProximityBound) return;
+      container.dataset.mfProximityBound = 'true';
 
-      proximityElements.push({
-        container: el,
-        letters: letterEntries,
-        radius: 95 // 95px Gaussian proximity radius
+      var letters = [];
+      wrapTextNodes(container, letters);
+
+      if (letters.length > 0) {
+        proximityTargets.push({
+          container: container,
+          letters: letters,
+          radius: 100 // 100px Gaussian interaction radius matching TextCursorProximity
+        });
+      }
+    }
+
+    function scanProximityElements() {
+      var selectors = [
+        '#hero-heading',
+        '.hero-headline',
+        '.hero-wordmark',
+        '.compare-hero h1',
+        '.hero-title',
+        '.hero h1',
+        '[data-cursor-proximity]',
+        '.text-cursor-proximity',
+        '.compare-hero-title',
+        'h1.masthead-title'
+      ];
+
+      selectors.forEach(function(sel) {
+        var elements = document.querySelectorAll(sel);
+        elements.forEach(function(el) {
+          registerProximityElement(el);
+        });
       });
     }
 
-    // Automatically bind to hero titles on comparison and landing pages
-    var targetSelectors = [
-      '.compare-hero h1',
-      '.hero-title',
-      '.hero h1',
-      '[data-cursor-proximity]',
-      '.compare-hero-title',
-      'h1.masthead-title'
-    ];
+    // Run initial scan
+    scanProximityElements();
 
-    targetSelectors.forEach(function(sel) {
-      var elements = document.querySelectorAll(sel);
-      elements.forEach(function(el) {
-        setupProximityTarget(el);
-      });
+    // MutationObserver watches for React mounting or dynamic route changes
+    var observer = new MutationObserver(function() {
+      scanProximityElements();
     });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Fallback polling during initial page hydration
+    var pollCount = 0;
+    var hydrationPoller = setInterval(function() {
+      scanProximityElements();
+      pollCount++;
+      if (pollCount > 15) clearInterval(hydrationPoller);
+    }, 400);
 
     // -------------------------------------------------------------
-    // Part 3: Animation Loop (Spring Lerp Physics + Text Proximity)
+    // Part 3: Render Loop (Spring Lerp Physics + Text Proximity)
     // -------------------------------------------------------------
     function renderLoop() {
       if (isVisible && !isTouch) {
@@ -289,20 +309,21 @@
         ring.style.transform = 'translate(' + ringX.toFixed(1) + 'px, ' + ringY.toFixed(1) + 'px) translate(-50%, -50%)';
 
         // Update Text Cursor Proximity
-        if (proximityElements.length > 0) {
-          for (var p = 0; p < proximityElements.length; p++) {
-            var item = proximityElements[p];
-            var rect = item.container.getBoundingClientRect();
+        if (proximityTargets.length > 0) {
+          for (var p = 0; p < proximityTargets.length; p++) {
+            var target = proximityTargets[p];
+            var container = target.container;
+            var rect = container.getBoundingClientRect();
 
-            // Only calculate if cursor is reasonably close to container bounds (within 150px)
+            // Bounding box check with margin
             if (
-              mouseX >= rect.left - 150 &&
-              mouseX <= rect.right + 150 &&
-              mouseY >= rect.top - 150 &&
-              mouseY <= rect.bottom + 150
+              mouseX >= rect.left - 120 &&
+              mouseX <= rect.right + 120 &&
+              mouseY >= rect.top - 120 &&
+              mouseY <= rect.bottom + 120
             ) {
-              var letters = item.letters;
-              var radius = item.radius;
+              var letters = target.letters;
+              var radius = target.radius;
 
               for (var l = 0; l < letters.length; l++) {
                 var letter = letters[l];
@@ -315,26 +336,38 @@
                 var dist = Math.sqrt(dx * dx + dy * dy);
 
                 if (dist < radius) {
-                  // Gaussian falloff matching the React TextCursorProximity formula
+                  // Gaussian falloff: normalizedDistance = Math.exp(-Math.pow(dist / (radius / 2), 2) / 2)
                   var norm = dist / (radius / 2);
                   var proximity = Math.exp(-Math.pow(norm, 2) / 2);
 
-                  var scale = 1 + proximity * 0.32; // up to 1.32x scale
-                  var elevate = -proximity * 4; // slight vertical lift
-                  letter.style.transform = 'scale(' + scale.toFixed(3) + ') translateY(' + elevate.toFixed(1) + 'px)';
-                  letter.style.color = proximity > 0.35 ? '#13708e' : '';
+                  // Scale: from scale(1) to scale(1.4)
+                  var scale = 1 + proximity * 0.40;
+                  var lift = -proximity * 5.5;
+
+                  letter.style.transform = 'scale(' + scale.toFixed(3) + ') translateY(' + lift.toFixed(1) + 'px)';
+
+                  // Chromatic illumination
+                  if (proximity > 0.08) {
+                    letter.style.color = '#FF87C1';
+                    letter.style.textShadow = '0 0 ' + (proximity * 18).toFixed(1) + 'px rgba(255, 135, 193, 0.85), 0 0 ' + (proximity * 8).toFixed(1) + 'px rgba(255, 68, 68, 0.6)';
+                  } else {
+                    letter.style.color = '';
+                    letter.style.textShadow = '';
+                  }
                 } else if (letter.style.transform !== '') {
                   letter.style.transform = '';
                   letter.style.color = '';
+                  letter.style.textShadow = '';
                 }
               }
             } else {
-              // Cursor is outside container bounds; reset letters if needed
-              var lettersToReset = item.letters;
+              // Cursor is outside container bounds; reset letters
+              var lettersToReset = target.letters;
               for (var r = 0; r < lettersToReset.length; r++) {
                 if (lettersToReset[r].style.transform !== '') {
                   lettersToReset[r].style.transform = '';
                   lettersToReset[r].style.color = '';
+                  lettersToReset[r].style.textShadow = '';
                 }
               }
             }
