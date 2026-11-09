@@ -3277,6 +3277,13 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(getPagePath('robots.txt'));
 });
 
+// Dynamic Motion & Proximity Script (Always Fresh, No-Cache Revalidation)
+app.get('/cursor-fx.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.sendFile(getPagePath('cursor-fx.js'));
+});
+
 app.get(['/login', '/signin', '/signup', '/register', '/auth', '/forgot-password', '/reset-password', '/verify-email'], (req, res) => {
   if (req.user && ['/login', '/signin', '/signup', '/register', '/auth'].includes(req.path)) {
     const target = req.query.redirect && req.query.redirect.startsWith('/') ? req.query.redirect : '/dashboard';
