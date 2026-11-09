@@ -2,10 +2,11 @@
  * MyFolio Cursor FX & Text Proximity Motion Engine
  * Features:
  * 1. Fluid Magnetic Cursor Dot & Ring with spring lerp physics
- * 2. Text Cursor Proximity Engine (Gaussian distance-based letter scaling & chromatic illumination)
- *    - Ported from TextCursorProximity component (from: scale(1), to: scale(1.4), radius: 100, gaussian)
- *    - Active across Landing Page (#hero-heading, .hero-headline, .hero-wordmark) and Comparison Pages
- *    - MutationObserver ensures instant binding even when React mounts elements dynamically
+ * 2. Multi-Chromatic Text Cursor Proximity Engine
+ *    - Full-page coverage: every heading, paragraph, nav item, badge, button & link
+ *    - Spectrum of 12 distinct jewel & neon chromatic palettes varying across all texts
+ *    - Gaussian distance-based letter scaling (scale 1.0 -> 1.40) & vertical lift
+ *    - MutationObserver ensures dynamic React mounts on landing & comparison pages are bound
  * 3. Mobile touch awareness (disables custom cursor on touch, activates gyroscope orientation)
  * 4. Full compliance with prefers-reduced-motion
  */
@@ -112,8 +113,9 @@
     .mf-proximity-letter {
       display: inline-block;
       will-change: transform, color, text-shadow;
-      transition: transform 0.06s ease-out, color 0.1s ease-out, text-shadow 0.1s ease-out;
+      transition: transform 0.06s ease-out, color 0.12s ease-out, text-shadow 0.12s ease-out;
       transform-origin: center bottom;
+      pointer-events: auto;
     }
   `;
   document.head.appendChild(style);
@@ -152,32 +154,23 @@
       }
       mouseX = e.clientX;
       mouseY = e.clientY;
-
       if (!isVisible) {
         isVisible = true;
         dot.style.opacity = '1';
         ring.style.opacity = '1';
-        document.body.classList.add('has-custom-cursor');
-        ringX = mouseX;
-        ringY = mouseY;
-        dotX = mouseX;
-        dotY = mouseY;
+        if (!isTouch) {
+          document.body.classList.add('has-custom-cursor');
+        }
       }
     }, { passive: true });
 
-    window.addEventListener('pointerleave', function() {
-      isVisible = false;
-      dot.style.opacity = '0';
-      ring.style.opacity = '0';
-      document.body.classList.remove('has-custom-cursor');
-    }, { passive: true });
-
-    window.addEventListener('mousedown', function() {
+    window.addEventListener('pointerdown', function(e) {
+      if (e.pointerType === 'touch') return;
       isClicking = true;
       document.body.classList.add('mf-cursor-clicking');
     }, { passive: true });
 
-    window.addEventListener('mouseup', function() {
+    window.addEventListener('pointerup', function() {
       isClicking = false;
       document.body.classList.remove('mf-cursor-clicking');
     }, { passive: true });
@@ -199,12 +192,41 @@
     }, { passive: true });
 
     // -------------------------------------------------------------
-    // Part 2: Text Cursor Proximity Engine (Faithful Port of TextCursorProximity)
+    // Part 2: Multi-Chromatic Text Cursor Proximity Engine
     // -------------------------------------------------------------
+    // 12 distinct jewel & neon chromatic palettes so texts never share a monotone color
+    var CHROMATIC_PALETTES = [
+      // 0: Hot Neon Magenta
+      { color: '#FF2E93', shadow1: 'rgba(255, 46, 147, 0.95)', shadow2: 'rgba(255, 110, 180, 0.70)' },
+      // 1: Electric Cyan
+      { color: '#00F0FF', shadow1: 'rgba(0, 240, 255, 0.95)', shadow2: 'rgba(0, 180, 255, 0.70)' },
+      // 2: Radiant Solar Amber
+      { color: '#F59E0B', shadow1: 'rgba(245, 158, 11, 0.95)', shadow2: 'rgba(251, 191, 36, 0.70)' },
+      // 3: Electric Violet
+      { color: '#A855F7', shadow1: 'rgba(168, 85, 247, 0.95)', shadow2: 'rgba(192, 132, 252, 0.70)' },
+      // 4: Emerald Mint
+      { color: '#10B981', shadow1: 'rgba(16, 185, 129, 0.95)', shadow2: 'rgba(52, 211, 153, 0.70)' },
+      // 5: Coral Flame
+      { color: '#FF4D4D', shadow1: 'rgba(255, 77, 77, 0.95)', shadow2: 'rgba(255, 128, 128, 0.70)' },
+      // 6: Azure Sky
+      { color: '#38BDF8', shadow1: 'rgba(56, 189, 248, 0.95)', shadow2: 'rgba(14, 165, 233, 0.70)' },
+      // 7: Vivid Tangerine
+      { color: '#FB923C', shadow1: 'rgba(251, 146, 60, 0.95)', shadow2: 'rgba(249, 115, 22, 0.70)' },
+      // 8: Cyber Lime
+      { color: '#84CC16', shadow1: 'rgba(132, 204, 22, 0.95)', shadow2: 'rgba(163, 230, 53, 0.70)' },
+      // 9: Rose Quartz
+      { color: '#FB7185', shadow1: 'rgba(251, 113, 133, 0.95)', shadow2: 'rgba(244, 63, 94, 0.70)' },
+      // 10: Indigo Starlight
+      { color: '#6366F1', shadow1: 'rgba(99, 102, 241, 0.95)', shadow2: 'rgba(129, 140, 248, 0.70)' },
+      // 11: Electric Turquoise
+      { color: '#2DD4BF', shadow1: 'rgba(45, 212, 191, 0.95)', shadow2: 'rgba(20, 184, 166, 0.70)' }
+    ];
+
     var proximityTargets = [];
+    var containerCounter = 0;
 
     // Safely wraps text characters in individual spans without breaking existing React trees
-    function wrapTextNodes(node, letterEntries) {
+    function wrapTextNodes(node, letterEntries, containerIdx, wordTracker) {
       if (node.nodeType === 3) { // TEXT_NODE
         var text = node.textContent;
         if (!text || text.trim() === '') return;
@@ -212,16 +234,25 @@
         var frag = document.createDocumentFragment();
         for (var i = 0; i < text.length; i++) {
           var char = text[i];
-          if (char === ' ') {
-            frag.appendChild(document.createTextNode(' '));
+          if (char === ' ' || char === '\n' || char === '\t') {
+            frag.appendChild(document.createTextNode(char));
+            if (char === ' ') {
+              wordTracker.count++;
+            }
           } else {
             var span = document.createElement('span');
             span.className = 'mf-proximity-letter';
             span.textContent = char;
             span.setAttribute('aria-hidden', 'true');
-            span.style.display = 'inline-block';
-            span.style.willChange = 'transform, color, text-shadow';
-            span.style.transformOrigin = 'center bottom';
+
+            // Assign a unique chromatic palette per container and word sequence
+            var paletteIdx = (containerIdx * 5 + wordTracker.count * 2) % CHROMATIC_PALETTES.length;
+            var pal = CHROMATIC_PALETTES[paletteIdx];
+            span._palColor = pal.color;
+            span._palShadow1 = pal.shadow1;
+            span._palShadow2 = pal.shadow2;
+            span._isTransformed = false;
+
             frag.appendChild(span);
             letterEntries.push(span);
           }
@@ -232,49 +263,93 @@
           letterEntries.push(node);
           return;
         }
+        // Don't traverse SVGs, code tags, or excluded widgets
+        var tagName = node.tagName.toLowerCase();
+        if (tagName === 'svg' || tagName === 'script' || tagName === 'style' || tagName === 'canvas' || tagName === 'iframe') {
+          return;
+        }
+
         var children = Array.from(node.childNodes);
         for (var c = 0; c < children.length; c++) {
-          wrapTextNodes(children[c], letterEntries);
+          wrapTextNodes(children[c], letterEntries, containerIdx, wordTracker);
         }
       }
     }
 
     function registerProximityElement(container) {
       if (!container || container.dataset.mfProximityBound) return;
+
+      // Skip if an ancestor container is already bound
+      var parent = container.parentElement;
+      if (parent && parent.closest && parent.closest('[data-mf-proximity-bound]')) return;
+
       container.dataset.mfProximityBound = 'true';
 
       var letters = [];
-      wrapTextNodes(container, letters);
+      var cIdx = containerCounter++;
+      var wordTracker = { count: 0 };
+      wrapTextNodes(container, letters, cIdx, wordTracker);
 
       if (letters.length > 0) {
         proximityTargets.push({
           container: container,
           letters: letters,
-          radius: 100 // 100px Gaussian interaction radius matching TextCursorProximity
+          hasActive: false,
+          radius: 95 // 95px interaction radius
         });
       }
     }
 
     function scanProximityElements() {
+      // Full-spectrum selector list covering all landing page texts, navigation, and comparison routes
       var selectors = [
         '#hero-heading',
         '.hero-headline',
         '.hero-wordmark',
-        '.compare-hero h1',
         '.hero-title',
-        '.hero h1',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'p',
+        'nav a',
+        '.nav-link',
+        '.text-link',
+        '.back-to-top',
+        'button',
+        '.btn',
+        '.eyebrow',
+        '.section-title',
+        '.closing-title',
+        '.footer-wordmark',
+        '.closing-caption',
+        '.faq-item button',
+        'li',
+        'label',
         '[data-cursor-proximity]',
         '.text-cursor-proximity',
-        '.compare-hero-title',
-        'h1.masthead-title'
+        '.compare-hero-title'
       ];
 
-      selectors.forEach(function(sel) {
-        var elements = document.querySelectorAll(sel);
-        elements.forEach(function(el) {
+      var elements = document.querySelectorAll(selectors.join(','));
+      for (var i = 0; i < elements.length; i++) {
+        var el = elements[i];
+        if (el.dataset.mfProximityBound) continue;
+
+        // Skip ads, tracking, cursor, and leaves containers
+        if (el.closest('#mf-cursor-dot, #mf-cursor-ring, .leaves-container, [class*="monetag"], [id*="monetag"], [class*="ad-"], [id*="ad"], iframe, ins, svg, script, style, noscript')) {
+          continue;
+        }
+
+        // Verify element has text
+        var hasText = false;
+        for (var n = 0; n < el.childNodes.length; n++) {
+          if (el.childNodes[n].nodeType === 3 && el.childNodes[n].textContent.trim().length > 0) {
+            hasText = true;
+            break;
+          }
+        }
+        if (hasText || (el.children.length === 0 && el.textContent.trim().length > 0)) {
           registerProximityElement(el);
-        });
-      });
+        }
+      }
     }
 
     // Run initial scan
@@ -294,6 +369,19 @@
       if (pollCount > 15) clearInterval(hydrationPoller);
     }, 400);
 
+    function resetTargetLetters(target) {
+      var letters = target.letters;
+      for (var r = 0; r < letters.length; r++) {
+        if (letters[r]._isTransformed) {
+          letters[r].style.transform = '';
+          letters[r].style.color = '';
+          letters[r].style.textShadow = '';
+          letters[r]._isTransformed = false;
+        }
+      }
+      target.hasActive = false;
+    }
+
     // -------------------------------------------------------------
     // Part 3: Render Loop (Spring Lerp Physics + Text Proximity)
     // -------------------------------------------------------------
@@ -308,20 +396,32 @@
         dot.style.transform = 'translate(' + dotX.toFixed(1) + 'px, ' + dotY.toFixed(1) + 'px) translate(-50%, -50%)';
         ring.style.transform = 'translate(' + ringX.toFixed(1) + 'px, ' + ringY.toFixed(1) + 'px) translate(-50%, -50%)';
 
-        // Update Text Cursor Proximity
-        if (proximityTargets.length > 0) {
-          for (var p = 0; p < proximityTargets.length; p++) {
+        // Update Text Cursor Proximity across all registered text containers
+        var targetCount = proximityTargets.length;
+        if (targetCount > 0) {
+          var viewH = window.innerHeight;
+
+          for (var p = 0; p < targetCount; p++) {
             var target = proximityTargets[p];
             var container = target.container;
             var rect = container.getBoundingClientRect();
 
-            // Bounding box check with margin
+            // Viewport culling: skip elements completely offscreen
+            if (rect.bottom < -60 || rect.top > viewH + 60) {
+              if (target.hasActive) {
+                resetTargetLetters(target);
+              }
+              continue;
+            }
+
+            // Proximity bounding box check with 90px threshold
             if (
-              mouseX >= rect.left - 120 &&
-              mouseX <= rect.right + 120 &&
-              mouseY >= rect.top - 120 &&
-              mouseY <= rect.bottom + 120
+              mouseX >= rect.left - 90 &&
+              mouseX <= rect.right + 90 &&
+              mouseY >= rect.top - 90 &&
+              mouseY <= rect.bottom + 90
             ) {
+              target.hasActive = true;
               var letters = target.letters;
               var radius = target.radius;
 
@@ -336,40 +436,34 @@
                 var dist = Math.sqrt(dx * dx + dy * dy);
 
                 if (dist < radius) {
-                  // Gaussian falloff: normalizedDistance = Math.exp(-Math.pow(dist / (radius / 2), 2) / 2)
+                  // Gaussian falloff
                   var norm = dist / (radius / 2);
                   var proximity = Math.exp(-Math.pow(norm, 2) / 2);
 
-                  // Scale: from scale(1) to scale(1.4)
-                  var scale = 1 + proximity * 0.40;
-                  var lift = -proximity * 5.5;
+                  // Scale & elevation
+                  var scale = 1 + proximity * 0.38;
+                  var lift = -proximity * 5.2;
 
                   letter.style.transform = 'scale(' + scale.toFixed(3) + ') translateY(' + lift.toFixed(1) + 'px)';
 
-                  // Chromatic illumination
+                  // Chromatic illumination with the letter's assigned vibrant palette
                   if (proximity > 0.08) {
-                    letter.style.color = '#FF87C1';
-                    letter.style.textShadow = '0 0 ' + (proximity * 18).toFixed(1) + 'px rgba(255, 135, 193, 0.85), 0 0 ' + (proximity * 8).toFixed(1) + 'px rgba(255, 68, 68, 0.6)';
+                    letter.style.color = letter._palColor;
+                    letter.style.textShadow = '0 0 ' + (proximity * 16).toFixed(1) + 'px ' + letter._palShadow1 + ', 0 0 ' + (proximity * 8).toFixed(1) + 'px ' + letter._palShadow2;
                   } else {
                     letter.style.color = '';
                     letter.style.textShadow = '';
                   }
-                } else if (letter.style.transform !== '') {
+                  letter._isTransformed = true;
+                } else if (letter._isTransformed) {
                   letter.style.transform = '';
                   letter.style.color = '';
                   letter.style.textShadow = '';
+                  letter._isTransformed = false;
                 }
               }
-            } else {
-              // Cursor is outside container bounds; reset letters
-              var lettersToReset = target.letters;
-              for (var r = 0; r < lettersToReset.length; r++) {
-                if (lettersToReset[r].style.transform !== '') {
-                  lettersToReset[r].style.transform = '';
-                  lettersToReset[r].style.color = '';
-                  lettersToReset[r].style.textShadow = '';
-                }
-              }
+            } else if (target.hasActive) {
+              resetTargetLetters(target);
             }
           }
         }
