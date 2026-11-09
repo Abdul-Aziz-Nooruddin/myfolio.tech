@@ -193,12 +193,24 @@
   <!-- Live Template Demo: Slush Nordic Venture (Nordic Design Venture Studio) -->
   <url>
     <loc>https://myfolio.tech/slush</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
       <image:loc>https://myfolio.tech/assets/templates/slush-nordic-venture-hero.webp</image:loc>
       <image:title>Slush Nordic Venture Spatial Portfolio Template</image:title>
+    </image:image>
+  </url>
+
+  <!-- Live Template Demo: Apogee Spatial 3D (Spatial 3D Developer Portfolio) -->
+  <url>
+    <loc>https://myfolio.tech/apogee</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://myfolio.tech/assets/templates/apogee-spatial-hero.webp</image:loc>
+      <image:title>Apogee Spatial 3D Developer Portfolio Template</image:title>
     </image:image>
   </url>
 

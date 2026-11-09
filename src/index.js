@@ -227,6 +227,29 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
+// Global X-Robots-Tag header on private, auth, admin, thank-you, and user preview routes.
+// Crawlers are permitted in robots.txt so they can crawl once, receive this noindex directive,
+// and permanently remove the URL from Google's search index without flagging 'Indexed, though blocked by robots.txt'.
+app.use([
+  '/auth', '/auth.html', '/login', '/signin', '/signup', '/register',
+  '/forgot-password', '/reset-password', '/verify-email',
+  '/dashboard', '/dashboard.html', '/app', '/dash',
+  '/profile', '/profile.html',
+  '/admin', '/admin.html',
+  '/thank-you', '/thank-you.html', '/success',
+  '/p', '/sites'
+], (req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  next();
+});
+
+app.use((req, res, next) => {
+  if (req.path.startsWith('/p/') || req.path.startsWith('/sites/')) {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
+  next();
+});
+
 // Guard GET on POST-only endpoints (e.g. /api/generate/unified) so crawlers get 405 with noindex instead of 404
 app.get(['/api/generate/unified', '/api/generate/github', '/api/web/generate', '/api/web/parse-resume'], (req, res) => {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
@@ -5098,8 +5121,8 @@ async function dbHealthCheck(db) {
 // 404 Not Found Handler (Custom 3D Universe Page & API JSON)
 // ==========================================
 app.use((req, res) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   if (req.path.startsWith('/api/')) {
-    res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
     return res.status(404).json({ error: 'Endpoint not found', path: req.path });
   }
 

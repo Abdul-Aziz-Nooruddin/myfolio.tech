@@ -2,11 +2,17 @@
 # MyFolio.tech — robots.txt (Google Search Console & GEO Hardened)
 # ==========================================================
 
+# Googlebot — RFC 9309 compliant
+# Note: Private/auth/preview pages (/auth, /dashboard, /admin, /p/, etc.)
+# are NOT blocked here so Googlebot can crawl them, receive the HTTP response
+# header 'X-Robots-Tag: noindex, nofollow, noarchive' and <meta name="robots" content="noindex">,
+# and permanently drop them from Google Search index without flagging 'Indexed, though blocked by robots.txt'.
 User-agent: Googlebot
 Allow: /
-Allow: /assets/
-Allow: /landing-pages/
-Allow: /images/
+Disallow: /cdn-cgi/
+Disallow: /api/
+Disallow: /src/
+Disallow: /node_modules/
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -36,6 +42,13 @@ Allow: /faq
 Allow: /terms
 Allow: /privacy
 Allow: /refund
+Allow: /compare
+Allow: /vs-wix
+Allow: /vs-squarespace
+Allow: /vs-wordpress
+Allow: /vs-webflow
+Allow: /vs-framer
+Allow: /vs-github-pages
 Allow: /assets/
 Allow: /landing-pages/
 Allow: /images/
@@ -48,79 +61,9 @@ Allow: /manifest.json
 Allow: /favicon*
 Allow: /google001961baa3b6a214.html
 
-# Block API endpoints from search crawlers
+# Block technical endpoints, internal code & dependencies
 Disallow: /cdn-cgi/
 Disallow: /api/
-
-# Block authentication, private account & app states
-Disallow: /auth
-Disallow: /auth.html
-Disallow: /login
-Disallow: /signin
-Disallow: /signup
-Disallow: /register
-Disallow: /forgot-password
-Disallow: /reset-password
-Disallow: /verify-email
-Disallow: /dashboard
-Disallow: /dashboard.html
-Disallow: /profile
-Disallow: /profile.html
-Disallow: /admin
-Disallow: /admin.html
-Disallow: /thank-you
-Disallow: /thank-you.html
-
-# Block dynamic user preview sites & storage
-Disallow: /p/
-Disallow: /sites/
-
-# Block internal source code, dependencies & internal schemas
-Disallow: /src/
-Disallow: /node_modules/
-
-# ==========================================================
-# Explicit Rules for Googlebot (RFC 9309 Strict Compliance)
-# ==========================================================
-User-agent: Googlebot
-Allow: /$
-Allow: /studio
-Allow: /rbp
-Allow: /jack-3d
-Allow: /nadia
-Allow: /kage
-Allow: /about
-Allow: /contact
-Allow: /faq
-Allow: /terms
-Allow: /privacy
-Allow: /refund
-Allow: /assets/
-Allow: /landing-pages/
-Allow: /images/
-Allow: /sitemap.xml
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /.well-known/
-Allow: /ads.txt
-Allow: /manifest.json
-Allow: /favicon*
-Allow: /google001961baa3b6a214.html
-Disallow: /api/
-Disallow: /auth
-Disallow: /auth.html
-Disallow: /login
-Disallow: /signin
-Disallow: /signup
-Disallow: /dashboard
-Disallow: /dashboard.html
-Disallow: /profile
-Disallow: /profile.html
-Disallow: /admin
-Disallow: /admin.html
-Disallow: /thank-you
-Disallow: /p/
-Disallow: /sites/
 Disallow: /src/
 Disallow: /node_modules/
 
@@ -128,31 +71,11 @@ Disallow: /node_modules/
 # Explicit Rules for Bingbot
 # ==========================================================
 User-agent: Bingbot
-Allow: /$
-Allow: /studio
-Allow: /rbp
-Allow: /jack-3d
-Allow: /nadia
-Allow: /kage
-Allow: /about
-Allow: /contact
-Allow: /faq
-Allow: /terms
-Allow: /privacy
-Allow: /refund
-Allow: /assets/
-Allow: /landing-pages/
-Allow: /images/
-Allow: /sitemap.xml
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /.well-known/
-Allow: /ads.txt
+Allow: /
+Disallow: /cdn-cgi/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /src/
+Disallow: /node_modules/
 
 # ==========================================================
 # AI & Generative Search Engines (GEO - ChatGPT Search, Perplexity, Claude, Applebot)
@@ -161,67 +84,54 @@ User-agent: GPTBot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: ChatGPT-User
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: ClaudeBot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: Claude-SearchBot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: PerplexityBot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: Applebot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
+Disallow: /cdn-cgi/
 
 User-agent: Applebot-Extended
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
+Disallow: /cdn-cgi/
 
 User-agent: DuckAssistBot
 Allow: /
 Allow: /.well-known/
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
+Disallow: /cdn-cgi/
 
 # ==========================================================
 # Social Media Crawlers (Allow Assets for Rich Link Previews)
@@ -247,18 +157,14 @@ Allow: /images/
 User-agent: SemrushBot
 Allow: /
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 User-agent: AhrefsBot
 Allow: /
 Disallow: /api/
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
+Disallow: /src/
 
 # ==========================================================
 # Aggressive Scraper Throttling
@@ -271,7 +177,6 @@ Disallow: /
 
 # ==========================================================
 # Unwanted AI Crawlers & Scraper Bots (Cloudflare AI Labyrinth Complement)
-# Block aggressive data-harvesting AI scrapers that do not respect robots.txt
 # ==========================================================
 User-agent: Bytespider
 Disallow: /
@@ -281,8 +186,7 @@ Disallow: /
 
 User-agent: anthropic-ai
 Disallow: /api/
-Disallow: /p/
-Disallow: /sites/
+Disallow: /cdn-cgi/
 
 User-agent: cohere-ai
 Disallow: /

@@ -693,5 +693,41 @@ test('11. Token Bucket rate limiter: permits burst up to capacity and rejects ex
   assert.equal(r5.status, 200, 'Replenished token should allow request');
 });
 
+// =========================================================================
+// 8. GOOGLE SEARCH CONSOLE & SITEMAP INDEXING INTEGRITY
+// =========================================================================
+test('8. GSC Audit: robots.txt allows noindex crawling and sitemap contains 29 clean URLs', () => {
+  // 1. Verify robots.txt does not block /auth or private routes from crawling
+  const robots = fs.readFileSync(path.join(process.cwd(), 'web', 'robots.txt'), 'utf8');
+  const pubRobots = fs.readFileSync(path.join(process.cwd(), 'public', 'robots.txt'), 'utf8');
+  assert.equal(robots, pubRobots, 'web/robots.txt and public/robots.txt must match');
+  
+  const googlebotBlocks = (robots.match(/User-agent:\s*Googlebot/gi) || []).length;
+  assert.equal(googlebotBlocks, 1, 'Googlebot must have exactly one consolidated section');
+  assert.ok(!robots.includes('Disallow: /auth'), 'robots.txt must not Disallow /auth (prevents GSC "Indexed, though blocked by robots.txt")');
+  assert.ok(!robots.includes('Disallow: /dashboard'), 'robots.txt must not Disallow /dashboard');
+  assert.ok(robots.includes('Disallow: /api/'), 'robots.txt must Disallow /api/');
+  assert.ok(robots.includes('Disallow: /cdn-cgi/'), 'robots.txt must Disallow /cdn-cgi/');
+
+  // 2. Verify sitemap.xml contains 29 clean canonical URLs without www, trailing slashes, or redirects
+  const sitemap = fs.readFileSync(path.join(process.cwd(), 'web', 'sitemap.xml'), 'utf8');
+  const pubSitemap = fs.readFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), 'utf8');
+  assert.equal(sitemap, pubSitemap, 'web/sitemap.xml and public/sitemap.xml must match');
+
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  assert.equal(locs.length, 29, 'sitemap.xml must have exactly 29 URLs');
+  assert.ok(locs.includes('https://myfolio.tech/apogee'), 'sitemap.xml must include /apogee');
+  assert.ok(locs.includes('https://myfolio.tech/slush'), 'sitemap.xml must include /slush');
+
+  for (const loc of locs) {
+    assert.ok(loc.startsWith('https://myfolio.tech'), 'loc must start with https://myfolio.tech: ' + loc);
+    assert.ok(!loc.includes('www.'), 'loc must not contain www.: ' + loc);
+    if (loc !== 'https://myfolio.tech/') {
+      assert.ok(!loc.endsWith('/'), 'loc must not have trailing slash: ' + loc);
+    }
+  }
+});
+
+
 
 
