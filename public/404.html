@@ -303,10 +303,10 @@
 
     <!-- Right Column: 404 Narrative & Quick Return Actions -->
     <div class="notfound-col-right">
-      <div class="eyebrow"><span class="status-dot"></span> MISSING SECTOR // 404</div>
-      <div class="huge-404">404</div>
-      <h1 class="notfound-title">Oops! You've found a missing page.</h1>
-      <p class="notfound-desc">Instead of leaving empty-handed, solve this little puzzle: <strong>MATCHSTICK MIND</strong>.</p>
+      <div class="eyebrow" id="notfound-eyebrow"><span class="status-dot"></span> MISSING SECTOR // 404</div>
+      <div class="huge-404" id="notfound-code">404</div>
+      <h1 class="notfound-title" id="notfound-title">Oops! You've found a missing page.</h1>
+      <p class="notfound-desc" id="notfound-desc">Instead of leaving empty-handed, solve this little puzzle: <strong>MATCHSTICK MIND</strong>.</p>
 
       <div class="mm-section-cta">
         <h3>Think you've got what it takes?</h3>
@@ -461,5 +461,38 @@
 
   <!-- Spider Cursor Procedural Engine (Exclusive to 404 page) -->
   <script src="/spider-cursor.js" defer></script>
+
+  <!-- Offline & Typo Adaptation Script -->
+  <script>
+    (function initOfflineState() {
+      function updateState() {
+        const isOffline = !navigator.onLine || window.location.search.includes('offline=1');
+        const eyebrow = document.getElementById('notfound-eyebrow');
+        const code = document.getElementById('notfound-code');
+        const title = document.getElementById('notfound-title');
+        const desc = document.getElementById('notfound-desc');
+
+        if (isOffline) {
+          if (eyebrow) eyebrow.innerHTML = '<span class="status-dot" style="background:#e0a800;"></span> OFFLINE PLAYGROUND // NO INTERNET';
+          if (code) code.textContent = 'OFFLINE';
+          if (title) title.textContent = "You're currently offline";
+          if (desc) desc.innerHTML = 'No internet connection detected. While waiting for your connection to return, enjoy solving <strong>MATCHSTICK MIND</strong> or playing with the procedural <strong>Spider Cursor</strong>!';
+        } else {
+          if (eyebrow) eyebrow.innerHTML = '<span class="status-dot"></span> MISSING SECTOR // 404';
+          if (code) code.textContent = '404';
+          if (title) title.textContent = "Oops! You've found a missing page.";
+          if (desc) desc.innerHTML = 'Instead of leaving empty-handed, solve this little puzzle: <strong>MATCHSTICK MIND</strong>.';
+        }
+      }
+
+      window.addEventListener('online', () => {
+        updateState();
+        const eyebrow = document.getElementById('notfound-eyebrow');
+        if (eyebrow) eyebrow.innerHTML = '<span class="status-dot" style="background:#22c55e;"></span> BACK ONLINE // RECONNECTED';
+      });
+      window.addEventListener('offline', updateState);
+      updateState();
+    })();
+  </script>
 </body>
 </html>

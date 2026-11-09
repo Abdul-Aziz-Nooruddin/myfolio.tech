@@ -4974,7 +4974,7 @@ app.get('/p/:siteId', async (req, res) => {
     }
 
     // Dynamic on-the-fly synthesis fallback for freshly generated sites on stateless serverless lambdas
-    if (!html && !isActuallyExpired) {
+    if (!html && !isActuallyExpired && !isNaN(siteTimestamp)) {
       try {
         const rawHandle = parts.slice(0, -1).join('-') || siteId;
         const cleanHandle = rawHandle.replace(/[0-9]/g, '').replace(/[-_]/g, ' ').trim() || 'Creator';
@@ -5020,6 +5020,11 @@ app.get('/p/:siteId', async (req, res) => {
     }
 
     if (!html) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+      const notFoundPage = getPagePath('404.html');
+      if (fs.existsSync(notFoundPage)) {
+        return res.status(404).sendFile(notFoundPage);
+      }
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       return res.status(404).send(TemplateRegistry.render404Page(siteId));
     }
@@ -5082,6 +5087,11 @@ app.get('/p/:siteId/*', (req, res) => {
     }
   }
 
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  const notFoundPage = getPagePath('404.html');
+  if (fs.existsSync(notFoundPage)) {
+    return res.status(404).sendFile(notFoundPage);
+  }
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.status(404).send(TemplateRegistry.render404Page(siteId));
 });

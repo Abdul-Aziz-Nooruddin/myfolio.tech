@@ -229,19 +229,22 @@
     }
   });
 
-  // Universal Service Worker & Cache Purge: ensure all obsolete service workers and caches are eradicated
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const reg of registrations) {
-        reg.unregister().catch(() => {});
-      }
-    }).catch(() => {});
+  // Offline Guard & Service Worker Registration
+  // Pre-caches the 404 offline playground (Matchstick Mind + Spider Cursor) so that
+  // when internet is not available or disconnected, users seamlessly land on the interactive 404 page.
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .catch(() => {});
+    });
   }
-  if ('caches' in window) {
-    caches.keys().then((keys) => {
-      keys.forEach((k) => caches.delete(k).catch(() => {}));
-    }).catch(() => {});
-  }
+
+  // Active Offline Event Listener: If network drops while browsing, route to offline 404 playground
+  window.addEventListener('offline', () => {
+    if (window.location.pathname !== '/404' && window.location.pathname !== '/404.html') {
+      window.location.href = '/404.html?offline=1';
+    }
+  });
 
   window.myfolioTurboNav = {
     prefetch: prefetchUrl,

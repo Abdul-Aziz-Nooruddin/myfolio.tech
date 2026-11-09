@@ -728,6 +728,24 @@ test('8. GSC Audit: robots.txt allows noindex crawling and sitemap contains 29 c
   }
 });
 
+// =========================================================================
+// 9. TYPO ROUTING & OFFLINE SERVICE WORKER INTEGRITY
+// =========================================================================
+test('9. Typo & Offline Guard: sw.js caches 404.html and all mistyped routes serve 404 page', () => {
+  const sw = fs.readFileSync(path.join(process.cwd(), 'web', 'sw.js'), 'utf8');
+  const pubSw = fs.readFileSync(path.join(process.cwd(), 'public', 'sw.js'), 'utf8');
+  assert.equal(sw, pubSw, 'web/sw.js and public/sw.js must match');
+  assert.ok(sw.includes('/404.html'), 'sw.js must pre-cache /404.html');
+  assert.ok(sw.includes('/spider-cursor.js'), 'sw.js must pre-cache spider-cursor.js');
+  assert.ok(sw.includes('event.request.mode === \'navigate\''), 'sw.js must intercept navigation requests');
+
+  const page404 = fs.readFileSync(path.join(process.cwd(), 'web', '404.html'), 'utf8');
+  assert.ok(page404.includes('spider-cursor.js'), '404.html must include spider-cursor.js');
+  assert.ok(page404.includes('initOfflineState'), '404.html must include offline state detection');
+  assert.ok(page404.includes('MATCHSTICK MIND'), '404.html must contain MATCHSTICK MIND');
+});
+
+
 
 
 
