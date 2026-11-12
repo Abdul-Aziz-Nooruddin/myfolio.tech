@@ -446,13 +446,20 @@
   }
 
   function initObserver() {
-    mountHeroDock();
-    if (document.getElementById('heroGithubDock')) return;
+    function tryMount() {
+      const heroCta = document.querySelector(".hero-cta");
+      if (!heroCta || document.getElementById("heroGithubDock")) return true;
+      const dock = createHeroGithubDock();
+      heroCta.innerHTML = "";
+      heroCta.appendChild(dock);
+      return true;
+    }
 
-    const observer = new MutationObserver(() => {
-      const target = document.querySelector('.hero-cta');
-      if (target && !document.getElementById('heroGithubDock')) {
-        mountHeroDock();
+    if (tryMount()) return;
+
+    const observer = new MutationObserver((mutations, obs) => {
+      if (tryMount()) {
+        obs.disconnect();
       }
     });
 
@@ -461,15 +468,7 @@
       subtree: true
     });
 
-    const interval = setInterval(() => {
-      if (document.getElementById('heroGithubDock')) {
-        clearInterval(interval);
-      } else {
-        mountHeroDock();
-      }
-    }, 100);
-
-    setTimeout(() => clearInterval(interval), 5000);
+    setTimeout(() => observer.disconnect(), 3000);
   }
 
   if (document.readyState === 'loading') {
