@@ -69,7 +69,8 @@
     <link rel="shortcut icon" href="/favicon.ico" />
 
     <script src="/turbo-nav.js?v=3.5.0" defer></script>
-    <link rel="stylesheet" href="/hero-input.css?v=3.5.0" />
+    <link rel="preload" href="/hero-input.css?v=3.5.0" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/hero-input.css?v=3.5.0" /></noscript>
     <script src="/hero-input.js?v=3.5.0" defer></script>
     <script src="/falling-leaves.js?v=3.7.0" defer></script>
     <script src="/cursor-fx.js?v=3.0.0" defer></script>
@@ -280,7 +281,8 @@
     }
     </script>
     <script type="module" crossorigin src="/assets/index-v3.js?v=3.6.0"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.6.0">
+    <link rel="preload" href="/assets/index-DXRQ6TqR.css?v=3.6.0" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin />
+    <noscript><link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.6.0"></noscript>
     <style>
       html, body {
         background-color: #f4f1e8 !important;
@@ -456,29 +458,36 @@
             (target || document.body).appendChild(s);
           }
 
-          // 1. Monetag Vignette & Tag Scripts
-          injectScript('https://n6wxm.com/vignette.min.js', { 'data-zone': '12216630' });
-          injectScript('https://nap5k.com/tag.min.js', { 'data-zone': '12216628' });
-          injectScript('https://5gvci.com/act/files/tag.min.js?z=12216492', { 'data-cfasync': 'false', async: '' });
-          injectScript('https://al5sm.com/tag.min.js', { 'data-zone': '12216486' });
-          injectScript('https://quge5.com/88/tag.min.js', { 'data-zone': '307378', 'data-cfasync': 'false', async: '' });
+          var adQueue = [
+            { src: 'https://n6wxm.com/vignette.min.js', attrs: { 'data-zone': '12216630' } },
+            { src: 'https://nap5k.com/tag.min.js', attrs: { 'data-zone': '12216628' } },
+            { src: 'https://5gvci.com/act/files/tag.min.js?z=12216492', attrs: { 'data-cfasync': 'false', async: '' } },
+            { src: 'https://al5sm.com/tag.min.js', attrs: { 'data-zone': '12216486' } },
+            { src: 'https://quge5.com/88/tag.min.js', attrs: { 'data-zone': '307378', 'data-cfasync': 'false', async: '' } },
+            { src: 'https://avegogglerequest.com/74/c0/be/74c0be038fe876b596509f31ae003228.js' },
+            { src: 'https://avegogglerequest.com/a8/d8/14/a8d8145fb37ce3119ad7939df526b93b.js', attrs: { 'data-cfasync': 'false' } },
+            { src: 'https://avegogglerequest.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js', attrs: { 'data-cfasync': 'false', async: 'async' } }
+          ];
 
-          // 2. Adsterra Native & Popunder Scripts
-          injectScript('https://avegogglerequest.com/74/c0/be/74c0be038fe876b596509f31ae003228.js');
-          injectScript('https://avegogglerequest.com/a8/d8/14/a8d8145fb37ce3119ad7939df526b93b.js', { 'data-cfasync': 'false' });
-          injectScript('https://avegogglerequest.com/d9f487de29cd049aad3613bb7eee1e66/invoke.js', { 'data-cfasync': 'false', async: 'async' });
-
-          // 3. Adsterra Banners (Desktop 728x90 & Mobile 320x50)
-          var desktopWrap = document.getElementById('adsterra-desktop-wrap');
-          if (desktopWrap && window.innerWidth >= 769) {
-            window.atOptions = { 'key': '8724b8606818a9cca1bcbb253b74fe12', 'format': 'iframe', 'height': 90, 'width': 728, 'params': {} };
-            injectScript('https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js', { 'data-cfasync': 'false' }, desktopWrap);
+          function drainAdQueue() {
+            if (adQueue.length === 0) {
+              var desktopWrap = document.getElementById('adsterra-desktop-wrap');
+              if (desktopWrap && window.innerWidth >= 769) {
+                window.atOptions = { 'key': '8724b8606818a9cca1bcbb253b74fe12', 'format': 'iframe', 'height': 90, 'width': 728, 'params': {} };
+                injectScript('https://avegogglerequest.com/8724b8606818a9cca1bcbb253b74fe12/invoke.js', { 'data-cfasync': 'false' }, desktopWrap);
+              }
+              var mobileWrap = document.getElementById('adsterra-mobile-wrap');
+              if (mobileWrap && window.innerWidth < 769) {
+                window.atOptions = { 'key': '10e49210ba4a073634c68e773acfa211', 'format': 'iframe', 'height': 50, 'width': 320, 'params': {} };
+                injectScript('https://bauval.org/22/10e49210ba4a073634c68e773acfa211', { 'data-cfasync': 'false' }, mobileWrap);
+              }
+              return;
+            }
+            var nextItem = adQueue.shift();
+            injectScript(nextItem.src, nextItem.attrs);
+            setTimeout(drainAdQueue, 150);
           }
-          var mobileWrap = document.getElementById('adsterra-mobile-wrap');
-          if (mobileWrap && window.innerWidth < 769) {
-            window.atOptions = { 'key': '10e49210ba4a073634c68e773acfa211', 'format': 'iframe', 'height': 50, 'width': 320, 'params': {} };
-            injectScript('https://bauval.org/22/10e49210ba4a073634c68e773acfa211', { 'data-cfasync': 'false' }, mobileWrap);
-          }
+          drainAdQueue();
         }
 
         if (document.readyState === 'complete') {

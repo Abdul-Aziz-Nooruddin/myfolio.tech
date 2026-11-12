@@ -51,7 +51,7 @@ async function runAudit(targetUrl) {
   await new Promise(r => setTimeout(r, 2500));
 
   // Extract Core Web Vitals
-  const webVitals = await page.evaluate(() => {
+  const webVitals = await page.mainFrame().evaluate(() => {
     return new Promise(resolve => {
       let fcp = 0;
       let lcp = 0;
