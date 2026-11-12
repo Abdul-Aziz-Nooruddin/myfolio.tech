@@ -357,7 +357,6 @@
       var selectors = [
         '#hero-heading',
         '.hero-headline',
-        '.hero-wordmark',
         '[data-cursor-proximity]',
         '.text-cursor-proximity'
       ];
