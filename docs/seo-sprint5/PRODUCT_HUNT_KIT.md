@@ -88,3 +88,4 @@ Add this snippet to your footer or hero if you'd like to feature the live Produc
   <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=myfolio&theme=light" alt="MyFolio - 3D Developer Portfolio Platform | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" />
 </a>
 ```
+

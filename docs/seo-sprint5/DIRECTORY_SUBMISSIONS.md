@@ -80,3 +80,4 @@ Submit MyFolio to the following curated directories to build 10+ authoritative d
 - **Tool Name**: `MyFolio Portfolio Maker`
 - **Target URL**: `https://myfolio.tech/portfolio-maker`
 - **Category**: `Developer Tools & Portfolio Builders`
+
