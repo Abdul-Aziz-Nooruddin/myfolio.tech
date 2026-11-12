@@ -168,3 +168,4 @@ async function runAudit(targetUrl) {
 }
 
 runAudit(process.argv[2] || 'https://myfolio.tech').catch(console.error);
+

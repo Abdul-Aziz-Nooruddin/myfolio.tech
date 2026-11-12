@@ -121,7 +121,7 @@
       <!-- Interactive 3D Universe Showcase Section -->
       <div class="hero-universe-stage" id="heroUniverseStage">
         <div class="universe-tabs-header">
-          <span class="universe-header-title">✦ Choose Your 3D Universe:</span>
+          <h2 class="universe-header-title">✦ Choose Your 3D Universe:</h2>
           <span class="universe-header-sub">Click to explore living worlds</span>
         </div>
 

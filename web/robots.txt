@@ -222,8 +222,8 @@ Disallow: /
 # Canonical Sitemaps & Emerging Agent Discovery
 # ==========================================================
 Sitemap: https://myfolio.tech/sitemap.xml
-LLMs: https://myfolio.tech/llms.txt
-LLMs-Full: https://myfolio.tech/llms-full.txt
-OpenAPI: https://myfolio.tech/.well-known/openapi.json
-API-Catalog: https://myfolio.tech/.well-known/api-catalog
-Agent: https://myfolio.tech/.well-known/agent.json
+# LLMs: https://myfolio.tech/llms.txt
+# LLMs-Full: https://myfolio.tech/llms-full.txt
+# OpenAPI: https://myfolio.tech/.well-known/openapi.json
+# API-Catalog: https://myfolio.tech/.well-known/api-catalog
+# Agent: https://myfolio.tech/.well-known/agent.json

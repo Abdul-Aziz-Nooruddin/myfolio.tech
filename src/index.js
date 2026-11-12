@@ -475,8 +475,6 @@ app.use('/assets', express.static(path.join(process.cwd(), 'web', 'assets'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.html')) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-    } else if (/\.(js|css)$/i.test(filePath)) {
-      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
@@ -486,8 +484,6 @@ app.use('/assets', express.static(path.join(process.cwd(), 'public', 'assets'), 
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.html')) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-    } else if (/\.(js|css)$/i.test(filePath)) {
-      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
@@ -4391,9 +4387,6 @@ app.use(express.static(webDir, {
       res.setHeader('Service-Worker-Allowed', '/');
     } else if (filePath.endsWith('.html') || filePath.includes('spatial-realtime-engine')) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-    } else if (/\.(css|js)$/i.test(filePath) && !filePath.includes(path.sep + 'assets' + path.sep)) {
-      // Root CSS and JS: cached for 24h with background stale-while-revalidate for immediate updates
-      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else if (/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?|ttf|eot|webp|glb|gltf|bin|wasm)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable');
     }

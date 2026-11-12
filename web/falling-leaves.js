@@ -261,11 +261,18 @@
     }
   }
 
-  if (typeof document !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', startLeaves);
+  if (typeof window !== 'undefined') {
+    function deferStart() {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(startLeaves, { timeout: 3000 });
+      } else {
+        setTimeout(startLeaves, 1500);
+      }
+    }
+    if (document.readyState === 'complete') {
+      deferStart();
     } else {
-      startLeaves();
+      window.addEventListener('load', deferStart);
     }
   }
 })();
