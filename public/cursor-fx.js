@@ -322,35 +322,44 @@
         proximityTargets.push({
           container: container,
           letters: letters,
+          letterOffsets: [],
+          _offsetsValid: false,
           hasActive: false,
           radius: 95 // 95px interaction radius
         });
       }
     }
 
+    function measureLetterOffsets(target, rect) {
+      if (target._offsetsValid && target.letterOffsets && target.letterOffsets.length === target.letters.length) return;
+      var letters = target.letters;
+      target.letterOffsets = [];
+      for (var l = 0; l < letters.length; l++) {
+        var lRect = letters[l].getBoundingClientRect();
+        target.letterOffsets.push({
+          x: (lRect.left - rect.left) + lRect.width / 2,
+          y: (lRect.top - rect.top) + lRect.height / 2
+        });
+      }
+      target._offsetsValid = true;
+    }
+
+    window.addEventListener('resize', function() {
+      for (var p = 0; p < proximityTargets.length; p++) {
+        proximityTargets[p]._offsetsValid = false;
+      }
+    }, { passive: true });
+
     function scanProximityElements() {
-      // Editorial typography, headings, paragraphs, and narrative copy
-      // Interactive controls (buttons, nav links, form elements) are intentionally excluded
-      // to preserve natural flexbox layout, icon positioning, and zero word/letter splitting
+      // Focus exclusively on top hero mastheads and explicitly tagged opt-in elements
+      // Interactive controls (buttons, nav links, form elements, pills), cards, and general body
+      // paragraphs are intentionally excluded to guarantee 100% intact typography and zero word splitting.
       var selectors = [
         '#hero-heading',
         '.hero-headline',
         '.hero-wordmark',
-        '.hero-title',
-        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-        'p',
-        '.eyebrow',
-        '.section-title',
-        '.closing-title',
-        '.footer-wordmark',
-        '.closing-caption',
-        '.section-label span',
-        '.benefit-row span',
-        '.large-copy',
-        '.about-copy p',
         '[data-cursor-proximity]',
-        '.text-cursor-proximity',
-        '.compare-hero-title'
+        '.text-cursor-proximity'
       ];
 
       var elements = document.querySelectorAll(selectors.join(','));
@@ -380,19 +389,30 @@
     // Run initial scan
     scanProximityElements();
 
-    // MutationObserver watches for React mounting or dynamic route changes
-    var observer = new MutationObserver(function() {
-      scanProximityElements();
+    // Debounced MutationObserver watches for dynamic route changes without layout thrashing
+    var mutationTimer = null;
+    var observer = new MutationObserver(function(mutations) {
+      for (var m = 0; m < mutations.length; m++) {
+        var targetNode = mutations[m].target;
+        if (targetNode && targetNode.classList && (
+          targetNode.classList.contains('mf-cursor-dot') ||
+          targetNode.classList.contains('mf-cursor-ring') ||
+          targetNode.classList.contains('mf-proximity-letter') ||
+          targetNode.id === 'myfolio-seasonal-leaves'
+        )) {
+          return;
+        }
+      }
+      if (mutationTimer) clearTimeout(mutationTimer);
+      mutationTimer = setTimeout(function() {
+        scanProximityElements();
+      }, 300);
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Fallback polling during initial page hydration
-    var pollCount = 0;
-    var hydrationPoller = setInterval(function() {
-      scanProximityElements();
-      pollCount++;
-      if (pollCount > 15) clearInterval(hydrationPoller);
-    }, 400);
+    // Fallback scans during initial hydration
+    setTimeout(scanProximityElements, 120);
+    setTimeout(scanProximityElements, 600);
 
     function resetTargetLetters(target) {
       var letters = target.letters;
@@ -447,14 +467,17 @@
               mouseY <= rect.bottom + 90
             ) {
               target.hasActive = true;
+              measureLetterOffsets(target, rect);
               var letters = target.letters;
+              var offsets = target.letterOffsets;
               var radius = target.radius;
 
               for (var l = 0; l < letters.length; l++) {
                 var letter = letters[l];
-                var lRect = letter.getBoundingClientRect();
-                var cx = lRect.left + lRect.width / 2;
-                var cy = lRect.top + lRect.height / 2;
+                var offset = offsets[l];
+                if (!offset) continue;
+                var cx = rect.left + offset.x;
+                var cy = rect.top + offset.y;
 
                 var dx = mouseX - cx;
                 var dy = mouseY - cy;

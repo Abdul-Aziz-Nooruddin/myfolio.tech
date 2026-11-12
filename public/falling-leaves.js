@@ -187,9 +187,18 @@
           window.addEventListener('click', requestGyroPermission, { once: true });
           window.addEventListener('touchstart', requestGyroPermission, { once: true, passive: true });
 
+          // Pause animation when tab or window is hidden to save 100% background CPU
+          document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+              leavesInstance.stop();
+            } else if (!leavesInstance.prefersStill()) {
+              leavesInstance.start();
+            }
+          });
+
           // Interactive Lerp & Proximity Air-Wake Loop
           function stepPhysics() {
-            if (leavesInstance.running) {
+            if (!document.hidden && leavesInstance.running) {
               // Responsive exponential lerp (fast & snappy, ~0.14)
               currentWindOffset += (targetWindOffset - currentWindOffset) * 0.14;
               currentSpeedMult += (targetSpeedMult - currentSpeedMult) * 0.12;

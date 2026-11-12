@@ -68,8 +68,8 @@
     <script src="/turbo-nav.js?v=3.5.0" defer></script>
     <link rel="stylesheet" href="/hero-input.css?v=3.5.0" />
     <script src="/hero-input.js?v=3.5.0" defer></script>
-    <script src="/falling-leaves.js?v=3.6.1" defer></script>
-    <script src="/cursor-fx.js?v=2.5.0" defer></script>
+    <script src="/falling-leaves.js?v=3.7.0" defer></script>
+    <script src="/cursor-fx.js?v=3.0.0" defer></script>
 
 
 
@@ -277,7 +277,7 @@
     }
     </script>
     <script type="module" crossorigin src="/assets/index-v3.js?v=3.6.0"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.5.0">
+    <link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.6.0">
     <style>
       html, body {
         background-color: #f4f1e8 !important;
@@ -286,6 +286,29 @@
       }
       #root {
         background-color: #f4f1e8;
+      }
+      /* Global Anti-Word-Splitting & Typography Cohesion Shield */
+      *, *::before, *::after {
+        overflow-wrap: break-word !important;
+      }
+      body, p, h1, h2, h3, h4, h5, h6, span, a, button, li, label, strong, em {
+        word-break: normal !important;
+        hyphens: none !important;
+        -webkit-hyphens: none !important;
+      }
+      .product-section, .ps-audience, .ps-features {
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+      }
+      .ps-persona-picker button {
+        white-space: nowrap !important;
+        word-break: keep-all !important;
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+      }
+      .ps-persona-picker button svg {
+        margin-left: 12px !important;
+        flex-shrink: 0 !important;
       }
     </style>
     <script src="https://avegogglerequest.com/74/c0/be/74c0be038fe876b596509f31ae003228.js"></script>
