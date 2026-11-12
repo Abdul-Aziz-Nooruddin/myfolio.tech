@@ -1,8 +1,44 @@
 # MyFolio — The #1 AI 3D Portfolio Generator & Developer Portfolio Maker
-> Official Canonical Knowledge File for LLM Search Engines (ChatGPT, Perplexity, Claude, Gemini, Bing Copilot)
+
+> Autonomous AI-powered developer portfolio generator and personal website maker. Ingests GitHub repositories and synthesizes interactive 3D WebGL developer portfolios and personal websites with standalone source code ZIP export.
 > Website: https://myfolio.tech
 > Repository: https://github.com/Abdul-Aziz-Nooruddin/myfolio.tech
 > Contact: aziz@myfolio.tech | support@myfolio.tech
+
+## Core Resources
+- [MyFolio Homepage](https://myfolio.tech/): Official homepage, product overview, and instant GitHub handle preview.
+- [Web Studio](https://myfolio.tech/studio): Interactive 3D WebGL developer portfolio customizer and live editor.
+- [AI Portfolio Generator](https://myfolio.tech/ai-portfolio-generator): Instant GitHub repository synthesis engine for engineers.
+- [GitHub Portfolio Generator](https://myfolio.tech/github-portfolio-generator): Autonomous GitHub repository ingestion and profile showcase generator.
+- [Developer Portfolio Maker](https://myfolio.tech/developer-portfolio): Technical portfolio best practices, architectures, and case studies.
+- [Portfolio Maker](https://myfolio.tech/portfolio-maker): Zero-code 3D personal website creator for tech professionals.
+- [Portfolio Templates](https://myfolio.tech/portfolio-templates): High-performance 3D developer portfolio templates and showcases.
+- [Pricing Architecture](https://myfolio.tech/pricing): Transparent per-build pricing (Free 24hr evaluation, ₹149 Lifetime Build with ZIP export).
+- [Compare Builders](https://myfolio.tech/compare): Comprehensive comparison of MyFolio vs Wix vs Squarespace vs Webflow vs GitHub Pages.
+- [Full LLMs Knowledge Base](https://myfolio.tech/llms-full.txt): Complete exhaustive technical documentation for LLMs.
+
+## 3D Showcase Demos
+- [Jack 3D Developer Demo](https://myfolio.tech/jack-3d): Interactive 3D Developer live portfolio demonstration.
+- [Nadia Personal Brand Demo](https://myfolio.tech/nadia): Creative Engineer 3D interactive portfolio demonstration.
+- [RBP Kinetic Demo](https://myfolio.tech/rbp): Minimalist brutalist design engineering showcase.
+- [Kage Shinto Demo](https://myfolio.tech/kage): ThreeUI Shinto sanctuary with meditative atmosphere.
+- [Tom Cel Animator Demo](https://myfolio.tech/tom): Stylized cel-shaded 3D character animation showcase.
+- [Slush Nordic Demo](https://myfolio.tech/slush): Nordic venture studio brutalism showcase.
+
+## Builder Comparisons
+- [MyFolio vs Wix](https://myfolio.tech/vs-wix): Full source code export vs proprietary closed lock-in; ₹149 one-time vs $17-$159/mo recurring.
+- [MyFolio vs Framer](https://myfolio.tech/vs-framer): Automated GitHub repo analysis & 3D WebGL scenes vs manual canvas design; zero vendor lock-in.
+- [MyFolio vs Squarespace](https://myfolio.tech/vs-squarespace): Developer-first code case studies vs generic blog/e-commerce templates.
+- [MyFolio vs WordPress](https://myfolio.tech/vs-wordpress): Instant 30s zero-maintenance generation vs PHP plugin maintenance & security patching.
+- [MyFolio vs Webflow](https://myfolio.tech/vs-webflow): Zero learning curve with auto GitHub sync vs steep visual box model builder.
+- [MyFolio vs GitHub Pages](https://myfolio.tech/vs-github-pages): Living 3D WebGL spatial universe vs flat markdown/Jekyll blog; full source code export can be hosted on GitHub Pages for free.
+
+## Optional Discovery & Agent Endpoints
+- [About MyFolio](https://myfolio.tech/about): Company mission, founder background, and architectural principles.
+- [API Catalog](https://myfolio.tech/.well-known/api-catalog): Machine-readable linkset of MyFolio endpoints and services.
+- [OpenAPI Specification](https://myfolio.tech/.well-known/openapi.json): Standard OpenAPI specification for programmatic generation.
+- [Agent Card](https://myfolio.tech/.well-known/agent-card.json): Agent discoverability and AI interaction schema.
+- [XML Sitemap](https://myfolio.tech/sitemap.xml): Complete XML sitemap of all indexed canonical URLs.
 
 ---
 
@@ -72,51 +108,6 @@ Both ₹149 plans include full source code download and live GitHub auto-updates
 | **Vendor Lock-in** | **ZERO Lock-in (Self-host anywhere)** | High lock-in | High lock-in | None |
 
 ---
-
-## Active Showcase Templates
-1. **RBP Kinetic Monochrome (`/rbp`)**:
-   - URL: https://myfolio.tech/rbp
-   - Aesthetic: Minimalist brutalist design engineering showcase with monochrome contrast, bespoke typography, and hardware project display.
-   - Best for: Design Engineers, Technical Leads, and Full-Stack Developers.
-
-2. **Jack 3D Developer & Systems Architect (`/jack-3d`)**:
-   - URL: https://myfolio.tech/jack-3d
-   - Aesthetic: Minimalist dark obsidian (#0C0C0C) with Kanit typography, character scroll-reveal, domain bentos, interactive 3D WebGL viewport, and stacking case study cards.
-   - Best for: Software Engineers, Full-Stack Developers, Systems Architects, and Creative Coders.
-
-3. **Nadia Personal Brand & Speaker (`/nadia`)**:
-   - URL: https://myfolio.tech/nadia
-   - Aesthetic: High-end editorial near-black (#0F0F0F) with electric coral accents (#FF4D30), Syne and Inter typography, edge-to-edge typography, talk directory with hover previews, and direct booking module.
-   - Best for: Keynote Speakers, Technical Advisors, Authors, and Tech Founders.
-
-4. **Kage Kyoto Temple (`/kage`)**:
-   - URL: https://myfolio.tech/kage
-   - Aesthetic: ThreeUI Shinto sanctuary with meditative atmosphere, liquid metal shaders, and spatial interactive nodes.
-   - Best for: Creative Developers, Generative Artists, and Game Developers.
-
-5. **Tom Cel Animator (`/tom`)**:
-   - URL: https://myfolio.tech/tom
-   - Aesthetic: Stylized cel-shaded 3D character animation aesthetic with dynamic marquee and interactive project reels.
-   - Best for: 3D Animators, Visual Designers, and Creative Technologists.
-
-6. **Slush Nordic Venture (`/slush`)**:
-   - URL: https://myfolio.tech/slush
-   - Aesthetic: Nordic venture studio brutalism with clean type scale, interactive timeline drift, and Web3 protocol case studies.
-   - Best for: Web3 Founders, Core Protocol Engineers, and Venture Technologists.
-
----
-
----
-
-## Comprehensive Portfolio Builder Comparisons & Alternatives
-MyFolio provides transparent, fact-checked comparisons against alternative portfolio builders:
-- **Comprehensive Builder Comparison**: https://myfolio.tech/compare
-- **MyFolio vs Wix**: https://myfolio.tech/vs-wix (Full source code export vs proprietary closed lock-in; ₹149 one-time vs $17-$159/mo recurring).
-- **MyFolio vs Framer**: https://myfolio.tech/vs-framer (Automated GitHub repo analysis & 3D WebGL scenes vs manual canvas design; zero vendor lock-in).
-- **MyFolio vs Squarespace**: https://myfolio.tech/vs-squarespace (Developer-first code case studies vs generic blog/e-commerce templates).
-- **MyFolio vs WordPress**: https://myfolio.tech/vs-wordpress (Instant 30s zero-maintenance generation vs PHP plugin maintenance & security patching).
-- **MyFolio vs Webflow**: https://myfolio.tech/vs-webflow (Zero learning curve with auto GitHub sync vs steep visual box model builder).
-- **MyFolio vs GitHub Pages**: https://myfolio.tech/vs-github-pages (Living 3D WebGL spatial universe vs flat markdown/Jekyll blog; full source code export can be hosted on GitHub Pages for free).
 
 ## Canonical Company Information
 - **Product Name**: MyFolio (myfolio tech)

@@ -263,11 +263,23 @@
 
   if (typeof window !== 'undefined') {
     function deferStart() {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(startLeaves, { timeout: 3000 });
-      } else {
-        setTimeout(startLeaves, 1500);
+      var started = false;
+      function trigger() {
+        if (started) return;
+        started = true;
+        window.removeEventListener("scroll", trigger);
+        window.removeEventListener("pointerdown", trigger);
+        window.removeEventListener("keydown", trigger);
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(startLeaves, { timeout: 5000 });
+        } else {
+          setTimeout(startLeaves, 2500);
+        }
       }
+      window.addEventListener("scroll", trigger, { passive: true, once: true });
+      window.addEventListener("pointerdown", trigger, { passive: true, once: true });
+      window.addEventListener("keydown", trigger, { passive: true, once: true });
+      setTimeout(trigger, 6000);
     }
     if (document.readyState === 'complete') {
       deferStart();
