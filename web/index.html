@@ -10,6 +10,7 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" crossorigin />
     <link rel="modulepreload" href="/assets/index-v3.js?v=3.6.0" />
     <link rel="preload" href="/images/hero-base.webp" as="image" />
 
@@ -445,6 +446,10 @@
         function loadDeferredMonetization() {
           if (adsLoaded) return;
           adsLoaded = true;
+          window.removeEventListener('scroll', loadDeferredMonetization);
+          window.removeEventListener('pointerdown', loadDeferredMonetization);
+          window.removeEventListener('touchstart', loadDeferredMonetization);
+          window.removeEventListener('keydown', loadDeferredMonetization);
 
           function injectScript(src, attrs, target) {
             var s = document.createElement('script');
@@ -485,22 +490,18 @@
             }
             var nextItem = adQueue.shift();
             injectScript(nextItem.src, nextItem.attrs);
-            setTimeout(drainAdQueue, 150);
+            setTimeout(drainAdQueue, 250);
           }
           drainAdQueue();
         }
 
-        if (document.readyState === 'complete') {
-          setTimeout(loadDeferredMonetization, 800);
-        } else {
-          window.addEventListener('load', function() {
-            if ('requestIdleCallback' in window) {
-              requestIdleCallback(loadDeferredMonetization, { timeout: 2000 });
-            } else {
-              setTimeout(loadDeferredMonetization, 1200);
-            }
-          });
-        }
+                // User engagement trigger: fire as soon as visitor touches or scrolls the page
+        window.addEventListener('scroll', loadDeferredMonetization, { passive: true, once: true });
+        window.addEventListener('pointerdown', loadDeferredMonetization, { passive: true, once: true });
+        window.addEventListener('touchstart', loadDeferredMonetization, { passive: true, once: true });
+        window.addEventListener('keydown', loadDeferredMonetization, { passive: true, once: true });
+        // Safety fallback timer if no interaction occurs
+        setTimeout(loadDeferredMonetization, 6500); }
       })();
     </script>
 

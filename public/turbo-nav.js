@@ -213,20 +213,7 @@
     // Cache current page HTML
     pageCache.set(cleanPath(window.location.pathname), { html: document.documentElement.outerHTML, timestamp: Date.now() });
     
-    // Speculative prefetch for top navigation items after idle
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => {
-        ['/dashboard', '/studio', '/profile'].forEach(p => {
-          if (p !== cleanPath(window.location.pathname)) prefetchUrl(p);
-        });
-      });
-    } else {
-      setTimeout(() => {
-        ['/dashboard', '/studio', '/profile'].forEach(p => {
-          if (p !== cleanPath(window.location.pathname)) prefetchUrl(p);
-        });
-      }, 1500);
-    }
+    
   });
 
   // Offline Guard & Service Worker Registration
