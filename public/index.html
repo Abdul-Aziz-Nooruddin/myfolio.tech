@@ -318,6 +318,7 @@
     </style>
   </head>
   <body>
+    <div id="static-hero-wordmark" class="hero-wordmark" aria-hidden="true" style="position:fixed;bottom:-32px;left:0;right:0;z-index:0;text-align:center;pointer-events:none;color:var(--paper,#f4f1e8);letter-spacing:-.08em;font-size:clamp(240px,29vw,570px);font-weight:500;line-height:.8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Inter,sans-serif !important;">Myfolio.</div>
     <div id="root"></div>
       <!-- Search Engine Progressive Enhancement & Crawler Fallback (Only active for crawlers/no-JS to prevent FOUC text flash) -->
       <noscript>
@@ -490,14 +491,14 @@
             }
             var nextItem = adQueue.shift();
             injectScript(nextItem.src, nextItem.attrs);
-            setTimeout(drainAdQueue, 180);
+            setTimeout(drainAdQueue, 250);
           }
           drainAdQueue();
         }
 
         // Fire ads non-blocking after initial paint and window load, well within the PageSpeed window
         function scheduleMonetization() {
-          setTimeout(loadDeferredMonetization, 1400);
+          setTimeout(loadDeferredMonetization, 2200);
         }
         if (document.readyState === 'complete') {
           scheduleMonetization();
@@ -508,7 +509,7 @@
         window.addEventListener('pointerdown', loadDeferredMonetization, { passive: true, once: true });
         window.addEventListener('touchstart', loadDeferredMonetization, { passive: true, once: true });
         window.addEventListener('keydown', loadDeferredMonetization, { passive: true, once: true });
-        setTimeout(loadDeferredMonetization, 2200);
+        setTimeout(loadDeferredMonetization, 2800);
       })();
     </script>
 
