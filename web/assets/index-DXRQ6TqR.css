@@ -392,3 +392,5 @@
     margin-right: auto !important;
   }
 }
+
+#heroUniverseStage, .hero-universe-stage, #heroGithubDock, .hero-github-dock, #heroSandboxModal { display: none !important; visibility: hidden !important; pointer-events: none !important; height: 0 !important; overflow: hidden !important; }
