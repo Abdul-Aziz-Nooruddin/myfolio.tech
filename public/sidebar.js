@@ -975,7 +975,7 @@ function initUniversalSidebar(activePage) {
   <!-- Mobile Top Bar (< 960px) -->
   <div class="mobile-top-bar">
     <a href="/" class="brand-link" style="display:flex; align-items:center; gap:0.65rem; text-decoration:none;">
-      <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
+      <img src="/assets/logo-3d.png?v=3.9.0" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
       <span class="brand-name">myfolio<span class="brand-dot">.</span></span>
     </a>
     <div style="display:flex; align-items:center; gap:8px;">
@@ -996,7 +996,7 @@ function initUniversalSidebar(activePage) {
   <aside id="mainAppSidebar" class="app-sidebar">
     <div class="sidebar-brand-header">
       <a href="/" class="brand-link" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
-        <img src="/assets/logo-animated.webp" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
+        <img src="/assets/logo-3d.png?v=3.9.0" alt="MyFolio logo" class="brand-logo-img" width="28" height="28" style="border-radius:50%; object-fit:cover; display:block;" />
         <div class="brand-text-col">
           <span class="brand-name">myfolio<span class="brand-dot">.</span></span>
           <span class="brand-subtitle">PLATFORM</span>

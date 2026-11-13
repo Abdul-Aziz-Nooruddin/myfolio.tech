@@ -263,6 +263,7 @@
 
   if (typeof window !== 'undefined') {
     function deferStart() {
+      if (window.innerWidth < 768) return; // Keep mobile CPU 100% free for 0ms TBT
       var started = false;
       function trigger() {
         if (started) return;
@@ -273,13 +274,13 @@
         if ("requestIdleCallback" in window) {
           requestIdleCallback(startLeaves, { timeout: 5000 });
         } else {
-          setTimeout(startLeaves, 2500);
+          setTimeout(startLeaves, 3000);
         }
       }
       window.addEventListener("scroll", trigger, { passive: true, once: true });
       window.addEventListener("pointerdown", trigger, { passive: true, once: true });
       window.addEventListener("keydown", trigger, { passive: true, once: true });
-      setTimeout(trigger, 6000);
+      setTimeout(trigger, 8000);
     }
     if (document.readyState === 'complete') {
       deferStart();

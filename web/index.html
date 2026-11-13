@@ -10,8 +10,7 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" crossorigin />
-    <link rel="modulepreload" href="/assets/index-v3.js?v=3.6.0" />
+    <link rel="modulepreload" href="/assets/index-v3.js?v=3.9.0" />
     <link rel="preload" href="/images/hero-base.webp" as="image" />
 
     <!-- Asynchronous Non-Blocking Fonts -->
@@ -69,12 +68,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <script src="/turbo-nav.js?v=3.5.0" defer></script>
-    <link rel="preload" href="/hero-input.css?v=3.5.0" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="/hero-input.css?v=3.5.0" /></noscript>
-    <script src="/hero-input.js?v=3.5.0" defer></script>
-    <script src="/falling-leaves.js?v=3.7.0" defer></script>
-    <script src="/cursor-fx.js?v=3.0.0" defer></script>
+    <script src="/turbo-nav.js?v=3.9.0" defer></script>
+    <link rel="preload" href="/hero-input.css?v=3.9.0" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/hero-input.css?v=3.9.0" /></noscript>
+    <script src="/hero-input.js?v=3.9.0" defer></script>
+    <script src="/falling-leaves.js?v=3.9.0" defer></script>
+    <script src="/cursor-fx.js?v=3.9.0" defer></script>
 
 
 
@@ -281,9 +280,9 @@
       ]
     }
     </script>
-    <script type="module" crossorigin src="/assets/index-v3.js?v=3.6.0"></script>
-    <link rel="preload" href="/assets/index-DXRQ6TqR.css?v=3.6.0" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin />
-    <noscript><link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.6.0"></noscript>
+    <script type="module" crossorigin src="/assets/index-v3.js?v=3.9.0"></script>
+    <link rel="preload" href="/assets/index-DXRQ6TqR.css?v=3.9.0" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin />
+    <noscript><link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.9.0"></noscript>
     <style>
       html, body {
         background-color: #f4f1e8 !important;
@@ -454,6 +453,8 @@
           function injectScript(src, attrs, target) {
             var s = document.createElement('script');
             s.src = src;
+            s.async = true;
+            s.defer = true;
             if (attrs) {
               for (var k in attrs) {
                 if (k.indexOf('data-') === 0) s.dataset[k.slice(5)] = attrs[k];
@@ -490,18 +491,25 @@
             }
             var nextItem = adQueue.shift();
             injectScript(nextItem.src, nextItem.attrs);
-            setTimeout(drainAdQueue, 250);
+            setTimeout(drainAdQueue, 180);
           }
           drainAdQueue();
         }
 
-                // User engagement trigger: fire as soon as visitor touches or scrolls the page
+        // Fire ads non-blocking after initial paint and window load, well within the PageSpeed window
+        function scheduleMonetization() {
+          setTimeout(loadDeferredMonetization, 1400);
+        }
+        if (document.readyState === 'complete') {
+          scheduleMonetization();
+        } else {
+          window.addEventListener('load', scheduleMonetization, { once: true });
+        }
         window.addEventListener('scroll', loadDeferredMonetization, { passive: true, once: true });
         window.addEventListener('pointerdown', loadDeferredMonetization, { passive: true, once: true });
         window.addEventListener('touchstart', loadDeferredMonetization, { passive: true, once: true });
         window.addEventListener('keydown', loadDeferredMonetization, { passive: true, once: true });
-        // Safety fallback timer if no interaction occurs
-        setTimeout(loadDeferredMonetization, 12000); }
+        setTimeout(loadDeferredMonetization, 2200); }
       })();
     </script>
 

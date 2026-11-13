@@ -448,7 +448,8 @@
   function initObserver() {
     function tryMount() {
       const heroCta = document.querySelector(".hero-cta");
-      if (!heroCta || document.getElementById("heroGithubDock")) return true;
+      if (!heroCta) return false;
+      if (document.getElementById("heroGithubDock")) return true;
       const dock = createHeroGithubDock();
       heroCta.innerHTML = "";
       heroCta.appendChild(dock);
