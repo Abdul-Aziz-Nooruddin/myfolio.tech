@@ -6,12 +6,11 @@
     <meta name="theme-color" content="#f4f1e8" />
 
     <!-- Performance Critical Preloads -->
+    <link rel="modulepreload" href="/assets/index-v3.js?v=3.9.0" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="modulepreload" href="/assets/index-v3.js?v=3.9.0" />
-    <link rel="preload" href="/images/hero-base.webp" as="image" />
 
     <!-- Asynchronous Non-Blocking Fonts -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" />
@@ -68,12 +67,8 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <script src="/turbo-nav.js?v=3.9.0" defer></script>
     <link rel="preload" href="/hero-input.css?v=3.9.0" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="/hero-input.css?v=3.9.0" /></noscript>
-    <script src="/hero-input.js?v=3.9.0" defer></script>
-    <script src="/falling-leaves.js?v=3.9.0" defer></script>
-    <script src="/cursor-fx.js?v=3.9.0" defer></script>
 
 
 
@@ -318,7 +313,6 @@
     </style>
   </head>
   <body>
-    <div id="static-hero-wordmark" class="hero-wordmark" aria-hidden="true" style="position:fixed;bottom:-32px;left:0;right:0;z-index:0;text-align:center;pointer-events:none;color:var(--paper,#f4f1e8);letter-spacing:-.08em;font-size:clamp(240px,29vw,570px);font-weight:500;line-height:.8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Inter,sans-serif !important;">Myfolio.</div>
     <div id="root"></div>
       <!-- Search Engine Progressive Enhancement & Crawler Fallback (Only active for crawlers/no-JS to prevent FOUC text flash) -->
       <noscript>
@@ -516,5 +510,9 @@
     <div style="text-align: center; padding: 12px 16px 20px;">
       <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener sponsored" style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #555a52; text-decoration: none;">Sponsored</a>
     </div>
+    <script src="/turbo-nav.js?v=3.9.0" defer></script>
+    <script src="/hero-input.js?v=3.9.0" defer></script>
+    <script src="/falling-leaves.js?v=3.9.0" defer></script>
+    <script src="/cursor-fx.js?v=3.9.0" defer></script>
 </body>
 </html>
