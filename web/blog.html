@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(s){s.dataset.zone='12216630',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script>(function(s){s.dataset.zone='12216628',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://5gvci.com/act/files/tag.min.js?z=12216492" data-cfasync="false" async></script>
+  <script>(function(s){s.dataset.zone='12216486',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://quge5.com/88/tag.min.js" data-zone="307378" async data-cfasync="false"></script>
+  <!-- MyFolio Official Favicon Suite -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyFolio Blog — Guides, Reviews &amp; Portfolio Comparisons</title>
+  <meta name="description" content="Independent guides, comparisons and honest reviews for developers building personal websites and portfolios. Read our latest breakdowns and technical deep dives.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://myfolio.tech/blog">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://myfolio.tech/blog">
+  <meta property="og:title" content="MyFolio Blog — Guides, Reviews &amp; Portfolio Comparisons">
+  <meta property="og:description" content="Independent guides, comparisons and honest reviews for developers building personal websites and portfolios. Read our latest breakdowns and technical deep dives.">
+  <meta property="og:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MyFolio Blog">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MyFolio Blog — Guides, Reviews &amp; Portfolio Comparisons">
+  <meta name="twitter:description" content="Independent guides, comparisons and honest reviews for developers building personal websites and portfolios.">
+  <meta name="twitter:image" content="https://myfolio.tech/assets/og/og-default.jpg">
+
+  <!-- Schema.org JSON-LD Breadcrumb & Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "MyFolio Blog",
+    "url": "https://myfolio.tech/blog",
+    "description": "Guides, comparisons and honest reviews for developers building personal websites and portfolios.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MyFolio",
+      "url": "https://myfolio.tech",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://myfolio.tech/assets/logo-3d.png"
+      }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://myfolio.tech/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://myfolio.tech/blog"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Typography Suite: Plus Jakarta Sans, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lenis Smooth Inertia Scroll & GSAP Motion Ecosystem -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="/falling-leaves.js?v=3.6.1" defer></script>
+  <script src="/cursor-fx.js?v=3.0.0" defer></script>
+
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #171817;
+      background: #f4f1e8;
+      --paper: #f4f1e8;
+      --mist: #e4e4e4;
+      --ink: #171817;
+      --sky: #75c5de;
+      --teal: #13708e;
+      --muted: #5e615b;
+      --border: rgba(23, 24, 23, 0.08);
+      --border-strong: rgba(23, 24, 23, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: clip; }
+    body { min-height: 100vh; background: var(--paper); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+
+    #scroll-progress-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, #13708e, #75c5de, #171817);
+      z-index: 100000;
+      box-shadow: 0 0 10px rgba(19, 112, 142, 0.5);
+      pointer-events: none;
+      transition: width 0.08s linear;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 36px;
+      background: rgba(244, 241, 232, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+    .brand-logo-wrap {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #171817;
+    }
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .header-nav a {
+      transition: color 0.2s ease;
+    }
+    .header-nav a:hover {
+      color: var(--teal);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .studio-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .studio-link:hover {
+      background: var(--teal);
+      transform: translateY(-1px);
+    }
+    .burger-button {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      width: 24px;
+      height: 24px;
+      justify-content: center;
+    }
+    .burger-button span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+    }
+
+    /* Container */
+    .blog-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .breadcrumb-nav {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breadcrumb-nav a:hover {
+      color: var(--teal);
+    }
+
+    .blog-header {
+      margin-bottom: 48px;
+    }
+    .blog-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      background: rgba(19, 112, 142, 0.08);
+      border: 1px solid rgba(19, 112, 142, 0.2);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+    .blog-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(34px, 4.2vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .blog-subtitle {
+      font-size: 18px;
+      color: #4a4e47;
+      max-width: 720px;
+      line-height: 1.65;
+    }
+
+    /* Post Card */
+    .blog-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+    .post-card-featured {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(23, 24, 23, 0.04);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card-featured:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(23, 24, 23, 0.08);
+      border-color: rgba(19, 112, 142, 0.25);
+    }
+    .post-chrome {
+      background: #f7f6f2;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .post-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .post-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #dedcd3;
+    }
+    .post-card-body {
+      padding: 36px 36px 32px;
+    }
+    .post-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .post-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--teal);
+      background: rgba(19, 112, 142, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .post-date {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .post-card-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(24px, 2.5vw, 32px);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .post-card-title a {
+      transition: color 0.2s ease;
+    }
+    .post-card-title a:hover {
+      color: var(--teal);
+    }
+    .post-excerpt {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #4a4e47;
+      margin-bottom: 24px;
+      max-width: 820px;
+    }
+    .post-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .post-pill-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .post-pill-tags span {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #f4f1e8;
+      color: #555a52;
+      font-weight: 500;
+    }
+    .post-read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .post-read-btn:hover {
+      background: var(--teal);
+      transform: translateX(2px);
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, #171817 0%, #1a221f 100%);
+      border-radius: 24px;
+      padding: 48px 40px;
+      color: #ffffff;
+      text-align: center;
+      margin-top: 40px;
+      box-shadow: 0 16px 40px rgba(23, 24, 23, 0.12);
+    }
+    .cta-banner h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      font-size: 16px;
+      color: #c0c2b9;
+      max-width: 600px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 9999px;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .cta-btn:hover {
+      background: var(--sky);
+      color: var(--ink);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(117, 197, 222, 0.35);
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #171817;
+      color: #ffffff;
+      padding: 60px 36px 36px;
+      margin-top: 60px;
+    }
+    .footer-directory {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-directory h3 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a1a1aa;
+      margin-bottom: 16px;
+    }
+    .footer-directory nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-directory a {
+      font-size: 14px;
+      color: #e4e4e7;
+      transition: color 0.2s ease;
+    }
+    .footer-directory a:hover {
+      color: var(--sky);
+    }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #71717a;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Mobile Overlay Menu */
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #f4f1e8;
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      padding: 80px 24px 32px;
+      overflow-y: auto;
+    }
+    .menu-panel.is-open {
+      display: flex;
+    }
+    .menu-panel nav {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .menu-panel nav a {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .header-nav { display: none; }
+      .burger-button { display: flex; }
+      .footer-directory { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .post-card-body { padding: 24px 20px; }
+    }
+    @media (max-width: 600px) {
+      .site-header { padding: 14px 18px; }
+      .blog-container { padding: 32px 16px 60px; }
+      .footer-directory { grid-template-columns: 1fr; gap: 28px; }
+      .cta-banner { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="scroll-progress-indicator"></div>
+
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="MyFolio homepage">
+      <span class="brand-logo-wrap">
+        <img class="brand-logo-img" src="/assets/logo-3d.png" alt="MyFolio" width="34" height="34">
+      </span>
+      <span>MyFolio</span>
+    </a>
+    <nav class="header-nav">
+      <a href="/#templates">Templates</a>
+      <a href="/compare">Compare</a>
+      <a href="/blog" style="color: #13708e; font-weight: 600;">Blog</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about">About</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="/studio" class="studio-link">
+        <span>Web Studio</span>
+        <span style="font-size: 16px;">✦</span>
+      </a>
+      <button class="burger-button" id="burger-btn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="menu-panel" id="menu-panel">
+    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);">Directory</div>
+    <nav>
+      <a href="/"><span>Home</span><span>01</span></a>
+      <a href="/studio"><span>Studio</span><span>02</span></a>
+      <a href="/compare"><span>Compare</span><span>03</span></a>
+      <a href="/blog"><span>Blog</span><span>04</span></a>
+      <a href="/#templates"><span>Templates</span><span>05</span></a>
+      <a href="/#pricing"><span>Pricing</span><span>06</span></a>
+      <a href="/about"><span>About</span><span>07</span></a>
+      <a href="/faq"><span>FAQ</span><span>08</span></a>
+      <a href="/contact"><span>Contact</span><span>09</span></a>
+    </nav>
+  </div>
+
+  <main class="blog-container">
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <span style="color: var(--ink);">Blog</span>
+    </nav>
+
+    <header class="blog-header">
+      <span class="blog-badge">Editorial &amp; Guides</span>
+      <h1 class="blog-title">MyFolio Blog</h1>
+      <p class="blog-subtitle">Independent breakdowns, benchmarks and honest comparisons for developers and creators who want to own their code and showcase real projects.</p>
+    </header>
+
+    <section class="blog-grid" aria-label="Blog Articles">
+      <article class="post-card-featured">
+        <div class="post-chrome">
+          <div class="post-dots">
+            <span class="post-dot"></span>
+            <span class="post-dot"></span>
+            <span class="post-dot"></span>
+          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted);">myfolio.tech/blog/best-free-portfolio-websites-2027</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-meta-row">
+            <span class="post-tag">Guide · 2027 Edition</span>
+            <span class="post-date">November 13, 2026</span>
+            <span class="post-date">•</span>
+            <span class="post-date">8 min read</span>
+          </div>
+          <h2 class="post-card-title">
+            <a href="/blog/best-free-portfolio-websites-2027">Best Free Portfolio Websites for Developers in 2027</a>
+          </h2>
+          <p class="post-excerpt">
+            Nine genuinely free ways to put a developer portfolio online in 2027 — ranked by what the free plan actually gives you, and the catch on each one.
+          </p>
+          <div class="post-footer-row">
+            <div class="post-pill-tags">
+              <span>MyFolio</span>
+              <span>GitHub Pages</span>
+              <span>Framer</span>
+              <span>Webflow</span>
+              <span>Wix</span>
+              <span>Free Plans</span>
+            </div>
+            <a href="/blog/best-free-portfolio-websites-2027" class="post-read-btn">
+              <span>Read full guide</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="cta-banner">
+      <h2>Build your 3D portfolio from GitHub — free to try.</h2>
+      <p>Transform your public repos into an interactive 3D WebGL developer portfolio in 30 seconds with 100% full source code ZIP export.</p>
+      <a href="/studio" class="cta-btn">Build mine free →</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-directory">
+      <div>
+        <a href="/" class="brand" aria-label="MyFolio homepage" style="color: var(--paper);">
+          <span class="brand-logo-wrap">
+            <img class="brand-logo-img" src="/assets/logo-3d.png" alt="MyFolio" width="34" height="34">
+          </span>
+          <span>MyFolio</span>
+        </a>
+        <p style="margin-top: 16px; font-size: 13.5px; color: #a1a1aa; line-height: 1.6; max-width: 280px;">
+          The premier 3D developer portfolio platform. Turn GitHub repositories into living interactive worlds with 100% full source code export.
+        </p>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <nav>
+          <a href="/studio">Web Studio</a>
+          <a href="/portfolio-templates">3D Templates</a>
+          <a href="/developer-portfolio">Developer Portfolio</a>
+          <a href="/portfolio-generator">Portfolio Generator</a>
+          <a href="/portfolio-maker">Portfolio Maker</a>
+          <a href="/ai-portfolio-generator">AI Portfolio Generator</a>
+          <a href="/compare">Builder Comparisons</a>
+          <a href="/#pricing">Pricing</a>
+        </nav>
+      </div>
+      <div>
+        <h3>Comparisons</h3>
+        <nav>
+          <a href="/vs-wix">MyFolio vs Wix</a>
+          <a href="/vs-squarespace">MyFolio vs Squarespace</a>
+          <a href="/vs-wordpress">MyFolio vs WordPress</a>
+          <a href="/vs-webflow">MyFolio vs Webflow</a>
+          <a href="/vs-framer">MyFolio vs Framer</a>
+          <a href="/vs-github-pages">MyFolio vs GitHub Pages</a>
+        </nav>
+      </div>
+      <div>
+        <h3>Company &amp; Resources</h3>
+        <nav>
+          <a href="/blog">Blog</a>
+          <a href="/about">About Us</a>
+          <a href="/faq">FAQ &amp; Takedown</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/refund">Refund Policy</a>
+          <a href="/contact">Contact Support</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MyFolio. All rights reserved.</span>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/refund">Refund</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const burger = document.getElementById('burger-btn');
+      const panel = document.getElementById('menu-panel');
+      if (burger && panel) {
+        burger.addEventListener('click', () => {
+          panel.classList.toggle('is-open');
+        });
+      }
+
+      if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        const bar = document.getElementById('scroll-progress-indicator');
+        if (bar) {
+          lenis.on('scroll', ({ progress }) => {
+            bar.style.width = (progress * 100).toFixed(2) + '%';
+          });
+        }
+      }
+    })();
+  </script>
+
+  <div style="text-align: center; padding: 12px 16px 20px;">
+    <a href="https://avegogglerequest.com/bm35igbg?key=3f42d615a462098e36b44ed4acd572ac" target="_blank" rel="noopener sponsored" style="font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); text-decoration: none;">Sponsored</a>
+  </div>
+</body>
+</html>

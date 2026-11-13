@@ -49,6 +49,8 @@ Allow: /vs-wordpress
 Allow: /vs-webflow
 Allow: /vs-framer
 Allow: /vs-github-pages
+Allow: /blog
+Allow: /blog/
 Allow: /assets/
 Allow: /landing-pages/
 Allow: /images/

@@ -3576,6 +3576,14 @@ app.get('/vs-webflow', (req, res) => { res.sendFile(getPagePath('vs-webflow.html
 app.get('/vs-framer', (req, res) => { res.sendFile(getPagePath('vs-framer.html')); });
 app.get('/vs-github-pages', (req, res) => { res.sendFile(getPagePath('vs-github-pages.html')); });
 
+// Blog & Editorial Resource Pages
+app.get(['/blog', '/blog/'], (req, res) => {
+  res.sendFile(getPagePath('blog.html'));
+});
+app.get(['/blog/best-free-portfolio-websites-2027', '/blog/best-free-portfolio-websites-2027/', '/blog/best-free-portfolio-websites-2027.html'], (req, res) => {
+  res.sendFile(getPagePath('blog/best-free-portfolio-websites-2027.html'));
+});
+
 // Admin Panel
 app.get(['/admin', '/admin.html'], AuthMiddleware.requirePageAdmin, (req, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');

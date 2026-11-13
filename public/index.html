@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#f4f1e8" />
 
     <!-- Performance Critical Preloads -->
+    <link rel="preload" href="/assets/index-DXRQ6TqR.css?v=3.9.0" as="style" crossorigin />
     <link rel="modulepreload" href="/assets/index-v3.js?v=3.9.0" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
@@ -94,10 +95,6 @@
             var p = n.closest('#cf-root, #cf-sidebar, #cf-sidebar-container, .cf-sidebar-container, [id^="cf-"], [class^="cf-"], careerflow-extension, careerflow-app, careerflow-copilot') || n;
             try { p.remove(); } catch(e) {}
           }
-        }
-        if (window.MutationObserver) {
-          var obs = new MutationObserver(purgeCF);
-          obs.observe(document.documentElement, { childList: true, subtree: true });
         }
         window.addEventListener('DOMContentLoaded', purgeCF);
         window.addEventListener('load', purgeCF);
@@ -275,8 +272,7 @@
     }
     </script>
     <script type="module" crossorigin src="/assets/index-v3.js?v=3.9.0"></script>
-    <link rel="preload" href="/assets/index-DXRQ6TqR.css?v=3.9.0" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin />
-    <noscript><link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.9.0"></noscript>
+    <link rel="stylesheet" crossorigin href="/assets/index-DXRQ6TqR.css?v=3.9.0" />
     <style>
       :root {
         --mist: #f4f1e8;
@@ -353,13 +349,7 @@
     </style>
   </head>
   <body>
-    <div id="root" style="min-height: 100vh; background-color: #f4f1e8;">
-      <main id="main">
-        <section class="hero" id="home" aria-labelledby="hero-heading">
-          <div class="hero-wordmark" aria-hidden="true">Myfolio.</div>
-        </section>
-      </main>
-    </div>
+    <div id="root" style="min-height: 100vh; background-color: #f4f1e8;"></div>
     <!-- Search Engine Progressive Enhancement & Crawler Fallback (Only active for crawlers/no-JS to prevent FOUC text flash) -->
     <noscript>
       <div style="max-width: 900px; margin: 40px auto; padding: 24px; text-align: center;">
@@ -383,6 +373,8 @@
           <a href="/about">About MyFolio</a>
           <span>•</span>
           <a href="/compare">Compare Builders</a>
+          <span>•</span>
+          <a href="/blog">Blog</a>
         </nav>
         <section style="margin-top: 40px; text-align: left;">
           <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.4rem; font-weight: 700; color: #171817; margin-bottom: 16px;">Frequently Asked Questions</h2>
@@ -557,7 +549,29 @@
     </div>
     <script src="/turbo-nav.js?v=3.9.0" defer></script>
     <script src="/hero-input.js?v=3.9.0" defer></script>
-    <script src="/falling-leaves.js?v=3.9.0" defer></script>
-    <script src="/cursor-fx.js?v=3.9.0" defer></script>
+    <script>
+      (function loadSecondaryEnhancements() {
+        function initSecondary() {
+          if (window.innerWidth < 768) return;
+          function addScript(src) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.defer = true;
+            document.body.appendChild(s);
+          }
+          addScript('/cursor-fx.js?v=3.9.0');
+          addScript('/falling-leaves.js?v=3.9.0');
+        }
+        if (window.requestIdleCallback) {
+          window.addEventListener('load', function() {
+            requestIdleCallback(initSecondary, { timeout: 4000 });
+          }, { once: true });
+        } else {
+          window.addEventListener('load', function() {
+            setTimeout(initSecondary, 2500);
+          }, { once: true });
+        }
+      })();
+    </script>
 </body>
 </html>

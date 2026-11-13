@@ -278,8 +278,19 @@
   gap: 8px !important;
   width: 100% !important;
   text-decoration: none !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s !important;
   display: inline-flex !important;
+}
+
+.word-reveal {
+  opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+  display: inline !important;
+}
+.hero-side-note, .hero-eyebrow, .hero-bottom {
+  animation: none !important;
+  transform: none !important;
 }
 
 .pricing-cta-outline {

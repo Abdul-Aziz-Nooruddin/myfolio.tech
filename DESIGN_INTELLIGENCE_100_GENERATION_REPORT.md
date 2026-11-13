@@ -8,8 +8,8 @@
 ## Statistical Summary
 - **Distinct Information Architecture Models**: 10 / 10
 - **Distinct Spatial Layout Grammars**: 10 / 10
-- **Distinct Project Storytelling Models**: 29 / 12
-- **Distinct Coherent Visual Universes**: 20 / 10
+- **Distinct Project Storytelling Models**: 22 / 12
+- **Distinct Coherent Visual Universes**: 19 / 10
 - **Unique Structural Fingerprints**: 99
 - **Generic Card Grid Monopolies**: 0
 
