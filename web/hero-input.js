@@ -1,80 +1,13 @@
 /**
- * MyFolio Instant Hero GitHub Username Bar & 3D Universe Exploration Engine
+ * MyFolio Instant Hero GitHub Username Bar Engine
  * Mounts directly into the homepage hero section to maximize visitor engagement.
  * Features:
  * - Instant GitHub username input dock with auto-cleaning & keyboard handling
- * - Live sample profile chips (Linus Torvalds, shadcn, Dan Abramov, Anthony Fu)
- * - Interactive 3D Universe Switcher with real thumbnail previews & role recommendations
- * - In-page Live Sandbox Preview Modal with Desktop/Mobile frame switching
- * - High-converting social proof telemetry (3,140+ portfolios rendered)
+ * - Direct transition to Studio generator
+ * - Platform reassurance tags
  */
 
 (function initHeroGithubInput() {
-  const UNIVERSES = [
-    {
-      id: 'jack-3d-creator',
-      shortId: 'jack-3d',
-      name: 'Jack 3D Developer',
-      label: 'Jack 3D',
-      tag: 'Spatial Cyber',
-      icon: '🚀',
-      desc: 'High-fidelity spatial WebGL environment with floating 3D robotic hand, holographic code matrix, and cybernetic schematics.',
-      bestFor: 'Systems, Backend & Web3',
-      demoUrl: '/jack-3d',
-      img: '/assets/templates/jack-3d-creator-hero.webp'
-    },
-    {
-      id: 'kage-temple',
-      shortId: 'kage',
-      name: 'Kage Kyoto Temple',
-      label: 'Kage Zen',
-      tag: 'Zen Architecture',
-      icon: '⛩️',
-      desc: 'Serene Japanese architectural spatial experience with volumetric bamboo atmosphere, floating koi pond, and tactile scroll rhythm.',
-      bestFor: 'Creative Tech & Full-Stack',
-      demoUrl: '/kage',
-      img: '/assets/templates/kage-temple-hero.webp'
-    },
-    {
-      id: 'nadia-brand',
-      shortId: 'nadia',
-      name: 'Nadia Personal Brand',
-      label: 'Nadia Luxury',
-      tag: 'Editorial Luxury',
-      icon: '💎',
-      desc: 'Ultra-refined editorial aesthetic with obsidian stone materials, liquid gold accents, dynamic typography, and high-fashion curation.',
-      bestFor: 'Founders & Tech Leaders',
-      demoUrl: '/nadia',
-      img: '/assets/templates/nadia-brand-hero.webp'
-    },
-    {
-      id: 'tom-cel-animator',
-      shortId: 'tom',
-      name: 'Tom Cel Animator',
-      label: 'Tom Manga',
-      tag: 'Manga Motion',
-      icon: '⚡',
-      desc: 'Vibrant graphic-novel kinetic storytelling with dynamic cel-shaded action frames, expressive typography, and comic layout panels.',
-      bestFor: 'Frontend & Creative Coders',
-      demoUrl: '/tom',
-      img: '/assets/templates/tom-cel-animator-hero.webp'
-    },
-    {
-      id: 'rbp-kinetic-monochrome',
-      shortId: 'rbp',
-      name: 'Kinetic Monochrome',
-      label: 'Kinetic Mono',
-      tag: 'Swiss Brutalism',
-      icon: '🖤',
-      desc: 'High-contrast neo-brutalist typographic grid with physics-based particle cards, stark typography, and micro-interactions.',
-      bestFor: 'Minimalists & Indie Hackers',
-      demoUrl: '/rbp',
-      img: '/assets/templates/rbp-kinetic-monochrome-hero.webp'
-    }
-  ];
-
-  let activeUniverseIndex = 0;
-
   function sanitizeGithubUsername(raw) {
     if (!raw) return '';
     let val = raw.trim();
@@ -118,27 +51,6 @@
         </div>
       </form>
 
-      <!-- Interactive 3D Universe Showcase Section -->
-      <div class="hero-universe-stage" id="heroUniverseStage">
-        <div class="universe-tabs-header">
-          <h2 class="universe-header-title">✦ Choose Your 3D Universe:</h2>
-          <span class="universe-header-sub">Click to explore living worlds</span>
-        </div>
-
-        <div class="universe-nav-pills" role="tablist" aria-label="3D Visual Universes">
-          ${UNIVERSES.map((u, i) => `
-            <button type="button" class="universe-pill ${i === 0 ? 'active' : ''}" data-index="${i}" role="tab" aria-selected="${i === 0}">
-              <span class="pill-icon">${u.icon}</span>
-              <span class="pill-name">${u.label}</span>
-            </button>
-          `).join('')}
-        </div>
-
-        <div class="universe-card-display" id="universeCardDisplay">
-          <!-- Dynamically populated -->
-        </div>
-      </div>
-
       <div class="hero-github-reassurance" aria-label="Platform assurances">
         <span class="reassurance-tag">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
@@ -155,12 +67,6 @@
           Zero Sign-Up Required
         </span>
       </div>
-
-      <!-- Real Analytics Telemetry Proof -->
-      <div class="hero-telemetry-badge">
-        <span class="telemetry-spark">✦</span>
-        <span>Over <strong>3,140+</strong> developer portfolios synthesized • <strong>100%</strong> code ownership • Zero vendor lock-in</span>
-      </div>
     `;
 
     // References
@@ -168,90 +74,8 @@
     const input = dock.querySelector('#heroGithubInput');
     const btn = dock.querySelector('#heroGithubBtn');
     const btnText = btn.querySelector('.btn-text');
-    const universeCard = dock.querySelector('#universeCardDisplay');
-    const pills = dock.querySelectorAll('.universe-pill');
 
-    function renderActiveUniverse(index) {
-      activeUniverseIndex = index;
-      const u = UNIVERSES[index];
-      
-      pills.forEach((p, i) => {
-        p.classList.toggle('active', i === index);
-        p.setAttribute('aria-selected', i === index ? 'true' : 'false');
-      });
-
-      universeCard.innerHTML = `
-        <div class="universe-card-inner">
-          <div class="universe-card-visual" style="background-image: url('${u.img}')" id="openSandboxVisualBtn" role="button" tabindex="0" title="Click to view live 3D sandbox">
-            <div class="visual-gradient-overlay"></div>
-            <div class="visual-badge">
-              <span>${u.icon} ${u.tag}</span>
-            </div>
-            <div class="visual-hover-hint">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-              <span>Live Sandbox</span>
-            </div>
-          </div>
-          <div class="universe-card-content">
-            <div class="universe-card-heading">
-              <h3 class="universe-name">${u.name}</h3>
-              <span class="universe-role-rec">${u.bestFor}</span>
-            </div>
-            <p class="universe-desc">${u.desc}</p>
-            <div class="universe-actions">
-              <button type="button" class="btn-universe-preview" id="sandboxTriggerBtn">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                <span>Live Preview</span>
-              </button>
-              <button type="button" class="btn-universe-select" id="applyUniverseBtn">
-                <span>Use This Template ✦</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // Attach action listeners
-      const openVisual = universeCard.querySelector('#openSandboxVisualBtn');
-      const sandboxTrigger = universeCard.querySelector('#sandboxTriggerBtn');
-      const applyBtn = universeCard.querySelector('#applyUniverseBtn');
-
-      if (openVisual) {
-        openVisual.addEventListener('click', () => openSandboxModal(u));
-        openVisual.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openSandboxModal(u);
-          }
-        });
-      }
-      if (sandboxTrigger) {
-        sandboxTrigger.addEventListener('click', () => openSandboxModal(u));
-      }
-      if (applyBtn) {
-        applyBtn.addEventListener('click', () => {
-          if (input.value.trim()) {
-            triggerGeneration(input.value, u.id);
-          } else {
-            input.focus();
-            input.classList.add('shake');
-            setTimeout(() => input.classList.remove('shake'), 400);
-          }
-        });
-      }
-    }
-
-    // Pill click handler
-    pills.forEach((pill) => {
-      pill.addEventListener('click', () => {
-        const idx = parseInt(pill.getAttribute('data-index'), 10);
-        renderActiveUniverse(idx);
-      });
-    });
-
-    renderActiveUniverse(0);
-
-    function triggerGeneration(username, templateId) {
+    function triggerGeneration(username) {
       const cleanUser = sanitizeGithubUsername(username);
       if (!cleanUser) {
         input.focus();
@@ -267,8 +91,7 @@
         sessionStorage.setItem('myfolio_preview_username', cleanUser);
       } catch (e) {}
 
-      const tId = templateId || UNIVERSES[activeUniverseIndex].id;
-      window.location.href = `/studio?github=${encodeURIComponent(cleanUser)}&template=${encodeURIComponent(tId)}&autobuild=1`;
+      window.location.href = `/studio?github=${encodeURIComponent(cleanUser)}&autobuild=1`;
     }
 
     form.addEventListener('submit', (e) => {
@@ -297,144 +120,6 @@
     return dock;
   }
 
-  // Interactive In-Page Sandbox Modal
-  function openSandboxModal(universe) {
-    let modal = document.getElementById('heroSandboxModal');
-    if (!modal) {
-      modal = document.createElement('div');
-      modal.id = 'heroSandboxModal';
-      modal.className = 'hero-sandbox-modal';
-      document.body.appendChild(modal);
-    }
-
-    modal.innerHTML = `
-      <div class="sandbox-backdrop" id="sandboxBackdrop"></div>
-      <div class="sandbox-window">
-        <header class="sandbox-header">
-          <div class="sandbox-header-left">
-            <span class="sandbox-icon">${universe.icon}</span>
-            <div class="sandbox-title-wrap">
-              <strong class="sandbox-title">${universe.name}</strong>
-              <span class="sandbox-subtitle">Live Interactive 3D WebGL Sandbox</span>
-            </div>
-          </div>
-          <div class="sandbox-device-switch">
-            <button type="button" class="device-btn active" id="btnDeviceDesktop" title="Desktop Viewport">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-              <span>Desktop</span>
-            </button>
-            <button type="button" class="device-btn" id="btnDeviceMobile" title="Mobile Viewport">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-              <span>Mobile</span>
-            </button>
-          </div>
-          <div class="sandbox-header-right">
-            <a href="/studio?template=${encodeURIComponent(universe.id)}" class="sandbox-claim-cta">
-              <span>Build in this Universe ✦</span>
-            </a>
-            <button type="button" class="sandbox-close-btn" id="closeSandboxModal" aria-label="Close Sandbox">&times;</button>
-          </div>
-        </header>
-        <div class="sandbox-frame-wrap" id="sandboxFrameWrap">
-          <div class="sandbox-loading-shimmer" id="sandboxLoader">
-            <div class="loader-spinner"></div>
-            <span>Spinning up live WebGL 3D environment...</span>
-          </div>
-          <div class="sandbox-phone-shell" id="sandboxPhoneShell">
-            <div class="phone-dynamic-island" aria-hidden="true"></div>
-            <iframe 
-              src="${universe.demoUrl}" 
-              id="sandboxIframe" 
-              class="sandbox-iframe desktop-mode" 
-              title="${universe.name} Live Demo" 
-              loading="eager"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    `;
-
-    modal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-
-    const iframe = modal.querySelector('#sandboxIframe');
-    const loader = modal.querySelector('#sandboxLoader');
-    iframe.onload = () => {
-      if (loader) loader.style.display = 'none';
-    };
-
-    const closeBtn = modal.querySelector('#closeSandboxModal');
-    const backdrop = modal.querySelector('#sandboxBackdrop');
-    const btnDesk = modal.querySelector('#btnDeviceDesktop');
-    const btnMob = modal.querySelector('#btnDeviceMobile');
-    const phoneShell = modal.querySelector('#sandboxPhoneShell');
-    const frameWrap = modal.querySelector('#sandboxFrameWrap');
-
-    function applyMobileScale() {
-      if (!phoneShell || !phoneShell.classList.contains('mobile-active')) {
-        if (phoneShell) phoneShell.style.transform = '';
-        return;
-      }
-      if (window.innerWidth <= 768) {
-        phoneShell.style.transform = '';
-        return;
-      }
-      // Target viewport 393 x 852 (standard iPhone 15/16 Pro)
-      // Phone shell with bezels is 417 x 876
-      const shellW = 417;
-      const shellH = 876;
-      const pad = 24;
-      const availW = frameWrap.clientWidth - pad;
-      const availH = frameWrap.clientHeight - pad;
-      if (availW <= 0 || availH <= 0) return;
-      const scale = Math.min(1, Math.min(availW / shellW, availH / shellH));
-      phoneShell.style.transform = `scale(${scale.toFixed(4)})`;
-      phoneShell.style.transformOrigin = 'center center';
-    }
-
-    const handleResize = () => {
-      if (phoneShell && phoneShell.classList.contains('mobile-active')) {
-        applyMobileScale();
-      }
-    };
-    window.addEventListener('resize', handleResize);
-
-    function closeModal() {
-      modal.classList.remove('is-open');
-      document.body.style.overflow = '';
-      window.removeEventListener('resize', handleResize);
-      setTimeout(() => {
-        modal.innerHTML = '';
-      }, 250);
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', closeModal);
-
-    btnDesk.addEventListener('click', () => {
-      btnDesk.classList.add('active');
-      btnMob.classList.remove('active');
-      phoneShell.classList.remove('mobile-active');
-      iframe.className = 'sandbox-iframe desktop-mode';
-      applyMobileScale();
-    });
-    btnMob.addEventListener('click', () => {
-      btnMob.classList.add('active');
-      btnDesk.classList.remove('active');
-      phoneShell.classList.add('mobile-active');
-      iframe.className = 'sandbox-iframe mobile-mode';
-      applyMobileScale();
-    });
-
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-        window.removeEventListener('keydown', handleEsc);
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-  }
-
   function mountHeroDock() {
     if (document.getElementById('heroGithubDock')) return;
     const heroCta = document.querySelector('.hero-cta');
@@ -447,11 +132,11 @@
 
   function initObserver() {
     function tryMount() {
-      const heroCta = document.querySelector(".hero-cta");
+      const heroCta = document.querySelector('.hero-cta');
       if (!heroCta) return false;
-      if (document.getElementById("heroGithubDock")) return true;
+      if (document.getElementById('heroGithubDock')) return true;
       const dock = createHeroGithubDock();
-      heroCta.innerHTML = "";
+      heroCta.innerHTML = '';
       heroCta.appendChild(dock);
       return true;
     }
@@ -469,7 +154,10 @@
       subtree: true
     });
 
-    setTimeout(() => observer.disconnect(), 3000);
+    setTimeout(() => {
+      observer.disconnect();
+      tryMount();
+    }, 4000);
   }
 
   if (document.readyState === 'loading') {
