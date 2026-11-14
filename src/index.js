@@ -3300,15 +3300,23 @@ app.get(['/studio', '/webstudio', '/builder', '/generator'], (req, res) => {
 });
 
 // High-Intent SEO Keyword Landing Pages (OpenSEO Search Optimization)
-app.get(['/portfolio-generator'], (req, res) => {
+app.get(['/github-portfolio-generator', '/github-portfolio', '/github-to-portfolio'], (req, res) => {
+  res.sendFile(getPagePath('github-portfolio-generator.html'));
+});
+
+app.get(['/ai-portfolio-generator', '/ai-portfolio-maker', '/ai-portfolio-builder'], (req, res) => {
+  res.sendFile(getPagePath('ai-portfolio-generator.html'));
+});
+
+app.get(['/portfolio-generator', '/portfolio-generator-2027'], (req, res) => {
   res.sendFile(getPagePath('portfolio-generator.html'));
 });
 
-app.get(['/portfolio-maker'], (req, res) => {
+app.get(['/portfolio-maker', '/portfolio-builder-online'], (req, res) => {
   res.sendFile(getPagePath('portfolio-maker.html'));
 });
 
-app.get(['/developer-portfolio'], (req, res) => {
+app.get(['/developer-portfolio', '/web-developer-portfolio'], (req, res) => {
   res.sendFile(getPagePath('developer-portfolio.html'));
 });
 
