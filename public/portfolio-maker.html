@@ -103,6 +103,30 @@
               "@type": "Answer",
               "text": "Yes! All paid builds include a complete standalone source code ZIP export. You can self-host on GitHub Pages, Vercel, Netlify, Cloudflare, or AWS S3 with zero recurring fees."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "How is this developer portfolio maker different from Wix or Squarespace?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Wix and Squarespace are closed proprietary website builders with recurring monthly subscriptions that hold your site hostage. MyFolio is built for developers: it ingests GitHub code, renders interactive 3D WebGL scenes, and provides full standalone source code ZIP download."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this portfolio maker support mobile touch tilt and gyroscope physics?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Every 3D WebGL universe includes responsive touch-driven camera controls and mobile gyroscope tilt that responds to device orientation, with battery-saving frame throttling."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the performance metrics of the generated portfolio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Portfolios achieve sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS), with full prefers-reduced-motion accessibility fallbacks for users with motion sensitivities."
+            }
           }
         ]
       },
@@ -289,6 +313,26 @@
     .faq-question { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
     .faq-answer { font-size: 14.5px; color: #555a52; line-height: 1.6; }
 
+    /* Deep Technical Specifications */
+    .spec-box {
+      background: #111311; border: 1px solid var(--border-dark);
+      border-radius: 20px; padding: 36px 32px; color: #ffffff; margin-top: 36px;
+    }
+    .spec-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; margin-top: 24px;
+    }
+    .spec-item {
+      border-left: 2px solid var(--sky); padding-left: 16px;
+    }
+    .spec-val {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 700;
+      color: #ffffff; margin-bottom: 4px;
+    }
+    .spec-label {
+      font-size: 12px; color: #a4a99f; line-height: 1.4;
+    }
+
     /* Footer */
     .site-footer {
       background: #111311; color: #8c9088;
@@ -412,6 +456,30 @@
         <p>Flawless responsive layouts tested across iPhones, iPads, Android, and high-resolution desktop viewports.</p>
       </div>
     </div>
+
+    <!-- Technical Specifications Box -->
+    <div class="spec-box" style="margin-top: 48px;">
+      <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #ffffff;">Technical Specifications &amp; Core Web Vitals</h3>
+      <p style="color: #a4a99f; font-size: 13.5px; margin-top: 6px;">Every portfolio created with MyFolio Maker meets strict performance and accessibility standards:</p>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <div class="spec-val">&lt; 50ms</div>
+          <div class="spec-label">First Contentful Paint (FCP) across global CDN edge locations</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">CLS = 0</div>
+          <div class="spec-label">Zero Cumulative Layout Shift with pre-allocated 3D viewports</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">100% Exportable</div>
+          <div class="spec-label">Pure HTML5, CSS3, ESM JavaScript ZIP download with zero runtime lock-in</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">A11y Compliant</div>
+          <div class="spec-label">prefers-reduced-motion halts WebGL render loops automatically</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- FAQ Section -->
@@ -435,6 +503,21 @@
       <div class="faq-item">
         <h3 class="faq-question">What format is the exported code in?</h3>
         <p class="faq-answer">You receive a clean, production-ready ZIP archive containing HTML5, compiled CSS, JavaScript, WebGL shaders, fonts, and assets. It can be uploaded directly to GitHub Pages, Netlify, Vercel, or AWS S3.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">How is this developer portfolio maker different from Wix or Squarespace?</h3>
+        <p class="faq-answer">Wix and Squarespace are closed proprietary website builders with recurring monthly subscriptions that hold your site hostage. MyFolio is built for developers: it ingests GitHub code, renders interactive 3D WebGL scenes, and provides full standalone source code ZIP download.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Does this portfolio maker support mobile touch tilt and gyroscope physics?</h3>
+        <p class="faq-answer">Yes. Every 3D WebGL universe includes responsive touch-driven camera controls and mobile gyroscope tilt that responds to device orientation, with battery-saving frame throttling.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">What are the performance metrics of the generated portfolio?</h3>
+        <p class="faq-answer">Portfolios achieve sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS), with full prefers-reduced-motion accessibility fallbacks for users with motion sensitivities.</p>
       </div>
     </div>
   </section>

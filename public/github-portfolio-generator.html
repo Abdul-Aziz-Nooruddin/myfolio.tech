@@ -128,6 +128,38 @@
               "@type": "Answer",
               "text": "No sign-up or credit card is required to generate and preview your 3D portfolio. You can test your profile in full interactive 3D completely free."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "How does MyFolio convert GitHub READMEs and dependencies into case studies?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MyFolio analyzes repository manifests (package.json, Cargo.toml, go.mod, pyproject.toml) to identify authentic tech stacks, parses Markdown headings to extract architecture diagrams, problem context, and engineering challenges, and formats them into structured case studies linked directly to your GitHub source code."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What do tech recruiters and engineering directors look for in developer portfolios in 2027?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In 2027, engineering managers look for evidence of real systems thinking, architectural tradeoffs, working live demos, and verified code ownership, rather than generic to-do apps or bulleted text lists. An interactive WebGL case study immediately proves modern engineering proficiency."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use MyFolio with private GitHub repositories?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "By default, MyFolio ingests your public GitHub repositories with zero authorization required. In the Web Studio, you can also connect via GitHub OAuth or import repository metadata securely to include private projects with scrubbed proprietary code."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the performance metrics and WebGL requirements?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MyFolio portfolios run on hardware-accelerated Three.js WebGL2 with sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS). They include automatic battery-saving frame throttling and full prefers-reduced-motion accessibility support for mobile and low-power devices."
+            }
           }
         ]
       },
@@ -447,6 +479,54 @@
       font-size: 14px; color: #555a52; line-height: 1.55;
     }
 
+    /* Deep Technical Knowledge Sections */
+    .knowledge-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px; margin-top: 32px;
+    }
+    .knowledge-card {
+      background: #ffffff; border: 1px solid var(--border);
+      border-radius: 18px; padding: 28px; display: flex; flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .knowledge-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+    .knowledge-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 11.5px; font-weight: 700;
+      color: var(--sky-dark); background: rgba(117, 197, 222, 0.16);
+      padding: 4px 10px; border-radius: 9999px; margin-bottom: 14px;
+      align-self: flex-start;
+    }
+    .knowledge-title {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--ink); margin-bottom: 10px; line-height: 1.3;
+    }
+    .knowledge-desc {
+      font-size: 13.5px; color: #555a52; line-height: 1.6; flex: 1;
+    }
+    .spec-box {
+      background: #111311; border: 1px solid var(--border-dark);
+      border-radius: 20px; padding: 36px 32px; color: #ffffff; margin-top: 36px;
+    }
+    .spec-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; margin-top: 24px;
+    }
+    .spec-item {
+      border-left: 2px solid var(--sky); padding-left: 16px;
+    }
+    .spec-val {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 700;
+      color: #ffffff; margin-bottom: 4px;
+    }
+    .spec-label {
+      font-size: 12px; color: #a4a99f; line-height: 1.4;
+    }
+
     /* Footer */
     .site-footer {
       background: #111311; color: #a4a99f;
@@ -603,6 +683,104 @@
     </div>
   </section>
 
+  <!-- Ingestion Engine Architecture Section -->
+  <section class="section-wrap" id="engine-architecture">
+    <div class="section-head">
+      <div class="section-eyebrow">Under The Hood</div>
+      <h2 class="section-title">How the GitHub Ingestion Engine Works</h2>
+      <p style="color: #555a52; margin-top: 8px; max-width: 720px; margin-left: auto; margin-right: auto;">
+        Traditional website builders force you to re-type your resume into generic forms. MyFolio reads your actual code and commits to construct a living technical showcase.
+      </p>
+    </div>
+
+    <div class="knowledge-grid">
+      <div class="knowledge-card">
+        <span class="knowledge-badge">STAGE 01 // INGESTION</span>
+        <h3 class="knowledge-title">Manifest &amp; Language Parsing</h3>
+        <p class="knowledge-desc">
+          The engine queries GitHub's public API to analyze repository byte counts, language distributions, and dependency manifests (<code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">package.json</code>, <code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">Cargo.toml</code>, <code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">go.mod</code>). It derives your authentic tech stack without relying on self-reported buzzwords.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">STAGE 02 // CASE STUDY EXTRACTION</span>
+        <h3 class="knowledge-title">README-to-Case-Study Synthesis</h3>
+        <p class="knowledge-desc">
+          Instead of just displaying raw repository names, MyFolio extracts architectural context, problem statements, and key technical challenges from your README documentation. Each project is presented with real architectural depth, live demonstration endpoints, and direct commit links.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">STAGE 03 // SPATIAL BINDING</span>
+        <h3 class="knowledge-title">3D WebGL Shader Generation</h3>
+        <p class="knowledge-desc">
+          Your profile is compiled into a lightweight WebGL2 scene running Three.js. Dynamic lighting, physics-based card tilts, and camera fly-throughs are calculated client-side with zero heavy video files or bloated canvas dependencies.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recruiter Evaluation Section -->
+  <section class="section-wrap" id="recruiter-criteria" style="background: rgba(23, 24, 23, 0.03); border-radius: 24px; padding: 60px 32px;">
+    <div class="section-head">
+      <div class="section-eyebrow">Recruiter &amp; Engineering Director Criteria</div>
+      <h2 class="section-title">What Tech Hiring Teams Look for in 2027</h2>
+      <p style="color: #555a52; margin-top: 8px; max-width: 760px; margin-left: auto; margin-right: auto;">
+        In 2027, automated resume screeners and senior engineering leaders have zero tolerance for generic portfolio templates filled with tutorial projects. Here is what actually converts interviews into offers:
+      </p>
+    </div>
+
+    <div class="knowledge-grid">
+      <div class="knowledge-card">
+        <span class="knowledge-badge">01. SYSTEMS THINKING</span>
+        <h3 class="knowledge-title">Architectural Tradeoffs</h3>
+        <p class="knowledge-desc">
+          Hiring managers want to understand why you chose Postgres over Redis, how you handled distributed state, or why you decoupled a service. MyFolio case studies highlight your architectural decisions and system diagrams directly.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">02. VERIFIED EVIDENCE</span>
+        <h3 class="knowledge-title">Code Ownership &amp; Commits</h3>
+        <p class="knowledge-desc">
+          AI-generated code is everywhere in 2027. Authentic GitHub commit velocity, PR discussions, and real open-source contributions provide tamper-proof evidence that you know how to build and maintain production software.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">03. WORKING PROTOTYPES</span>
+        <h3 class="knowledge-title">Zero Friction Live Previews</h3>
+        <p class="knowledge-desc">
+          Nobody wants to clone a repository and install 40 npm dependencies just to evaluate your work. MyFolio foregrounds verified production URLs, interactive sandboxes, and recorded terminal demos directly on project cards.
+        </p>
+      </div>
+    </div>
+
+    <!-- Technical Specifications Box -->
+    <div class="spec-box">
+      <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #ffffff;">Technical Specifications &amp; Performance Benchmarks</h3>
+      <p style="color: #a4a99f; font-size: 13.5px; margin-top: 6px;">Every portfolio generated by MyFolio adheres to strict WebGL2 and Core Web Vitals engineering benchmarks:</p>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <div class="spec-val">&lt; 50ms</div>
+          <div class="spec-label">First Contentful Paint (FCP) on high-speed CDN edge nodes</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">CLS = 0</div>
+          <div class="spec-label">Zero Cumulative Layout Shift with pre-allocated 3D viewports</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">100% Standalone</div>
+          <div class="spec-label">Pure HTML5, CSS3, ESM JavaScript ZIP export with zero proprietary lock-in</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">A11y Ready</div>
+          <div class="spec-label">Native prefers-reduced-motion halts WebGL render loops automatically</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Comparison Matrix -->
   <section class="section-wrap" id="comparison">
     <div class="section-head">
@@ -705,6 +883,22 @@
       <div class="faq-item">
         <h3 class="faq-question">Is it completely free to try?</h3>
         <p class="faq-answer">Yes. You get 3 free evaluation builds per week. You can test your portfolio in Web Studio with full desktop and mobile 3D rendering with no credit card required.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">How does MyFolio convert GitHub READMEs and dependencies into case studies?</h3>
+        <p class="faq-answer">MyFolio analyzes repository manifests (<code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">package.json</code>, <code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">Cargo.toml</code>, <code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">go.mod</code>, <code style="font-family: var(--font-mono); font-size: 12px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px;">pyproject.toml</code>) to identify authentic tech stacks, parses Markdown headings to extract architecture diagrams, problem context, and engineering challenges, and formats them into structured case studies linked directly to your GitHub source code.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What do tech recruiters and engineering directors look for in developer portfolios in 2027?</h3>
+        <p class="faq-answer">In 2027, engineering managers look for evidence of real systems thinking, architectural tradeoffs, working live demos, and verified code ownership, rather than generic to-do apps or bulleted text lists. An interactive WebGL case study immediately proves modern engineering proficiency.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">Can I use MyFolio with private GitHub repositories?</h3>
+        <p class="faq-answer">By default, MyFolio ingests your public GitHub repositories with zero authorization required. In the Web Studio, you can also connect via GitHub OAuth or import repository metadata securely to include private projects with scrubbed proprietary code.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What are the performance metrics and WebGL requirements?</h3>
+        <p class="faq-answer">MyFolio portfolios run on hardware-accelerated Three.js WebGL2 with sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS). They include automatic battery-saving frame throttling and full prefers-reduced-motion accessibility support for mobile and low-power devices.</p>
       </div>
     </div>
   </section>

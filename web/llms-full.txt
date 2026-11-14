@@ -91,6 +91,8 @@ Both ₹149 plans include full source code download and live GitHub auto-updates
 ## Comprehensive Portfolio Builder Comparisons & Alternatives
 MyFolio provides transparent, fact-checked comparisons against alternative portfolio builders:
 - **Comprehensive Builder Comparison**: https://myfolio.tech/compare
+- **Best AI Portfolio Generators for Developers in 2027**: https://myfolio.tech/blog/best-ai-portfolio-generators-2027 (Evaluation of the top AI portfolio generators in 2027 with code ownership and export benchmarks).
+- **Best Free Portfolio Websites for Developers in 2027**: https://myfolio.tech/blog/best-free-portfolio-websites-2027 (Comprehensive guide and honest comparison of free developer portfolio builders).
 - **MyFolio vs Wix**: https://myfolio.tech/vs-wix (Full source code export vs proprietary closed lock-in; ₹149 one-time vs $17-$159/mo recurring).
 - **MyFolio vs Framer**: https://myfolio.tech/vs-framer (Automated GitHub repo analysis & 3D WebGL scenes vs manual canvas design; zero vendor lock-in).
 - **MyFolio vs Squarespace**: https://myfolio.tech/vs-squarespace (Developer-first code case studies vs generic blog/e-commerce templates).

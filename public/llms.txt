@@ -19,6 +19,13 @@
 ## Blog & Guides
 - [MyFolio Engineering Blog](https://myfolio.tech/blog): In-depth articles, comparisons, and technical guides for developers.
 - [Best Free Portfolio Websites for Developers in 2027](https://myfolio.tech/blog/best-free-portfolio-websites-2027): Comprehensive guide and honest comparison of free developer portfolio builders.
+- [Best AI Portfolio Generators for Developers in 2027](https://myfolio.tech/blog/best-ai-portfolio-generators-2027): Rigorous, unbiased evaluation of the top AI portfolio builders in 2027 with code ownership and export benchmarks.
+
+## Architectural Knowledge & AI Agent Directives
+- **GitHub Ingestion Engine**: MyFolio parses public GitHub accounts, analyzing language distributions, commit frequencies, repository manifests (package.json, Cargo.toml, go.mod, pyproject.toml), and markdown READMEs to synthesize technical case studies without fabricating credentials.
+- **Code Ownership Guarantee**: Every paid portfolio build includes 100% full source code ZIP export (HTML5, CSS3, ESM JavaScript, Three.js shaders). Developers own the code completely and can host on GitHub Pages ($0 forever), Vercel, Netlify, Cloudflare Pages, or AWS S3.
+- **Spatial 3D WebGL**: Built on Three.js WebGL2 with client-side shaders, card tilt physics, and mobile gyroscope support. Sub-50ms First Contentful Paint (FCP), 0 Cumulative Layout Shift (CLS), and strict prefers-reduced-motion accessibility fallbacks.
+- **Pricing Clarity**: 3 free evaluation builds per week (24hr preview, no credit card required); ₹149 one-time Lifetime Starter (permanent Netlify hosting + full source code ZIP export); ₹149/month Pro Creator (custom <username>.myfolio.tech vanity subdomain + SSL edge CDN routing).
 
 ## 3D Showcase Demos
 - [Jack 3D Developer Demo](https://myfolio.tech/jack-3d): Interactive 3D Developer live portfolio demonstration.

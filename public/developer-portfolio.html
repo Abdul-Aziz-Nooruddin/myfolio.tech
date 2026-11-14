@@ -103,6 +103,30 @@
               "@type": "Answer",
               "text": "Yes! All paid builds include a complete standalone source code ZIP export. You can push it directly to a GitHub Pages repository or host on Vercel with zero vendor lock-in."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the 5 cardinal rules of a developer portfolio in 2027?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "1. Lead with systems architecture rather than generic tutorials. 2. Verify all skills with GitHub manifest code. 3. Provide frictionless live demo links. 4. Detail real technical tradeoffs and scaling constraints. 5. Retain 100% full source code ownership without proprietary lock-in."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does MyFolio structure case studies for different engineering roles?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MyFolio detects your archetype (Systems/DevOps, Full-Stack, AI/ML, Frontend Motion, or Leadership) and generates role-appropriate visual universes with tailored display typography, technical matrices, and WebGL environments."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What performance standards do MyFolio portfolios meet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every portfolio achieves sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS), running hardware-accelerated WebGL2 Three.js scenes with automatic mobile gyroscope physics and prefers-reduced-motion accessibility fallbacks."
+            }
           }
         ]
       },
@@ -284,6 +308,55 @@
     .faq-question { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
     .faq-answer { font-size: 14.5px; color: #555a52; line-height: 1.6; }
 
+    /* Deep Technical Knowledge Sections */
+    .section-wrap { max-width: 1100px; margin: 40px auto 80px; padding: 0 24px; }
+    .knowledge-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px; margin-top: 32px;
+    }
+    .knowledge-card {
+      background: #ffffff; border: 1px solid var(--border);
+      border-radius: 18px; padding: 28px; display: flex; flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .knowledge-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+    .knowledge-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 11.5px; font-weight: 700;
+      color: var(--sky-dark); background: rgba(117, 197, 222, 0.16);
+      padding: 4px 10px; border-radius: 9999px; margin-bottom: 14px;
+      align-self: flex-start;
+    }
+    .knowledge-title {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--ink); margin-bottom: 10px; line-height: 1.3;
+    }
+    .knowledge-desc {
+      font-size: 13.5px; color: #555a52; line-height: 1.6; flex: 1;
+    }
+    .spec-box {
+      background: #111311; border: 1px solid var(--border-dark);
+      border-radius: 20px; padding: 36px 32px; color: #ffffff; margin-top: 36px;
+    }
+    .spec-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; margin-top: 24px;
+    }
+    .spec-item {
+      border-left: 2px solid var(--sky); padding-left: 16px;
+    }
+    .spec-val {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 700;
+      color: #ffffff; margin-bottom: 4px;
+    }
+    .spec-label {
+      font-size: 12px; color: #a4a99f; line-height: 1.4;
+    }
+
     /* Footer */
     .site-footer {
       background: #111311; color: #8c9088;
@@ -403,6 +476,90 @@
     </div>
   </section>
 
+  <!-- 5 Cardinal Rules Section -->
+  <section class="section-wrap" id="cardinal-rules" style="background: rgba(23, 24, 23, 0.03); border-radius: 24px; padding: 60px 32px;">
+    <div class="section-head">
+      <h2>The 5 Cardinal Rules of Developer Portfolios in 2027</h2>
+      <p style="color: #555a52; margin-top: 8px; max-width: 760px; margin-left: auto; margin-right: auto;">
+        Tech screening in 2027 has shifted dramatically. AI tools write code, but senior engineering leaders hire engineers who understand systems, tradeoffs, and production reliability.
+      </p>
+    </div>
+
+    <div class="knowledge-grid">
+      <div class="knowledge-card">
+        <span class="knowledge-badge">RULE 01</span>
+        <h3 class="knowledge-title">Architecture Over To-Do Apps</h3>
+        <p class="knowledge-desc">
+          Replace basic tutorials with end-to-end systems. Highlight message queues, caching layers, distributed locks, and database indexing decisions.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">RULE 02</span>
+        <h3 class="knowledge-title">Codebase-Grounded Skills</h3>
+        <p class="knowledge-desc">
+          Never list "React, Go, Rust, AWS" without repository evidence. MyFolio inspects dependency manifests to verify that your skills match real code you authored.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">RULE 03</span>
+        <h3 class="knowledge-title">Frictionless Live Previews</h3>
+        <p class="knowledge-desc">
+          Engineering managers have 90 seconds per candidate. Every top project must feature a 1-click live demo or sandbox URL that loads instantly without requiring login.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">RULE 04</span>
+        <h3 class="knowledge-title">Document Bottlenecks</h3>
+        <p class="knowledge-desc">
+          What broke at scale? How did you profile latency? Documenting failures and fixes demonstrates the engineering maturity that leads to senior offers.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">RULE 05</span>
+        <h3 class="knowledge-title">Own Your Code</h3>
+        <p class="knowledge-desc">
+          Never rely on closed proprietary builders where your site dies if you stop paying. Download your full standalone source code ZIP and host on GitHub Pages or Vercel for free.
+        </p>
+      </div>
+
+      <div class="knowledge-card">
+        <span class="knowledge-badge">BENCHMARK</span>
+        <h3 class="knowledge-title">Hardware-Accelerated 3D</h3>
+        <p class="knowledge-desc">
+          Stand out from thousands of identical static PDFs. Three.js WebGL2 physics and cinematic lighting prove aesthetic mastery and front-end sophistication.
+        </p>
+      </div>
+    </div>
+
+    <!-- Technical Specifications Box -->
+    <div class="spec-box">
+      <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #ffffff;">Technical Specifications &amp; Core Web Vitals</h3>
+      <p style="color: #a4a99f; font-size: 13.5px; margin-top: 6px;">Every portfolio generated by MyFolio meets strict performance and accessibility standards:</p>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <div class="spec-val">&lt; 50ms</div>
+          <div class="spec-label">First Contentful Paint (FCP) across global CDN edge locations</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">CLS = 0</div>
+          <div class="spec-label">Zero Cumulative Layout Shift with pre-allocated 3D viewports</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">100% Exportable</div>
+          <div class="spec-label">Pure HTML5, CSS3, ESM JavaScript ZIP download with zero runtime lock-in</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-val">A11y Compliant</div>
+          <div class="spec-label">prefers-reduced-motion halts WebGL render loops automatically</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="section-head">
@@ -424,6 +581,18 @@
       <div class="faq-item">
         <h3 class="faq-question">Can I host my portfolio on my own domain?</h3>
         <p class="faq-answer">Yes! You can either use our Pro Creator tier for automated SSL domain routing at ₹149/month, or download the full source code ZIP archive on any paid build and host it anywhere for free.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What are the 5 cardinal rules of a developer portfolio in 2027?</h3>
+        <p class="faq-answer">1. Lead with systems architecture rather than generic tutorials. 2. Verify all skills with GitHub manifest code. 3. Provide frictionless live demo links. 4. Detail real technical tradeoffs and scaling constraints. 5. Retain 100% full source code ownership without proprietary lock-in.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">How does MyFolio structure case studies for different engineering roles?</h3>
+        <p class="faq-answer">MyFolio detects your archetype (Systems/DevOps, Full-Stack, AI/ML, Frontend Motion, or Leadership) and generates role-appropriate visual universes with tailored display typography, technical matrices, and WebGL environments.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What performance standards do MyFolio portfolios meet?</h3>
+        <p class="faq-answer">Every portfolio achieves sub-50ms First Contentful Paint (FCP) and 0 Cumulative Layout Shift (CLS), running hardware-accelerated WebGL2 Three.js scenes with automatic mobile gyroscope physics and prefers-reduced-motion accessibility fallbacks.</p>
       </div>
     </div>
   </section>
