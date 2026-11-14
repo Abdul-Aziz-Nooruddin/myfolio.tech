@@ -3591,6 +3591,9 @@ app.get(['/blog', '/blog/'], (req, res) => {
 app.get(['/blog/best-free-portfolio-websites-2027', '/blog/best-free-portfolio-websites-2027/', '/blog/best-free-portfolio-websites-2027.html'], (req, res) => {
   res.sendFile(getPagePath('blog/best-free-portfolio-websites-2027.html'));
 });
+app.get(['/blog/best-ai-portfolio-generators-2027', '/blog/best-ai-portfolio-generators-2027/', '/blog/best-ai-portfolio-generators-2027.html'], (req, res) => {
+  res.sendFile(getPagePath('blog/best-ai-portfolio-generators-2027.html'));
+});
 
 // Admin Panel
 app.get(['/admin', '/admin.html'], AuthMiddleware.requirePageAdmin, (req, res) => {

@@ -709,17 +709,18 @@ test('8. GSC Audit: robots.txt allows noindex crawling and sitemap contains 31 c
   assert.ok(robots.includes('Disallow: /api/'), 'robots.txt must Disallow /api/');
   assert.ok(robots.includes('Disallow: /cdn-cgi/'), 'robots.txt must Disallow /cdn-cgi/');
 
-  // 2. Verify sitemap.xml contains 31 clean canonical URLs without www, trailing slashes, or redirects
+  // 2. Verify sitemap.xml contains 32 clean canonical URLs without www, trailing slashes, or redirects
   const sitemap = fs.readFileSync(path.join(process.cwd(), 'web', 'sitemap.xml'), 'utf8');
   const pubSitemap = fs.readFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), 'utf8');
   assert.equal(sitemap, pubSitemap, 'web/sitemap.xml and public/sitemap.xml must match');
 
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  assert.equal(locs.length, 31, 'sitemap.xml must have exactly 31 URLs');
+  assert.equal(locs.length, 32, 'sitemap.xml must have exactly 32 URLs');
   assert.ok(locs.includes('https://myfolio.tech/apogee'), 'sitemap.xml must include /apogee');
   assert.ok(locs.includes('https://myfolio.tech/slush'), 'sitemap.xml must include /slush');
   assert.ok(locs.includes('https://myfolio.tech/blog'), 'sitemap.xml must include /blog');
   assert.ok(locs.includes('https://myfolio.tech/blog/best-free-portfolio-websites-2027'), 'sitemap.xml must include /blog/best-free-portfolio-websites-2027');
+  assert.ok(locs.includes('https://myfolio.tech/blog/best-ai-portfolio-generators-2027'), 'sitemap.xml must include /blog/best-ai-portfolio-generators-2027');
 
   for (const loc of locs) {
     assert.ok(loc.startsWith('https://myfolio.tech'), 'loc must start with https://myfolio.tech: ' + loc);

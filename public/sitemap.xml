@@ -313,15 +313,21 @@
   <!-- Blog & Editorial Guides -->
   <url>
     <loc>https://myfolio.tech/blog</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://myfolio.tech/blog/best-free-portfolio-websites-2027</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myfolio.tech/blog/best-ai-portfolio-generators-2027</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
   </url>
 
 </urlset>
